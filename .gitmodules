@@ -1,3 +1,6 @@
 [submodule "Assets/Code/UnityUtils"]
 	path = Assets/Code/UnityUtils
 	url = https://github.com/noobnewbier/UnityUtils
+[submodule "Assets/Code/EventManagement"]
+	path = Assets/Code/EventManagement
+	url = https://github.com/noobnewbier/EventManagement
