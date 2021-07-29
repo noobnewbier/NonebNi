@@ -1,8 +1,8 @@
-﻿using Noneb.Core.Game.Common.BoardItems;
+﻿using NonebNi.Core.BoardItems;
 using UnityEngine;
 using UnityUtils.Constants;
 
-namespace Noneb.Core.Game.Units
+namespace NonebNi.Core.Units
 {
     [CreateAssetMenu(fileName = nameof(UnitDataScriptable), menuName = MenuName.Data + nameof(UnitDataScriptable))]
     public class UnitDataScriptable : BoardItemDataScriptable

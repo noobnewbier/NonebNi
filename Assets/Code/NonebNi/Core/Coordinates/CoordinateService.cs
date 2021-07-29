@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Noneb.Core.Game.Maps;
+using NonebNi.Core.Maps;
 
-namespace Noneb.Core.Game.Coordinates
+namespace NonebNi.Core.Coordinates
 {
     public interface ICoordinateService
     {

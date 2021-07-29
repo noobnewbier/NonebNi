@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityUtils.Constants;
 
-namespace Noneb.Core.Game.Maps
+namespace NonebNi.Core.Maps
 {
     [CreateAssetMenu(fileName = nameof(MapConfig), menuName = MenuName.Data + nameof(MapConfig))]
     public class MapConfig : ScriptableObject

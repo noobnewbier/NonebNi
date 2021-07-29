@@ -1,9 +1,9 @@
-﻿using Noneb.Core.Game.Common.BoardItems;
-using Noneb.Core.Game.Constructs;
-using Noneb.Core.Game.Units;
+﻿using NonebNi.Core.BoardItems;
+using NonebNi.Core.Constructs;
+using NonebNi.Core.Units;
 using UnityEngine;
 
-namespace Noneb.Core.Game.Strongholds
+namespace NonebNi.Core.Strongholds
 {
     public class StrongholdData : BoardItemData
     {

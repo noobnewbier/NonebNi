@@ -1,4 +1,4 @@
-﻿namespace Noneb.Core.Game.Common.TagInterface
+﻿namespace NonebNi.Core.BoardItems
 {
     public interface IOnTile
     {

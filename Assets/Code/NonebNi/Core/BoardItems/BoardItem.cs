@@ -1,6 +1,6 @@
-﻿using Noneb.Core.Game.Coordinates;
+﻿using NonebNi.Core.Coordinates;
 
-namespace Noneb.Core.Game.Common.BoardItems
+namespace NonebNi.Core.BoardItems
 {
     public abstract class BoardItem
     {

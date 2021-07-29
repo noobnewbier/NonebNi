@@ -1,7 +1,7 @@
-﻿using Noneb.Core.Game.Common.BoardItems;
-using Noneb.Core.Game.Coordinates;
+﻿using NonebNi.Core.BoardItems;
+using NonebNi.Core.Coordinates;
 
-namespace Noneb.Core.Game.Tiles
+namespace NonebNi.Core.Tiles
 {
     public class Tile : BoardItem<TileData>
     {

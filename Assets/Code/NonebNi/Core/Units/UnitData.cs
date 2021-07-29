@@ -1,7 +1,7 @@
-﻿using Noneb.Core.Game.Common.BoardItems;
+﻿using NonebNi.Core.BoardItems;
 using UnityEngine;
 
-namespace Noneb.Core.Game.Units
+namespace NonebNi.Core.Units
 {
     public class UnitData : BoardItemData
     {

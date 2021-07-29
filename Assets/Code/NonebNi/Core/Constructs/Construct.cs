@@ -1,8 +1,7 @@
-﻿using Noneb.Core.Game.Common.BoardItems;
-using Noneb.Core.Game.Common.TagInterface;
-using Noneb.Core.Game.Coordinates;
+﻿using NonebNi.Core.BoardItems;
+using NonebNi.Core.Coordinates;
 
-namespace Noneb.Core.Game.Constructs
+namespace NonebNi.Core.Constructs
 {
     public class Construct : BoardItem<ConstructData>, IOnTile
     {

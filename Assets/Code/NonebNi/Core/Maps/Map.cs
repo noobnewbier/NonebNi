@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Noneb.Core.Game.Common.BoardItems;
-using Noneb.Core.Game.Constructs;
-using Noneb.Core.Game.Coordinates;
-using Noneb.Core.Game.Strongholds;
-using Noneb.Core.Game.Tiles;
-using Noneb.Core.Game.Units;
+using NonebNi.Core.BoardItems;
+using NonebNi.Core.Constructs;
+using NonebNi.Core.Coordinates;
+using NonebNi.Core.Strongholds;
+using NonebNi.Core.Tiles;
+using NonebNi.Core.Units;
 
-namespace Noneb.Core.Game.Maps
+namespace NonebNi.Core.Maps
 {
     /*
      * the storage is in axial coordinate with grid(jagged array) for easy access.

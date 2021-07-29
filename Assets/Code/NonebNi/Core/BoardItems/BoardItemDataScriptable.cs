@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Noneb.Core.Game.Common.BoardItems
+namespace NonebNi.Core.BoardItems
 {
     public abstract class BoardItemDataScriptable : ScriptableObject
     {
