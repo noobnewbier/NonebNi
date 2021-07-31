@@ -17,14 +17,14 @@ namespace Noneb.Ui.Game.Maps.Create
         {
             if (!mapConfig)
             {
-                Debug.LogWarning($"{nameof(mapConfig)} is not set, ${nameof(MapOverlay)} won't draw anything");
+                Debug.LogWarning($"{nameof(mapConfig)} is not set, ${nameof(MapOverlay)} won't draw anything", this);
             }
 
             if (!worldConfig)
             {
-                Debug.LogWarning($"{nameof(worldConfig)} is not set, ${nameof(MapOverlay)} won't draw anything");
+                Debug.LogWarning($"{nameof(worldConfig)} is not set, ${nameof(MapOverlay)} won't draw anything", this);
             }
-            
+
             var positions = new List<Vector3>();
             for (var i = 0; i < mapConfig.GetMap2DActualHeight(); i++)
             for (var j = 0; j < mapConfig.GetMap2DActualWidth(); j++)
