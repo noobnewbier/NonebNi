@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Noneb.Core.Game.WorldConfigurations;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
 using UnityEngine;
 
-namespace Noneb.Ui.Game.Maps.Create
+namespace NonebNi.Core
 {
     public class MapOverlay : MonoBehaviour
     {

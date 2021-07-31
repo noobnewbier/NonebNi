@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityUtils.Constants;
 
-namespace Noneb.Core.Game.WorldConfigurations
+namespace NonebNi.Core
 {
     [CreateAssetMenu(fileName = nameof(WorldConfig), menuName = MenuName.Data + nameof(WorldConfig))]
     public class WorldConfig : ScriptableObject
