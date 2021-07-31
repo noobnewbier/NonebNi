@@ -15,6 +15,16 @@ namespace Noneb.Ui.Game.Maps.Create
 
         private void OnDrawGizmos()
         {
+            if (!mapConfig)
+            {
+                Debug.LogWarning($"{nameof(mapConfig)} is not set, ${nameof(MapOverlay)} won't draw anything");
+            }
+
+            if (!worldConfig)
+            {
+                Debug.LogWarning($"{nameof(worldConfig)} is not set, ${nameof(MapOverlay)} won't draw anything");
+            }
+            
             var positions = new List<Vector3>();
             for (var i = 0; i < mapConfig.GetMap2DActualHeight(); i++)
             for (var j = 0; j < mapConfig.GetMap2DActualWidth(); j++)
