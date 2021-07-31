@@ -3,9 +3,11 @@ using UnityEngine;
 
 namespace NonebNi.Core.Coordinates
 {
-    //Using Cube Coordinate(which is just axial coordinate) : https://www.redblobgames.com/grids/hexagons/#map-storage
-    //    1. AxialCoordinate refers to cube coordinate(in game logic)
-    //    2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array 
+    /// <summary>
+    /// Using Cube Coordinate(which is just axial coordinate) : https://www.redblobgames.com/grids/hexagons/#map-storage
+    ///     1. AxialCoordinate refers to cube coordinate(in game logic)
+    ///     2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
+    /// </summary>
     [Serializable]
     public struct Coordinate : IEquatable<Coordinate>
     {
