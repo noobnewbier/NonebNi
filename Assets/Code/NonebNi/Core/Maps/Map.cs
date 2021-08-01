@@ -96,7 +96,7 @@ namespace NonebNi.Core.Maps
             }
         }
 
-        private T?[,] GetGridForType<T>() where T : BoardItem
+        public T?[,] GetGridForType<T>() where T : BoardItem
         {
             if (_tileGrid is T[,] tileGrid)
                 return tileGrid;
