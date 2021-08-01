@@ -4,13 +4,12 @@ using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
 using UnityEngine;
 
-namespace NonebNi.Core
+namespace NonebNi.Editor.Maps
 {
     public class MapOverlay : MonoBehaviour
     {
-        [SerializeField] private MapConfig mapConfig;
-        [SerializeField] private WorldConfig worldConfig;
-
+        [SerializeField] private MapConfig mapConfig = null!;
+        [SerializeField] private WorldConfig worldConfig = null!;
 
         private void OnDrawGizmos()
         {
