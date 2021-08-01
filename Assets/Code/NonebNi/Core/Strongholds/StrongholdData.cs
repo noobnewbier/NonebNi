@@ -1,14 +1,13 @@
 ﻿using NonebNi.Core.BoardItems;
 using NonebNi.Core.Constructs;
 using NonebNi.Core.Units;
-using UnityEngine;
 
 namespace NonebNi.Core.Strongholds
 {
     public class StrongholdData : BoardItemData
     {
-        private StrongholdData(Sprite icon, string name, ConstructData constructData, UnitData unitData) :
-            base(icon, name)
+        private StrongholdData(string name, ConstructData constructData, UnitData unitData) :
+            base(name)
         {
             ConstructData = constructData;
             UnitData = unitData;
@@ -26,7 +25,6 @@ namespace NonebNi.Core.Strongholds
         /// </summary>
         public static StrongholdData Create(ConstructData constructData, UnitData unitData) =>
             new StrongholdData(
-                unitData.Icon,
                 $"{constructData.Name} captured by : {unitData.Name}",
                 constructData,
                 unitData

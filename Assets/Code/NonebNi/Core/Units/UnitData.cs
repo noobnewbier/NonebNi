@@ -5,7 +5,7 @@ namespace NonebNi.Core.Units
 {
     public class UnitData : BoardItemData
     {
-        public UnitData(Sprite icon, string name, UnitDataScriptable original) : base(icon, name)
+        public UnitData(Sprite icon, string name, UnitDataScriptable original) : base(name)
         {
             Original = original;
         }

@@ -26,8 +26,6 @@ namespace NonebNi.Core.Maps
             return instance;
         }
 
-        #region Methods - Consider moving them to a service or repo...
-
         public int GetMap2DArrayWidth()
         {
             var zeroBasedHeight = Mathf.Max(GetMap2DActualHeight() - 1, 0);
@@ -37,7 +35,5 @@ namespace NonebNi.Core.Maps
         public int GetMap2DArrayHeight() => GetMap2DActualHeight();
 
         public int GetTotalMapSize() => GetMap2DActualWidth() * GetMap2DActualHeight();
-
-        #endregion
     }
 }

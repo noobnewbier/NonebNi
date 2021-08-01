@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431bfe481afbb524bbd31b07810d7f71, type: 3}
   m_Name: MapConfig
   m_EditorClassIdentifier: 
-  xSize: 10
-  zSize: 10
+  xSize: 18
+  zSize: 18

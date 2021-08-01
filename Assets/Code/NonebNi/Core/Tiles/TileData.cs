@@ -1,16 +1,14 @@
 ﻿using NonebNi.Core.BoardItems;
-using UnityEngine;
 
 namespace NonebNi.Core.Tiles
 {
     public class TileData : BoardItemData
     {
-        public TileData(Sprite icon, string name, TileDataScriptable original) : base(icon, name)
+        public TileData(string name, float weight) : base(name)
         {
-            Original = original;
+            Weight = weight;
         }
 
-        public TileDataScriptable Original { get; }
-        public float Weight => Original.Weight;
+        public float Weight { get; }
     }
 }

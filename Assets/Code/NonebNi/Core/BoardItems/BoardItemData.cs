@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace NonebNi.Core.BoardItems
+﻿namespace NonebNi.Core.BoardItems
 {
     /// <summary>
     /// it's slightly hacky to prevent the need to create a bunch of scriptable of each new levels,
@@ -9,13 +7,11 @@ namespace NonebNi.Core.BoardItems
     /// </summary>
     public abstract class BoardItemData
     {
-        protected BoardItemData(Sprite icon, string name)
+        protected BoardItemData(string name)
         {
-            Icon = icon;
             Name = name;
         }
 
-        public Sprite Icon { get; }
         public string Name { get; }
     }
 }

@@ -34,9 +34,15 @@ namespace NonebNi.Core.Maps
             _strongholdGrid = CreateGrid(strongholds, map2DArrayWidth, map2dArrayHeight);
         }
 
-        private static T[,] CreateGrid<T>(IEnumerable<T> boardItems,
-                                          int map2DArrayWidth,
-                                          int map2dArrayHeight) where T : BoardItem
+        public Map(IEnumerable<Tile> tiles, MapConfig mapConfig)
+        {
+            var map2DArrayWidth = mapConfig.GetMap2DArrayWidth();
+            var map2dArrayHeight = mapConfig.GetMap2DArrayHeight();
+            _tileGrid = CreateGrid(tiles, map2DArrayWidth, map2dArrayHeight);
+        }
+
+
+        private static T[,] CreateGrid<T>(IEnumerable<T> boardItems, int map2DArrayWidth, int map2dArrayHeight) where T : BoardItem
         {
             var grid = new T[map2DArrayWidth, map2dArrayHeight];
 
@@ -73,6 +79,7 @@ namespace NonebNi.Core.Maps
         }
 
         public T Get<T>(Coordinate axialCoordinate) where T : BoardItem => GetGridForType<T>()[axialCoordinate.X, axialCoordinate.Z];
+
         public void Set<T>(Coordinate axialCoordinate, T value) where T : BoardItem
         {
             GetGridForType<T>()[axialCoordinate.X, axialCoordinate.Z] = value;

@@ -5,7 +5,7 @@ namespace NonebNi.Core.Constructs
 {
     public class ConstructData : BoardItemData
     {
-        public ConstructData(Sprite icon, string name, ConstructDataScriptable original) : base(icon, name)
+        public ConstructData(Sprite icon, string name, ConstructDataScriptable original) : base(name)
         {
             Original = original;
         }
