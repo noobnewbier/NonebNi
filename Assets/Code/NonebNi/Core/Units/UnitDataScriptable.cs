@@ -7,7 +7,7 @@ namespace NonebNi.Core.Units
     [CreateAssetMenu(fileName = nameof(UnitDataScriptable), menuName = MenuName.Data + nameof(UnitDataScriptable))]
     public class UnitDataScriptable : BoardItemDataScriptable
     {
-        [SerializeField] private string unitName;
+        [SerializeField] private string unitName = null!;
         [SerializeField] private float health;
         [SerializeField] private float maxHealth;
 

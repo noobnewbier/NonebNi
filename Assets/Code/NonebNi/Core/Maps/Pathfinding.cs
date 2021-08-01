@@ -14,7 +14,7 @@ namespace NonebNi.Core.Maps
         public static bool TryFindPath(Coordinate start,
                                        Coordinate goal,
                                        Map map,
-                                       out IList<Coordinate> path,
+                                       out IList<Coordinate>? path,
                                        int maxCost = int.MaxValue,
                                        bool includeStartingTile = false)
         {
@@ -23,7 +23,7 @@ namespace NonebNi.Core.Maps
             var distanceToTile = new Dictionary<Coordinate, float> {[start] = 0f};
 
             tileToDiscover.Enqueue(start, Heuristic(start, goal));
-            path = null;
+            path = default;
 
             while (tileToDiscover.Any())
             {

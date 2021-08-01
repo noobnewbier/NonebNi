@@ -6,7 +6,7 @@ namespace NonebNi.Core.Tiles
     [CreateAssetMenu(menuName = "Data/Tile", fileName = "TileData")]
     public class TileDataScriptable : BoardItemDataScriptable
     {
-        [SerializeField] private string tileName;
+        [SerializeField] private string tileName = null!;
         [SerializeField] private float weight;
 
         public float Weight => weight;

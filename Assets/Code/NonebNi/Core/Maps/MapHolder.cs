@@ -9,7 +9,7 @@ namespace NonebNi.Core.Maps
     /// </summary>
     public class MapHolder : MonoBehaviour
     {
-        [SerializeField] private MapConfig mapConfig;
+        [SerializeField] private MapConfig? mapConfig;
         [SerializeField] private WorldConfig? worldConfig;
         // public LazyTask
     }

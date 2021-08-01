@@ -4,7 +4,7 @@ namespace NonebNi.Core.BoardItems
 {
     public abstract class BoardItemDataScriptable : ScriptableObject
     {
-        [SerializeField] private Sprite icon;
+        [SerializeField] private Sprite icon = null!;
         protected Sprite Icon => icon;
     }
 }

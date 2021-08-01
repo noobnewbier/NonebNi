@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using NonebNi.Core.BoardItems;
-using NonebNi.Core.Constructs;
 using NonebNi.Core.Coordinates;
-using NonebNi.Core.Strongholds;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 
@@ -17,21 +14,15 @@ namespace NonebNi.Core.Maps
     {
         private readonly Tile[,] _tileGrid;
         private readonly Unit[,] _unitGrid;
-        private readonly Construct[,] _constructGrid;
-        private readonly Stronghold[,] _strongholdGrid;
 
         public Map(IEnumerable<Tile> tiles,
                    IEnumerable<Unit> units,
-                   IEnumerable<Construct> constructs,
-                   IEnumerable<Stronghold> strongholds,
                    MapConfig mapConfig)
         {
             var map2DArrayWidth = mapConfig.GetMap2DArrayWidth();
             var map2dArrayHeight = mapConfig.GetMap2DArrayHeight();
             _tileGrid = CreateGrid(tiles, map2DArrayWidth, map2dArrayHeight);
             _unitGrid = CreateGrid(units, map2DArrayWidth, map2dArrayHeight);
-            _constructGrid = CreateGrid(constructs, map2DArrayWidth, map2dArrayHeight);
-            _strongholdGrid = CreateGrid(strongholds, map2DArrayWidth, map2dArrayHeight);
         }
 
         public Map(IEnumerable<Tile> tiles, MapConfig mapConfig)
@@ -39,6 +30,7 @@ namespace NonebNi.Core.Maps
             var map2DArrayWidth = mapConfig.GetMap2DArrayWidth();
             var map2dArrayHeight = mapConfig.GetMap2DArrayHeight();
             _tileGrid = CreateGrid(tiles, map2DArrayWidth, map2dArrayHeight);
+            _unitGrid = CreateGrid(new List<Unit>(), map2DArrayWidth, map2dArrayHeight);
         }
 
 
@@ -56,7 +48,7 @@ namespace NonebNi.Core.Maps
             return grid;
         }
 
-        public IReadOnlyDictionary<HexDirection, T> GetNeighbours<T>(Coordinate axialCoordinate) where T : BoardItem
+        public IReadOnlyDictionary<HexDirection, T?> GetNeighbours<T>(Coordinate axialCoordinate) where T : BoardItem
         {
             var minusX = axialCoordinate + HexDirection.MinusX;
             var plusX = axialCoordinate + HexDirection.PlusX;
@@ -65,7 +57,7 @@ namespace NonebNi.Core.Maps
             var plusZ = axialCoordinate + HexDirection.PlusZ;
             var plusXPlusZ = axialCoordinate + HexDirection.PlusXPlusZ;
 
-            var toReturn = new Dictionary<HexDirection, T>
+            var toReturn = new Dictionary<HexDirection, T?>
             {
                 [HexDirection.MinusX] = GetBoardItemWithDefault<T>(minusX.X, minusX.Z),
                 [HexDirection.PlusX] = GetBoardItemWithDefault<T>(plusX.X, plusX.Z),
@@ -85,15 +77,14 @@ namespace NonebNi.Core.Maps
             GetGridForType<T>()[axialCoordinate.X, axialCoordinate.Z] = value;
         }
 
-        public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : BoardItem
+        public bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : BoardItem
         {
             t = GetBoardItemWithDefault<T>(axialCoordinate.X, axialCoordinate.Z);
 
             return t != null;
         }
 
-        [CanBeNull]
-        private T GetBoardItemWithDefault<T>(int x, int z) where T : BoardItem
+        private T? GetBoardItemWithDefault<T>(int x, int z) where T : BoardItem
         {
             try
             {
@@ -111,10 +102,7 @@ namespace NonebNi.Core.Maps
                 return tileGrid;
             if (_unitGrid is T[,] unitGrid)
                 return unitGrid;
-            if (_constructGrid is T[,] constructGrid)
-                return constructGrid;
-            if (_strongholdGrid is T[,] strongholdGrid)
-                return strongholdGrid;
+
 
             throw new ArgumentOutOfRangeException($"{typeof(T).Name} is not implemented");
         }
