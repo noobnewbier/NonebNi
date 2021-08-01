@@ -12,8 +12,8 @@ namespace NonebNi.Core.Maps
      */
     public class Map
     {
-        private readonly Tile[,] _tileGrid;
-        private readonly Unit[,] _unitGrid;
+        private readonly Tile?[,] _tileGrid;
+        private readonly Unit?[,] _unitGrid;
 
         public Map(IEnumerable<Tile> tiles,
                    IEnumerable<Unit> units,
@@ -70,9 +70,9 @@ namespace NonebNi.Core.Maps
             return toReturn;
         }
 
-        public T Get<T>(Coordinate axialCoordinate) where T : BoardItem => GetGridForType<T>()[axialCoordinate.X, axialCoordinate.Z];
+        public T? Get<T>(Coordinate axialCoordinate) where T : BoardItem => GetGridForType<T>()[axialCoordinate.X, axialCoordinate.Z];
 
-        public void Set<T>(Coordinate axialCoordinate, T value) where T : BoardItem
+        public void Set<T>(Coordinate axialCoordinate, T? value) where T : BoardItem
         {
             GetGridForType<T>()[axialCoordinate.X, axialCoordinate.Z] = value;
         }
@@ -96,7 +96,7 @@ namespace NonebNi.Core.Maps
             }
         }
 
-        private T[,] GetGridForType<T>() where T : BoardItem
+        private T?[,] GetGridForType<T>() where T : BoardItem
         {
             if (_tileGrid is T[,] tileGrid)
                 return tileGrid;
