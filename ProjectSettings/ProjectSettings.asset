@@ -584,7 +584,9 @@ PlayerSettings:
   scriptingDefineSymbols:
     1: 
   additionalCompilerArguments:
-    1: []
+    1:
+    - -nullable+
+    - -nullable:enable
   platformArchitecture: {}
   scriptingBackend:
     Standalone: 0
