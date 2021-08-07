@@ -5,13 +5,15 @@ using UnityEngine;
 namespace NonebNi.Editor.Maps.Toolbar
 {
     //todo: allow toggle of toolbar itself
-    public class MapEditorSceneToolbarView
+    public class SceneToolbarView
     {
-        private readonly MapEditorSceneToolbarPresenter _presenter;
+        private readonly SceneToolbarPresenter _presenter;
 
-        public MapEditorSceneToolbarView()
+        public SceneToolbarView()
         {
-            _presenter = new MapEditorSceneToolbarPresenter(this, MapEditor.Instance);
+            if (MapEditor.IsInitialized) MapEditor.Init();
+
+            _presenter = new SceneToolbarPresenter(this, MapEditor.Instance!);
         }
 
         public void DrawSceneToolbar()

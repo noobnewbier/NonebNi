@@ -1,11 +1,11 @@
 ﻿namespace NonebNi.Editor.Maps.Toolbar
 {
-    public class MapEditorSceneToolbarPresenter
+    public class SceneToolbarPresenter
     {
         private readonly MapEditor _mapEditor;
-        private readonly MapEditorSceneToolbarView _view;
+        private readonly SceneToolbarView _view;
 
-        public MapEditorSceneToolbarPresenter(MapEditorSceneToolbarView view, MapEditor mapEditor)
+        public SceneToolbarPresenter(SceneToolbarView view, MapEditor mapEditor)
         {
             _view = view;
             _mapEditor = mapEditor;
