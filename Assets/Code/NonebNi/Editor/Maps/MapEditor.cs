@@ -22,13 +22,10 @@ namespace NonebNi.Editor.Maps
     {
         public static MapEditor? Instance;
         public bool IsDrawGizmosOverlay = true;
-
-        public bool IsDrawMapOverlay = true;
+        public bool IsDrawGridOverlay = true;
 
         private void OnSceneGUI(SceneView view)
         {
-            if (!IsDrawMapOverlay) return;
-
             Handles.DrawLine(Vector3.back, Vector3.forward);
 
             var toolbar = new MapEditorSceneToolbarView();
@@ -37,6 +34,7 @@ namespace NonebNi.Editor.Maps
 
         #region INITIALIZATION / SERIALIZATION
 
+        //methods are static so they can be initialized be the initializer.
         internal static void Init()
         {
             if (Instance == null)
@@ -45,17 +43,17 @@ namespace NonebNi.Editor.Maps
                 Instance.Initialize();
         }
 
-        ~MapEditor()
-        {
-            EditorApplication.delayCall += Destroy;
-        }
-
         internal static void Destroy()
         {
             Instance?.UnregisterDelegates();
 
             Instance = null;
             SceneView.RepaintAll();
+        }
+
+        ~MapEditor()
+        {
+            EditorApplication.delayCall += Destroy;
         }
 
         private void Initialize()
