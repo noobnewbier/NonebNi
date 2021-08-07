@@ -149,7 +149,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 91891761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4144edc238518bc4aa9afd610c408ad2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bfb6b4bbb014e1fa44d16b284c10468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mapConfig: {fileID: 11400000, guid: 386be42395b268f41a6da89978621554, type: 2}
@@ -162,7 +162,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91891761}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2820958, y: 1.467, z: -2.4815888}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -1,49 +1,48 @@
-﻿using UnityEditor;
+﻿using NonebNi.Editor.Maps.Toolbar;
+using UnityEditor;
 using UnityEngine;
 
 namespace NonebNi.Editor.Maps
 {
     [InitializeOnLoad]
-    static class MapEditorInitializer
+    internal static class MapEditorInitializer
     {
         /// <summary>
         /// Remembers whether or not ProGrids was open when Unity was shut down last. This happens when Unity opens.
         /// </summary>
         static MapEditorInitializer()
         {
-            MapEditor.InitIfEnabled();
-            PlayModeStateListener.OnEnterEditMode += MapEditor.InitIfEnabled;
-            PlayModeStateListener.OnEnterPlayMode += MapEditor.DestroyIfEnabled;
+            MapEditor.Init();
+            PlayModeStateListener.OnEnterEditMode += MapEditor.Init;
+            PlayModeStateListener.OnEnterPlayMode += MapEditor.Destroy;
         }
     }
 
     public class MapEditor
     {
-        private static MapEditor? _instance;
+        public static MapEditor? Instance;
+        public bool IsDrawGizmosOverlay = true;
 
+        public bool IsDrawMapOverlay = true;
+
+        private void OnSceneGUI(SceneView view)
+        {
+            if (!IsDrawMapOverlay) return;
+
+            Handles.DrawLine(Vector3.back, Vector3.forward);
+
+            var toolbar = new MapEditorSceneToolbarView();
+            toolbar.DrawSceneToolbar();
+        }
 
         #region INITIALIZATION / SERIALIZATION
 
-        internal static void InitIfEnabled()
-        {
-            // if (!EditorApplication.isPlayingOrWillChangePlaymode && EditorPrefs.GetBool(PreferenceKeys.ProGridsIsEnabled))
-                Init();
-        }
-
-        internal static void DestroyIfEnabled()
-        {
-            _instance?.Destroy();
-        }
-
         internal static void Init()
         {
-            //Todo: adding preference keys
-            // EditorPrefs.SetBool(PreferenceKeys.ProGridsIsEnabled, true);
-
-            if (_instance == null)
+            if (Instance == null)
                 new MapEditor().Initialize();
             else
-                _instance.Initialize();
+                Instance.Initialize();
         }
 
         ~MapEditor()
@@ -51,50 +50,36 @@ namespace NonebNi.Editor.Maps
             EditorApplication.delayCall += Destroy;
         }
 
-        void Initialize()
+        internal static void Destroy()
         {
-            _instance = this;
-            RegisterDelegates();
-        }
+            Instance?.UnregisterDelegates();
 
-        internal static void Close()
-        {
-            // EditorPrefs.SetBool(PreferenceKeys.ProGridsIsEnabled, false);
-
-            _instance?.Destroy();
-        }
-
-        void Destroy()
-        {
-            UnregisterDelegates();
-
-            _instance = null;
+            Instance = null;
             SceneView.RepaintAll();
         }
 
-        void RegisterDelegates()
+        private void Initialize()
+        {
+            Instance = this;
+            RegisterDelegates();
+        }
+
+        private void RegisterDelegates()
         {
             UnregisterDelegates();
 
             SceneView.duringSceneGui += OnSceneGUI;
-            // SceneView.duringSceneGui += DrawSceneGrid;
 
             // Undo.undoRedoPerformed += ResetActiveTransformValues;
         }
 
-        void UnregisterDelegates()
+        private void UnregisterDelegates()
         {
             SceneView.duringSceneGui -= OnSceneGUI;
-            // SceneView.duringSceneGui -= DrawSceneGrid;
 
             // Undo.undoRedoPerformed -= ResetActiveTransformValues;
         }
 
         #endregion
-
-        void OnSceneGUI(SceneView view)
-        {
-            Handles.DrawLine(Vector3.back, Vector3.forward);
-        }
     }
 }
