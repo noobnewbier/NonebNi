@@ -27,9 +27,6 @@ namespace NonebNi.Editor.Maps
         private MapGenerationService _mapGenerationService = null!;
         private SceneToolbarView _toolbar = null!;
 
-        public bool IsDrawGizmosOverlay = true;
-        public bool IsDrawGridOverlay = true;
-
         public static bool IsInitialized => Instance != null;
 
         private void OnSceneGUI(SceneView view)

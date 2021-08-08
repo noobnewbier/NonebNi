@@ -1,24 +1,29 @@
-﻿namespace NonebNi.Editor.Maps.Toolbar
+﻿using NonebNi.Editor.ServiceLocator;
+
+namespace NonebNi.Editor.Maps.Toolbar
 {
     public class SceneToolbarPresenter
     {
-        private readonly LevelEditor _levelEditor;
+        private readonly LevelEditorDataModel _model;
         private readonly SceneToolbarView _view;
 
-        public SceneToolbarPresenter(SceneToolbarView view, LevelEditor levelEditor)
+        public bool IsGridVisible => _model.IsGridVisible;
+        public bool IsGizmosVisible => _model.IsGizmosVisible;
+
+        public SceneToolbarPresenter(SceneToolbarView view)
         {
             _view = view;
-            _levelEditor = levelEditor;
+            _model = NonebEditorServiceLocator.Instance.LevelEditorDataModel;
         }
 
         public void OnToggleGridVisibility()
         {
-            _levelEditor.IsDrawGridOverlay = !_levelEditor.IsDrawGridOverlay;
+            _model.IsGridVisible = !_model.IsGridVisible;
         }
 
         public void OnToggleGizmosVisibility()
         {
-            _levelEditor.IsDrawGizmosOverlay = !_levelEditor.IsDrawGizmosOverlay;
+            _model.IsGizmosVisible = !_model.IsGizmosVisible;
         }
     }
 }

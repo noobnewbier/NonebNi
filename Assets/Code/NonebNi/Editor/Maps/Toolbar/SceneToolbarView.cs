@@ -13,7 +13,7 @@ namespace NonebNi.Editor.Maps.Toolbar
         {
             if (!LevelEditor.IsInitialized) LevelEditor.Init();
 
-            _presenter = new SceneToolbarPresenter(this, LevelEditor.Instance!);
+            _presenter = new SceneToolbarPresenter(this);
         }
 
         public void DrawSceneToolbar()
@@ -30,7 +30,7 @@ namespace NonebNi.Editor.Maps.Toolbar
             if (ToggleContent.ToggleButton(
                 buttonRect,
                 Contents.GridEnabled,
-                LevelEditor.Instance?.IsDrawGridOverlay ?? false,
+                _presenter.IsGridVisible,
                 Styles.Button,
                 EditorStyles.miniButton
             )) _presenter.OnToggleGridVisibility();
@@ -40,7 +40,7 @@ namespace NonebNi.Editor.Maps.Toolbar
             if (ToggleContent.ToggleButton(
                 buttonRect,
                 Contents.GizmosEnabled,
-                LevelEditor.Instance?.IsDrawGizmosOverlay ?? false,
+                _presenter.IsGizmosVisible,
                 Styles.Button,
                 EditorStyles.miniButton
             )) _presenter.OnToggleGizmosVisibility();
