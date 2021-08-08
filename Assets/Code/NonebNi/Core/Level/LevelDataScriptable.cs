@@ -1,5 +1,6 @@
 ﻿using NonebNi.Core.Maps;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityUtils.Constants;
 
 namespace NonebNi.Core.Level
@@ -10,7 +11,7 @@ namespace NonebNi.Core.Level
     [CreateAssetMenu(fileName = nameof(LevelDataScriptable), menuName = MenuName.Data + nameof(LevelDataScriptable))]
     public class LevelDataScriptable : ScriptableObject
     {
-        public MapConfig mapConfig;
+        [FormerlySerializedAs("mapConfig")] public MapConfigScriptable mapConfigScriptable;
         public WorldConfig worldConfig;
     }
 }

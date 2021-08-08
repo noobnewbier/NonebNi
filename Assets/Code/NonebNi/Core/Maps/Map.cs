@@ -15,9 +15,7 @@ namespace NonebNi.Core.Maps
         private readonly Tile?[,] _tileGrid;
         private readonly Unit?[,] _unitGrid;
 
-        public Map(IEnumerable<Tile> tiles,
-                   IEnumerable<Unit> units,
-                   MapConfig mapConfig)
+        public Map(IEnumerable<Tile> tiles, IEnumerable<Unit> units, MapConfigData mapConfig)
         {
             var map2DArrayWidth = mapConfig.GetMap2DArrayWidth();
             var map2dArrayHeight = mapConfig.GetMap2DArrayHeight();
@@ -25,7 +23,7 @@ namespace NonebNi.Core.Maps
             _unitGrid = CreateGrid(units, map2DArrayWidth, map2dArrayHeight);
         }
 
-        public Map(IEnumerable<Tile> tiles, MapConfig mapConfig)
+        public Map(IEnumerable<Tile> tiles, MapConfigData mapConfig)
         {
             var map2DArrayWidth = mapConfig.GetMap2DArrayWidth();
             var map2dArrayHeight = mapConfig.GetMap2DArrayHeight();

@@ -4,27 +4,29 @@ using UnityUtils.Constants;
 
 namespace NonebNi.Core.Maps
 {
-    [CreateAssetMenu(fileName = nameof(MapConfig), menuName = MenuName.Data + nameof(MapConfig))]
-    public class MapConfig : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(MapConfigScriptable), menuName = MenuName.Data + nameof(MapConfigScriptable))]
+    public class MapConfigScriptable : ScriptableObject
     {
-        private static readonly Lazy<MapConfig> LazyEmpty = new Lazy<MapConfig>(() => Create(0, 0));
+        private static readonly Lazy<MapConfigScriptable> LazyEmpty = new Lazy<MapConfigScriptable>(() => Create(0, 0));
 
         [Range(1, 100)] [SerializeField] private int xSize;
         [Range(1, 100)] [SerializeField] private int zSize;
-        public static MapConfig Empty => LazyEmpty.Value;
+        public static MapConfigScriptable Empty => LazyEmpty.Value;
 
         public int GetMap2DActualWidth() => xSize;
         public int GetMap2DActualHeight() => zSize;
 
-        public static MapConfig Create(int xSize, int zSize)
+        public static MapConfigScriptable Create(int xSize, int zSize)
         {
-            var instance = CreateInstance<MapConfig>();
+            var instance = CreateInstance<MapConfigScriptable>();
 
             instance.xSize = xSize;
             instance.zSize = zSize;
 
             return instance;
         }
+
+        public MapConfigData ToData() => new MapConfigData(xSize, zSize);
 
         public int GetMap2DArrayWidth()
         {

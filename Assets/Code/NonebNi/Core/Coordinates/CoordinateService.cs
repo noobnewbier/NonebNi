@@ -7,10 +7,10 @@ namespace NonebNi.Core.Coordinates
     public interface ICoordinateService
     {
         Coordinate GetAxialCoordinateFromNestedArrayIndex(int x, int z);
-        Coordinate GetCoordinateFromFlattenArrayIndex(int index, MapConfig mapConfig);
-        int GetFlattenArrayIndexFromAxialCoordinate(int x, int z, MapConfig config);
+        Coordinate GetCoordinateFromFlattenArrayIndex(int index, MapConfigScriptable mapConfigScriptable);
+        int GetFlattenArrayIndexFromAxialCoordinate(int x, int z, MapConfigScriptable configScriptable);
 
-        IReadOnlyList<Coordinate> GetFlattenCoordinates(MapConfig mapConfig);
+        IReadOnlyList<Coordinate> GetFlattenCoordinates(MapConfigScriptable mapConfigScriptable);
     }
 
     public class CoordinateService : ICoordinateService
@@ -22,30 +22,30 @@ namespace NonebNi.Core.Coordinates
             return new Coordinate(axialX, axialZ);
         }
 
-        public Coordinate GetCoordinateFromFlattenArrayIndex(int index, MapConfig config)
+        public Coordinate GetCoordinateFromFlattenArrayIndex(int index, MapConfigScriptable configScriptable)
         {
-            if (index > config.GetTotalMapSize() || index < 0)
-                throw new ArgumentOutOfRangeException($"{index} is out of range of the given config: ${config}");
+            if (index > configScriptable.GetTotalMapSize() || index < 0)
+                throw new ArgumentOutOfRangeException($"{index} is out of range of the given config: ${configScriptable}");
 
-            var nestedArrayZ = index / config.GetMap2DActualHeight();
-            var nestedArrayX = index - nestedArrayZ * config.GetMap2DActualWidth();
+            var nestedArrayZ = index / configScriptable.GetMap2DActualHeight();
+            var nestedArrayX = index - nestedArrayZ * configScriptable.GetMap2DActualWidth();
 
             return GetAxialCoordinateFromNestedArrayIndex(nestedArrayX, nestedArrayZ);
         }
 
-        public int GetFlattenArrayIndexFromAxialCoordinate(int x, int z, MapConfig config)
+        public int GetFlattenArrayIndexFromAxialCoordinate(int x, int z, MapConfigScriptable configScriptable)
         {
-            if (x > config.GetMap2DArrayWidth() || z > config.GetMap2DArrayHeight())
-                throw new ArgumentOutOfRangeException($"{x} or {z} is out of range of the given config: ${config}");
+            if (x > configScriptable.GetMap2DArrayWidth() || z > configScriptable.GetMap2DArrayHeight())
+                throw new ArgumentOutOfRangeException($"{x} or {z} is out of range of the given config: ${configScriptable}");
 
-            return z * config.GetMap2DActualWidth() + x - z % 2 - z / 2;
+            return z * configScriptable.GetMap2DActualWidth() + x - z % 2 - z / 2;
         }
 
-        public IReadOnlyList<Coordinate> GetFlattenCoordinates(MapConfig mapConfig)
+        public IReadOnlyList<Coordinate> GetFlattenCoordinates(MapConfigScriptable mapConfigScriptable)
         {
             var toReturn = new List<Coordinate>();
 
-            for (var i = 0; i < mapConfig.GetTotalMapSize(); i++) toReturn.Add(GetCoordinateFromFlattenArrayIndex(i, mapConfig));
+            for (var i = 0; i < mapConfigScriptable.GetTotalMapSize(); i++) toReturn.Add(GetCoordinateFromFlattenArrayIndex(i, mapConfigScriptable));
 
             return toReturn;
         }

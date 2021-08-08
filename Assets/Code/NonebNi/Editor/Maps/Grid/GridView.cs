@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using UnityEditor;
@@ -12,14 +13,14 @@ namespace NonebNi.Editor.Maps.Grid
         private bool _isDrawing;
         private Map? _map;
         private GridPresenter _presenter;
-        private WorldConfig? _worldConfig;
+        private WorldConfigData? _worldConfig;
 
         public GridView()
         {
             _presenter = new GridPresenter(this);
         }
 
-        public void StartDrawGridWithData(Map map, WorldConfig worldConfig)
+        public void StartDrawGridWithData(Map map, WorldConfigData worldConfig)
         {
             _isDrawing = true;
             _worldConfig = worldConfig;
@@ -47,7 +48,7 @@ namespace NonebNi.Editor.Maps.Grid
             for (var i = 1; i < vertices.Count; i++) Handles.DrawLine(vertices[i], i % 6 == 5 ? vertices[i - 5] : vertices[i + 1]);
         }
 
-        private Vector3 GetTilePosition(float yPosition, Coordinate coordinate, WorldConfig worldConfig)
+        private Vector3 GetTilePosition(float yPosition, Coordinate coordinate, WorldConfigData worldConfig)
         {
             var upDistance = worldConfig.OuterRadius * 1.5f;
             var sideDistance = worldConfig.InnerRadius * 2f;

@@ -11,8 +11,6 @@ namespace NonebNi.Editor.Maps.Toolbar
 
         public SceneToolbarView()
         {
-            if (!LevelEditor.IsInitialized) LevelEditor.Init();
-
             _presenter = new SceneToolbarPresenter(this);
         }
 

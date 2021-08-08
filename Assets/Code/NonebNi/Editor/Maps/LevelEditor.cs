@@ -21,18 +21,16 @@ namespace NonebNi.Editor.Maps
 
     public class LevelEditor
     {
-        public static LevelEditor? Instance;
+        private static LevelEditor? _instance;
         private LevelEditorDataModel _dataModel = null!;
         private GridView _gridView = null!;
         private MapGenerationService _mapGenerationService = null!;
         private SceneToolbarView _toolbar = null!;
 
-        public static bool IsInitialized => Instance != null;
+        public static bool IsInitialized => _instance != null;
 
         private void OnSceneGUI(SceneView view)
         {
-            Handles.DrawLine(Vector3.back, Vector3.forward);
-
             _toolbar.DrawSceneToolbar();
             _gridView.DrawGrid();
         }
@@ -42,17 +40,17 @@ namespace NonebNi.Editor.Maps
         //methods are static so they can be initialized be the initializer.
         internal static void Init()
         {
-            if (Instance == null)
+            if (_instance == null)
                 new LevelEditor().Initialize();
             else
-                Instance.Initialize();
+                _instance.Initialize();
         }
 
         internal static void Destroy()
         {
-            Instance?.UnregisterDelegates();
+            _instance?.UnregisterDelegates();
 
-            Instance = null;
+            _instance = null;
             SceneView.RepaintAll();
         }
 
@@ -63,20 +61,18 @@ namespace NonebNi.Editor.Maps
 
         private void Initialize()
         {
-            Instance = this;
+            _instance = this;
 
             _mapGenerationService = NonebEditorServiceLocator.Instance.MapGenerationService;
             _dataModel = NonebEditorServiceLocator.Instance.LevelEditorDataModel;
 
             _gridView = new GridView();
             _toolbar = new SceneToolbarView();
+
             //todo:temporary implementation, need a window to generate level data per stage/level    
-            var mapConfig = MapConfig.Create(10, 10);
-            _dataModel.CurrentLevelData = new LevelData(
-                mapConfig,
-                WorldConfig.Create(Vector3.up, 1),
-                _mapGenerationService.CreateEmptyMap(mapConfig)
-            );
+            var mapConfig = new MapConfigData(10, 10);
+            var worldConfig = new WorldConfigData(1, Vector3.zero, Vector3.up);
+            _dataModel.CurrentLevelData = new LevelData(mapConfig, worldConfig, _mapGenerationService.CreateEmptyMap(mapConfig));
 
             RegisterDelegates();
 
