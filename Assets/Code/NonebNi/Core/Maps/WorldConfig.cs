@@ -11,6 +11,10 @@ namespace NonebNi.Core.Maps
 
         [Range(0f, 10f)] [SerializeField] private float innerRadius;
         [SerializeField] private Vector3 upAxis = Vector3.up;
+        [SerializeField] private Vector3 mapStartingPosition = Vector3.zero;
+
+        public Vector3 MapStartingPosition => mapStartingPosition;
+
         public static WorldConfig Empty => LazyEmpty.Value;
 
         public Vector3 UpAxis => upAxis;
