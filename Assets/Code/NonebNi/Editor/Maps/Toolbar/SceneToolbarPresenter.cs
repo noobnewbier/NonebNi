@@ -2,23 +2,23 @@
 {
     public class SceneToolbarPresenter
     {
-        private readonly MapEditor _mapEditor;
+        private readonly LevelEditor _levelEditor;
         private readonly SceneToolbarView _view;
 
-        public SceneToolbarPresenter(SceneToolbarView view, MapEditor mapEditor)
+        public SceneToolbarPresenter(SceneToolbarView view, LevelEditor levelEditor)
         {
             _view = view;
-            _mapEditor = mapEditor;
+            _levelEditor = levelEditor;
         }
 
         public void OnToggleGridVisibility()
         {
-            _mapEditor.IsDrawGridOverlay = !_mapEditor.IsDrawGridOverlay;
+            _levelEditor.IsDrawGridOverlay = !_levelEditor.IsDrawGridOverlay;
         }
 
         public void OnToggleGizmosVisibility()
         {
-            _mapEditor.IsDrawGizmosOverlay = !_mapEditor.IsDrawGizmosOverlay;
+            _levelEditor.IsDrawGizmosOverlay = !_levelEditor.IsDrawGizmosOverlay;
         }
     }
 }

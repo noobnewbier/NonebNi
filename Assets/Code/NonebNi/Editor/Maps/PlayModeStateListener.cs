@@ -9,18 +9,9 @@ namespace NonebNi.Editor.Maps
     [InitializeOnLoad]
     internal class PlayModeStateListener
     {
-#pragma warning disable 649
-        // ReSharper disable MemberCanBePrivate.Global
-        internal static event Action? OnEnterPlayMode;
-        internal static event Action? OnExitPlayMode;
-        internal static event Action? OnEnterEditMode;
-        internal static event Action? OnExitEditMode;
-        // ReSharper restore MemberCanBePrivate.Global
-#pragma warning restore 649
-
         static PlayModeStateListener()
         {
-            EditorApplication.playModeStateChanged += (x) =>
+            EditorApplication.playModeStateChanged += x =>
             {
                 switch (x)
                 {
@@ -42,5 +33,13 @@ namespace NonebNi.Editor.Maps
                 }
             };
         }
+#pragma warning disable 649
+        // ReSharper disable MemberCanBePrivate.Global
+        internal static event Action? OnEnterPlayMode;
+        internal static event Action? OnExitPlayMode;
+        internal static event Action? OnEnterEditMode;
+        internal static event Action? OnExitEditMode;
+        // ReSharper restore MemberCanBePrivate.Global
+#pragma warning restore 649
     }
 }
