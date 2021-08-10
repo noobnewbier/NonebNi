@@ -69,9 +69,31 @@ namespace NonebNi.Editor.Maps.Grid
             if (HandleUtility.WorldToGUIPointWithDepth(position).z < 0.0)
                 return;
 
-
             var guiPoint = HandleUtility.WorldToGUIPoint(position);
-            var coordinateStyle = new GUIStyle {alignment = TextAnchor.MiddleCenter};
+
+            //stop drawing the label if the text will be so small that it's invisible
+            //define font size in a way it is more less around the same portion of the bounding rect
+            const float fontSizeToBoundingRectRatio = 0.125f;
+            var leftXOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.left * maxOffsetFromCenter).x;
+            var rightXOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.right * maxOffsetFromCenter).x;
+            var topYOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.back * maxOffsetFromCenter).y;
+            var bottomYOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.forward * maxOffsetFromCenter).y;
+            //the direction of which point is on the right/bottom of the screen space get inverted depends on the camera's position.
+            var boundingRect = new Rect(
+                leftXOnScreen < rightXOnScreen ? leftXOnScreen : rightXOnScreen,
+                topYOnScreen < bottomYOnScreen ? topYOnScreen : bottomYOnScreen,
+                Mathf.Abs(leftXOnScreen - rightXOnScreen),
+                Mathf.Abs(topYOnScreen - bottomYOnScreen)
+            );
+
+            const int maxFontSize = 14;
+            var fontSizeInFloat = boundingRect.height * fontSizeToBoundingRectRatio;
+            var coordinateStyle = new GUIStyle
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = Mathf.Min(Mathf.RoundToInt(fontSizeInFloat), maxFontSize)
+            };
+
             var textContent = EditorGUIUtility.TrTempContent(text);
             var size = coordinateStyle.CalcSize(textContent);
             var rect = new Rect(guiPoint, size);
@@ -80,21 +102,26 @@ namespace NonebNi.Editor.Maps.Grid
             rect.yMin -= size.y / 2;
             rect.yMax -= size.y / 2;
 
-            //stop drawing the label when the text is so large, it goes "out of the bounds"(in our use case, the tile itself)
-            //A text goes out of bounds when the min/max point distance to center is greater than the maximum offset
-            var minAcceptableX = HandleUtility.WorldToGUIPoint(position + Vector3.left * maxOffsetFromCenter).x;
-            var maxAcceptableX = HandleUtility.WorldToGUIPoint(position + Vector3.right * maxOffsetFromCenter).x;
-            var minAcceptableY = HandleUtility.WorldToGUIPoint(position + Vector3.back * maxOffsetFromCenter).y;
-            var maxAcceptableY = HandleUtility.WorldToGUIPoint(position + Vector3.forward * maxOffsetFromCenter).y;
-            if (!(minAcceptableX < rect.xMin || maxAcceptableX > rect.xMax || minAcceptableY < rect.yMin || maxAcceptableY > rect.yMax))
+            //These are just a magic number that feels right to me
+            const int minReadableFontSize = 6;
+            const float minVisibleAlpha = 0.5f;
+            //decreasing alpha when the user is further away from the text while avoiding drawing text that are practically not readable
+            coordinateStyle.normal.textColor = new Color(
+                0f,
+                0f,
+                0f,
+                fontSizeInFloat / minReadableFontSize
+            );
+            if (coordinateStyle.normal.textColor.a > minVisibleAlpha)
+            {
                 //todo: better handle cases where the camera is far from the label
-                return;
 
-            Handles.BeginGUI();
+                Handles.BeginGUI();
 
-            GUI.Label(coordinateStyle.padding.Add(rect), textContent, coordinateStyle);
+                GUI.Label(coordinateStyle.padding.Add(rect), textContent, coordinateStyle);
 
-            Handles.EndGUI();
+                Handles.EndGUI();
+            }
         }
 
         private Vector3 GetTilePosition(float yPosition, Coordinate coordinate, WorldConfigData worldConfig)
