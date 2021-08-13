@@ -74,17 +74,47 @@ namespace NonebNi.Editor.Maps.Grid
             //stop drawing the label if the text will be so small that it's invisible
             //define font size in a way it is more less around the same portion of the bounding rect
             const float fontSizeToBoundingRectRatio = 0.125f;
-            var leftXOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.left * maxOffsetFromCenter).x;
-            var rightXOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.right * maxOffsetFromCenter).x;
-            var topYOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.back * maxOffsetFromCenter).y;
-            var bottomYOnScreen = HandleUtility.WorldToGUIPoint(position + Vector3.forward * maxOffsetFromCenter).y;
-            //the direction of which point is on the right/bottom of the screen space get inverted depends on the camera's position.
-            var boundingRect = new Rect(
-                leftXOnScreen < rightXOnScreen ? leftXOnScreen : rightXOnScreen,
-                topYOnScreen < bottomYOnScreen ? topYOnScreen : bottomYOnScreen,
-                Mathf.Abs(leftXOnScreen - rightXOnScreen),
-                Mathf.Abs(topYOnScreen - bottomYOnScreen)
+            var viewCameraTransform = SceneView.currentDrawingSceneView.camera.transform;
+            var cameraForward = viewCameraTransform.forward;
+            var viewForward = new Vector3(cameraForward.x, 0f, cameraForward.z).normalized;
+            var viewRotation = Quaternion.LookRotation(viewForward, Vector3.up);
+
+            var v1 = HandleUtility.WorldToGUIPoint(position + viewRotation * Vector3.left * maxOffsetFromCenter);
+            var v2 = HandleUtility.WorldToGUIPoint(position + viewRotation * Vector3.right * maxOffsetFromCenter);
+            var v3 = HandleUtility.WorldToGUIPoint(position + viewRotation * Vector3.forward * maxOffsetFromCenter);
+            var v4 = HandleUtility.WorldToGUIPoint(position + viewRotation * Vector3.back * maxOffsetFromCenter);
+            //Which vertices is which corner of the rect depends on the orientation of the camera
+            var minX = Mathf.Min(
+                v1.x,
+                v2.x,
+                v3.x,
+                v4.x
             );
+            var minY = Mathf.Min(
+                v1.y,
+                v2.y,
+                v3.y,
+                v4.y
+            );
+            var maxX = Mathf.Max(
+                v1.x,
+                v2.x,
+                v3.x,
+                v4.x
+            );
+            var maxY = Mathf.Max(
+                v1.y,
+                v2.y,
+                v3.y,
+                v4.y
+            );
+            var boundingRect = new Rect(
+                minX,
+                minY,
+                maxX - minX,
+                maxY - minY
+            );
+
 
             const int maxFontSize = 14;
             var fontSizeInFloat = boundingRect.height * fontSizeToBoundingRectRatio;
@@ -114,8 +144,6 @@ namespace NonebNi.Editor.Maps.Grid
             );
             if (coordinateStyle.normal.textColor.a > minVisibleAlpha)
             {
-                //todo: better handle cases where the camera is far from the label
-
                 Handles.BeginGUI();
 
                 GUI.Label(coordinateStyle.padding.Add(rect), textContent, coordinateStyle);
