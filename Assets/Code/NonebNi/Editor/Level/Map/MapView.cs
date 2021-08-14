@@ -2,6 +2,7 @@
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
 using NonebNi.Core.Tiles;
+using NonebNi.Core.Units;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,31 +10,32 @@ namespace NonebNi.Editor.Level.Map
 {
     public class MapView
     {
-        private bool _isDrawing;
         private Core.Maps.Map? _map;
         private MapPresenter _presenter;
         private WorldConfigData? _worldConfig;
+        public bool IsDrawingGrid { private get; set; }
+        public bool IsDrawingGizmos { private get; set; }
 
         public MapView()
         {
             _presenter = new MapPresenter(this);
         }
 
-        public void StartDrawGridWithData(Core.Maps.Map map, WorldConfigData worldConfig)
+        public void SetUpData(Core.Maps.Map map, WorldConfigData worldConfig)
         {
-            _isDrawing = true;
             _worldConfig = worldConfig;
             _map = map;
         }
 
-        public void StopDrawing()
+        public void OnSceneDraw()
         {
-            _isDrawing = false;
+            DrawGrid();
+            DrawGizmos();
         }
 
-        public void DrawGrid()
+        private void DrawGrid()
         {
-            if (!_isDrawing) return;
+            if (!IsDrawingGrid) return;
             if (_map == null) return;
             if (_worldConfig == null) return;
 
@@ -43,11 +45,30 @@ namespace NonebNi.Editor.Level.Map
                 if (tile == null) continue;
 
                 var center = GetTilePosition(_worldConfig.MapStartingPosition.y, tile.Coordinate, _worldConfig);
-                // Handles.Label(center, $"{tile.Coordinate}", _coordinateStyle);
-                DrawCenteredLabel(center, $"{tile.Coordinate}", _worldConfig.InnerRadius);
+
                 var corners = _worldConfig.TileCornersOffset.Select(c => center + c).ToList();
                 Handles.DrawLine(corners[0], corners[5]);
                 for (var i = 0; i < corners.Count - 1; i++) Handles.DrawLine(corners[i], corners[i + 1]);
+            }
+        }
+
+        private void DrawGizmos()
+        {
+            if (!IsDrawingGizmos) return;
+            if (_map == null) return;
+            if (_worldConfig == null) return;
+
+            var grid = _map.GetGridForType<Tile>();
+            foreach (var tile in grid)
+            {
+                if (tile == null) continue;
+
+                var centerPosition = GetTilePosition(_worldConfig.MapStartingPosition.y, tile.Coordinate, _worldConfig);
+                var unit = _map.Get<Unit>(tile.Coordinate);
+
+                var text = $"{tile.Coordinate}";
+                if (unit != null) text += $"\n Unit: {unit.Data.Name}";
+                DrawCenteredLabel(centerPosition, text, _worldConfig.InnerRadius);
             }
         }
 
