@@ -30,7 +30,7 @@ namespace NonebNi.Editor.Level
         private void OnSceneGUI(SceneView view)
         {
             _toolbar.DrawSceneToolbar();
-            _mapView.DrawGrid();
+            _mapView.OnSceneDraw();
         }
 
         #region INITIALIZATION / SERIALIZATION

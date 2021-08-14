@@ -13,20 +13,24 @@ namespace NonebNi.Editor.Level.Map
             _mapView = mapView;
             _dataModel = NonebEditorServiceLocator.Instance.LevelEditorDataModel;
 
-            _dataModel.OnGridVisibilityChanged += OnVisibilityChanged;
+            _dataModel.OnGridVisibilityChanged += OnGridVisibilityChanged;
+            _dataModel.OnGizmosVisibilityChanged += OnGizmosVisibilityChanged;
             _dataModel.OnLevelDataChanged += OnLevelDataChanged;
         }
 
         private void OnLevelDataChanged(LevelData data)
         {
-            if (_dataModel.IsGridVisible) _mapView.StartDrawGridWithData(data.Map, data.WorldConfig);
+            _mapView.SetUpData(data.Map, data.WorldConfig);
         }
 
-        private void OnVisibilityChanged(bool isVisible)
+        private void OnGizmosVisibilityChanged(bool isVisible)
         {
-            if (isVisible && _dataModel.CurrentLevelData != null)
-                _mapView.StartDrawGridWithData(_dataModel.CurrentLevelData.Map, _dataModel.CurrentLevelData.WorldConfig);
-            else _mapView.StopDrawing();
+            _mapView.IsDrawingGizmos = isVisible;
+        }
+
+        private void OnGridVisibilityChanged(bool isVisible)
+        {
+            _mapView.IsDrawingGrid = isVisible;
         }
     }
 }
