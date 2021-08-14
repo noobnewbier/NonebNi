@@ -1,26 +1,25 @@
 ﻿using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using UnityEditor;
 using UnityEngine;
 
-namespace NonebNi.Editor.Maps.Grid
+namespace NonebNi.Editor.Level.Map
 {
-    public class GridView
+    public class MapView
     {
         private bool _isDrawing;
-        private Map? _map;
-        private GridPresenter _presenter;
+        private Core.Maps.Map? _map;
+        private MapPresenter _presenter;
         private WorldConfigData? _worldConfig;
 
-        public GridView()
+        public MapView()
         {
-            _presenter = new GridPresenter(this);
+            _presenter = new MapPresenter(this);
         }
 
-        public void StartDrawGridWithData(Map map, WorldConfigData worldConfig)
+        public void StartDrawGridWithData(Core.Maps.Map map, WorldConfigData worldConfig)
         {
             _isDrawing = true;
             _worldConfig = worldConfig;

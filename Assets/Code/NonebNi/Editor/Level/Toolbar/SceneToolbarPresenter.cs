@@ -1,6 +1,6 @@
 ﻿using NonebNi.Editor.ServiceLocator;
 
-namespace NonebNi.Editor.Maps.Toolbar
+namespace NonebNi.Editor.Level.Toolbar
 {
     public class SceneToolbarPresenter
     {

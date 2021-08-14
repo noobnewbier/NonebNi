@@ -1,12 +1,12 @@
 ﻿using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
-using NonebNi.Editor.Maps.Grid;
-using NonebNi.Editor.Maps.Toolbar;
+using NonebNi.Editor.Level.Map;
+using NonebNi.Editor.Level.Toolbar;
 using NonebNi.Editor.ServiceLocator;
 using UnityEditor;
 using UnityEngine;
 
-namespace NonebNi.Editor.Maps
+namespace NonebNi.Editor.Level
 {
     [InitializeOnLoad]
     internal static class LevelEditorInitializer
@@ -23,14 +23,14 @@ namespace NonebNi.Editor.Maps
     {
         private static LevelEditor? _instance;
         private LevelEditorDataModel _dataModel = null!;
-        private GridView _gridView = null!;
         private MapGenerationService _mapGenerationService = null!;
+        private MapView _mapView = null!;
         private SceneToolbarView _toolbar = null!;
 
         private void OnSceneGUI(SceneView view)
         {
             _toolbar.DrawSceneToolbar();
-            _gridView.DrawGrid();
+            _mapView.DrawGrid();
         }
 
         #region INITIALIZATION / SERIALIZATION
@@ -64,7 +64,7 @@ namespace NonebNi.Editor.Maps
             _mapGenerationService = NonebEditorServiceLocator.Instance.MapGenerationService;
             _dataModel = NonebEditorServiceLocator.Instance.LevelEditorDataModel;
 
-            _gridView = new GridView();
+            _mapView = new MapView();
             _toolbar = new SceneToolbarView();
 
             //todo:temporary implementation, need a window to generate level data per stage/level    

@@ -1,6 +1,6 @@
 ﻿using System;
 using NonebNi.Core.Maps;
-using NonebNi.Editor.Maps;
+using NonebNi.Editor.Level;
 
 namespace NonebNi.Editor.ServiceLocator
 {

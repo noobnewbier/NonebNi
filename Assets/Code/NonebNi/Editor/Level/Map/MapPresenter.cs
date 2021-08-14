@@ -1,16 +1,16 @@
 ﻿using NonebNi.Core.Level;
 using NonebNi.Editor.ServiceLocator;
 
-namespace NonebNi.Editor.Maps.Grid
+namespace NonebNi.Editor.Level.Map
 {
-    public class GridPresenter
+    public class MapPresenter
     {
         private readonly LevelEditorDataModel _dataModel;
-        private readonly GridView _gridView;
+        private readonly MapView _mapView;
 
-        public GridPresenter(GridView gridView)
+        public MapPresenter(MapView mapView)
         {
-            _gridView = gridView;
+            _mapView = mapView;
             _dataModel = NonebEditorServiceLocator.Instance.LevelEditorDataModel;
 
             _dataModel.OnGridVisibilityChanged += OnVisibilityChanged;
@@ -19,14 +19,14 @@ namespace NonebNi.Editor.Maps.Grid
 
         private void OnLevelDataChanged(LevelData data)
         {
-            if (_dataModel.IsGridVisible) _gridView.StartDrawGridWithData(data.Map, data.WorldConfig);
+            if (_dataModel.IsGridVisible) _mapView.StartDrawGridWithData(data.Map, data.WorldConfig);
         }
 
         private void OnVisibilityChanged(bool isVisible)
         {
             if (isVisible && _dataModel.CurrentLevelData != null)
-                _gridView.StartDrawGridWithData(_dataModel.CurrentLevelData.Map, _dataModel.CurrentLevelData.WorldConfig);
-            else _gridView.StopDrawing();
+                _mapView.StartDrawGridWithData(_dataModel.CurrentLevelData.Map, _dataModel.CurrentLevelData.WorldConfig);
+            else _mapView.StopDrawing();
         }
     }
 }

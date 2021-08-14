@@ -1,7 +1,7 @@
 ﻿using System;
 using NonebNi.Core.Level;
 
-namespace NonebNi.Editor.Maps
+namespace NonebNi.Editor.Level
 {
     /// <summary>
     /// Maybe we can do some source code weaving for this ungodly boilerplate?

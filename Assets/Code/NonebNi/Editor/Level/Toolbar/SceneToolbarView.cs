@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace NonebNi.Editor.Maps.Toolbar
+namespace NonebNi.Editor.Level.Toolbar
 {
     //todo: allow toggle of toolbar itself
     public class SceneToolbarView

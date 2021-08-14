@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 
-namespace NonebNi.Editor.Maps
+namespace NonebNi.Editor.Level
 {
     /// <summary>
     /// Stripped from UnityEditor.ProGrids.PlayModeStateListener
