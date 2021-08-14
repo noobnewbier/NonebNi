@@ -7,9 +7,9 @@ using NonebNi.Core.Units;
 
 namespace NonebNi.Core.Maps
 {
-    /*
-     * the storage is in axial coordinate with grid(jagged array) for easy access.
-     */
+    /// <summary>
+    /// the storage is in axial coordinate with grid(jagged array) for easy access.
+    /// </summary>
     public class Map
     {
         private readonly Tile?[,] _tileGrid;
