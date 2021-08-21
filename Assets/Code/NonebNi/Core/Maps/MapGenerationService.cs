@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
 using NonebNi.Core.Tiles;
 using UnityEngine.SceneManagement;
@@ -18,11 +17,11 @@ namespace NonebNi.Core.Maps
         /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
         public Map CreateEmptyMap(MapConfigData mapConfig)
         {
-            var tiles = new List<Tile>();
+            var tiles = new List<TileData>();
             for (var i = 0; i < mapConfig.GetMap2DActualHeight(); i++)
             for (var j = 0; j < mapConfig.GetMap2DActualWidth(); j++)
             {
-                var tile = new Tile(new TileData("TEMP_DEFAULT_NAME", 1), new Coordinate(j, i));
+                var tile = new TileData("TEMP_DEFAULT_NAME", 1);
                 tiles.Add(tile);
             }
 

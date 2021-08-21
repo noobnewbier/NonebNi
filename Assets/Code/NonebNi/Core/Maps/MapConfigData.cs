@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace NonebNi.Core.Maps
+﻿namespace NonebNi.Core.Maps
 {
     public class MapConfigData
     {
@@ -16,11 +14,7 @@ namespace NonebNi.Core.Maps
         public int GetMap2DActualWidth() => _xSize;
         public int GetMap2DActualHeight() => _zSize;
 
-        public int GetMap2DArrayWidth()
-        {
-            var zeroBasedHeight = Mathf.Max(GetMap2DActualHeight() - 1, 0);
-            return GetMap2DActualWidth() + zeroBasedHeight / 2 + zeroBasedHeight % 2;
-        }
+        public int GetMap2DArrayWidth() => GetMap2DActualWidth();
 
         public int GetMap2DArrayHeight() => GetMap2DActualHeight();
 

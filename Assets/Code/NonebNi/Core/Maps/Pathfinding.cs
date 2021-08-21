@@ -40,7 +40,7 @@ namespace NonebNi.Core.Maps
                     //we ignore the starting tile when calculating the cost
                     //using null forgiving operator as we won't be looking at coordinates without a tile during path finding.
                     //(future me, plz refactor this, your younger-self is too lazy)
-                    var pathCost = path.Select(map.Get<Tile>).Sum(t => t!.Data.Weight);
+                    var pathCost = path.Select(map.Get<TileData>).Sum(t => t!.Weight);
                     if (includeStartingTile) path.Add(start);
 
                     path = path.Reverse().ToList();
@@ -48,14 +48,14 @@ namespace NonebNi.Core.Maps
                     return pathCost <= maxCost;
                 }
 
-                foreach (var neighbour in map.GetNeighbours<Tile>(current).Values)
+                foreach (var neighbourCoordinate in current.Neighbours)
                 {
-                    if (neighbour == null)
+                    var neighbourTile = map.Get<TileData>(neighbourCoordinate);
+                    if (neighbourTile == null)
                         //ignore tiles that does not exist(e.g. when current is at the top/bottom edge of the map)
                         continue;
 
-                    var currentDistanceToNeighbour = distanceToTile[current] + neighbour.Data.Weight;
-                    var neighbourCoordinate = neighbour.Coordinate;
+                    var currentDistanceToNeighbour = distanceToTile[current] + neighbourTile.Weight;
                     if (!distanceToTile.TryGetValue(neighbourCoordinate, out var previousDistanceToNeighbour))
                         previousDistanceToNeighbour = float.PositiveInfinity;
 

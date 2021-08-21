@@ -1,12 +1,13 @@
 ﻿using System;
+using NonebNi.Core.Maps;
 using UnityEngine;
 
 namespace NonebNi.Core.Coordinates
 {
     /// <summary>
     /// Using Cube Coordinate(which is just axial coordinate) : https://www.redblobgames.com/grids/hexagons/#map-storage
-    ///     1. AxialCoordinate refers to cube coordinate(in game logic)
-    ///     2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
+    /// 1. AxialCoordinate refers to cube coordinate(in game logic)
+    /// 2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
     /// </summary>
     [Serializable]
     public struct Coordinate : IEquatable<Coordinate>
@@ -25,6 +26,16 @@ namespace NonebNi.Core.Coordinates
         public int Z => z;
 
         public int Y => -X - Z;
+
+        public Coordinate[] Neighbours => new[]
+        {
+            this + HexDirection.MinusX,
+            this + HexDirection.PlusX,
+            this + HexDirection.MinusXMinusZ,
+            this + HexDirection.MinusZ,
+            this + HexDirection.PlusZ,
+            this + HexDirection.PlusXPlusZ
+        };
 
         public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
 
@@ -49,8 +60,6 @@ namespace NonebNi.Core.Coordinates
         public static Coordinate operator -(Coordinate c) => new Coordinate(-c.X, -c.Z);
 
         public static float ManhattanDistance(Coordinate a, Coordinate b) =>
-            a.X - b.X +
-            (a.Y - b.Y) +
-            (a.Z - b.Z);
+            a.X - b.X + (a.Y - b.Y) + (a.Z - b.Z);
     }
 }

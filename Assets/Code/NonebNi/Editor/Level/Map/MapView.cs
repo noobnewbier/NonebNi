@@ -39,12 +39,12 @@ namespace NonebNi.Editor.Level.Map
             if (_map == null) return;
             if (_worldConfig == null) return;
 
-            var grid = _map.GetGridForType<Tile>();
-            foreach (var tile in grid)
+            var coordinates = _map.GetAllCoordinates();
+            foreach (var (coordinate, tile) in coordinates.Select(c => (c, _map.Get<TileData>(c))))
             {
                 if (tile == null) continue;
 
-                var center = GetTilePosition(_worldConfig.MapStartingPosition.y, tile.Coordinate, _worldConfig);
+                var center = GetTilePosition(_worldConfig.MapStartingPosition.y, coordinate, _worldConfig);
 
                 var corners = _worldConfig.TileCornersOffset.Select(c => center + c).ToList();
                 Handles.DrawLine(corners[0], corners[5]);
@@ -58,16 +58,15 @@ namespace NonebNi.Editor.Level.Map
             if (_map == null) return;
             if (_worldConfig == null) return;
 
-            var grid = _map.GetGridForType<Tile>();
-            foreach (var tile in grid)
+            var coordinates = _map.GetAllCoordinates();
+            foreach (var (coordinate, tile, unit) in coordinates.Select(c => (c, _map.Get<TileData>(c), _map.Get<UnitData>(c))))
             {
                 if (tile == null) continue;
 
-                var centerPosition = GetTilePosition(_worldConfig.MapStartingPosition.y, tile.Coordinate, _worldConfig);
-                var unit = _map.Get<Unit>(tile.Coordinate);
+                var centerPosition = GetTilePosition(_worldConfig.MapStartingPosition.y, coordinate, _worldConfig);
 
-                var text = $"{tile.Coordinate}";
-                if (unit != null) text += $"\n Unit: {unit.Data.Name}";
+                var text = $"{coordinate}";
+                if (unit != null) text += $"\n Unit: {unit.Name}";
                 DrawCenteredLabel(centerPosition, text, _worldConfig.InnerRadius);
             }
         }
@@ -176,7 +175,8 @@ namespace NonebNi.Editor.Level.Map
         {
             var upDistance = worldConfig.OuterRadius * 1.5f;
             var sideDistance = worldConfig.InnerRadius * 2f;
-            var sideOffset = coordinate.Z % 2 * sideDistance / 2f;
+            // ReSharper disable once PossibleLossOfFraction - that's intentional. We need the floored whole number here
+            var sideOffset = coordinate.Z % 2 * sideDistance / 2f + coordinate.Z / 2 * sideDistance;
 
             return new Vector3(coordinate.X * sideDistance + sideOffset, yPosition, coordinate.Z * upDistance) + worldConfig.MapStartingPosition;
         }
