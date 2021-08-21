@@ -54,7 +54,7 @@ namespace NonebNi.Editor.Level
 
         ~LevelEditor()
         {
-            EditorApplication.delayCall += Destroy;
+            UnregisterDelegates();
         }
 
         private void Initialize()
@@ -80,8 +80,6 @@ namespace NonebNi.Editor.Level
 
         private void RegisterDelegates()
         {
-            UnregisterDelegates();
-
             SceneView.duringSceneGui += OnSceneGUI;
 
             // Undo.undoRedoPerformed += ResetActiveTransformValues;
