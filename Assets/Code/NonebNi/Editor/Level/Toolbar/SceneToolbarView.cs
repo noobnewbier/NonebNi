@@ -1,4 +1,5 @@
 ﻿using NonebNi.Editor.Common;
+using NonebNi.Editor.Di;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,9 +10,9 @@ namespace NonebNi.Editor.Level.Toolbar
     {
         private readonly SceneToolbarPresenter _presenter;
 
-        public SceneToolbarView()
+        public SceneToolbarView(LevelEditorComponent component)
         {
-            _presenter = new SceneToolbarPresenter(this);
+            _presenter = new SceneToolbarPresenter(this, component);
         }
 
         public void DrawSceneToolbar()

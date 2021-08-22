@@ -1,4 +1,4 @@
-﻿using NonebNi.Editor.ServiceLocator;
+﻿using NonebNi.Editor.Di;
 
 namespace NonebNi.Editor.Level.Toolbar
 {
@@ -10,10 +10,10 @@ namespace NonebNi.Editor.Level.Toolbar
         public bool IsGridVisible => _model.IsGridVisible;
         public bool IsGizmosVisible => _model.IsGizmosVisible;
 
-        public SceneToolbarPresenter(SceneToolbarView view)
+        public SceneToolbarPresenter(SceneToolbarView view, LevelEditorComponent component)
         {
             _view = view;
-            _model = NonebEditorServiceLocator.Instance.LevelEditorDataModel;
+            _model = component.LevelEditorDataModel;
         }
 
         public void OnToggleGridVisibility()

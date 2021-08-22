@@ -1,30 +1,31 @@
 ﻿using System.Linq;
-using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
+using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
+using NonebNi.Editor.Di;
 using UnityEditor;
 using UnityEngine;
 
-namespace NonebNi.Editor.Level.Map
+namespace NonebNi.Editor.Level.Maps
 {
     public class MapView
     {
-        private Core.Maps.Map? _map;
-        private MapPresenter _presenter;
-        private WorldConfigData? _worldConfig;
+        private readonly CoordinateAndPositionService _coordinateAndPositionService;
+
+        private readonly Map _map;
+        private readonly MapPresenter _presenter;
+        private readonly WorldConfigData _worldConfig;
+
         public bool IsDrawingGrid { private get; set; }
         public bool IsDrawingGizmos { private get; set; }
 
-        public MapView()
+        public MapView(ILevelEditorComponent component)
         {
-            _presenter = new MapPresenter(this);
-        }
-
-        public void SetUpData(Core.Maps.Map map, WorldConfigData worldConfig)
-        {
-            _worldConfig = worldConfig;
-            _map = map;
+            _presenter = new MapPresenter(this, component);
+            _map = component.LevelEditorDataModel.LevelData.Map;
+            _worldConfig = component.LevelEditorDataModel.LevelData.WorldConfig;
+            _coordinateAndPositionService = component.CoordinateAndPositionService;
         }
 
         public void OnSceneDraw()
@@ -36,15 +37,13 @@ namespace NonebNi.Editor.Level.Map
         private void DrawGrid()
         {
             if (!IsDrawingGrid) return;
-            if (_map == null) return;
-            if (_worldConfig == null) return;
 
             var coordinates = _map.GetAllCoordinates();
             foreach (var (coordinate, tile) in coordinates.Select(c => (c, _map.Get<TileData>(c))))
             {
                 if (tile == null) continue;
 
-                var center = GetTilePosition(_worldConfig.MapStartingPosition.y, coordinate, _worldConfig);
+                var center = _coordinateAndPositionService.FindPosition(coordinate);
 
                 var corners = _worldConfig.TileCornersOffset.Select(c => center + c).ToList();
                 Handles.DrawLine(corners[0], corners[5]);
@@ -55,15 +54,15 @@ namespace NonebNi.Editor.Level.Map
         private void DrawGizmos()
         {
             if (!IsDrawingGizmos) return;
-            if (_map == null) return;
-            if (_worldConfig == null) return;
 
             var coordinates = _map.GetAllCoordinates();
-            foreach (var (coordinate, tile, unit) in coordinates.Select(c => (c, _map.Get<TileData>(c), _map.Get<UnitData>(c))))
+            foreach (var (coordinate, tile, unit) in coordinates.Select(
+                c => (c, _map.Get<TileData>(c), _map.Get<UnitData>(c))
+            ))
             {
                 if (tile == null) continue;
 
-                var centerPosition = GetTilePosition(_worldConfig.MapStartingPosition.y, coordinate, _worldConfig);
+                var centerPosition = _coordinateAndPositionService.FindPosition(coordinate);
 
                 var text = $"{coordinate}";
                 if (unit != null) text += $"\n Unit: {unit.Name}";
@@ -74,7 +73,8 @@ namespace NonebNi.Editor.Level.Map
         /// <summary>
         /// <see cref="Handles.Label(UnityEngine.Vector3,string)" /> can't center the label properly.
         /// Root of the problem is that <see cref="HandleUtility.WorldPointToSizedRect" /> isn't taking rects maxX/Y into account,
-        /// This leads to a problem where the rect is essentially stretched to the left a bit, and as a result when trying to center the item,
+        /// This leads to a problem where the rect is essentially stretched to the left a bit, and as a result when trying to center the
+        /// item,
         /// the text will goes a bit "righter" than it should be.
         /// Until Unity(current ver: 2020.2.7f1) fix this, this should do the trick
         /// </summary>
@@ -169,16 +169,6 @@ namespace NonebNi.Editor.Level.Map
 
                 Handles.EndGUI();
             }
-        }
-
-        private Vector3 GetTilePosition(float yPosition, Coordinate coordinate, WorldConfigData worldConfig)
-        {
-            var upDistance = worldConfig.OuterRadius * 1.5f;
-            var sideDistance = worldConfig.InnerRadius * 2f;
-            // ReSharper disable once PossibleLossOfFraction - that's intentional. We need the floored whole number here
-            var sideOffset = coordinate.Z % 2 * sideDistance / 2f + coordinate.Z / 2 * sideDistance;
-
-            return new Vector3(coordinate.X * sideDistance + sideOffset, yPosition, coordinate.Z * upDistance) + worldConfig.MapStartingPosition;
         }
     }
 }

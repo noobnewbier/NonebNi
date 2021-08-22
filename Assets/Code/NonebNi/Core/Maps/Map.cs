@@ -31,6 +31,18 @@ namespace NonebNi.Core.Maps
             _unitGrid = CreateGrid(new List<UnitData>());
         }
 
+        /// <summary>
+        /// Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
+        /// </summary>
+        /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
+        public Map(MapConfigData mapConfig) : this(
+            Enumerable.Range(0, mapConfig.GetMap2DActualHeight() * mapConfig.GetMap2DActualWidth())
+                      .Select(_ => new TileData("DEFAULT_NAME", 1)),
+            mapConfig
+        )
+        {
+        }
+
 
         private T[,] CreateGrid<T>(IEnumerable<T> boardItems) where T : BoardItemData
         {
@@ -50,28 +62,6 @@ namespace NonebNi.Core.Maps
             }
 
             return grid;
-        }
-
-        public IReadOnlyDictionary<HexDirection, T?> GetNeighbours<T>(Coordinate axialCoordinate) where T : BoardItemData
-        {
-            var minusX = StorageCoordinate.FromAxial(axialCoordinate + HexDirection.MinusX);
-            var plusX = StorageCoordinate.FromAxial(axialCoordinate + HexDirection.PlusX);
-            var minusXMinusZ = StorageCoordinate.FromAxial(axialCoordinate + HexDirection.MinusXMinusZ);
-            var minusZ = StorageCoordinate.FromAxial(axialCoordinate + HexDirection.MinusZ);
-            var plusZ = StorageCoordinate.FromAxial(axialCoordinate + HexDirection.PlusZ);
-            var plusXPlusZ = StorageCoordinate.FromAxial(axialCoordinate + HexDirection.PlusXPlusZ);
-
-            var toReturn = new Dictionary<HexDirection, T?>
-            {
-                [HexDirection.MinusX] = GetBoardItemWithDefault<T>(minusX),
-                [HexDirection.PlusX] = GetBoardItemWithDefault<T>(plusX),
-                [HexDirection.MinusXMinusZ] = GetBoardItemWithDefault<T>(minusXMinusZ),
-                [HexDirection.MinusZ] = GetBoardItemWithDefault<T>(minusZ),
-                [HexDirection.PlusZ] = GetBoardItemWithDefault<T>(plusZ),
-                [HexDirection.PlusXPlusZ] = GetBoardItemWithDefault<T>(plusXPlusZ)
-            };
-
-            return toReturn;
         }
 
         public T? Get<T>(Coordinate axialCoordinate) where T : BoardItemData
@@ -132,7 +122,8 @@ namespace NonebNi.Core.Maps
 
         /// <summary>
         /// The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
-        /// While they should be accessed through the axial coordinate(<seealso cref="Coordinate" />), we will convert them internally for both storage and
+        /// While they should be accessed through the axial coordinate(<seealso cref="Coordinate" />), we will convert them internally
+        /// for both storage and
         /// accessing.
         /// </summary>
         private readonly struct StorageCoordinate

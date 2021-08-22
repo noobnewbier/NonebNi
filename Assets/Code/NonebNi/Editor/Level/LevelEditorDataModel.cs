@@ -11,7 +11,7 @@ namespace NonebNi.Editor.Level
     {
         private bool _isGizmosVisible;
         private bool _isGridVisible;
-        private LevelData? _levelData;
+        public LevelData LevelData { get; }
 
         public bool IsGridVisible
         {
@@ -33,18 +33,12 @@ namespace NonebNi.Editor.Level
             }
         }
 
-        public LevelData? CurrentLevelData
+        public LevelEditorDataModel(LevelData levelData)
         {
-            get => _levelData;
-            set
-            {
-                _levelData = value;
-                OnLevelDataChanged?.Invoke(_levelData);
-            }
+            LevelData = levelData;
         }
 
         public event Action<bool>? OnGridVisibilityChanged;
         public event Action<bool>? OnGizmosVisibilityChanged;
-        public event Action<LevelData?>? OnLevelDataChanged;
     }
 }

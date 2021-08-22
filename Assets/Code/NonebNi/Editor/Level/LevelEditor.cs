@@ -1,8 +1,8 @@
 ﻿using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
-using NonebNi.Editor.Level.Map;
+using NonebNi.Editor.Di;
+using NonebNi.Editor.Level.Maps;
 using NonebNi.Editor.Level.Toolbar;
-using NonebNi.Editor.ServiceLocator;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,7 +23,6 @@ namespace NonebNi.Editor.Level
     {
         private static LevelEditor? _instance;
         private LevelEditorDataModel _dataModel = null!;
-        private MapGenerationService _mapGenerationService = null!;
         private MapView _mapView = null!;
         private SceneToolbarView _toolbar = null!;
 
@@ -61,16 +60,18 @@ namespace NonebNi.Editor.Level
         {
             _instance = this;
 
-            _mapGenerationService = NonebEditorServiceLocator.Instance.MapGenerationService;
-            _dataModel = NonebEditorServiceLocator.Instance.LevelEditorDataModel;
-
-            _mapView = new MapView();
-            _toolbar = new SceneToolbarView();
 
             //todo:temporary implementation, need a window to generate level data per stage/level    
             var mapConfig = new MapConfigData(10, 10);
             var worldConfig = new WorldConfigData(1, Vector3.zero, Vector3.up);
-            _dataModel.CurrentLevelData = new LevelData(mapConfig, worldConfig, _mapGenerationService.CreateEmptyMap(mapConfig));
+            var levelData = new LevelData(mapConfig, worldConfig, new Map(mapConfig));
+
+            var module = new LevelEditorModule(levelData);
+            var component = new LevelEditorComponent(module);
+
+            _mapView = new MapView(component);
+            _toolbar = new SceneToolbarView(component);
+            _dataModel = component.LevelEditorDataModel;
 
             RegisterDelegates();
 
