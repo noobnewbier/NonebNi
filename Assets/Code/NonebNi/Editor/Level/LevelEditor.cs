@@ -1,6 +1,7 @@
 ﻿using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Editor.Di;
+using NonebNi.Editor.Level.Entities;
 using NonebNi.Editor.Level.Maps;
 using NonebNi.Editor.Level.Toolbar;
 using UnityEditor;
@@ -23,6 +24,7 @@ namespace NonebNi.Editor.Level
     {
         private static LevelEditor? _instance;
         private LevelEditorDataModel _dataModel = null!;
+        private EntitiesPlacer _entitiesPlacer = null!;
         private MapView _mapView = null!;
         private SceneToolbarView _toolbar = null!;
 
@@ -30,6 +32,7 @@ namespace NonebNi.Editor.Level
         {
             _toolbar.DrawSceneToolbar();
             _mapView.OnSceneDraw();
+            _entitiesPlacer.UpdateEntitiesPlacement();
         }
 
         #region INITIALIZATION / SERIALIZATION
@@ -71,6 +74,7 @@ namespace NonebNi.Editor.Level
 
             _mapView = new MapView(component);
             _toolbar = new SceneToolbarView(component);
+            _entitiesPlacer = new EntitiesPlacer(component);
             _dataModel = component.LevelEditorDataModel;
 
             RegisterDelegates();
@@ -82,7 +86,6 @@ namespace NonebNi.Editor.Level
         private void RegisterDelegates()
         {
             SceneView.duringSceneGui += OnSceneGUI;
-
             // Undo.undoRedoPerformed += ResetActiveTransformValues;
         }
 
