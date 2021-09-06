@@ -6,13 +6,11 @@ namespace NonebNi.Core.Level
     {
         public MapConfigData MapConfig { get; }
         public WorldConfigData WorldConfig { get; }
-        public Map Map { get; }
 
-        public LevelData(MapConfigData mapConfig, WorldConfigData worldConfig, Map map)
+        public LevelData(MapConfigData mapConfig, WorldConfigData worldConfig)
         {
             MapConfig = mapConfig;
             WorldConfig = worldConfig;
-            Map = map;
         }
     }
 }

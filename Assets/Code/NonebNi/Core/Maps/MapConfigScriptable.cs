@@ -26,7 +26,7 @@ namespace NonebNi.Core.Maps
             return instance;
         }
 
-        public MapConfigData ToData() => new MapConfigData(xSize, zSize);
+        public MapConfigData CreateData() => new MapConfigData(xSize, zSize);
 
         public int GetMap2DArrayWidth()
         {

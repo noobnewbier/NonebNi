@@ -1,28 +1,29 @@
-﻿using NonebNi.Editor.Di;
+﻿using NonebNi.Core.Maps;
+using NonebNi.Editor.Di;
 
 namespace NonebNi.Editor.Level.Maps
 {
     public class MapPresenter
     {
         private readonly MapView _mapView;
+        private readonly NonebEditorModel _nonebEditorModel;
+
+        public bool IsDrawingGizmos => _nonebEditorModel.IsGizmosVisible;
+        public bool IsDrawingGrid => _nonebEditorModel.IsGridVisible;
 
         public MapPresenter(MapView mapView, ILevelEditorComponent component)
         {
             _mapView = mapView;
 
-            LevelEditorDataModel dataModel = component.LevelEditorDataModel;
-            dataModel.OnGridVisibilityChanged += OnGridVisibilityChanged;
-            dataModel.OnGizmosVisibilityChanged += OnGizmosVisibilityChanged;
+            _nonebEditorModel = component.NonebEditorModel;
+
+            var levelEditorModel = component.LevelEditorModel;
+            levelEditorModel.OnMapChanged += OnMapChanged;
         }
 
-        private void OnGizmosVisibilityChanged(bool isVisible)
+        private void OnMapChanged(Map map)
         {
-            _mapView.IsDrawingGizmos = isVisible;
-        }
-
-        private void OnGridVisibilityChanged(bool isVisible)
-        {
-            _mapView.IsDrawingGrid = isVisible;
+            _mapView.Map = map;
         }
     }
 }

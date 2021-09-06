@@ -1,18 +1,22 @@
-﻿namespace NonebNi.Core.Maps
+﻿using System;
+using UnityEngine;
+
+namespace NonebNi.Core.Maps
 {
+    [Serializable]
     public class MapConfigData
     {
-        private readonly int _xSize;
-        private readonly int _zSize;
+        [SerializeField] private int xSize;
+        [SerializeField] private int zSize;
 
         public MapConfigData(int xSize, int zSize)
         {
-            _xSize = xSize;
-            _zSize = zSize;
+            this.xSize = xSize;
+            this.zSize = zSize;
         }
 
-        public int GetMap2DActualWidth() => _xSize;
-        public int GetMap2DActualHeight() => _zSize;
+        public int GetMap2DActualWidth() => xSize;
+        public int GetMap2DActualHeight() => zSize;
 
         public int GetMap2DArrayWidth() => GetMap2DActualWidth();
 

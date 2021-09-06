@@ -780,8 +780,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1855281201}
-  - component: {fileID: 1855281203}
   - component: {fileID: 1855281202}
+  - component: {fileID: 1855281203}
   m_Layer: 0
   m_Name: Entity
   m_TagString: Untagged
@@ -825,10 +825,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1855281200}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9913581ad51d46a79f450c03176524cf, type: 3}
+  m_Script: {fileID: 11500000, guid: b2cfc8cf5fa3c9f44bae69e74280ca29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   boundingCollider: {fileID: 1855281202}
+  entityDataSource: {fileID: 11400000, guid: 51b9faeb1be47774ca472d7eb59195e3, type: 2}
 --- !u!1 &1904166338
 GameObject:
   m_ObjectHideFlags: 0

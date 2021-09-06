@@ -12,19 +12,15 @@ namespace NonebNi.Editor.Level.Maps
     public class MapView
     {
         private readonly CoordinateAndPositionService _coordinateAndPositionService;
-
-        private readonly Map _map;
         private readonly MapPresenter _presenter;
         private readonly WorldConfigData _worldConfig;
 
-        public bool IsDrawingGrid { private get; set; }
-        public bool IsDrawingGizmos { private get; set; }
+        public Map? Map { private get; set; }
 
         public MapView(ILevelEditorComponent component)
         {
             _presenter = new MapPresenter(this, component);
-            _map = component.LevelEditorDataModel.LevelData.Map;
-            _worldConfig = component.LevelEditorDataModel.LevelData.WorldConfig;
+            _worldConfig = component.LevelEditorModel.LevelData.WorldConfig;
             _coordinateAndPositionService = component.CoordinateAndPositionService;
         }
 
@@ -36,10 +32,11 @@ namespace NonebNi.Editor.Level.Maps
 
         private void DrawGrid()
         {
-            if (!IsDrawingGrid) return;
+            if (!_presenter.IsDrawingGrid) return;
+            if (Map == null) return;
 
-            var coordinates = _map.GetAllCoordinates();
-            foreach (var (coordinate, tile) in coordinates.Select(c => (c, _map.Get<TileData>(c))))
+            var coordinates = Map.GetAllCoordinates();
+            foreach (var (coordinate, tile) in coordinates.Select(c => (c, Map.Get<TileData>(c))))
             {
                 if (tile == null) continue;
 
@@ -53,12 +50,12 @@ namespace NonebNi.Editor.Level.Maps
 
         private void DrawGizmos()
         {
-            if (!IsDrawingGizmos) return;
+            if (!_presenter.IsDrawingGizmos) return;
+            if (Map == null) return;
 
-            var coordinates = _map.GetAllCoordinates();
-            foreach (var (coordinate, tile, unit) in coordinates.Select(
-                c => (c, _map.Get<TileData>(c), _map.Get<UnitData>(c))
-            ))
+            var coordinates = Map.GetAllCoordinates();
+            foreach (var (coordinate, tile, unit) in coordinates.Select(c => (c, Map.Get<TileData>(c), Map.Get<UnitData>(c)))
+            )
             {
                 if (tile == null) continue;
 
@@ -82,7 +79,7 @@ namespace NonebNi.Editor.Level.Maps
         /// <param name="text"></param>
         /// <param name="maxOffsetFromCenter"></param>
         /// <returns></returns>
-        private void DrawCenteredLabel(Vector3 position, string text, float maxOffsetFromCenter)
+        private static void DrawCenteredLabel(Vector3 position, string text, float maxOffsetFromCenter)
         {
             //behind the camera
             if (HandleUtility.WorldToGUIPointWithDepth(position).z < 0.0)

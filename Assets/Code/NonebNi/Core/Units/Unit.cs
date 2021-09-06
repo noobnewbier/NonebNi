@@ -1,12 +1,8 @@
-﻿using NonebNi.Core.BoardItems;
-using NonebNi.Core.Coordinates;
+﻿using NonebNi.Core.Entities;
 
 namespace NonebNi.Core.Units
 {
-    public class Unit : BoardItem<UnitData>, IOnTile
+    public class Unit : Entity<UnitData>
     {
-        public Unit(UnitData data, Coordinate coordinate) : base(data, coordinate)
-        {
-        }
     }
 }

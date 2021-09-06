@@ -3,7 +3,7 @@ using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
 
-namespace NonebNi.Core.Entity
+namespace NonebNi.Core.Entities
 {
     public class EntityService
     {
@@ -19,7 +19,10 @@ namespace NonebNi.Core.Entity
         /// </summary>
         public IEnumerable<Coordinate> FindOverlappedCoordinates(Entity entity)
         {
-            var boundingCollider = entity.BoundingCollider;
+            if (!entity.IsInitialized) yield break;
+
+            //bounding collider is defined only when entity is initialized
+            var boundingCollider = entity.BoundingCollider!;
 
             var searchedCoordinate = new HashSet<Coordinate>();
             var toSearchCoordinate = new Stack<Coordinate>();

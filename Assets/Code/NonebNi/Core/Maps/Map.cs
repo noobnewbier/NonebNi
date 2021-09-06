@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NonebNi.Core.BoardItems;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
+using UnityEngine;
 
 namespace NonebNi.Core.Maps
 {
@@ -44,7 +45,7 @@ namespace NonebNi.Core.Maps
         }
 
 
-        private T[,] CreateGrid<T>(IEnumerable<T> boardItems) where T : BoardItemData
+        private T[,] CreateGrid<T>(IEnumerable<T> boardItems) where T : EntityData
         {
             var mapWidth = _mapConfig.GetMap2DArrayWidth();
             var mapHeight = _mapConfig.GetMap2DArrayHeight();
@@ -64,19 +65,13 @@ namespace NonebNi.Core.Maps
             return grid;
         }
 
-        public T? Get<T>(Coordinate axialCoordinate) where T : BoardItemData
+        public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             return GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z];
         }
 
-        public void Set<T>(Coordinate axialCoordinate, T? value) where T : BoardItemData
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z] = value;
-        }
-
-        public bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : BoardItemData
+        public bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             t = GetBoardItemWithDefault<T>(storageCoordinate);
@@ -84,7 +79,7 @@ namespace NonebNi.Core.Maps
             return t != null;
         }
 
-        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : BoardItemData
+        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
         {
             try
             {
@@ -96,7 +91,29 @@ namespace NonebNi.Core.Maps
             }
         }
 
-        public T?[,] GetGridForType<T>() where T : BoardItemData
+        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+            GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z] = value;
+        }
+
+        public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
+        {
+            var grid = GetGridForType<T>();
+
+            for (var x = 0; x < grid.GetLength(0); x++)
+            for (var z = 0; z < grid.GetLength(1); z++)
+                if (grid[x, z] == entityData)
+                {
+                    coordinate = StorageCoordinate.ToAxial(x, z);
+                    return true;
+                }
+
+            coordinate = default;
+            return false;
+        }
+
+        private T?[,] GetGridForType<T>() where T : EntityData
         {
             if (_tileGrid is T[,] tileGrid)
                 return tileGrid;
@@ -143,6 +160,8 @@ namespace NonebNi.Core.Maps
                 var x = coordinate.X + z / 2;
                 return new StorageCoordinate(x, z);
             }
+
+            public static Coordinate ToAxial(int x, int z) => new Coordinate(Mathf.CeilToInt(x - z / 2), z);
         }
     }
 }

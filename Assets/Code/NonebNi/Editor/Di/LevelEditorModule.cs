@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.Entity;
+﻿using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Editor.Level;
@@ -9,15 +9,15 @@ namespace NonebNi.Editor.Di
     {
         private readonly LevelData _levelData;
 
-        public CoordinateAndPositionService CoordinateAndPositionService =>
-            new CoordinateAndPositionService(_levelData.WorldConfig);
-
         public LevelEditorModule(LevelData levelData)
         {
             _levelData = levelData;
         }
 
-        public LevelEditorDataModel GetLevelEditorDataModel() => new LevelEditorDataModel(_levelData);
+        public CoordinateAndPositionService GetCoordinateAndPositionService() =>
+            new CoordinateAndPositionService(_levelData.WorldConfig);
+
+        public LevelEditorModel GetLevelEditorDataModel() => new LevelEditorModel(_levelData);
         public MapGenerationService GetMapGenerationService() => new MapGenerationService();
 
         public EntityService GetEntityService(CoordinateAndPositionService coordinateAndPositionService) =>

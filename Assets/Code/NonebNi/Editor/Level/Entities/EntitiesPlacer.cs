@@ -1,6 +1,8 @@
 ﻿using System.Linq;
-using NonebNi.Core.Entity;
+using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Units;
 using NonebNi.Editor.Di;
 using UnityEditor;
 using UnityEngine;
@@ -9,6 +11,7 @@ namespace NonebNi.Editor.Level.Entities
 {
     /// <summary>
     /// Monitor the placement of <see cref="Entity" /> within the active scene, and change the <see cref="Map" /> accordingly
+    /// todo: register to undo callback
     /// </summary>
     public class EntitiesPlacer
     {
@@ -29,11 +32,41 @@ namespace NonebNi.Editor.Level.Entities
 
         private void UpdateEntity(Entity entity)
         {
-            var coordinates = _entityService.FindOverlappedCoordinates(entity);
+            if (entity == null) return;
+
+            var coordinates = _entityService.FindOverlappedCoordinates(entity).ToArray();
+
+            //todo: if no overlap
 
             //todo: place stuffs on map, change weight etc
+            switch (entity)
+            {
+                case Unit unit:
+                    UpdateUnit(unit, coordinates);
+
+                    break;
+            }
+
             Debug.Log($"{entity.name}");
             foreach (var coordinate in coordinates) Debug.Log(coordinate);
+        }
+
+        private void UpdateUnit(Unit unit, Coordinate[] coordinates)
+        {
+            var coordinateCount = coordinates.Length;
+            switch (coordinateCount)
+            {
+                case 1:
+                    break;
+
+                case 0:
+                    //todo: come up with an mechanism to deal with this.
+                    break;
+            }
+        }
+
+        private void PlaceUnitInMap(UnitData unitData, Coordinate coordinate)
+        {
         }
     }
 }

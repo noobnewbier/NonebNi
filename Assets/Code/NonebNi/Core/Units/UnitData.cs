@@ -1,18 +1,18 @@
-﻿using NonebNi.Core.BoardItems;
+﻿using NonebNi.Core.Entities;
 using UnityEngine;
 
 namespace NonebNi.Core.Units
 {
-    public class UnitData : BoardItemData
+    public class UnitData : EntityData
     {
-        public UnitData(Sprite icon, string name, UnitDataScriptable original) : base(name)
-        {
-            Original = original;
-        }
-
-        public UnitDataScriptable Original { get; }
+        public UnitDataSource Original { get; }
 
         public float MaxHealth => Original.MaxHealth;
         public float Health => Original.Health;
+
+        public UnitData(Sprite icon, string name, UnitDataSource original) : base(name)
+        {
+            Original = original;
+        }
     }
 }
