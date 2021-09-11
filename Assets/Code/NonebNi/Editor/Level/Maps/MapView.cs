@@ -12,6 +12,9 @@ namespace NonebNi.Editor.Level.Maps
     public class MapView
     {
         private readonly CoordinateAndPositionService _coordinateAndPositionService;
+
+        //We need to reuse the same GUIContent for all labels, otherwise it is generating way too much GC per frame
+        private readonly GUIContent _labelContent;
         private readonly MapPresenter _presenter;
         private readonly WorldConfigData _worldConfig;
 
@@ -22,6 +25,7 @@ namespace NonebNi.Editor.Level.Maps
             _presenter = new MapPresenter(this, component);
             _worldConfig = component.LevelEditorModel.LevelData.WorldConfig;
             _coordinateAndPositionService = component.CoordinateAndPositionService;
+            _labelContent = EditorGUIUtility.TrTempContent(string.Empty);
         }
 
         public void OnSceneDraw()
@@ -52,7 +56,6 @@ namespace NonebNi.Editor.Level.Maps
         {
             if (!_presenter.IsDrawingGizmos) return;
             if (Map == null) return;
-
             var coordinates = Map.GetAllCoordinates();
             foreach (var (coordinate, tile, unit) in coordinates.Select(c => (c, Map.Get<TileData>(c), Map.Get<UnitData>(c)))
             )
@@ -79,7 +82,7 @@ namespace NonebNi.Editor.Level.Maps
         /// <param name="text"></param>
         /// <param name="maxOffsetFromCenter"></param>
         /// <returns></returns>
-        private static void DrawCenteredLabel(Vector3 position, string text, float maxOffsetFromCenter)
+        private void DrawCenteredLabel(Vector3 position, string text, float maxOffsetFromCenter)
         {
             //behind the camera
             if (HandleUtility.WorldToGUIPointWithDepth(position).z < 0.0)
@@ -139,15 +142,6 @@ namespace NonebNi.Editor.Level.Maps
                 alignment = TextAnchor.MiddleCenter,
                 fontSize = Mathf.Min(Mathf.RoundToInt(fontSizeInFloat), maxFontSize)
             };
-
-            var textContent = EditorGUIUtility.TrTempContent(text);
-            var size = coordinateStyle.CalcSize(textContent);
-            var rect = new Rect(guiPoint, size);
-            rect.xMin -= size.x / 2;
-            rect.xMax -= size.x / 2;
-            rect.yMin -= size.y / 2;
-            rect.yMax -= size.y / 2;
-
             //These are just a magic number that feels right to me
             const int minReadableFontSize = 6;
             const float minVisibleAlpha = 0.5f;
@@ -158,11 +152,20 @@ namespace NonebNi.Editor.Level.Maps
                 0f,
                 fontSizeInFloat / minReadableFontSize
             );
+
             if (coordinateStyle.normal.textColor.a > minVisibleAlpha)
             {
+                _labelContent.text = text;
+                var size = coordinateStyle.CalcSize(_labelContent);
+                var rect = new Rect(guiPoint, size);
+                rect.xMin -= size.x / 2;
+                rect.xMax -= size.x / 2;
+                rect.yMin -= size.y / 2;
+                rect.yMax -= size.y / 2;
+
                 Handles.BeginGUI();
 
-                GUI.Label(coordinateStyle.padding.Add(rect), textContent, coordinateStyle);
+                GUI.Label(coordinateStyle.padding.Add(rect), _labelContent, coordinateStyle);
 
                 Handles.EndGUI();
             }
