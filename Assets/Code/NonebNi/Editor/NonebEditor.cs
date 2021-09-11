@@ -6,7 +6,6 @@ using NonebNi.Editor.Level;
 using NonebNi.Editor.Toolbar;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editor
@@ -58,8 +57,6 @@ namespace NonebNi.Editor
 
         private void OnSceneGUI(SceneView obj)
         {
-            Debug.Log(GetHashCode());
-
             _toolbar.DrawSceneToolbar();
         }
 
