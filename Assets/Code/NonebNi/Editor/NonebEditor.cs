@@ -6,6 +6,7 @@ using NonebNi.Editor.Level;
 using NonebNi.Editor.Toolbar;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editor
@@ -18,7 +19,7 @@ namespace NonebNi.Editor
             NonebEditor.Init();
 
             PlayModeStateListener.OnEnterEditMode += NonebEditor.Init;
-            EditorSceneManager.activeSceneChangedInEditMode += NonebEditor.ReloadLevelEditor;
+            EditorSceneManager.activeSceneChangedInEditMode += NonebEditor.ReloadLevelData;
         }
     }
 
@@ -50,12 +51,15 @@ namespace NonebNi.Editor
 
         public void Dispose()
         {
+            _levelEditor?.Dispose();
             SceneView.duringSceneGui -= OnSceneGUI;
             _model.OnLevelDataSourceChanged -= OnLevelDataSourceChanged;
         }
 
         private void OnSceneGUI(SceneView obj)
         {
+            Debug.Log(GetHashCode());
+
             _toolbar.DrawSceneToolbar();
         }
 
@@ -70,9 +74,9 @@ namespace NonebNi.Editor
             return matchingData;
         }
 
-        internal static void ReloadLevelEditor(Scene arg0, Scene arg1)
+        internal static void ReloadLevelData(Scene arg0, Scene arg1)
         {
-            _instance?.InitLevelEditor();
+            _instance?.UpdateLevelDataSourceToMatchActiveScene();
         }
 
         internal static void Init()
@@ -104,9 +108,13 @@ namespace NonebNi.Editor
             _levelEditor?.Dispose();
             _levelEditor = null;
 
-            _model.LevelDataSource = FindLevelDataSourceForActiveScene();
             if (_model.LevelDataSource != null && _model.LevelDataSource.IsValid)
                 _levelEditor = new LevelEditor(_model.LevelDataSource.CreateData()!, _component);
+        }
+
+        private void UpdateLevelDataSourceToMatchActiveScene()
+        {
+            _model.LevelDataSource = FindLevelDataSourceForActiveScene();
         }
     }
 }
