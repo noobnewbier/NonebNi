@@ -1,37 +1,32 @@
 ﻿using System;
 using NonebNi.Core.Level;
+using UnityEditor;
 
 namespace NonebNi.Editor
 {
     public class NonebEditorModel
     {
-        private bool _isGizmosVisible;
-        private bool _isGridVisible;
         private LevelDataSource? _levelDataSource;
 
         public bool IsGridVisible
         {
-            get => _isGridVisible;
+            get => EditorPrefs.GetBool(nameof(IsGridVisible));
             set
             {
-                if (!_isGizmosVisible)
-                {
-                    _isGridVisible = value;
-                    OnGridVisibilityChanged?.Invoke(_isGridVisible);
-                }
+                var existingValue = IsGridVisible;
+                EditorPrefs.SetBool(nameof(IsGridVisible), value);
+                if (existingValue != value) OnGridVisibilityChanged?.Invoke(value);
             }
         }
 
         public bool IsGizmosVisible
         {
-            get => _isGizmosVisible;
+            get => EditorPrefs.GetBool(nameof(IsGizmosVisible));
             set
             {
-                if (_isGizmosVisible != value)
-                {
-                    _isGizmosVisible = value;
-                    OnGizmosVisibilityChanged?.Invoke(_isGizmosVisible);
-                }
+                var existingValue = IsGizmosVisible;
+                EditorPrefs.SetBool(nameof(IsGizmosVisible), value);
+                if (existingValue != value) OnGizmosVisibilityChanged?.Invoke(value);
             }
         }
 
