@@ -14,7 +14,7 @@ namespace NonebNi.Core.Entities
     /// </summary>
     public abstract class Entity : MonoBehaviour
     {
-        [SerializeField] private Collider? boundingCollider;
+        [SerializeField] protected Collider? boundingCollider;
 
         public Collider? BoundingCollider
         {
@@ -29,7 +29,7 @@ namespace NonebNi.Core.Entities
             }
         }
 
-        public abstract bool IsInitialized { get; }
+        public virtual bool IsInitialized => boundingCollider != null;
 
         private void OnDrawGizmosSelected()
         {
@@ -53,6 +53,6 @@ namespace NonebNi.Core.Entities
             }
         }
 
-        public override bool IsInitialized => BoundingCollider != null && EntityData != null;
+        public override bool IsInitialized => base.IsInitialized && EntityData != null;
     }
 }
