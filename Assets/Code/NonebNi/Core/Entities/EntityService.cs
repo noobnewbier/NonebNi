@@ -19,7 +19,7 @@ namespace NonebNi.Core.Entities
         /// </summary>
         public IEnumerable<Coordinate> FindOverlappedCoordinates(Entity entity)
         {
-            if (!entity.IsInitialized) yield break;
+            if (!entity.IsCorrectSetUp) yield break;
 
             //bounding collider is defined only when entity is initialized
             var boundingCollider = entity.BoundingCollider!;

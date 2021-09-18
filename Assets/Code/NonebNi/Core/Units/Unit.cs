@@ -2,7 +2,7 @@
 
 namespace NonebNi.Core.Units
 {
-    public class Unit : Entity<UnitData>
+    public partial class Unit : Entity<UnitData>
     {
     }
 }

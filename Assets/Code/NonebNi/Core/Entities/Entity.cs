@@ -29,7 +29,7 @@ namespace NonebNi.Core.Entities
             }
         }
 
-        public virtual bool IsInitialized => boundingCollider != null;
+        public virtual bool IsCorrectSetUp => boundingCollider != null;
 
         private void OnDrawGizmosSelected()
         {
@@ -37,7 +37,7 @@ namespace NonebNi.Core.Entities
         }
     }
 
-    public abstract class Entity<T> : Entity where T : EntityData
+    public abstract partial class Entity<T> : Entity where T : EntityData
     {
         [SerializeField] protected EntityDataSource<T>? entityDataSource;
 
@@ -47,12 +47,21 @@ namespace NonebNi.Core.Entities
         {
             get
             {
-                if (_cacheEntityData == null && entityDataSource != null) _cacheEntityData = entityDataSource.CreateData();
+                //the backing data source can be removed in editor
+                if (entityDataSource == null)
+                {
+                    _cacheEntityData = null;
+                }
+                else
+                {
+                    if (_cacheEntityData == null && entityDataSource != null)
+                        _cacheEntityData = entityDataSource.CreateData();
+                }
 
                 return _cacheEntityData;
             }
         }
 
-        public override bool IsInitialized => base.IsInitialized && EntityData != null;
+        public override bool IsCorrectSetUp => base.IsCorrectSetUp && EntityData != null;
     }
 }
