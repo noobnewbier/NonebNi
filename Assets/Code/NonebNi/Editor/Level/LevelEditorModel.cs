@@ -10,11 +10,11 @@ namespace NonebNi.Editor.Level
     /// </summary>
     public class LevelEditorModel
     {
-        private Map? _map;
+        private Map _map;
 
         public LevelData LevelData { get; }
 
-        public Map? Map
+        public Map Map
         {
             get => _map;
             set
@@ -24,9 +24,10 @@ namespace NonebNi.Editor.Level
             }
         }
 
-        public LevelEditorModel(LevelData levelData)
+        public LevelEditorModel(LevelData levelData, Map map)
         {
             LevelData = levelData;
+            _map = map;
         }
 
         public event Action<Map?>? OnMapChanged;

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace NonebNi.Core.Entities
 {
@@ -16,18 +15,11 @@ namespace NonebNi.Core.Entities
     {
         [SerializeField] protected Collider? boundingCollider;
 
-        public Collider? BoundingCollider
-        {
-            get
-            {
-                if (boundingCollider == null)
-                    throw new InvalidOperationException(
-                        $"This entity {name} is not constructed properly - there are no {boundingCollider}"
-                    );
-
-                return boundingCollider;
-            }
-        }
+        /// <summary>
+        /// We expect this is only called when the entity is <see cref="IsCorrectSetUp" />,
+        /// in which case the underlying bounding collider is not null
+        /// </summary>
+        public Collider BoundingCollider => boundingCollider!;
 
         public virtual bool IsCorrectSetUp => boundingCollider != null;
 

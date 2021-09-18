@@ -15,13 +15,11 @@ namespace NonebNi.Editor.Level
 
         public LevelEditor(LevelData levelData, INonebEditorComponent nonebEditorComponent)
         {
-            var component = new LevelEditorComponent(new LevelEditorModule(levelData), nonebEditorComponent);
+            var map = new Map(levelData.MapConfig);
+            var component = new LevelEditorComponent(new LevelEditorModule(levelData, map), nonebEditorComponent);
 
             _mapView = new MapView(component);
             _entitiesPlacer = new EntitiesPlacer(component);
-
-            LevelEditorModel model = component.LevelEditorModel;
-            model.Map = new Map(levelData.MapConfig);
 
             SceneView.duringSceneGui += OnSceneGUI;
         }

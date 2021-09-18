@@ -140,8 +140,7 @@ namespace NonebNi.Core.Maps
         /// <summary>
         /// The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
         /// While they should be accessed through the axial coordinate(<seealso cref="Coordinate" />), we will convert them internally
-        /// for both storage and
-        /// accessing.
+        /// for both storage and accessing.
         /// </summary>
         private readonly struct StorageCoordinate
         {

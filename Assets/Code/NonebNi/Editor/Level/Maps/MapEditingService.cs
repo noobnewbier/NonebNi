@@ -1,20 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
+using NonebNi.Core.Maps;
+using UnityEngine.SceneManagement;
 
-namespace NonebNi.Core.Entities
+namespace NonebNi.Editor.Level.Maps
 {
-    //todo: remove this, all can be done in map editing service.
-    [Obsolete]
-    public class EntityService
+    /// <summary>
+    /// Generate a <see cref="Map" /> given a <see cref="Scene" />, <see cref="MapConfigScriptable" /> and
+    /// <seealso cref="WorldConfigScriptable" />
+    /// Todo: we need to create a variant where the scene settings is token into account
+    /// </summary>
+    public class MapEditingService
     {
         private readonly CoordinateAndPositionService _coordinateAndPositionService;
+        private readonly Map _map;
 
-        public EntityService(CoordinateAndPositionService coordinateAndPositionService)
+        public MapEditingService(CoordinateAndPositionService coordinateAndPositionService, Map map)
         {
             _coordinateAndPositionService = coordinateAndPositionService;
+            _map = map;
+        }
+
+        public void RefreshMapWithScene(Scene scene)
+        {
+            //reset the map to initial state
+            var allCoordinates = _map.GetAllCoordinates();
         }
 
         /// <summary>
