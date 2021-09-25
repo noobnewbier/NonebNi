@@ -7,12 +7,12 @@ using UnityEngine;
 namespace NonebNi.Editor.Toolbar
 {
     //todo: allow toggle of toolbar itself
-    public class SceneToolbarView
+    public class NonebEditorToolbarView
     {
         private readonly NonebEditorComponent _component;
         private readonly SceneToolbarPresenter _presenter;
 
-        public SceneToolbarView(NonebEditorComponent component)
+        public NonebEditorToolbarView(NonebEditorComponent component)
         {
             _presenter = new SceneToolbarPresenter(this, component);
             _component = component;
@@ -70,33 +70,40 @@ namespace NonebNi.Editor.Toolbar
 
             void DrawSettingsButton()
             {
-                if (GUI.Button(menuRect, "Settings", Styles.Button))
+                if (_presenter.NonebEditor.LevelEditor != null)
+                {
                     /*
-                         * There is a minor issue where if the user have already opened the window
-                         * Clicking the button again will close the window and open the window again in quick fashion, leading to quick flickers.
-                         *
-                         * Root of the problem is that whenever you click on space that is outside of the window, the window closes immediately,
-                         * and this button quickly re-opens the closed window.
-                         * 
-                         * This happens with ProGrids as well,
-                         * I suppose I can do some clever trick, such as recording the visibility of the editor on the past few frames,
-                         * or simply preventing the window to be re-opened when it is closed this frame,
-                         * But those are a bit hacky and dependent on Unity, plus this is not that big of an issue so.
-                         */
-                    if (!EditorWindow.HasOpenInstances<SettingsWindow>())
-                    {
-                        var settingsWindow = SettingsWindow.Init(_component);
-                        var screenRect = SceneView.lastActiveSceneView.position;
-                        settingsWindow.ShowAsDropDown(
-                            new Rect(
-                                screenRect.x + menuRect.x + menuRect.width + Styles.MenuItemPadding,
-                                screenRect.y + Styles.MenuStartingPosition.y + 24 + Styles.MenuItemPadding,
-                                0,
-                                0
-                            ),
-                            new Vector2(450, 140)
-                        );
-                    }
+                     * There is a minor issue where if the user have already opened the window
+                     * Clicking the button again will close the window and open the window again in quick fashion, leading to quick flickers.
+                     *
+                     * Root of the problem is that whenever you click on space that is outside of the window, the window closes immediately,
+                     * and this button quickly re-opens the closed window.
+                     * 
+                     * This happens with ProGrids as well,
+                     * I suppose I can do some clever trick, such as recording the visibility of the editor on the past few frames,
+                     * or simply preventing the window to be re-opened when it is closed this frame,
+                     * But those are a bit hacky and dependent on Unity, plus this is not that big of an issue so.
+                     */
+                    if (GUI.Button(menuRect, "Settings", Styles.Button))
+                        if (!EditorWindow.HasOpenInstances<LevelEditorSettingsWindow>())
+                        {
+                            var settingsWindow = _presenter.NonebEditor.LevelEditor.GetSettingsWindow();
+                            var screenRect = SceneView.lastActiveSceneView.position;
+                            settingsWindow.ShowAsDropDown(
+                                new Rect(
+                                    screenRect.x + menuRect.x + menuRect.width + Styles.MenuItemPadding,
+                                    screenRect.y + Styles.MenuStartingPosition.y + 24 + Styles.MenuItemPadding,
+                                    0,
+                                    0
+                                ),
+                                new Vector2(450, 140)
+                            );
+                        }
+                }
+                else
+                {
+                    if (GUI.Button(menuRect, "InitLevel", Styles.Button)) _presenter.ConvertActiveSceneToLevel();
+                }
             }
         }
 

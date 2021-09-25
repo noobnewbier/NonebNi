@@ -28,7 +28,7 @@ namespace NonebNi.Editor.Di
             _lazyCoordinateAndPositionService =
                 new Lazy<CoordinateAndPositionService>(module.GetCoordinateAndPositionService);
             _lazyMapGenerationService = new Lazy<MapEditingService>(
-                () => module.GetMapGenerationService(_lazyCoordinateAndPositionService.Value, _lazyEditorDataModel.Value.Map)
+                () => module.GetMapEditingService(_lazyCoordinateAndPositionService.Value)
             );
             _lazyEntityService =
                 new Lazy<EntityService>(() => module.GetEntityService(_lazyCoordinateAndPositionService.Value));

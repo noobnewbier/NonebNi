@@ -18,7 +18,7 @@ namespace NonebNi.Editor
             NonebEditor.Init();
 
             PlayModeStateListener.OnEnterEditMode += NonebEditor.Init;
-            EditorSceneManager.activeSceneChangedInEditMode += NonebEditor.ReloadLevelData;
+            EditorSceneManager.activeSceneChangedInEditMode += NonebEditor.OnActiveSceneChanged;
         }
     }
 
@@ -28,31 +28,37 @@ namespace NonebNi.Editor
         private readonly NonebEditorComponent _component;
         private readonly NonebEditorModel _model;
 
-        private readonly SceneToolbarView _toolbar;
+        private readonly NonebEditorToolbarView _toolbar;
 
-        private LevelEditor? _levelEditor;
+        public LevelEditor? LevelEditor { get; private set; }
 
         private NonebEditor()
         {
             _instance = this;
 
-            _component = new NonebEditorComponent(new NonebEditorModule());
+            _component = new NonebEditorComponent(new NonebEditorModule(this));
             _model = _component.NonebEditorModel;
-            _model.LevelDataSource = FindLevelDataSourceForActiveScene();
 
-            _toolbar = new SceneToolbarView(_component);
+            _toolbar = new NonebEditorToolbarView(_component);
+
+            TryInitLevelEditor();
 
             SceneView.duringSceneGui += OnSceneGUI;
-            _model.OnLevelDataSourceChanged += OnLevelDataSourceChanged;
-
-            InitLevelEditor();
+            LevelDataSourceChangedListener.OnLevelDataSourceChanged += TryInitLevelEditorAfterOneFrame;
         }
 
         public void Dispose()
         {
-            _levelEditor?.Dispose();
+            LevelEditor?.Dispose();
             SceneView.duringSceneGui -= OnSceneGUI;
-            _model.OnLevelDataSourceChanged -= OnLevelDataSourceChanged;
+            LevelDataSourceChangedListener.OnLevelDataSourceChanged -= TryInitLevelEditorAfterOneFrame;
+        }
+
+        ~NonebEditor()
+        {
+            LevelEditor?.Dispose();
+            SceneView.duringSceneGui -= OnSceneGUI;
+            LevelDataSourceChangedListener.OnLevelDataSourceChanged -= TryInitLevelEditorAfterOneFrame;
         }
 
         private void OnSceneGUI(SceneView obj)
@@ -71,9 +77,9 @@ namespace NonebNi.Editor
             return matchingData;
         }
 
-        internal static void ReloadLevelData(Scene arg0, Scene arg1)
+        internal static void OnActiveSceneChanged(Scene arg0, Scene arg1)
         {
-            _instance?.UpdateLevelDataSourceToMatchActiveScene();
+            _instance?.TryInitLevelEditor();
         }
 
         internal static void Init()
@@ -89,29 +95,22 @@ namespace NonebNi.Editor
             _instance = null;
         }
 
-        ~NonebEditor()
+        private void TryInitLevelEditor()
         {
-            SceneView.duringSceneGui -= OnSceneGUI;
-            _model.OnLevelDataSourceChanged -= OnLevelDataSourceChanged;
+            LevelEditor?.Dispose();
+            LevelEditor = null;
+            var dataSource = FindLevelDataSourceForActiveScene();
+            if (dataSource != null && dataSource.IsValid)
+                LevelEditor = new LevelEditor(SceneManager.GetActiveScene(), dataSource, _component);
         }
 
-        private void OnLevelDataSourceChanged(LevelDataSource? dataSource)
+        private void TryInitLevelEditorAfterOneFrame()
         {
-            InitLevelEditor();
-        }
-
-        private void InitLevelEditor()
-        {
-            _levelEditor?.Dispose();
-            _levelEditor = null;
-
-            if (_model.LevelDataSource != null && _model.LevelDataSource.IsValid)
-                _levelEditor = new LevelEditor(_model.LevelDataSource.CreateData()!, _component);
-        }
-
-        private void UpdateLevelDataSourceToMatchActiveScene()
-        {
-            _model.LevelDataSource = FindLevelDataSourceForActiveScene();
+            EditorApplication.delayCall += () =>
+            {
+                TryInitLevelEditor();
+                SceneView.RepaintAll();
+            };
         }
     }
 }

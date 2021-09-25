@@ -30,22 +30,7 @@ namespace NonebNi.Editor
             }
         }
 
-        public LevelDataSource? LevelDataSource
-        {
-            get => _levelDataSource;
-            set
-            {
-                if (_levelDataSource != value)
-                {
-                    _levelDataSource = value;
-                    OnLevelDataSourceChanged?.Invoke(_levelDataSource);
-                }
-            }
-        }
-
-
         public event Action<bool>? OnGridVisibilityChanged;
         public event Action<bool>? OnGizmosVisibilityChanged;
-        public event Action<LevelDataSource?>? OnLevelDataSourceChanged;
     }
 }

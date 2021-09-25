@@ -13,12 +13,18 @@ namespace NonebNi.Editor.Level.Maps
     {
         private readonly CoordinateAndPositionService _coordinateAndPositionService;
 
+        private readonly GUIStyle _coordinateStyle = new GUIStyle
+        {
+            alignment = TextAnchor.MiddleCenter
+        };
+
         //We need to reuse the same GUIContent for all labels, otherwise it is generating way too much GC per frame
         private readonly GUIContent _labelContent;
+
         private readonly MapPresenter _presenter;
         private readonly WorldConfigData _worldConfig;
 
-        public Map? Map { private get; set; }
+        private Map Map => _presenter.Map;
 
         public MapView(ILevelEditorComponent component)
         {
@@ -37,7 +43,6 @@ namespace NonebNi.Editor.Level.Maps
         private void DrawGrid()
         {
             if (!_presenter.IsDrawingGrid) return;
-            if (Map == null) return;
 
             var coordinates = Map.GetAllCoordinates();
             foreach (var (coordinate, tile) in coordinates.Select(c => (c, Map.Get<TileData>(c))))
@@ -52,13 +57,14 @@ namespace NonebNi.Editor.Level.Maps
             }
         }
 
+        //todo: disabled entity seems to freeze the editor
         private void DrawGizmos()
         {
             if (!_presenter.IsDrawingGizmos) return;
-            if (Map == null) return;
+
             var coordinates = Map.GetAllCoordinates();
-            foreach (var (coordinate, tile, unit) in coordinates.Select(c => (c, Map.Get<TileData>(c), Map.Get<UnitData>(c)))
-            )
+            foreach (var (coordinate, tile, unit) in
+                coordinates.Select(c => (c, Map.Get<TileData>(c), Map.Get<UnitData>(c))))
             {
                 if (tile == null) continue;
 
@@ -140,26 +146,22 @@ namespace NonebNi.Editor.Level.Maps
 
             const int maxFontSize = 14;
             var fontSizeInFloat = boundingRect.height * fontSizeToBoundingRectRatio;
-            var coordinateStyle = new GUIStyle
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = Mathf.Min(Mathf.RoundToInt(fontSizeInFloat), maxFontSize)
-            };
+            _coordinateStyle.fontSize = Mathf.Min(Mathf.RoundToInt(fontSizeInFloat), maxFontSize);
             //These are just a magic number that feels right to me
             const int minReadableFontSize = 6;
             const float minVisibleAlpha = 0.5f;
             //decreasing alpha when the user is further away from the text while avoiding drawing text that are practically not readable
-            coordinateStyle.normal.textColor = new Color(
+            _coordinateStyle.normal.textColor = new Color(
                 0f,
                 0f,
                 0f,
                 fontSizeInFloat / minReadableFontSize
             );
 
-            if (coordinateStyle.normal.textColor.a > minVisibleAlpha)
+            if (_coordinateStyle.normal.textColor.a > minVisibleAlpha)
             {
                 _labelContent.text = text;
-                var size = coordinateStyle.CalcSize(_labelContent);
+                var size = _coordinateStyle.CalcSize(_labelContent);
                 var rect = new Rect(guiPoint, size);
                 rect.xMin -= size.x / 2;
                 rect.xMax -= size.x / 2;
@@ -168,7 +170,7 @@ namespace NonebNi.Editor.Level.Maps
 
                 Handles.BeginGUI();
 
-                GUI.Label(coordinateStyle.padding.Add(rect), _labelContent, coordinateStyle);
+                GUI.Label(_coordinateStyle.padding.Add(rect), _labelContent, _coordinateStyle);
 
                 Handles.EndGUI();
             }

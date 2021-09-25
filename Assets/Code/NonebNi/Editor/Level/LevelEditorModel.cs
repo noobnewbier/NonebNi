@@ -1,5 +1,4 @@
-﻿using System;
-using NonebNi.Core.Level;
+﻿using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 
 namespace NonebNi.Editor.Level
@@ -10,26 +9,15 @@ namespace NonebNi.Editor.Level
     /// </summary>
     public class LevelEditorModel
     {
-        private Map _map;
-
         public LevelData LevelData { get; }
+        public LevelDataSource LevelDataSource { get; }
+        public Map Map { get; }
 
-        public Map Map
-        {
-            get => _map;
-            set
-            {
-                _map = value;
-                OnMapChanged?.Invoke(_map);
-            }
-        }
-
-        public LevelEditorModel(LevelData levelData, Map map)
+        public LevelEditorModel(LevelData levelData, Map map, LevelDataSource levelDataSource)
         {
             LevelData = levelData;
-            _map = map;
+            Map = map;
+            LevelDataSource = levelDataSource;
         }
-
-        public event Action<Map?>? OnMapChanged;
     }
 }
