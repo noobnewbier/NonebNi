@@ -96,7 +96,10 @@ namespace NonebNi.Editor.Level.Maps
             var viewCameraTransform = SceneView.currentDrawingSceneView.camera.transform;
             var cameraForward = viewCameraTransform.forward;
             var viewForward = new Vector3(cameraForward.x, 0f, cameraForward.z).normalized;
-            var viewRotation = Quaternion.LookRotation(viewForward, Vector3.up);
+            //the magnitude is 0 when the camera is "upright", e.g when you click on the y-axis on the scene view
+            var viewRotation = viewForward.magnitude != 0f ?
+                Quaternion.LookRotation(viewForward, Vector3.up) :
+                Quaternion.identity;
 
             var v1 = HandleUtility.WorldToGUIPoint(position + viewRotation * Vector3.left * maxOffsetFromCenter);
             var v2 = HandleUtility.WorldToGUIPoint(position + viewRotation * Vector3.right * maxOffsetFromCenter);
