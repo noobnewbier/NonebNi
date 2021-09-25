@@ -1,3 +1,14 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 4bb47f8e7c3d4d7d91c395d937cb81b4
-timeCreated: 1628350398
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - scene: {instanceID: 0}
+  - mapConfigScriptable: {fileID: 11400000, guid: 386be42395b268f41a6da89978621554, type: 2}
+  - worldConfigScriptable: {fileID: 11400000, guid: 5aff3723d83826146b1e0d681e761d21, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

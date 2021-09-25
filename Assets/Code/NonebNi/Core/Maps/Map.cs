@@ -71,12 +71,20 @@ namespace NonebNi.Core.Maps
             return GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z];
         }
 
+        //Dear unity doesn't support .Net 2.1, so stuffs like MaybeNullWhenAttribute is not available
         public bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             t = GetBoardItemWithDefault<T>(storageCoordinate);
 
             return t != null;
+        }
+
+        public bool Has<T>(Coordinate axialCoordinate) where T : EntityData
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+
+            return GetBoardItemWithDefault<T>(storageCoordinate) != null;
         }
 
         private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData

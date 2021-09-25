@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using NonebNi.Core.Maps;
@@ -35,8 +35,7 @@ namespace NonebNi.Core.Level
             set
             {
                 worldConfigScriptable = value;
-
-                OnDataChanged?.Invoke();
+                DirtyThis();
             }
         }
 
@@ -46,12 +45,15 @@ namespace NonebNi.Core.Level
             set
             {
                 mapConfigScriptable = value;
-
-                OnDataChanged?.Invoke();
+                DirtyThis();
             }
         }
 
-        public event Action? OnDataChanged;
+        [Conditional("UNITY_EDITOR")]
+        private void DirtyThis()
+        {
+            EditorUtility.SetDirty(this);
+        }
 
         public LevelData? CreateData() =>
             IsValid ? new LevelData(mapConfigScriptable!.CreateData(), worldConfigScriptable!.CreateData()) : null;
