@@ -1,11 +1,10 @@
 ﻿using NonebNi.Core.Coordinates;
 using UnityEngine;
-using UnityUtils;
 
 namespace NonebNi.Core.Level
 {
     /// <summary>
-    /// Given the <see cref="WorldConfigData" />, convert between coordinate and position
+    /// Given the <see cref="WorldConfigData"/>, convert between coordinate and position
     /// </summary>
     public class CoordinateAndPositionService
     {
@@ -22,92 +21,59 @@ namespace NonebNi.Core.Level
 
         public Vector3 FindPosition(Coordinate coordinate)
         {
-            var upDistance = UpDistanceOfHex;
-            var sideDistance = SideDistanceOfHex;
+            float FindSideOffsetForZ(int zIndex)
+            {
+                var sideDistance = SideDistanceOfHex;
+
+                // ReSharper disable once PossibleLossOfFraction - that's intentional. We need the floored whole number here
+                return zIndex % 2 * sideDistance / 2f + zIndex / 2 * sideDistance;
+            }
+
             var sideOffset = FindSideOffsetForZ(coordinate.Z);
 
             return new Vector3(
-                       coordinate.X * sideDistance + sideOffset,
+                       coordinate.X * SideDistanceOfHex + sideOffset,
                        _worldConfig.MapStartingPosition.y,
-                       coordinate.Z * upDistance
+                       coordinate.Z * UpDistanceOfHex
                    ) +
                    _worldConfig.MapStartingPosition;
         }
 
-        private float FindSideOffsetForZ(int zIndex)
-        {
-            var sideDistance = SideDistanceOfHex;
-
-            // ReSharper disable once PossibleLossOfFraction - that's intentional. We need the floored whole number here
-            return zIndex % 2 * sideDistance / 2f + zIndex / 2 * sideDistance;
-        }
-
-
         public Coordinate NearestCoordinateForPoint(Vector3 point)
         {
-            var origin = _worldConfig.MapStartingPosition;
+            /*
+             * Convert the position into a fractional coordinate, round it to the nearest hex.
+             * Reference: https://www.redblobgames.com/grids/hexagons/#rounding
+             */
+            var x = (Mathf.Sqrt(3) / 3 * point.x - 1f / 3 * point.z) / _worldConfig.OuterRadius;
+            var z = 2f / 3 * point.z / _worldConfig.OuterRadius;
+            var y = -x - z;
 
-            var zDiff = point.z - origin.z;
-            var z = (int) (zDiff / UpDistanceOfHex);
+            //temporarily working on cube coordinate here
+            var roundX = Mathf.RoundToInt(x);
+            var roundY = Mathf.RoundToInt(y);
+            var roundZ = Mathf.RoundToInt(z);
 
-            var sideOffset = FindSideOffsetForZ(z);
-            var xDiff = point.x - origin.x;
-            var x = (int) ((xDiff - sideOffset) / SideDistanceOfHex);
+            var xDiff = Mathf.Abs(x - roundX);
+            var yDiff = Mathf.Abs(y - roundY);
+            var zDiff = Mathf.Abs(z - roundZ);
 
-            return new Coordinate(x, z);
+            var maxDiff = Mathf.Max(xDiff, yDiff, zDiff);
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            if (maxDiff == xDiff) roundX = -roundY - roundZ;
+            // ReSharper disable once CompareOfFloatsByEqualityOperator
+            else if (maxDiff == zDiff) roundZ = -roundX - roundY;
+
+            return new Coordinate(roundX, roundZ);
         }
 
         /// <summary>
-        /// Find out if a position resides within a given coordinate in the current level
+        /// Find out if a position resides within a given coordinate.
         /// </summary>
         /// <param name="point">The position to test</param>
         /// <param name="coordinate">Coordinate to test</param>
         /// <returns>Whether the <see cref="point" /> is within the given <see cref="coordinate" /></returns>
-        public bool IsPointWithinCoordinate(Vector3 point, Coordinate coordinate)
-        {
-            /*
-             * This works by drawing a line for each side of the regular hexagon.
-             * For each line, we find out if the given position and the center of the coordinate is on the same side of the line.
-             *
-             * If the above check is true for all six lines. We know that the given position is within the given coordinate
-             */
-            var coordinatePos = FindPosition(coordinate);
-            var outerRadius = _worldConfig.OuterRadius;
-
-            const float thirtyDegToRad = 30f * Mathf.Deg2Rad;
-            var tan30 = Mathf.Tan(thirtyDegToRad);
-
-            //note as we are thinking in XZ plane, z is used in place of y.
-            var pointPos2D = (point - coordinatePos).XZ();
-
-            var topRightLine = new LinearEquations.LinearEquation2D(-tan30, 1, +outerRadius);
-            var rightLine = new LinearEquations.LinearEquation2D(1, 0, +outerRadius);
-            var bottomRightLine = new LinearEquations.LinearEquation2D(tan30, 1, -outerRadius);
-            var bottomLeftLine = new LinearEquations.LinearEquation2D(-tan30, 1, -outerRadius);
-            var leftLine = new LinearEquations.LinearEquation2D(1, 0, -outerRadius);
-            var topLeftLine = new LinearEquations.LinearEquation2D(tan30, 1, +outerRadius);
-
-            var pointTopRightSign = (int) Mathf.Sign(topRightLine.Solve(pointPos2D));
-            var pointRightSign = (int) Mathf.Sign(rightLine.Solve(pointPos2D));
-            var pointBottomRightLineSign = (int) Mathf.Sign(bottomRightLine.Solve(pointPos2D));
-            var pointBottomLeftLineSign = (int) Mathf.Sign(bottomLeftLine.Solve(pointPos2D));
-            var pointLeftLineSign = (int) Mathf.Sign(leftLine.Solve(pointPos2D));
-            var pointTopLeftLineSign = (int) Mathf.Sign(topLeftLine.Solve(pointPos2D));
-
-            //There are no need to calculate where the center resides relative to the line - it is always the same
-            const int centerTopRightSign = -1;
-            const int centerRightSign = -1;
-            const int centerBottomRightLineSign = 1;
-            const int centerBottomLeftLineSign = 1;
-            const int centerLeftLineSign = 1;
-            const int centerTopLeftLineSign = -1;
-
-            return centerTopRightSign == pointTopRightSign &&
-                   centerRightSign == pointRightSign &&
-                   centerBottomRightLineSign == pointBottomRightLineSign &&
-                   centerBottomLeftLineSign == pointBottomLeftLineSign &&
-                   centerLeftLineSign == pointLeftLineSign &&
-                   centerTopLeftLineSign == pointTopLeftLineSign;
-        }
+        public bool IsPointWithinCoordinate(Vector3 point, Coordinate coordinate) =>
+            NearestCoordinateForPoint(point) == coordinate;
     }
 }
