@@ -6,6 +6,7 @@ using NonebNi.Core.Units;
 using NonebNi.Editor.Di;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace NonebNi.Editor.Level.Maps
 {
@@ -44,6 +45,9 @@ namespace NonebNi.Editor.Level.Maps
         {
             if (!_presenter.IsDrawingGrid) return;
 
+            var originalZTest = Handles.zTest;
+
+            Handles.zTest = CompareFunction.Less;
             var coordinates = Map.GetAllCoordinates();
             foreach (var (coordinate, tile) in coordinates.Select(c => (c, Map.Get<TileData>(c))))
             {
@@ -55,6 +59,8 @@ namespace NonebNi.Editor.Level.Maps
                 Handles.DrawLine(corners[0], corners[5]);
                 for (var i = 0; i < corners.Count - 1; i++) Handles.DrawLine(corners[i], corners[i + 1]);
             }
+
+            Handles.zTest = originalZTest;
         }
 
         //todo: disabled entity seems to freeze the editor
