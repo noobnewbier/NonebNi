@@ -15,6 +15,10 @@ namespace NonebNi.Editor.Di
         private readonly Map _map;
         private readonly Scene _scene;
 
+        public WorldConfigData GetWorldConfigData => _levelData.WorldConfig;
+
+        public IReadOnlyMap GetReadOnlyMap => _map;
+
         public LevelEditorModule(LevelDataSource levelDataSource, Scene scene)
         {
             _levelDataSource = levelDataSource;
