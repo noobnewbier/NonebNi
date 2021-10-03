@@ -11,7 +11,7 @@ namespace NonebNi.Editor.Toolbar
         public readonly NonebEditor NonebEditor;
 
         public bool IsGridVisible => _model.IsGridVisible;
-        public bool IsGizmosVisible => _model.IsGizmosVisible;
+        public bool IsGizmosVisible => _model.IsInspectorVisible;
 
         public SceneToolbarPresenter(NonebEditorToolbarView view, INonebEditorComponent component)
         {
@@ -27,7 +27,7 @@ namespace NonebNi.Editor.Toolbar
 
         public void OnToggleGizmosVisibility()
         {
-            _model.IsGizmosVisible = !_model.IsGizmosVisible;
+            _model.IsInspectorVisible = !_model.IsInspectorVisible;
         }
 
         public void ConvertActiveSceneToLevel()

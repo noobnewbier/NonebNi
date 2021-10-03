@@ -51,7 +51,7 @@ namespace NonebNi.Editor.Level.Settings
                 Close();
         }
 
-        public static LevelEditorSettingsWindow Init(LevelEditorComponent component)
+        public static LevelEditorSettingsWindow Init(ILevelEditorComponent component)
         {
             var toReturn = CreateInstance<LevelEditorSettingsWindow>();
             toReturn._dataModel = component.LevelEditorModel;

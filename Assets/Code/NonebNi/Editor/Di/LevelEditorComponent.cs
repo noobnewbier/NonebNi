@@ -2,6 +2,7 @@
 using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
 using NonebNi.Editor.Level;
+using NonebNi.Editor.Level.Inspector;
 using NonebNi.Editor.Level.Maps;
 
 namespace NonebNi.Editor.Di
@@ -13,6 +14,11 @@ namespace NonebNi.Editor.Di
         CoordinateAndPositionService CoordinateAndPositionService { get; }
         EntityService EntityService { get; }
         NonebEditorModel NonebEditorModel { get; }
+
+        MapView MapView { get; }
+        TileInspectorView TileInspectorView { get; }
+        MapPresenter CreateMapPresenter(MapView view);
+        TileInspectorPresenter CreateTileInspectorPresenter(TileInspectorView view);
     }
 
     public class LevelEditorComponent : ILevelEditorComponent
@@ -21,6 +27,8 @@ namespace NonebNi.Editor.Di
         private readonly Lazy<LevelEditorModel> _lazyEditorDataModel;
         private readonly Lazy<EntityService> _lazyEntityService;
         private readonly Lazy<MapEditingService> _lazyMapGenerationService;
+        private readonly Lazy<MapView> _lazyMapView;
+        private readonly Lazy<TileInspectorView> _lazyTileInspectorView;
 
         public LevelEditorComponent(LevelEditorModule module, INonebEditorComponent nonebEditorComponent)
         {
@@ -32,6 +40,11 @@ namespace NonebNi.Editor.Di
             );
             _lazyEntityService =
                 new Lazy<EntityService>(() => module.GetEntityService(_lazyCoordinateAndPositionService.Value));
+            _lazyMapView =
+                new Lazy<MapView>(() => new MapView(this, CoordinateAndPositionService, module.GetWorldConfigData));
+            _lazyTileInspectorView = new Lazy<TileInspectorView>(
+                () => new TileInspectorView(this, module.GetWorldConfigData, module.GetReadOnlyMap)
+            );
 
             NonebEditorModel = nonebEditorComponent.NonebEditorModel;
         }
@@ -42,5 +55,12 @@ namespace NonebNi.Editor.Di
         public MapEditingService MapEditingService => _lazyMapGenerationService.Value;
         public CoordinateAndPositionService CoordinateAndPositionService => _lazyCoordinateAndPositionService.Value;
         public EntityService EntityService => _lazyEntityService.Value;
+
+        public MapView MapView => _lazyMapView.Value;
+        public TileInspectorView TileInspectorView => _lazyTileInspectorView.Value;
+        public MapPresenter CreateMapPresenter(MapView view) => new MapPresenter(view, LevelEditorModel, NonebEditorModel);
+
+        public TileInspectorPresenter CreateTileInspectorPresenter(TileInspectorView view) =>
+            new TileInspectorPresenter(view, CoordinateAndPositionService, NonebEditorModel);
     }
 }

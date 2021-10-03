@@ -19,18 +19,18 @@ namespace NonebNi.Editor
             }
         }
 
-        public bool IsGizmosVisible
+        public bool IsInspectorVisible
         {
-            get => EditorPrefs.GetBool(nameof(IsGizmosVisible));
+            get => EditorPrefs.GetBool(nameof(IsInspectorVisible));
             set
             {
-                var existingValue = IsGizmosVisible;
-                EditorPrefs.SetBool(nameof(IsGizmosVisible), value);
-                if (existingValue != value) OnGizmosVisibilityChanged?.Invoke(value);
+                var existingValue = IsInspectorVisible;
+                EditorPrefs.SetBool(nameof(IsInspectorVisible), value);
+                if (existingValue != value) OnInspectorVisibilityChanged?.Invoke(value);
             }
         }
 
         public event Action<bool>? OnGridVisibilityChanged;
-        public event Action<bool>? OnGizmosVisibilityChanged;
+        public event Action<bool>? OnInspectorVisibilityChanged;
     }
 }

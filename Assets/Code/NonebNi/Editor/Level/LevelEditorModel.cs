@@ -3,10 +3,6 @@ using NonebNi.Core.Maps;
 
 namespace NonebNi.Editor.Level
 {
-    /// <summary>
-    /// Maybe we can do some source code weaving for this ungodly boilerplate?
-    /// That will probably have to be a standalone project.
-    /// </summary>
     public class LevelEditorModel
     {
         public LevelData LevelData { get; }

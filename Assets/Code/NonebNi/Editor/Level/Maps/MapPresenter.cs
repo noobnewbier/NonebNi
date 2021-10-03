@@ -1,5 +1,4 @@
 ﻿using NonebNi.Core.Maps;
-using NonebNi.Editor.Di;
 
 namespace NonebNi.Editor.Level.Maps
 {
@@ -9,16 +8,14 @@ namespace NonebNi.Editor.Level.Maps
         private readonly MapView _mapView;
         private readonly NonebEditorModel _nonebEditorModel;
 
-        public bool IsDrawingGizmos => _nonebEditorModel.IsGizmosVisible;
         public bool IsDrawingGrid => _nonebEditorModel.IsGridVisible;
-        public Map Map => _levelEditorModel.Map;
+        public IReadOnlyMap Map => _levelEditorModel.Map;
 
-        public MapPresenter(MapView mapView, ILevelEditorComponent component)
+        public MapPresenter(MapView mapView, LevelEditorModel levelEditorModel, NonebEditorModel nonebEditorModel)
         {
             _mapView = mapView;
-
-            _nonebEditorModel = component.NonebEditorModel;
-            _levelEditorModel = component.LevelEditorModel;
+            _levelEditorModel = levelEditorModel;
+            _nonebEditorModel = nonebEditorModel;
         }
     }
 }
