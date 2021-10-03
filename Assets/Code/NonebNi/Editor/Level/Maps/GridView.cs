@@ -8,20 +8,20 @@ using UnityEngine.Rendering;
 
 namespace NonebNi.Editor.Level.Maps
 {
-    public class MapView
+    public class GridView
     {
         private readonly CoordinateAndPositionService _coordinateAndPositionService;
 
         //We need to reuse the same GUIContent for all labels, otherwise it is generating way too much GC per frame
 
-        private readonly MapPresenter _presenter;
+        private readonly GridPresenter _presenter;
         private readonly WorldConfigData _worldConfig;
 
         private IReadOnlyMap Map => _presenter.Map;
 
-        public MapView(ILevelEditorComponent component,
-                       CoordinateAndPositionService coordinateAndPositionService,
-                       WorldConfigData worldConfig)
+        public GridView(ILevelEditorComponent component,
+                        CoordinateAndPositionService coordinateAndPositionService,
+                        WorldConfigData worldConfig)
         {
             _coordinateAndPositionService = coordinateAndPositionService;
             _worldConfig = worldConfig;

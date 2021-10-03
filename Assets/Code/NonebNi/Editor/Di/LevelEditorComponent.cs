@@ -15,9 +15,9 @@ namespace NonebNi.Editor.Di
         EntityService EntityService { get; }
         NonebEditorModel NonebEditorModel { get; }
 
-        MapView MapView { get; }
+        GridView GridView { get; }
         TileInspectorView TileInspectorView { get; }
-        MapPresenter CreateMapPresenter(MapView view);
+        GridPresenter CreateMapPresenter(GridView view);
         TileInspectorPresenter CreateTileInspectorPresenter(TileInspectorView view);
     }
 
@@ -27,7 +27,7 @@ namespace NonebNi.Editor.Di
         private readonly Lazy<LevelEditorModel> _lazyEditorDataModel;
         private readonly Lazy<EntityService> _lazyEntityService;
         private readonly Lazy<MapEditingService> _lazyMapGenerationService;
-        private readonly Lazy<MapView> _lazyMapView;
+        private readonly Lazy<GridView> _lazyMapView;
         private readonly Lazy<TileInspectorView> _lazyTileInspectorView;
 
         public LevelEditorComponent(LevelEditorModule module, INonebEditorComponent nonebEditorComponent)
@@ -40,8 +40,9 @@ namespace NonebNi.Editor.Di
             );
             _lazyEntityService =
                 new Lazy<EntityService>(() => module.GetEntityService(_lazyCoordinateAndPositionService.Value));
-            _lazyMapView =
-                new Lazy<MapView>(() => new MapView(this, CoordinateAndPositionService, module.GetWorldConfigData));
+            _lazyMapView = new Lazy<GridView>(
+                () => new GridView(this, CoordinateAndPositionService, module.GetWorldConfigData)
+            );
             _lazyTileInspectorView = new Lazy<TileInspectorView>(
                 () => new TileInspectorView(this, module.GetWorldConfigData, module.GetReadOnlyMap)
             );
@@ -56,9 +57,11 @@ namespace NonebNi.Editor.Di
         public CoordinateAndPositionService CoordinateAndPositionService => _lazyCoordinateAndPositionService.Value;
         public EntityService EntityService => _lazyEntityService.Value;
 
-        public MapView MapView => _lazyMapView.Value;
+        public GridView GridView => _lazyMapView.Value;
         public TileInspectorView TileInspectorView => _lazyTileInspectorView.Value;
-        public MapPresenter CreateMapPresenter(MapView view) => new MapPresenter(view, LevelEditorModel, NonebEditorModel);
+
+        public GridPresenter CreateMapPresenter(GridView view) =>
+            new GridPresenter(view, LevelEditorModel, NonebEditorModel);
 
         public TileInspectorPresenter CreateTileInspectorPresenter(TileInspectorView view) =>
             new TileInspectorPresenter(view, CoordinateAndPositionService, NonebEditorModel);

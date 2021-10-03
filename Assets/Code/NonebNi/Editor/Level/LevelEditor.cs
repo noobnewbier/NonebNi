@@ -15,14 +15,14 @@ namespace NonebNi.Editor.Level
         private readonly LevelEditorComponent _component;
         private readonly EntitiesPlacer _entitiesPlacer;
 
-        private readonly MapView _mapView;
+        private readonly GridView _gridView;
         private readonly TileInspectorView _tileInspectorView;
 
         public LevelEditor(Scene editedScene, LevelDataSource levelDataSource, INonebEditorComponent nonebEditorComponent)
         {
             _component = new LevelEditorComponent(new LevelEditorModule(levelDataSource, editedScene), nonebEditorComponent);
 
-            _mapView = _component.MapView;
+            _gridView = _component.GridView;
             _tileInspectorView = _component.TileInspectorView;
 
             _entitiesPlacer = new EntitiesPlacer(_component);
@@ -37,7 +37,7 @@ namespace NonebNi.Editor.Level
 
         private void OnSceneGUI(SceneView view)
         {
-            _mapView.OnSceneDraw();
+            _gridView.OnSceneDraw();
             _tileInspectorView.OnSceneDraw();
 
             _entitiesPlacer.UpdateEntitiesPlacement();
