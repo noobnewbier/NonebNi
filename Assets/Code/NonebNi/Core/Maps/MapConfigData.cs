@@ -15,13 +15,9 @@ namespace NonebNi.Core.Maps
             this.zSize = zSize;
         }
 
-        public int GetMap2DActualWidth() => xSize;
-        public int GetMap2DActualHeight() => zSize;
+        public int GetMapWidth() => xSize;
+        public int GetMapHeight() => zSize;
 
-        public int GetMap2DArrayWidth() => GetMap2DActualWidth();
-
-        public int GetMap2DArrayHeight() => GetMap2DActualHeight();
-
-        public int GetTotalMapSize() => GetMap2DActualWidth() * GetMap2DActualHeight();
+        public int GetTotalMapSize() => GetMapWidth() * GetMapHeight();
     }
 }

@@ -13,14 +13,14 @@ namespace NonebNi.Core.Maps
         //There is no need to aggressively early exit for now, we are in no need for such optimization
         public static bool TryFindPath(Coordinate start,
                                        Coordinate goal,
-                                       Map map,
+                                       IReadOnlyMap map,
                                        out IList<Coordinate>? path,
                                        int maxCost = int.MaxValue,
                                        bool includeStartingTile = false)
         {
             var tileToDiscover = new SimplePriorityQueue<Coordinate, float>();
             var cameFrom = new Dictionary<Coordinate, Coordinate>();
-            var distanceToTile = new Dictionary<Coordinate, float> {[start] = 0f};
+            var distanceToTile = new Dictionary<Coordinate, float> { [start] = 0f };
 
             tileToDiscover.Enqueue(start, Heuristic(start, goal));
             path = default;
