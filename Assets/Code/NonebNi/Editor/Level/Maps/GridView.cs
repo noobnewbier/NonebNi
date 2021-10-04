@@ -26,8 +26,6 @@ namespace NonebNi.Editor.Level.Maps
             _coordinateAndPositionService = coordinateAndPositionService;
             _worldConfig = worldConfig;
             _presenter = component.CreateMapPresenter(this);
-
-            EditorGUIUtility.TrTempContent(string.Empty);
         }
 
         public void OnSceneDraw()
