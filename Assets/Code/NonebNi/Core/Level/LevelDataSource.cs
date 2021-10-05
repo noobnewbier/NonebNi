@@ -22,12 +22,12 @@ namespace NonebNi.Core.Level
         /// </summary>
         [SerializeField] private SceneAsset? scene;
 
-        [SerializeField] private MapConfigScriptable? mapConfigScriptable;
+        [SerializeField] private Map map = new Map(10, 10);
         [SerializeField] private WorldConfigScriptable? worldConfigScriptable;
 
         public string? SceneName => scene != null ? scene.name : null;
 
-        public bool IsValid => mapConfigScriptable != null && worldConfigScriptable != null && scene != null;
+        public bool IsValid => worldConfigScriptable != null && scene != null;
 
         public WorldConfigScriptable? WorldConfig
         {
@@ -39,16 +39,6 @@ namespace NonebNi.Core.Level
             }
         }
 
-        public MapConfigScriptable? MapConfig
-        {
-            get => mapConfigScriptable;
-            set
-            {
-                mapConfigScriptable = value;
-                DirtyThis();
-            }
-        }
-
         [Conditional("UNITY_EDITOR")]
         private void DirtyThis()
         {
@@ -56,7 +46,7 @@ namespace NonebNi.Core.Level
         }
 
         public LevelData? CreateData() =>
-            IsValid ? new LevelData(mapConfigScriptable!.CreateData(), worldConfigScriptable!.CreateData()) : null;
+            IsValid ? new LevelData(worldConfigScriptable!.CreateData(), map) : null;
 
         public static LevelDataSource CreateSource(Scene scene)
         {

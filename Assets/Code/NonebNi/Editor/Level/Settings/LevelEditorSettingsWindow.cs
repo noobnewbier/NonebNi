@@ -1,9 +1,9 @@
 ﻿using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
 using NonebNi.Editor.Di;
 using NonebNi.Editor.Level.Maps;
 using UnityEditor;
 using UnityEngine;
+using UnityUtils.Editor;
 
 namespace NonebNi.Editor.Level.Settings
 {
@@ -30,12 +30,8 @@ namespace NonebNi.Editor.Level.Settings
                 }
             }
 
-            levelDataSource.MapConfig = EditorGUILayout.ObjectField(
-                nameof(levelDataSource.MapConfig),
-                levelDataSource.MapConfig,
-                typeof(MapConfigScriptable),
-                false
-            ) as MapConfigScriptable;
+            //todo:
+            GUILayout.Label("NOT IMPL: MapDimensions Changes", NonebGUIStyle.Error);
 
             levelDataSource.WorldConfig = EditorGUILayout.ObjectField(
                 nameof(levelDataSource.WorldConfig),

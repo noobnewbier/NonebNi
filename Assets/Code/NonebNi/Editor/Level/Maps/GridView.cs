@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.Editor.Di;
 using UnityEditor;
@@ -16,8 +15,6 @@ namespace NonebNi.Editor.Level.Maps
 
         private readonly GridPresenter _presenter;
         private readonly WorldConfigData _worldConfig;
-
-        private IReadOnlyMap Map => _presenter.Map;
 
         public GridView(ILevelEditorComponent component,
                         CoordinateAndPositionService coordinateAndPositionService,
@@ -40,8 +37,8 @@ namespace NonebNi.Editor.Level.Maps
             var originalZTest = Handles.zTest;
 
             Handles.zTest = CompareFunction.Less;
-            var coordinates = Map.GetAllCoordinates();
-            foreach (var (coordinate, tile) in coordinates.Select(c => (c, Map.Get<TileData>(c))))
+            var coordinates = _presenter.Map.GetAllCoordinates();
+            foreach (var (coordinate, tile) in coordinates.Select(c => (c, _presenter.Map.Get<TileData>(c))))
             {
                 if (tile == null) continue;
 

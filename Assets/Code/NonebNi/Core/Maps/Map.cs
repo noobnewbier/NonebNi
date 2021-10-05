@@ -22,34 +22,54 @@ namespace NonebNi.Core.Maps
     /// <summary>
     /// Storing weight of tiles and units positions.
     /// </summary>
+    [Serializable]
     public class Map : IReadOnlyMap
     {
-        private readonly MapConfigData _mapConfig;
+        private readonly int _height;
         private readonly TileData?[,] _tileGrid;
         private readonly UnitData?[,] _unitGrid;
+        private readonly int _width;
 
-        public Map(IEnumerable<TileData> tiles, IEnumerable<UnitData> units, MapConfigData mapConfig)
+        public Map(IEnumerable<TileData> tiles,
+                   IEnumerable<UnitData> units,
+                   int width,
+                   int height)
         {
-            _mapConfig = mapConfig;
+            _width = width;
+            _height = height;
+
+
+            T[,] CreateGrid<T>(IEnumerable<T> boardItems) where T : EntityData
+            {
+                var grid = new T[_width, _height];
+
+                foreach (var (data, i) in boardItems.Select((data, i) => (data, i)))
+                {
+                    if (data == null) continue;
+
+                    var z = i / _width;
+                    var x = i - z * _width;
+
+                    var coordinate = new StorageCoordinate(x, z);
+                    grid[coordinate.X, coordinate.Z] = data;
+                }
+
+                return grid;
+            }
+
             _tileGrid = CreateGrid(tiles);
             _unitGrid = CreateGrid(units);
-        }
-
-        public Map(IEnumerable<TileData> tiles, MapConfigData mapConfig)
-        {
-            _mapConfig = mapConfig;
-            _tileGrid = CreateGrid(tiles);
-            _unitGrid = CreateGrid(new List<UnitData>());
         }
 
         /// <summary>
         /// Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
         /// </summary>
         /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
-        public Map(MapConfigData mapConfig) : this(
-            Enumerable.Range(0, mapConfig.GetMapHeight() * mapConfig.GetMapWidth())
-                      .Select(_ => new TileData("DEFAULT_NAME", 1)),
-            mapConfig
+        public Map(int width, int height) : this(
+            Enumerable.Range(0, width * height).Select(_ => new TileData("DEFAULT_NAME", 1)),
+            new List<UnitData>(),
+            width,
+            height
         )
         {
         }
@@ -104,8 +124,8 @@ namespace NonebNi.Core.Maps
                 return new Coordinate(x, z);
             }
 
-            for (var x = 0; x < _mapConfig.GetMapWidth(); x++)
-            for (var z = 0; z < _mapConfig.GetMapHeight(); z++)
+            for (var x = 0; x < _width; x++)
+            for (var z = 0; z < _height; z++)
                 yield return GetAxialCoordinateFromIndex(x, z);
         }
 
@@ -113,31 +133,7 @@ namespace NonebNi.Core.Maps
         {
             var storageCoord = StorageCoordinate.FromAxial(coordinate);
 
-            return storageCoord.X < _mapConfig.GetMapWidth() &&
-                   storageCoord.Z < _mapConfig.GetMapHeight() &&
-                   storageCoord.X >= 0 &&
-                   storageCoord.Z >= 0;
-        }
-
-
-        private T[,] CreateGrid<T>(IEnumerable<T> boardItems) where T : EntityData
-        {
-            var mapWidth = _mapConfig.GetMapWidth();
-            var mapHeight = _mapConfig.GetMapHeight();
-            var grid = new T[mapWidth, mapHeight];
-
-            foreach (var (data, i) in boardItems.Select((data, i) => (data, i)))
-            {
-                if (data == null) continue;
-
-                var z = i / mapWidth;
-                var x = i - z * mapWidth;
-
-                var coordinate = new StorageCoordinate(x, z);
-                grid[coordinate.X, coordinate.Z] = data;
-            }
-
-            return grid;
+            return storageCoord.X < _width && storageCoord.Z < _height && storageCoord.X >= 0 && storageCoord.Z >= 0;
         }
 
         private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData

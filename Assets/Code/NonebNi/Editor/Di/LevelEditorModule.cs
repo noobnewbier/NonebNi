@@ -27,7 +27,7 @@ namespace NonebNi.Editor.Di
                 );
 
             _levelData = _levelDataSource.CreateData()!;
-            _map = new Map(_levelData.MapConfig);
+            _map = _levelData.Map;
             _scene = scene;
         }
 
