@@ -1,8 +1,10 @@
 ﻿using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Tiles;
 using NonebNi.Editor.Di;
 using UnityEditor;
 using UnityEngine;
+using UnityUtils.Editor;
 
 namespace NonebNi.Editor.Level.Inspector
 {
@@ -11,14 +13,6 @@ namespace NonebNi.Editor.Level.Inspector
         private const float RectHeight = 100;
         private const float RectWidth = 100;
         private static readonly int WindowID = nameof(TileInspectorView).GetHashCode();
-
-        private static readonly GUIStyle InvalidStyle = new GUIStyle
-        {
-            normal = new GUIStyleState
-            {
-                textColor = new Color(0.5f, 0.5f, 0.5f)
-            }
-        };
 
         private readonly IReadOnlyMap _map;
 
@@ -51,7 +45,7 @@ namespace NonebNi.Editor.Level.Inspector
             {
                 void DrawNotInspectingWindow()
                 {
-                    GUILayout.Label("Not inspecting.", InvalidStyle);
+                    GUILayout.Label("Not inspecting.", NonebGUIStyle.Hint);
                 }
 
                 if (!Camera.current)
@@ -81,6 +75,9 @@ namespace NonebNi.Editor.Level.Inspector
                 }
 
                 GUILayout.Label(coord.ToString());
+
+                if (_map.TryGet<TileData>(coord, out var tile)) GUILayout.Label($"Weight: {tile.Weight}");
+                else GUILayout.Label("TILE IS NOT VALID", NonebGUIStyle.Error);
             }
 
             GUI.Window(

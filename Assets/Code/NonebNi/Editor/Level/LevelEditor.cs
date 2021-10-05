@@ -25,7 +25,8 @@ namespace NonebNi.Editor.Level
             _gridView = _component.GridView;
             _tileInspectorView = _component.TileInspectorView;
 
-            _entitiesPlacer = new EntitiesPlacer(_component);
+            //todo: move the init code into component
+            _entitiesPlacer = new EntitiesPlacer(_component.MapEditingService);
 
             SceneView.duringSceneGui += OnSceneGUI;
         }

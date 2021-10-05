@@ -12,7 +12,7 @@ namespace NonebNi.Core.Maps
     public interface IReadOnlyMap
     {
         T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
-        bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : EntityData;
+        bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData;
         bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
@@ -60,12 +60,15 @@ namespace NonebNi.Core.Maps
             return GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z];
         }
 
-        //Dear unity doesn't support .Net 2.1, so stuffs like MaybeNullWhenAttribute is not available
-        public bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : EntityData
+        public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            t = GetBoardItemWithDefault<T>(storageCoordinate);
+            t = GetBoardItemWithDefault<T>(storageCoordinate)!;
 
+            // no, t can be null here, it's just without some MaybeNullWhenAttribute(as unity doesn't support .net 2.1)
+            // there is no clear way to express my intent here. User should be checking the bool value anyway,
+            // so I think we are safe here.
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             return t != null;
         }
 

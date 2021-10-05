@@ -3,7 +3,7 @@ using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Units;
-using NonebNi.Editor.Di;
+using NonebNi.Editor.Level.Maps;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,11 +15,11 @@ namespace NonebNi.Editor.Level.Entities
     /// </summary>
     public class EntitiesPlacer
     {
-        private readonly EntityService _entityService;
+        private readonly MapEditingService _mapEditingService;
 
-        public EntitiesPlacer(ILevelEditorComponent component)
+        public EntitiesPlacer(MapEditingService entityService)
         {
-            _entityService = component.EntityService;
+            _mapEditingService = entityService;
         }
 
         public void UpdateEntitiesPlacement()
@@ -34,7 +34,7 @@ namespace NonebNi.Editor.Level.Entities
         {
             if (entity == null) return;
 
-            var coordinates = _entityService.FindOverlappedCoordinates(entity).ToArray();
+            var coordinates = _mapEditingService.FindOverlappedCoordinates(entity).ToArray();
 
             //todo: if no overlap
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Editor.Level;
@@ -39,8 +38,5 @@ namespace NonebNi.Editor.Di
 
         public MapEditingService GetMapEditingService(CoordinateAndPositionService coordinateAndPositionService) =>
             new MapEditingService(coordinateAndPositionService, _scene, _map);
-
-        public EntityService GetEntityService(CoordinateAndPositionService coordinateAndPositionService) =>
-            new EntityService(coordinateAndPositionService);
     }
 }

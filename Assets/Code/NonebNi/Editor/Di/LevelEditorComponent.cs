@@ -1,5 +1,4 @@
 ﻿using System;
-using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
 using NonebNi.Editor.Level;
 using NonebNi.Editor.Level.Inspector;
@@ -12,7 +11,6 @@ namespace NonebNi.Editor.Di
         LevelEditorModel LevelEditorModel { get; }
         MapEditingService MapEditingService { get; }
         CoordinateAndPositionService CoordinateAndPositionService { get; }
-        EntityService EntityService { get; }
         NonebEditorModel NonebEditorModel { get; }
 
         GridView GridView { get; }
@@ -25,7 +23,6 @@ namespace NonebNi.Editor.Di
     {
         private readonly Lazy<CoordinateAndPositionService> _lazyCoordinateAndPositionService;
         private readonly Lazy<LevelEditorModel> _lazyEditorDataModel;
-        private readonly Lazy<EntityService> _lazyEntityService;
         private readonly Lazy<MapEditingService> _lazyMapGenerationService;
         private readonly Lazy<GridView> _lazyMapView;
         private readonly Lazy<TileInspectorView> _lazyTileInspectorView;
@@ -38,8 +35,6 @@ namespace NonebNi.Editor.Di
             _lazyMapGenerationService = new Lazy<MapEditingService>(
                 () => module.GetMapEditingService(_lazyCoordinateAndPositionService.Value)
             );
-            _lazyEntityService =
-                new Lazy<EntityService>(() => module.GetEntityService(_lazyCoordinateAndPositionService.Value));
             _lazyMapView = new Lazy<GridView>(
                 () => new GridView(this, CoordinateAndPositionService, module.GetWorldConfigData)
             );
@@ -55,7 +50,6 @@ namespace NonebNi.Editor.Di
         public LevelEditorModel LevelEditorModel => _lazyEditorDataModel.Value;
         public MapEditingService MapEditingService => _lazyMapGenerationService.Value;
         public CoordinateAndPositionService CoordinateAndPositionService => _lazyCoordinateAndPositionService.Value;
-        public EntityService EntityService => _lazyEntityService.Value;
 
         public GridView GridView => _lazyMapView.Value;
         public TileInspectorView TileInspectorView => _lazyTileInspectorView.Value;
