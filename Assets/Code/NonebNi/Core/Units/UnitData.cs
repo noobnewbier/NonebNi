@@ -1,17 +1,22 @@
-﻿using NonebNi.Core.Entities;
+﻿using System;
+using NonebNi.Core.Entities;
 using UnityEngine;
 
 namespace NonebNi.Core.Units
 {
+    [Serializable]
     public class UnitData : EntityData
     {
-        public UnitDataSource Original { get; }
+        [SerializeField] private float maxHealth;
+        [SerializeField] private float health;
 
-        public float MaxHealth => Original.MaxHealth;
-        public float Health => Original.Health;
-
-        public UnitData(Sprite icon, string name) : base(name)
+        public UnitData(string name, float maxHealth, float health) : base(name)
         {
+            this.maxHealth = maxHealth;
+            this.health = health;
         }
+
+        public float MaxHealth => maxHealth;
+        public float Health => health;
     }
 }
