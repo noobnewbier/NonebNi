@@ -26,8 +26,8 @@ namespace NonebNi.Core.Maps
     public class Map : IReadOnlyMap
     {
         private readonly int _height;
-        private readonly TileData?[,] _tileGrid;
-        private readonly UnitData?[,] _unitGrid;
+        private readonly TileData?[] _tileDatas;
+        private readonly UnitData?[] _unitDatas;
         private readonly int _width;
 
         public Map(IEnumerable<TileData> tiles,
@@ -39,26 +39,20 @@ namespace NonebNi.Core.Maps
             _height = height;
 
 
-            T[,] CreateGrid<T>(IEnumerable<T> boardItems) where T : EntityData
+            T[] CreateArray<T>(IEnumerable<T> boardItems) where T : EntityData
             {
-                var grid = new T[_width, _height];
+                var datas = new T[_width * _height];
 
                 foreach (var (data, i) in boardItems.Select((data, i) => (data, i)))
                 {
-                    if (data == null) continue;
-
-                    var z = i / _width;
-                    var x = i - z * _width;
-
-                    var coordinate = new StorageCoordinate(x, z);
-                    grid[coordinate.X, coordinate.Z] = data;
+                    datas[i] = data;
                 }
 
-                return grid;
+                return datas;
             }
 
-            _tileGrid = CreateGrid(tiles);
-            _unitGrid = CreateGrid(units);
+            _tileDatas = CreateArray(tiles);
+            _unitDatas = CreateArray(units);
         }
 
         /// <summary>
@@ -77,7 +71,7 @@ namespace NonebNi.Core.Maps
         public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            return GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z];
+            return GetDatasForType<T>()[storageCoordinate.X + storageCoordinate.Z * _width];
         }
 
         public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData
@@ -101,11 +95,11 @@ namespace NonebNi.Core.Maps
 
         public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
         {
-            var grid = GetGridForType<T>();
+            var grid = GetDatasForType<T>();
 
             for (var x = 0; x < grid.GetLength(0); x++)
             for (var z = 0; z < grid.GetLength(1); z++)
-                if (grid[x, z] == entityData)
+                if (grid[x + z * _width] == entityData)
                 {
                     coordinate = StorageCoordinate.ToAxial(x, z);
                     return true;
@@ -119,9 +113,8 @@ namespace NonebNi.Core.Maps
         {
             Coordinate GetAxialCoordinateFromIndex(int xIndex, int zIndex)
             {
-                var z = zIndex;
-                var x = xIndex - z / 2;
-                return new Coordinate(x, z);
+                var x = xIndex - zIndex / 2;
+                return new Coordinate(x, zIndex);
             }
 
             for (var x = 0; x < _width; x++)
@@ -140,7 +133,7 @@ namespace NonebNi.Core.Maps
         {
             try
             {
-                return GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z];
+                return GetDatasForType<T>()[storageCoordinate.X + storageCoordinate.Z * _width];
             }
             catch (IndexOutOfRangeException)
             {
@@ -151,15 +144,15 @@ namespace NonebNi.Core.Maps
         public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            GetGridForType<T>()[storageCoordinate.X, storageCoordinate.Z] = value;
+            GetDatasForType<T>()[storageCoordinate.X + storageCoordinate.Z * _width] = value;
         }
 
-        private T?[,] GetGridForType<T>() where T : EntityData
+        private T?[] GetDatasForType<T>() where T : EntityData
         {
-            if (_tileGrid is T[,] tileGrid)
-                return tileGrid;
-            if (_unitGrid is T[,] unitGrid)
-                return unitGrid;
+            if (_tileDatas is T[] tiles)
+                return tiles;
+            if (_unitDatas is T[] units)
+                return units;
 
             throw new ArgumentOutOfRangeException($"{typeof(T).Name} is not implemented");
         }

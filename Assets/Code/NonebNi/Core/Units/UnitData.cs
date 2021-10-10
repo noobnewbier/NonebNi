@@ -10,9 +10,8 @@ namespace NonebNi.Core.Units
         public float MaxHealth => Original.MaxHealth;
         public float Health => Original.Health;
 
-        public UnitData(Sprite icon, string name, UnitDataSource original) : base(name)
+        public UnitData(Sprite icon, string name) : base(name)
         {
-            Original = original;
         }
     }
 }

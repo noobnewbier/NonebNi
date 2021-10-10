@@ -13,6 +13,6 @@ namespace NonebNi.Core.Units
         public float MaxHealth => maxHealth;
         public float Health => health;
 
-        public override UnitData CreateData() => new UnitData(icon, entityName, this);
+        public override UnitData CreateData() => new UnitData(icon, entityName);
     }
 }
