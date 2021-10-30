@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using NonebNi.Core.Level;
-using NonebNi.Core.Tiles;
 using NonebNi.Editor.Di;
 using UnityEditor;
 using UnityEngine.Rendering;
@@ -38,15 +37,17 @@ namespace NonebNi.Editor.Level.Maps
 
             Handles.zTest = CompareFunction.Less;
             var coordinates = _presenter.Map.GetAllCoordinates();
-            foreach (var (coordinate, tile) in coordinates.Select(c => (c, _presenter.Map.Get<TileData>(c))))
+
+            foreach (var coordinate in coordinates)
             {
-                if (tile == null) continue;
+                if (_presenter.Map.TryGet(coordinate, out _))
+                {
+                    var center = _coordinateAndPositionService.FindPosition(coordinate);
 
-                var center = _coordinateAndPositionService.FindPosition(coordinate);
-
-                var corners = _worldConfig.TileCornersOffset.Select(c => center + c).ToList();
-                Handles.DrawLine(corners[0], corners[5]);
-                for (var i = 0; i < corners.Count - 1; i++) Handles.DrawLine(corners[i], corners[i + 1]);
+                    var corners = _worldConfig.TileCornersOffset.Select(c => center + c).ToList();
+                    Handles.DrawLine(corners[0], corners[5]);
+                    for (var i = 0; i < corners.Count - 1; i++) Handles.DrawLine(corners[i], corners[i + 1]);
+                }
             }
 
             Handles.zTest = originalZTest;

@@ -1,24 +1,26 @@
 ﻿using System;
-using NonebNi.Core.Entities;
 using UnityEngine;
 
 namespace NonebNi.Core.Tiles
 {
     /// <summary>
-    /// Todo: refactor such that tile is no longer an entity -> this seems inherently off... or is it?
+    /// The actual data to be placed in the map
     /// </summary>
     [Serializable]
-    public class TileData : EntityData
+    public struct TileData
     {
         public static readonly TileData Default = new TileData("Default", 1);
 
-
         [SerializeField] private float weight;
+        [SerializeField] private string name;
 
-        public TileData(string name, float weight) : base(name)
+        public TileData(string name, float weight)
         {
+            this.name = name;
             this.weight = weight;
         }
+
+        public string Name => name;
 
         public float Weight => weight;
     }

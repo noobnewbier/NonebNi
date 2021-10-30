@@ -1,6 +1,5 @@
 ﻿using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
-using NonebNi.Core.Tiles;
 using NonebNi.Editor.Di;
 using UnityEditor;
 using UnityEngine;
@@ -72,7 +71,7 @@ namespace NonebNi.Editor.Level.Inspector
 
                 GUILayout.Label(coord.ToString());
 
-                if (_map.TryGet<TileData>(coord, out var tile)) GUILayout.Label($"Weight: {tile.Weight}");
+                if (_map.TryGet(coord, out var tile)) GUILayout.Label($"Weight: {tile.Weight}");
                 else GUILayout.Label("TILE IS NOT VALID", NonebGUIStyle.Error);
             }
 

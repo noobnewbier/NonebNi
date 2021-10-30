@@ -11,6 +11,8 @@ namespace NonebNi.Core.Maps
 {
     public interface IReadOnlyMap
     {
+        bool TryGet(Coordinate axialCoordinate, out TileData tileData);
+        TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData;
         bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
@@ -21,14 +23,17 @@ namespace NonebNi.Core.Maps
 
     /// <summary>
     /// Storing weight of tiles and units positions.
+    /// Moving forward we probably want to "merge" separate grid into one, with tile datas holding reference to all units and stuffs.
     /// </summary>
     [Serializable]
     public class Map : IReadOnlyMap
     {
         [SerializeField] private int height;
         [SerializeField] private int width;
-        [SerializeField] private TileData?[] tileDatas;
+        [SerializeField] private TileData[] tileDatas;
         [SerializeField] private UnitData?[] unitDatas;
+
+        #region Init
 
         public Map(IEnumerable<TileData> tiles,
                    IEnumerable<UnitData> units,
@@ -39,7 +44,7 @@ namespace NonebNi.Core.Maps
             this.height = height;
 
 
-            T[] CreateArray<T>(IEnumerable<T> boardItems) where T : EntityData
+            T[] CreateArray<T>(IEnumerable<T> boardItems)
             {
                 var datas = new T[this.width * this.height];
 
@@ -67,6 +72,52 @@ namespace NonebNi.Core.Maps
         )
         {
         }
+
+        #endregion
+
+        #region Tile specifics
+
+        /*
+         * As C# 8.0 doesn't support generics that can deal with both nullable reference and value type,
+         * we can't share the helper method such as GetBoardItemWithDefaults here
+         *
+         * The best thing we can do without changing the TileData from a struct to class is to write the same code twice here
+         * :sad face:
+         */
+
+        public bool TryGet(Coordinate axialCoordinate, out TileData tileData)
+        {
+            tileData = default;
+
+            try
+            {
+                var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+                tileData = tileDatas[GetIndexFromCoordinate(storageCoordinate)];
+                return true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+        }
+
+        public TileData Get(Coordinate axialCoordinate)
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+
+            return tileDatas[GetIndexFromCoordinate(storageCoordinate)];
+        }
+
+        public void Set(Coordinate axialCoordinate, TileData tileData)
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+
+            tileDatas[GetIndexFromCoordinate(storageCoordinate)] = tileData;
+        }
+
+        #endregion
+
+        #region Entity
 
         public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
@@ -109,6 +160,45 @@ namespace NonebNi.Core.Maps
             return false;
         }
 
+        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
+        {
+            try
+            {
+                return GetDatasForType<T>()[GetIndexFromCoordinate(storageCoordinate)];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return default;
+            }
+        }
+
+        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+            GetDatasForType<T>()[GetIndexFromCoordinate(storageCoordinate)] = value;
+        }
+
+        public bool TryMoveEntityTo<T>(T entityData, Coordinate coordinate) where T : EntityData
+        {
+            if (TryFind(entityData, out var currentCoordinate))
+                //todo: how do we deal with tile modifier?
+                return true;
+
+            return false;
+        }
+
+        private T?[] GetDatasForType<T>() where T : EntityData
+        {
+            if (unitDatas is T[] units)
+                return units;
+
+            throw new ArgumentOutOfRangeException($"{typeof(T).Name} is not implemented");
+        }
+
+        #endregion
+
+        #region Coordinates
+
         public IEnumerable<Coordinate> GetAllCoordinates()
         {
             Coordinate GetAxialCoordinateFromIndex(int xIndex, int zIndex)
@@ -129,42 +219,9 @@ namespace NonebNi.Core.Maps
             return storageCoord.X < width && storageCoord.Z < height && storageCoord.X >= 0 && storageCoord.Z >= 0;
         }
 
-        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
-        {
-            try
-            {
-                return GetDatasForType<T>()[storageCoordinate.X + storageCoordinate.Z * width];
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return null;
-            }
-        }
+        private int GetIndexFromCoordinate(StorageCoordinate storageCoordinate) =>
+            storageCoordinate.X + storageCoordinate.Z * width;
 
-        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            GetDatasForType<T>()[storageCoordinate.X + storageCoordinate.Z * width] = value;
-        }
-
-        public bool TryMoveEntityTo<T>(T entityData, Coordinate coordinate) where T : EntityData
-        {
-            if (TryFind(entityData, out var currentCoordinate))
-                //todo: how do we deal with tile modifier?
-                return true;
-
-            return false;
-        }
-
-        private T?[] GetDatasForType<T>() where T : EntityData
-        {
-            if (tileDatas is T[] tiles)
-                return tiles;
-            if (unitDatas is T[] units)
-                return units;
-
-            throw new ArgumentOutOfRangeException($"{typeof(T).Name} is not implemented");
-        }
 
         /// <summary>
         /// The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
@@ -191,5 +248,7 @@ namespace NonebNi.Core.Maps
 
             public static Coordinate ToAxial(int x, int z) => new Coordinate(Mathf.CeilToInt(x - z / 2), z);
         }
+
+        #endregion
     }
 }
