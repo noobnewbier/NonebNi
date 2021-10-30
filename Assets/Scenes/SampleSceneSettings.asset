@@ -109,7 +109,10 @@ MonoBehaviour:
       tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
+    - serializedUnitDatas:
+      - name: 
+        maxHealth: 100
+        health: 100
       tileData:
         weight: 1
         name: 
