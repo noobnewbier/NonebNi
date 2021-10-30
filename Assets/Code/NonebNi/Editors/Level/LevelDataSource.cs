@@ -76,6 +76,8 @@ namespace NonebNi.Editors.Level
                 worldConfigScriptable = WorldConfigSource.Create(levelData.WorldConfig);
                 AssetDatabase.CreateAsset(worldConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
             }
+
+            DirtyThis();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using NonebNi.Core.Level;
+using UnityEditor;
 using UnityEngine;
 using UnityUtils.Constants;
 
@@ -40,6 +41,8 @@ namespace NonebNi.Editors.Level
             innerRadius = worldConfigData.InnerRadius;
             upAxis = worldConfigData.UpAxis;
             mapStartingPosition = worldConfigData.MapStartingPosition;
+
+            EditorUtility.SetDirty(this);
         }
     }
 }

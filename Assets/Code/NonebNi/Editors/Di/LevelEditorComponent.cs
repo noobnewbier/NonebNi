@@ -5,6 +5,7 @@ using NonebNi.Editors.Level.Entities;
 using NonebNi.Editors.Level.Error;
 using NonebNi.Editors.Level.Inspector;
 using NonebNi.Editors.Level.Maps;
+using NonebNi.Editors.Level.Settings;
 
 namespace NonebNi.Editors.Di
 {
@@ -14,6 +15,7 @@ namespace NonebNi.Editors.Di
         MapSyncService MapSyncService { get; }
         CoordinateAndPositionService CoordinateAndPositionService { get; }
         EditorEntityPositioningService EditorEntityPositioningService { get; }
+        LevelSavingService LevelSavingService { get; }
         NonebEditorModel NonebEditorModel { get; }
         EntitiesPlacer EntitiesPlacer { get; }
         ErrorChecker ErrorChecker { get; }
@@ -33,6 +35,7 @@ namespace NonebNi.Editors.Di
         private readonly Lazy<EntitiesPlacer> _lazyEntitiesPlacer;
         private readonly Lazy<ErrorChecker> _lazyErrorChecker;
         private readonly Lazy<ErrorOverviewView> _lazyErrorOverviewView;
+        private readonly Lazy<LevelSavingService> _lazyLevelSavingService;
         private readonly Lazy<MapSyncService> _lazyMapEditingService;
         private readonly Lazy<GridView> _lazyMapView;
         private readonly Lazy<TileInspectorView> _lazyTileInspectorView;
@@ -46,6 +49,7 @@ namespace NonebNi.Editors.Di
             _lazyEditorEntityPositioningService = new Lazy<EditorEntityPositioningService>(
                 () => module.GetEditorEntityPositioningService(CoordinateAndPositionService)
             );
+            _lazyLevelSavingService = new Lazy<LevelSavingService>(module.GetLevelSavingService);
             _lazyMapEditingService =
                 new Lazy<MapSyncService>(() => module.GetMapSyncService(EditorEntityPositioningService));
             _lazyEntitiesPlacer = new Lazy<EntitiesPlacer>(
@@ -66,7 +70,7 @@ namespace NonebNi.Editors.Di
 
         //todo: pass in a setting class instead
         public NonebEditorModel NonebEditorModel { get; }
-
+        public LevelSavingService LevelSavingService => _lazyLevelSavingService.Value;
         public EntitiesPlacer EntitiesPlacer => _lazyEntitiesPlacer.Value;
         public ErrorChecker ErrorChecker => _lazyErrorChecker.Value;
         public LevelEditorModel LevelEditorModel => _lazyEditorDataModel.Value;

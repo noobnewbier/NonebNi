@@ -5,6 +5,7 @@ using NonebNi.Editors.Level;
 using NonebNi.Editors.Level.Entities;
 using NonebNi.Editors.Level.Error;
 using NonebNi.Editors.Level.Maps;
+using NonebNi.Editors.Level.Settings;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editors.Di
@@ -52,5 +53,8 @@ namespace NonebNi.Editors.Di
 
         public ErrorChecker GetErrorChecker(EditorEntityPositioningService editorEntityPositioningService) =>
             new ErrorChecker(editorEntityPositioningService, _scene);
+
+        public LevelSavingService GetLevelSavingService() =>
+            new LevelSavingService(_levelDataSource, _levelData);
     }
 }
