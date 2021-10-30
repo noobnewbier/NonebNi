@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
-using NonebNi.Core.Units;
 using UnityEngine;
 
 namespace NonebNi.Core.Maps
@@ -23,54 +21,31 @@ namespace NonebNi.Core.Maps
 
     /// <summary>
     /// Storing weight of tiles and units positions.
-    /// Moving forward we probably want to "merge" separate grid into one, with tile datas holding reference to all units and stuffs.
+    ///
+    /// We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best to recover
     /// </summary>
     [Serializable]
     public class Map : IReadOnlyMap
     {
         [SerializeField] private int height;
         [SerializeField] private int width;
-        [SerializeField] private TileData[] tileDatas;
-        [SerializeField] private UnitData?[] unitDatas;
+        [SerializeField] private Node[] nodes;
 
         #region Init
-
-        public Map(IEnumerable<TileData> tiles,
-                   IEnumerable<UnitData> units,
-                   int width,
-                   int height)
-        {
-            this.width = width;
-            this.height = height;
-
-
-            T[] CreateArray<T>(IEnumerable<T> boardItems)
-            {
-                var datas = new T[this.width * this.height];
-
-                foreach (var (data, i) in boardItems.Select((data, i) => (data, i)))
-                {
-                    datas[i] = data;
-                }
-
-                return datas;
-            }
-
-            tileDatas = CreateArray(tiles);
-            unitDatas = CreateArray(units);
-        }
 
         /// <summary>
         /// Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
         /// </summary>
         /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
-        public Map(int width, int height) : this(
-            Enumerable.Range(0, width * height).Select(_ => new TileData("DEFAULT_NAME", 1)),
-            new List<UnitData>(),
-            width,
-            height
-        )
+        public Map(int width, int height)
         {
+            this.width = width;
+            this.height = height;
+            nodes = new Node[this.width * this.height];
+
+            for (var x = 0; x < width; x++)
+            for (var z = 0; z < height; z++)
+                nodes[GetIndexFromStorageCoordinate(x, z)] = new Node(TileData.Default);
         }
 
         #endregion
@@ -92,7 +67,7 @@ namespace NonebNi.Core.Maps
             try
             {
                 var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-                tileData = tileDatas[GetIndexFromCoordinate(storageCoordinate)];
+                tileData = nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData;
                 return true;
             }
             catch (IndexOutOfRangeException)
@@ -105,14 +80,14 @@ namespace NonebNi.Core.Maps
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
 
-            return tileDatas[GetIndexFromCoordinate(storageCoordinate)];
+            return nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData;
         }
 
         public void Set(Coordinate axialCoordinate, TileData tileData)
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
 
-            tileDatas[GetIndexFromCoordinate(storageCoordinate)] = tileData;
+            nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData.CopyValueFrom(tileData);
         }
 
         #endregion
@@ -122,7 +97,7 @@ namespace NonebNi.Core.Maps
         public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            return GetDatasForType<T>()[storageCoordinate.X + storageCoordinate.Z * width];
+            return nodes[storageCoordinate.X + storageCoordinate.Z * width].Get<T>();
         }
 
         public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData
@@ -146,13 +121,11 @@ namespace NonebNi.Core.Maps
 
         public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
         {
-            var grid = GetDatasForType<T>();
-
-            for (var x = 0; x < grid.GetLength(0); x++)
-            for (var z = 0; z < grid.GetLength(1); z++)
-                if (grid[x + z * width] == entityData)
+            for (var i = 0; i < nodes.Length; i++)
+                if (nodes[i].Has(entityData))
                 {
-                    coordinate = StorageCoordinate.ToAxial(x, z);
+                    var storageCoordinate = StorageCoordinateFromIndex(i);
+                    coordinate = storageCoordinate.ToAxial();
                     return true;
                 }
 
@@ -164,7 +137,7 @@ namespace NonebNi.Core.Maps
         {
             try
             {
-                return GetDatasForType<T>()[GetIndexFromCoordinate(storageCoordinate)];
+                return nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Get<T>();
             }
             catch (IndexOutOfRangeException)
             {
@@ -175,7 +148,7 @@ namespace NonebNi.Core.Maps
         public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            GetDatasForType<T>()[GetIndexFromCoordinate(storageCoordinate)] = value;
+            nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
         }
 
         public bool TryMoveEntityTo<T>(T entityData, Coordinate coordinate) where T : EntityData
@@ -185,14 +158,6 @@ namespace NonebNi.Core.Maps
                 return true;
 
             return false;
-        }
-
-        private T?[] GetDatasForType<T>() where T : EntityData
-        {
-            if (unitDatas is T[] units)
-                return units;
-
-            throw new ArgumentOutOfRangeException($"{typeof(T).Name} is not implemented");
         }
 
         #endregion
@@ -219,9 +184,19 @@ namespace NonebNi.Core.Maps
             return storageCoord.X < width && storageCoord.Z < height && storageCoord.X >= 0 && storageCoord.Z >= 0;
         }
 
-        private int GetIndexFromCoordinate(StorageCoordinate storageCoordinate) =>
-            storageCoordinate.X + storageCoordinate.Z * width;
+        private int GetIndexFromStorageCoordinate(StorageCoordinate storageCoordinate) =>
+            GetIndexFromStorageCoordinate(storageCoordinate.X, storageCoordinate.Z);
 
+        private int GetIndexFromStorageCoordinate(int x, int z) =>
+            x + z * width;
+
+        private StorageCoordinate StorageCoordinateFromIndex(int i)
+        {
+            var z = i / width;
+            var x = i - z;
+
+            return new StorageCoordinate(x, z);
+        }
 
         /// <summary>
         /// The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
@@ -245,6 +220,8 @@ namespace NonebNi.Core.Maps
                 var x = coordinate.X + z / 2;
                 return new StorageCoordinate(x, z);
             }
+
+            public Coordinate ToAxial() => ToAxial(X, Z);
 
             public static Coordinate ToAxial(int x, int z) => new Coordinate(Mathf.CeilToInt(x - z / 2), z);
         }

@@ -23,5 +23,11 @@ namespace NonebNi.Core.Tiles
         public string Name => name;
 
         public float Weight => weight;
+
+        public void CopyValueFrom(TileData tileData)
+        {
+            weight = tileData.weight;
+            name = tileData.name;
+        }
     }
 }
