@@ -37,9 +37,7 @@ namespace NonebNi.Core.Maps
                     }
 
                     //we ignore the starting tile when calculating the cost
-                    //using null forgiving operator as we won't be looking at coordinates without a tile during path finding.
-                    //(future me, plz refactor this, your younger-self is too lazy)
-                    var pathCost = path.Select(map.Get).Sum(t => t!.Weight);
+                    var pathCost = path.Select(map.Get).Sum(t => t.Weight);
                     if (includeStartingTile) path.Add(start);
 
                     path = path.Reverse().ToList();
