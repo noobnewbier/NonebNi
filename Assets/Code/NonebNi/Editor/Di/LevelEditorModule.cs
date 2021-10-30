@@ -2,6 +2,8 @@
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Editor.Level;
+using NonebNi.Editor.Level.Entities;
+using NonebNi.Editor.Level.Error;
 using NonebNi.Editor.Level.Maps;
 using UnityEngine.SceneManagement;
 
@@ -36,7 +38,15 @@ namespace NonebNi.Editor.Di
 
         public LevelEditorModel GetLevelEditorDataModel() => new LevelEditorModel(_levelData, _map, _levelDataSource);
 
-        public MapEditingService GetMapEditingService(CoordinateAndPositionService coordinateAndPositionService) =>
-            new MapEditingService(coordinateAndPositionService, _scene, _map);
+        public MapSyncService GetMapEditingService(CoordinateAndPositionService coordinateAndPositionService) =>
+            new MapSyncService(coordinateAndPositionService, _scene, _map);
+
+        public EntitiesPlacer GetEntitiesPlacer(MapSyncService mapSyncService,
+                                                CoordinateAndPositionService coordinateAndPositionService,
+                                                ErrorChecker errorChecker) =>
+            new EntitiesPlacer(mapSyncService, coordinateAndPositionService, errorChecker);
+
+        public ErrorChecker GetErrorChecker(CoordinateAndPositionService coordinateAndPositionService) =>
+            new ErrorChecker(coordinateAndPositionService, _scene);
     }
 }

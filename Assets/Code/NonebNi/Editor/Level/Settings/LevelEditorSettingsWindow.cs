@@ -10,7 +10,7 @@ namespace NonebNi.Editor.Level.Settings
     public class LevelEditorSettingsWindow : EditorWindow
     {
         private LevelEditorModel _dataModel = null!;
-        private MapEditingService _mapEditingService = null!;
+        private MapSyncService _mapSyncService = null!;
 
         private void OnGUI()
         {
@@ -40,7 +40,7 @@ namespace NonebNi.Editor.Level.Settings
                 false
             ) as WorldConfigScriptable;
 
-            if (GUILayout.Button("Refresh")) _mapEditingService.RefreshMap();
+            if (GUILayout.Button("Refresh")) _mapSyncService.Sync();
 
 
             if (GUILayout.Button("Done"))
@@ -51,7 +51,7 @@ namespace NonebNi.Editor.Level.Settings
         {
             var toReturn = CreateInstance<LevelEditorSettingsWindow>();
             toReturn._dataModel = component.LevelEditorModel;
-            toReturn._mapEditingService = component.MapEditingService;
+            toReturn._mapSyncService = component.MapSyncService;
 
             return toReturn;
         }

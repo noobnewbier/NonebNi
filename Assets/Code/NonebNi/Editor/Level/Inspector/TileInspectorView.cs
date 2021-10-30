@@ -10,8 +10,10 @@ namespace NonebNi.Editor.Level.Inspector
 {
     public class TileInspectorView
     {
-        private const float RectHeight = 100;
-        private const float RectWidth = 100;
+        private const float MinRectHeight = 100;
+        private const float MinRectWidth = 100;
+        public static readonly Vector2 WindowSize = new Vector2(MinRectWidth, MinRectHeight);
+
         private static readonly int WindowID = nameof(TileInspectorView).GetHashCode();
 
         private readonly IReadOnlyMap _map;
@@ -29,17 +31,11 @@ namespace NonebNi.Editor.Level.Inspector
             _gridPlane = new Plane(Vector3.up, worldConfigData.MapStartingPosition);
         }
 
-        public void OnSceneDraw()
+        public void OnSceneDraw(Vector2 position)
         {
             if (!_presenter.IsDrawing) return;
 
-            var sceneViewSize = SceneView.lastActiveSceneView.position.size;
-            var rect = new Rect(
-                0,
-                sceneViewSize.y - RectHeight,
-                RectWidth,
-                RectHeight
-            );
+            var rect = new Rect(position, WindowSize);
 
             void WindowFunc(int _)
             {

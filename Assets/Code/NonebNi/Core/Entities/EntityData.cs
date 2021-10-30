@@ -1,9 +1,7 @@
 ﻿namespace NonebNi.Core.Entities
 {
     /// <summary>
-    /// it's slightly hacky to prevent the need to create a bunch of scriptable of each new levels,
-    /// another approach is to allow scriptable to reference another scriptable to make a prefab like structure,
-    /// but that would be way too complicated for our needs for now
+    /// Todo: add in SAUCE so the change of one data reflects on all level(or just all units in the same scene)
     /// </summary>
     public abstract class EntityData
     {

@@ -147,6 +147,15 @@ namespace NonebNi.Core.Maps
             GetDatasForType<T>()[storageCoordinate.X + storageCoordinate.Z * width] = value;
         }
 
+        public bool TryMoveEntityTo<T>(T entityData, Coordinate coordinate) where T : EntityData
+        {
+            if (TryFind(entityData, out var currentCoordinate))
+                //todo: how do we deal with tile modifier?
+                return true;
+
+            return false;
+        }
+
         private T?[] GetDatasForType<T>() where T : EntityData
         {
             if (tileDatas is T[] tiles)

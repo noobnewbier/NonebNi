@@ -13,5 +13,309 @@ MonoBehaviour:
   m_Name: SampleSceneSettings
   m_EditorClassIdentifier: 
   scene: {fileID: 102900000, guid: d1c3109bdb54ad54c8a2b2838528e640, type: 3}
-  mapConfigScriptable: {fileID: 11400000, guid: 386be42395b268f41a6da89978621554, type: 2}
+  map:
+    height: 10
+    width: 10
+    tileDatas:
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    - weight: 1
+    unitDatas:
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
+    - maxHealth: 0
+      health: 0
   worldConfigScriptable: {fileID: 11400000, guid: 5aff3723d83826146b1e0d681e761d21, type: 2}
