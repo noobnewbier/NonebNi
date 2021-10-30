@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace NonebNi.Core.Maps
 {
-    public partial class Node
+    public partial class Node : ISerializationCallbackReceiver
     {
         [SerializeField] private UnitData[] serializedUnitDatas = Array.Empty<UnitData>();
 
