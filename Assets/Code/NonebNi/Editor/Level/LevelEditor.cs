@@ -2,10 +2,12 @@
 using NonebNi.Core.Level;
 using NonebNi.Editor.Di;
 using NonebNi.Editor.Level.Entities;
+using NonebNi.Editor.Level.Error;
 using NonebNi.Editor.Level.Inspector;
 using NonebNi.Editor.Level.Maps;
 using NonebNi.Editor.Level.Settings;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editor.Level
@@ -14,6 +16,7 @@ namespace NonebNi.Editor.Level
     {
         private readonly LevelEditorComponent _component;
         private readonly EntitiesPlacer _entitiesPlacer;
+        private readonly ErrorOverviewView _errorOverviewView;
 
         private readonly GridView _gridView;
         private readonly TileInspectorView _tileInspectorView;
@@ -24,9 +27,8 @@ namespace NonebNi.Editor.Level
 
             _gridView = _component.GridView;
             _tileInspectorView = _component.TileInspectorView;
-
-            //todo: move the init code into component
-            _entitiesPlacer = new EntitiesPlacer(_component.MapEditingService);
+            _errorOverviewView = _component.ErrorOverviewView;
+            _entitiesPlacer = _component.EntitiesPlacer;
 
             SceneView.duringSceneGui += OnSceneGUI;
         }
@@ -39,7 +41,11 @@ namespace NonebNi.Editor.Level
         private void OnSceneGUI(SceneView view)
         {
             _gridView.OnSceneDraw();
-            _tileInspectorView.OnSceneDraw();
+
+            var sceneViewSize = SceneView.lastActiveSceneView.position.size;
+            var position = new Vector2(0, sceneViewSize.y - TileInspectorView.WindowSize.y);
+            _tileInspectorView.OnSceneDraw(position);
+            _errorOverviewView.OnSceneDraw(position + Vector2.down * ErrorOverviewView.WindowSize.y);
 
             _entitiesPlacer.UpdateEntitiesPlacement();
         }
