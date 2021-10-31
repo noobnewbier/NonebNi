@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using NonebNi.Editors.Level.Entities;
+using Code.NonebNi.EditorComponent.Entities;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;

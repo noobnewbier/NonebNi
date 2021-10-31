@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Code.NonebNi.EditorComponent.Entities;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
 

@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.Editors.Level.Entities
+namespace Code.NonebNi.EditorComponent.Entities
 {
     public partial class Entity<T> where T : EntityData
     {

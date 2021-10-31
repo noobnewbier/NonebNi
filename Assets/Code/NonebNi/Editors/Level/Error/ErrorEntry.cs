@@ -1,4 +1,4 @@
-﻿using NonebNi.Editors.Level.Entities;
+﻿using Code.NonebNi.EditorComponent.Entities;
 
 namespace NonebNi.Editors.Level.Error
 {

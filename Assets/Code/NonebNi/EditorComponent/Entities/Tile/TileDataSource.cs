@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NonebNi.Editors.Level.Entities.Tile
+namespace Code.NonebNi.EditorComponent.Entities.Tile
 {
     [CreateAssetMenu(menuName = "Data/Tile", fileName = "TileData")]
     public class TileDataSource : EntityDataSource<TileEntityData>

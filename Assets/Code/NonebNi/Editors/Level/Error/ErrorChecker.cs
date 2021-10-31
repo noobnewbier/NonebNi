@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Code.NonebNi.EditorComponent.Entities;
+using Code.NonebNi.EditorComponent.Entities.Tile;
+using Code.NonebNi.EditorComponent.Entities.Unit;
 using NonebNi.Editors.Level.Entities;
-using NonebNi.Editors.Level.Entities.Tile;
-using NonebNi.Editors.Level.Entities.Units;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editors.Level.Error

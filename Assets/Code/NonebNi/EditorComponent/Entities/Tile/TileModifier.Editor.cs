@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace NonebNi.Editors.Level.Entities.Tile
+namespace Code.NonebNi.EditorComponent.Entities.Tile
 {
     public partial class TileModifier : Entity<TileEntityData>
     {

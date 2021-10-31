@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace NonebNi.Editors.Level.Entities.Units
+namespace Code.NonebNi.EditorComponent.Entities.Unit
 {
     public partial class Unit
     {

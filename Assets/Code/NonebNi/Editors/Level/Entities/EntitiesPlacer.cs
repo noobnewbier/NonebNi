@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Code.NonebNi.EditorComponent.Entities;
+using Code.NonebNi.EditorComponent.Entities.Tile;
+using Code.NonebNi.EditorComponent.Entities.Unit;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
-using NonebNi.Editors.Level.Entities.Tile;
-using NonebNi.Editors.Level.Entities.Units;
 using NonebNi.Editors.Level.Error;
 using NonebNi.Editors.Level.Maps;
 using UnityEditor;

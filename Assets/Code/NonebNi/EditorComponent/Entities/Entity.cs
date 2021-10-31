@@ -1,7 +1,7 @@
 ﻿using NonebNi.Core.Entities;
 using UnityEngine;
 
-namespace NonebNi.Editors.Level.Entities
+namespace Code.NonebNi.EditorComponent.Entities
 {
     /// <summary>
     /// An <see cref="Entity" /> is something that can be placed on the board within SceneView.

@@ -3,7 +3,7 @@ using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
 using UnityEngine;
 
-namespace NonebNi.Editors.Level.Entities.Tile
+namespace Code.NonebNi.EditorComponent.Entities.Tile
 {
     [Serializable]
     public class TileEntityData : EntityData

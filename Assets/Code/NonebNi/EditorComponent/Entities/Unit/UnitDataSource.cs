@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityUtils.Constants;
 
-namespace NonebNi.Editors.Level.Entities.Units
+namespace Code.NonebNi.EditorComponent.Entities.Unit
 {
     [CreateAssetMenu(fileName = nameof(UnitDataSource), menuName = MenuName.Data + nameof(UnitDataSource))]
     public class UnitDataSource : EntityDataSource<UnitData>

@@ -1,0 +1,17 @@
+{
+  "name": "NonebNi.EditorComponent",
+  "rootNamespace": "",
+  "references": [
+    "GUID:8c9f0f875c743b643bbea480a5e687c3",
+    "GUID:acf43146c4364d2419bdbdeac67deb96"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
