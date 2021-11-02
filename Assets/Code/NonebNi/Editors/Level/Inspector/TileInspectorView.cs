@@ -9,9 +9,10 @@ namespace NonebNi.Editors.Level.Inspector
 {
     public class TileInspectorView
     {
-        private const float MinRectHeight = 100;
         private const float MinRectWidth = 100;
-        public static readonly Vector2 WindowSize = new Vector2(MinRectWidth, MinRectHeight);
+        private static readonly Vector2 TitleSize = new Vector2(MinRectWidth, 20);
+        private static readonly Vector2 ContentSize = new Vector2(MinRectWidth, 100);
+        public static readonly Vector2 WindowSize = new Vector2(MinRectWidth, TitleSize.y + ContentSize.y);
 
         private static readonly int WindowID = nameof(TileInspectorView).GetHashCode();
 
@@ -30,13 +31,19 @@ namespace NonebNi.Editors.Level.Inspector
             _gridPlane = new Plane(Vector3.up, worldConfigData.MapStartingPosition);
         }
 
-        public void OnSceneDraw(Vector2 position)
+        public void OnSceneDraw(Vector2 startingPosition)
         {
             if (!_presenter.IsDrawing) return;
+            Handles.BeginGUI();
 
-            var rect = new Rect(position, WindowSize);
+            var rect = new Rect(startingPosition, WindowSize);
+            GUI.Box(rect, GUIContent.none, NonebGUIStyle.SceneHelpBox);
 
-            void WindowFunc(int _)
+            var titleRect = new Rect(startingPosition, TitleSize);
+            GUI.Label(titleRect, "TileInspector", NonebGUIStyle.Title);
+
+            var contentRect = new Rect(startingPosition + Vector2.up * TitleSize.y, ContentSize);
+            using (new GUILayout.AreaScope(contentRect))
             {
                 void DrawNotInspectingWindow()
                 {
@@ -75,15 +82,11 @@ namespace NonebNi.Editors.Level.Inspector
                 else GUILayout.Label("TILE IS NOT VALID", NonebGUIStyle.Error);
             }
 
-            GUI.Window(
-                WindowID,
-                rect,
-                WindowFunc,
-                "TileInspector"
-            );
 
             //Required to force a refresh next frame. Otherwise the inspector won't update as the mouse move.
             EditorApplication.delayCall += SceneView.RepaintAll;
+
+            Handles.EndGUI();
         }
     }
 }
