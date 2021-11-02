@@ -11,7 +11,7 @@ namespace NonebNi.Editors.Toolbar
         public readonly NonebEditor NonebEditor;
 
         public bool IsGridVisible => _model.IsGridVisible;
-        public bool IsGizmosVisible => _model.IsInspectorVisible;
+        public bool IsHelperWindowsVisible => _model.IsHelperWindowsVisible;
 
         public SceneToolbarPresenter(NonebEditorToolbarView view, INonebEditorComponent component)
         {
@@ -25,9 +25,9 @@ namespace NonebNi.Editors.Toolbar
             _model.IsGridVisible = !_model.IsGridVisible;
         }
 
-        public void OnToggleGizmosVisibility()
+        public void OnToggleHelperWindowsVisibility()
         {
-            _model.IsInspectorVisible = !_model.IsInspectorVisible;
+            _model.IsHelperWindowsVisible = !_model.IsHelperWindowsVisible;
         }
 
         public void ConvertActiveSceneToLevel()

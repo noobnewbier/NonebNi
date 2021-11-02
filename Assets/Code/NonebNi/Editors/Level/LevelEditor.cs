@@ -41,10 +41,12 @@ namespace NonebNi.Editors.Level
         {
             _gridView.OnSceneDraw();
 
+            const float paddingFromBottom = 20; //Magic value, no idea why the hack it's off by 20 constantly
             var sceneViewSize = SceneView.lastActiveSceneView.position.size;
-            var position = new Vector2(0, sceneViewSize.y - TileInspectorView.WindowSize.y);
+            var position = new Vector2(0, sceneViewSize.y - TileInspectorView.WindowSize.y - paddingFromBottom);
+
             _tileInspectorView.OnSceneDraw(position);
-            _errorOverviewView.OnSceneDraw(position + Vector2.down * ErrorOverviewView.WindowSize.y);
+            _errorOverviewView.OnSceneDraw(position + Vector2.right * TileInspectorView.WindowSize.x);
 
             _entitiesPlacer.UpdateEntitiesPlacement();
         }

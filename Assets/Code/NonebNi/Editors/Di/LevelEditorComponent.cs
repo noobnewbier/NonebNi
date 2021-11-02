@@ -88,6 +88,6 @@ namespace NonebNi.Editors.Di
             new TileInspectorPresenter(view, CoordinateAndPositionService, NonebEditorModel);
 
         public ErrorOverviewPresenter CreateErrorOverviewPresenter(ErrorOverviewView view) =>
-            new ErrorOverviewPresenter(view, ErrorChecker);
+            new ErrorOverviewPresenter(view, ErrorChecker, NonebEditorModel);
     }
 }
