@@ -1,16 +1,18 @@
-﻿using NonebNi.Editors.Di;
+﻿using System.Linq;
+using NonebNi.Editors.Di;
 using UnityEditor;
 using UnityEngine;
+using UnityUtils.Editor;
 
 namespace NonebNi.Editors.Level.Error
 {
     public class ErrorOverviewView
     {
-        private const float RectHeight = 100;
         private const float RectWidth = 100;
-        public static readonly Vector2 WindowSize = new Vector2(RectWidth, RectHeight);
 
-        private static readonly int WindowID = nameof(ErrorOverviewView).GetHashCode();
+        private static readonly Vector2 TitleRect = new Vector2(RectWidth, 20);
+        private static readonly Vector2 ContentRect = new Vector2(RectWidth, 100);
+        public static readonly Vector2 WindowSize = new Vector2(RectWidth, TitleRect.y + ContentRect.y);
 
         private readonly ErrorOverviewPresenter _presenter;
 
@@ -21,38 +23,42 @@ namespace NonebNi.Editors.Level.Error
             _presenter = component.CreateErrorOverviewPresenter(this);
         }
 
-        public void OnSceneDraw(Vector2 position)
+        public void OnSceneDraw(Vector2 startingPosition)
         {
             if (!_presenter.IsDrawing) return;
+            Handles.BeginGUI();
 
-            var rect = new Rect(position, WindowSize);
+            var fullRect = new Rect(startingPosition, WindowSize);
+            GUI.Box(fullRect, GUIContent.none, NonebGUIStyle.SceneHelpBox);
 
-            void WindowFunc(int _)
+            var titleRect = new Rect(startingPosition, TitleRect);
+            GUI.Label(titleRect, "ErrorOverview", NonebGUIStyle.Title);
+
+            var scrollRect = new Rect(startingPosition + Vector2.up * TitleRect.y, ContentRect);
+            using (new GUILayout.AreaScope(scrollRect))
             {
-                _currentScrollPosition = GUILayout.BeginScrollView(_currentScrollPosition);
-
-                var errors = _presenter.ErrorEntries;
+                _currentScrollPosition = EditorGUILayout.BeginScrollView(_currentScrollPosition);
+                var errors = _presenter.ErrorEntries.ToArray();
                 foreach (var entry in errors)
                 {
                     GUILayout.BeginHorizontal();
 
-                    using (new EditorGUI.DisabledScope())
+                    if (GUILayout.Button("?", GUILayout.ExpandWidth(false)))
                     {
-                        EditorGUILayout.ObjectField(entry.ErrorSource, typeof(Object), false);
+                        _presenter.OnClickErrorNavigationButton(entry);
                     }
+
+                    GUILayout.Label($"{entry.ErrorSource.name}", NonebGUIStyle.Error);
 
                     GUILayout.EndHorizontal();
                 }
 
-                GUILayout.EndScrollView();
+                if (!errors.Any()) GUILayout.Label("No Error Found", NonebGUIStyle.Hint);
+
+                EditorGUILayout.EndScrollView();
             }
 
-            GUI.Window(
-                WindowID,
-                rect,
-                WindowFunc,
-                "ErrorOverview"
-            );
+            Handles.EndGUI();
         }
     }
 }
