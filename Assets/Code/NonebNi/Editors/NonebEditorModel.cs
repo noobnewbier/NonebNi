@@ -1,13 +1,12 @@
 ﻿using System;
-using NonebNi.Editors.Level;
+using NonebNi.Editors.Level.Error;
+using NonebNi.Editors.Level.Inspector;
 using UnityEditor;
 
 namespace NonebNi.Editors
 {
     public class NonebEditorModel
     {
-        private LevelDataSource? _levelDataSource;
-
         public bool IsGridVisible
         {
             get => EditorPrefs.GetBool(nameof(IsGridVisible));
@@ -19,13 +18,16 @@ namespace NonebNi.Editors
             }
         }
 
-        public bool IsInspectorVisible
+        /// <summary>
+        /// "HelperWindows" include both <see cref="TileInspectorView" /> and <see cref="ErrorOverviewView" />
+        /// </summary>
+        public bool IsHelperWindowsVisible
         {
-            get => EditorPrefs.GetBool(nameof(IsInspectorVisible));
+            get => EditorPrefs.GetBool(nameof(IsHelperWindowsVisible));
             set
             {
-                var existingValue = IsInspectorVisible;
-                EditorPrefs.SetBool(nameof(IsInspectorVisible), value);
+                var existingValue = IsHelperWindowsVisible;
+                EditorPrefs.SetBool(nameof(IsHelperWindowsVisible), value);
                 if (existingValue != value) OnInspectorVisibilityChanged?.Invoke(value);
             }
         }

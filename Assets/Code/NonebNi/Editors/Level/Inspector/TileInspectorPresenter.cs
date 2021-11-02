@@ -10,7 +10,7 @@ namespace NonebNi.Editors.Level.Inspector
         private readonly NonebEditorModel _nonebEditorModel;
         private readonly TileInspectorView _view;
 
-        public bool IsDrawing => _nonebEditorModel.IsInspectorVisible;
+        public bool IsDrawing => _nonebEditorModel.IsHelperWindowsVisible;
 
         public TileInspectorPresenter(TileInspectorView view,
                                       CoordinateAndPositionService coordinateAndPositionService,

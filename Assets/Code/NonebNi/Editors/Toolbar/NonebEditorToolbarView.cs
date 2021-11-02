@@ -62,10 +62,10 @@ namespace NonebNi.Editors.Toolbar
                 if (ToggleContent.ToggleButton(
                     menuRect,
                     Contents.GizmosEnabled,
-                    _presenter.IsGizmosVisible,
+                    _presenter.IsHelperWindowsVisible,
                     Styles.ToggleButton,
                     EditorStyles.miniButton
-                )) _presenter.OnToggleGizmosVisibility();
+                )) _presenter.OnToggleHelperWindowsVisibility();
             }
 
             void DrawSettingsButton()
