@@ -88,7 +88,7 @@ namespace NonebNi.Editors.Level.Error
                 where coordinates.Length > 1
                 select new ErrorEntry(
                     unit,
-                    $"{unit.name} is overlapping with multiple Coords {string.Join(",", coordinates.SelectMany(c => c.ToString()))}"
+                    $"{unit.name} is overlapping with multiple coordinates \nchecking the collider and see if it is crossing boundaries"
                 );
         }
     }

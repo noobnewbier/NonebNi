@@ -37,7 +37,7 @@ namespace NonebNi.Editors.Level.Inspector
             Handles.BeginGUI();
 
             var rect = new Rect(startingPosition, WindowSize);
-            GUI.Box(rect, GUIContent.none, NonebGUIStyle.SceneHelpBox);
+            GUI.Box(rect, GUIContent.none, NonebGUIStyle.SceneHelpWindow);
 
             var titleRect = new Rect(startingPosition, TitleSize);
             GUI.Label(titleRect, "TileInspector", NonebGUIStyle.Title);
