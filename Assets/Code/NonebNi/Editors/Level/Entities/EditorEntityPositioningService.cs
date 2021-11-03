@@ -3,16 +3,19 @@ using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
+using NonebNi.Core.Maps;
 
 namespace NonebNi.Editors.Level.Entities
 {
     public class EditorEntityPositioningService
     {
         private readonly CoordinateAndPositionService _coordinateAndPositionService;
+        private readonly IReadOnlyMap _map;
 
-        public EditorEntityPositioningService(CoordinateAndPositionService coordinateAndPositionService)
+        public EditorEntityPositioningService(CoordinateAndPositionService coordinateAndPositionService, IReadOnlyMap map)
         {
             _coordinateAndPositionService = coordinateAndPositionService;
+            _map = map;
         }
 
         /// <summary>
@@ -33,6 +36,7 @@ namespace NonebNi.Editors.Level.Entities
             {
                 var coordinate = toSearchCoordinate.Pop();
                 if (searchedCoordinate.Contains(coordinate)) continue;
+                if (!_map.IsCoordinateWithinMap(coordinate)) continue;
 
                 searchedCoordinate.Add(coordinate);
 

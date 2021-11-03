@@ -49,7 +49,7 @@ namespace NonebNi.Editors.Di
 
         public EditorEntityPositioningService GetEditorEntityPositioningService(
             CoordinateAndPositionService coordinateAndPositionService) =>
-            new EditorEntityPositioningService(coordinateAndPositionService);
+            new EditorEntityPositioningService(coordinateAndPositionService, _map);
 
         public ErrorChecker GetErrorChecker(EditorEntityPositioningService editorEntityPositioningService) =>
             new ErrorChecker(editorEntityPositioningService, _scene);
