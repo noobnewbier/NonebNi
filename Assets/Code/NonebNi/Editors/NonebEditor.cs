@@ -12,12 +12,19 @@ namespace NonebNi.Editors
     [InitializeOnLoad]
     internal static class NonebEditorInitializer
     {
+        private static readonly bool IsEventRegistered; //required otherwise we can re-init on domain reload
+
         static NonebEditorInitializer()
         {
             NonebEditor.Init();
 
-            PlayModeStateListener.OnEnterEditMode += NonebEditor.Init;
-            EditorSceneManager.activeSceneChangedInEditMode += NonebEditor.OnActiveSceneChanged;
+            if (!IsEventRegistered)
+            {
+                PlayModeStateListener.OnEnterEditMode += NonebEditor.Init;
+                EditorSceneManager.activeSceneChangedInEditMode += NonebEditor.OnActiveSceneChanged;
+
+                IsEventRegistered = true;
+            }
         }
     }
 
