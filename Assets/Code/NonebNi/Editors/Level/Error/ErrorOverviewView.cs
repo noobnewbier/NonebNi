@@ -45,13 +45,13 @@ namespace NonebNi.Editors.Level.Error
                     using (var scrollView = new EditorGUILayout.ScrollViewScope(_currentScrollPosition))
                     {
                         _currentScrollPosition = scrollView.scrollPosition;
-                        foreach (var entry in errors)
+                        foreach (var entity in errors.GroupBy(e => e.ErrorSource).Select(g => g.Key))
                             using (new GUILayout.HorizontalScope())
                             {
                                 if (GUILayout.Button("?", GUILayout.ExpandWidth(false)))
-                                    _presenter.OnClickErrorNavigationButton(entry);
+                                    _presenter.OnClickErrorNavigationButton(entity);
 
-                                GUILayout.Label($"{entry.ErrorSource.name}", NonebGUIStyle.Error);
+                                GUILayout.Label($"{entity.name}", NonebGUIStyle.Error);
                             }
 
                         if (!errors.Any()) GUILayout.Label("No Error Found", NonebGUIStyle.Hint);

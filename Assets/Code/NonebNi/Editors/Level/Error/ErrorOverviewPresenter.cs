@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Code.NonebNi.EditorComponent.Entities;
 using UnityEditor;
 using UnityEngine;
 
@@ -19,14 +20,14 @@ namespace NonebNi.Editors.Level.Error
             _nonebEditorModel = nonebEditorModel;
         }
 
-        public void OnClickErrorNavigationButton(ErrorEntry entry)
+        public void OnClickErrorNavigationButton(Entity errorEntity)
         {
-            Selection.SetActiveObjectWithContext(entry.ErrorSource, entry.ErrorSource);
-            EditorGUIUtility.PingObject(entry.ErrorSource);
+            Selection.SetActiveObjectWithContext(errorEntity, errorEntity);
+            EditorGUIUtility.PingObject(errorEntity);
 
             var sceneView = SceneView.lastActiveSceneView;
 
-            var errorPosition = entry.ErrorSource.transform.position;
+            var errorPosition = errorEntity.transform.position;
             var dir = (errorPosition - sceneView.camera.transform.position).normalized;
             var targetRotation = Quaternion.LookRotation(dir);
 
