@@ -37,7 +37,7 @@ namespace NonebNi.Editors.Level.Error
                 GUI.Box(fullRect, GUIContent.none, NonebGUIStyle.SceneHelpWindow);
 
                 var titleRect = new Rect(startingPosition, TitleRect);
-                GUI.Label(titleRect, "ErrorOverview", NonebGUIStyle.Title);
+                GUI.Label(titleRect, "Faulty Objects", NonebGUIStyle.Title);
 
                 var scrollRect = new Rect(startingPosition + Vector2.up * TitleRect.y, ContentRect);
                 using (new GUILayout.AreaScope(scrollRect))
