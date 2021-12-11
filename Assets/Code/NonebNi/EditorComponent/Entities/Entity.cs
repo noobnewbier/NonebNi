@@ -6,7 +6,8 @@ namespace Code.NonebNi.EditorComponent.Entities
     /// <summary>
     /// An <see cref="Entity" /> is something that can be placed on the board within SceneView.
     /// This is necessary wrapper of <see cref="EntityData" /> to avoid the internal data being filled with
-    /// <see cref="MonoBehaviour" />.
+    /// <see cref="MonoBehaviour" />. This component is used to build the scene and will be stripped on build/play.
+    /// 
     /// An entity must at least be within one tile, it can potentially spans through multiple tile.
     /// Which tiles an <see cref="Entity" /> is at/spanning through depends on the underlying bounding box.
     /// We find out what an entity is by the other component it is holding(and create the level of the game by finding out all
