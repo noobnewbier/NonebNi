@@ -67,9 +67,9 @@ namespace NonebNi.Editors
             LevelDataSourceChangedListener.OnLevelDataSourceChanged -= TryInitLevelEditorAfterOneFrame;
         }
 
-        private void OnSceneGUI(SceneView obj)
+        private void OnSceneGUI(SceneView sceneView)
         {
-            _toolbar.DrawSceneToolbar();
+            _toolbar.DrawSceneToolbar(sceneView);
         }
 
         private static LevelDataSource? FindLevelDataSourceForActiveScene()

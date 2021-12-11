@@ -18,7 +18,7 @@ namespace NonebNi.Editors.Toolbar
             _component = component;
         }
 
-        public void DrawSceneToolbar()
+        public void DrawSceneToolbar(SceneView sceneView)
         {
             //reusing the same rect through out. offsetting the y position after drawing of each button
             var menuRect = Styles.StartingButtonRect;
@@ -88,7 +88,7 @@ namespace NonebNi.Editors.Toolbar
                         if (!EditorWindow.HasOpenInstances<LevelEditorSettingsWindow>())
                         {
                             var settingsWindow = _presenter.NonebEditor.LevelEditor.GetSettingsWindow();
-                            var screenRect = SceneView.lastActiveSceneView.position;
+                            var screenRect = sceneView.position;
                             settingsWindow.ShowAsDropDown(
                                 new Rect(
                                     screenRect.x + menuRect.x + menuRect.width + Styles.MenuItemPadding,
