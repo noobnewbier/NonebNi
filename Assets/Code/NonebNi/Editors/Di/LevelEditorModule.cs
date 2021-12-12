@@ -56,5 +56,8 @@ namespace NonebNi.Editors.Di
 
         public LevelSavingService GetLevelSavingService() =>
             new LevelSavingService(_levelDataSource, _levelData);
+
+        public LevelDataSyncer GetLevelDataSyncer(LevelSavingService levelSavingService) =>
+            new LevelDataSyncer(levelSavingService, _scene);
     }
 }

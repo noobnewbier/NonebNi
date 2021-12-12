@@ -14,10 +14,11 @@ namespace NonebNi.Editors.Level
     public class LevelEditor : IDisposable
     {
         private readonly LevelEditorComponent _component;
+
         private readonly EntitiesPlacer _entitiesPlacer;
         private readonly ErrorOverviewView _errorOverviewView;
-
         private readonly GridView _gridView;
+        private readonly LevelDataSyncer _levelDataSyncer;
         private readonly TileInspectorView _tileInspectorView;
 
         public LevelEditor(Scene editedScene, LevelDataSource levelDataSource, INonebEditorComponent nonebEditorComponent)
@@ -28,6 +29,7 @@ namespace NonebNi.Editors.Level
             _tileInspectorView = _component.TileInspectorView;
             _errorOverviewView = _component.ErrorOverviewView;
             _entitiesPlacer = _component.EntitiesPlacer;
+            _levelDataSyncer = _component.LevelDataSyncer;
 
             SceneView.duringSceneGui += OnSceneGUI;
         }
@@ -35,6 +37,8 @@ namespace NonebNi.Editors.Level
         public void Dispose()
         {
             SceneView.duringSceneGui -= OnSceneGUI;
+
+            _levelDataSyncer.Dispose();
         }
 
         private void OnSceneGUI(SceneView view)

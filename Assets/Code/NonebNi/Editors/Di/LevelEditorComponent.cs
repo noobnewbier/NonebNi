@@ -19,9 +19,10 @@ namespace NonebNi.Editors.Di
         NonebEditorModel NonebEditorModel { get; }
         EntitiesPlacer EntitiesPlacer { get; }
         ErrorChecker ErrorChecker { get; }
-
+        LevelDataSyncer LevelDataSyncer { get; }
         GridView GridView { get; }
         TileInspectorView TileInspectorView { get; }
+
         GridPresenter CreateMapPresenter(GridView view);
         TileInspectorPresenter CreateTileInspectorPresenter(TileInspectorView view);
         ErrorOverviewPresenter CreateErrorOverviewPresenter(ErrorOverviewView view);
@@ -35,6 +36,7 @@ namespace NonebNi.Editors.Di
         private readonly Lazy<EntitiesPlacer> _lazyEntitiesPlacer;
         private readonly Lazy<ErrorChecker> _lazyErrorChecker;
         private readonly Lazy<ErrorOverviewView> _lazyErrorOverviewView;
+        private readonly Lazy<LevelDataSyncer> _lazyLevelDataSyncer;
         private readonly Lazy<LevelSavingService> _lazyLevelSavingService;
         private readonly Lazy<MapSyncService> _lazyMapEditingService;
         private readonly Lazy<GridView> _lazyMapView;
@@ -56,6 +58,7 @@ namespace NonebNi.Editors.Di
                 () => module.GetEntitiesPlacer(MapSyncService, EditorEntityPositioningService, ErrorChecker)
             );
             _lazyErrorChecker = new Lazy<ErrorChecker>(() => module.GetErrorChecker(EditorEntityPositioningService));
+            _lazyLevelDataSyncer = new Lazy<LevelDataSyncer>(() => module.GetLevelDataSyncer(LevelSavingService));
 
             _lazyMapView = new Lazy<GridView>(
                 () => new GridView(this, CoordinateAndPositionService, module.GetWorldConfigData)
@@ -73,6 +76,7 @@ namespace NonebNi.Editors.Di
         public LevelSavingService LevelSavingService => _lazyLevelSavingService.Value;
         public EntitiesPlacer EntitiesPlacer => _lazyEntitiesPlacer.Value;
         public ErrorChecker ErrorChecker => _lazyErrorChecker.Value;
+        public LevelDataSyncer LevelDataSyncer => _lazyLevelDataSyncer.Value;
         public LevelEditorModel LevelEditorModel => _lazyEditorDataModel.Value;
         public MapSyncService MapSyncService => _lazyMapEditingService.Value;
         public CoordinateAndPositionService CoordinateAndPositionService => _lazyCoordinateAndPositionService.Value;
