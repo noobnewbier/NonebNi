@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.Experimental;
 using Object = UnityEngine.Object;
 
-namespace NonebNi.Editors
+namespace NonebNi.Editors.Common.Events
 {
     [UsedImplicitly]
     public class LevelDataSourceChangedListener

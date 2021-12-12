@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor;
 
-namespace NonebNi.Editors.Level
+namespace NonebNi.Editors.Common.Events
 {
     /// <summary>
     /// Stripped from UnityEditor.ProGrids.PlayModeStateListener
