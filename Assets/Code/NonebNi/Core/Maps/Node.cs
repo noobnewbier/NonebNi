@@ -13,8 +13,8 @@ namespace NonebNi.Core.Maps
     /// Assumption:
     /// For any type of <see cref="EntityData" />, a node can only hold at most 1 of it.
     /// </summary>
-    [Serializable]
-    public partial class Node //Unity doesn't support polymorphism + Serialization, we need to hand craft it
+    [Serializable] //Unity doesn't support polymorphism + Serialization, we need to hand craft it
+    public partial class Node
     {
         [SerializeField] private TileData tileData;
 
