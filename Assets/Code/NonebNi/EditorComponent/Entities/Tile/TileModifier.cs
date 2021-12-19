@@ -1,6 +1,10 @@
-﻿namespace Code.NonebNi.EditorComponent.Entities.Tile
+﻿using System;
+
+namespace Code.NonebNi.EditorComponent.Entities.Tile
 {
-    public partial class TileModifier : Entity<TileEntityData>
+    //todo: currently not implemented
+    [Obsolete("Not implemented yet")]
+    public partial class TileModifier : EditorEntity<TileEntityData>
     {
     }
 }
