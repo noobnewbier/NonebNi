@@ -1,6 +1,6 @@
 ﻿using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
 using NonebNi.Editors.Di;
+using NonebNi.Editors.Level.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -16,14 +16,14 @@ namespace NonebNi.Editors.Level.Inspector
 
         private static readonly int WindowID = nameof(TileInspectorView).GetHashCode();
 
-        private readonly IReadOnlyMap _map;
+        private readonly IEditorMap _map;
 
         private readonly TileInspectorPresenter _presenter;
 
 
         private Plane _gridPlane;
 
-        public TileInspectorView(ILevelEditorComponent component, WorldConfigData worldConfigData, IReadOnlyMap map)
+        public TileInspectorView(ILevelEditorComponent component, WorldConfigData worldConfigData, IEditorMap map)
         {
             _map = map;
             _presenter = component.CreateTileInspectorPresenter(this);

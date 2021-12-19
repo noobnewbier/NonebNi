@@ -1,15 +1,14 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
 using NonebNi.Editors.Common;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityUtils.Constants;
 
-namespace NonebNi.Editors.Level
+namespace NonebNi.Editors.Level.Data
 {
     /// <summary>
     /// Created this as we anticipate the need for custom BGMs and stuffs in the future
@@ -24,7 +23,9 @@ namespace NonebNi.Editors.Level
         /// </summary>
         [SerializeField] private SceneAsset? scene;
 
-        [SerializeField] private Map map = new Map(10, 10);
+        [FormerlySerializedAs("map")] [SerializeField]
+        private EditorMap editorMap = new EditorMap(10, 10);
+
         [SerializeField] private WorldConfigSource? worldConfigScriptable;
 
         public string? SceneName => scene != null ? scene.name : null;
@@ -47,8 +48,8 @@ namespace NonebNi.Editors.Level
             EditorUtility.SetDirty(this);
         }
 
-        public LevelData? CreateData() =>
-            IsValid ? new LevelData(worldConfigScriptable!.CreateData(), map) : null;
+        public EditorLevelData? CreateData() =>
+            IsValid ? new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap) : null;
 
         public static LevelDataSource CreateSource(Scene scene)
         {
@@ -64,16 +65,16 @@ namespace NonebNi.Editors.Level
             return toReturn;
         }
 
-        public void CopyFromData(LevelData levelData)
+        public void CopyFromData(EditorLevelData editorLevelData)
         {
-            map = levelData.Map;
+            editorMap = editorLevelData.Map;
             if (worldConfigScriptable != null)
             {
-                worldConfigScriptable.CopyFromData(levelData.WorldConfig);
+                worldConfigScriptable.CopyFromData(editorLevelData.WorldConfig);
             }
             else
             {
-                worldConfigScriptable = WorldConfigSource.Create(levelData.WorldConfig);
+                worldConfigScriptable = WorldConfigSource.Create(editorLevelData.WorldConfig);
                 AssetDatabase.CreateAsset(worldConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
             }
 

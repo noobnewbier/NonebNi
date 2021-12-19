@@ -5,9 +5,9 @@ namespace NonebNi.Editors.Level.Error
     public class ErrorEntry
     {
         public readonly string Description;
-        public readonly Entity ErrorSource;
+        public readonly EditorEntity ErrorSource;
 
-        public ErrorEntry(Entity errorSource, string description)
+        public ErrorEntry(EditorEntity errorSource, string description)
         {
             ErrorSource = errorSource;
             Description = description;

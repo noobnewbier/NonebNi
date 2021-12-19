@@ -1,5 +1,6 @@
 ﻿using System;
 using NonebNi.Editors.Di;
+using NonebNi.Editors.Level.Data;
 using NonebNi.Editors.Level.Entities;
 using NonebNi.Editors.Level.Error;
 using NonebNi.Editors.Level.Inspector;

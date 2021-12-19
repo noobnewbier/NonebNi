@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.Maps;
+﻿using NonebNi.Editors.Level.Data;
 
 namespace NonebNi.Editors.Level.Maps
 {
@@ -9,7 +9,7 @@ namespace NonebNi.Editors.Level.Maps
         private readonly NonebEditorModel _nonebEditorModel;
 
         public bool IsDrawingGrid => _nonebEditorModel.IsGridVisible;
-        public IReadOnlyMap Map => _levelEditorModel.Map;
+        public IEditorMap Map => _levelEditorModel.EditorMap;
 
         public GridPresenter(GridView gridView, LevelEditorModel levelEditorModel, NonebEditorModel nonebEditorModel)
         {

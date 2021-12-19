@@ -1,5 +1,5 @@
 ﻿using NonebNi.Editors.Di;
-using NonebNi.Editors.Level;
+using NonebNi.Editors.Level.Data;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editors.Toolbar

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.Annotations;
-using NonebNi.Editors.Level;
+using NonebNi.Editors.Level.Data;
 using UnityEditor;
 using UnityEditor.Experimental;
 using Object = UnityEngine.Object;

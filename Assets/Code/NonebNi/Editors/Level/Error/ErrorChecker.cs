@@ -19,7 +19,7 @@ namespace NonebNi.Editors.Level.Error
             _scene = scene;
         }
 
-        public IEnumerable<ErrorEntry> CheckForErrors(IEnumerable<Entity> changedEntities)
+        public IEnumerable<ErrorEntry> CheckForErrors(IEnumerable<EditorEntity> changedEntities)
         {
             var changedEntitiesAsArray = changedEntities.ToArray();
             var units = changedEntitiesAsArray.OfType<Unit>().ToArray();
@@ -34,7 +34,9 @@ namespace NonebNi.Editors.Level.Error
 
         public IEnumerable<ErrorEntry> CheckForErrors()
         {
-            var allEntities = _scene.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<Entity>()).ToArray();
+            var allEntities = _scene.GetRootGameObjects()
+                                    .SelectMany(g => g.GetComponentsInChildren<EditorEntity>())
+                                    .ToArray();
 
             return CheckForErrors(allEntities);
         }
@@ -42,10 +44,12 @@ namespace NonebNi.Editors.Level.Error
         private IEnumerable<ErrorEntry> CheckForOverlappingEntities(IEnumerable<Unit> units,
                                                                     IEnumerable<TileModifier> tileModifiers)
         {
-            var allEntities = _scene.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<Entity>()).ToArray();
+            var allEntities = _scene.GetRootGameObjects()
+                                    .SelectMany(g => g.GetComponentsInChildren<EditorEntity>())
+                                    .ToArray();
 
             //todo: in theory we could have cached the coordinates to avoid unnecessary calculation, but we don't really need this for now
-            IEnumerable<ErrorEntry> FindOverlappingEntitiesOfType<T>(IEnumerable<T> enumerable) where T : Entity
+            IEnumerable<ErrorEntry> FindOverlappingEntitiesOfType<T>(IEnumerable<T> enumerable) where T : EditorEntity
             {
                 var allEntityOfTypeAndCoordinates = allEntities.OfType<T>()
                                                                .Select(
@@ -75,7 +79,7 @@ namespace NonebNi.Editors.Level.Error
             foreach (var errorEntry in FindOverlappingEntitiesOfType(tileModifiers)) yield return errorEntry;
         }
 
-        private IEnumerable<ErrorEntry> CheckForNoCoordinateEntities(IEnumerable<Entity> entities) =>
+        private IEnumerable<ErrorEntry> CheckForNoCoordinateEntities(IEnumerable<EditorEntity> entities) =>
             from entity in entities
             let coordinates = _editorEntityPositioningService.FindOverlappedCoordinates(entity)
             where !coordinates.Any()

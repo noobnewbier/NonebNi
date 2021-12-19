@@ -15,7 +15,7 @@ namespace NonebNi.Editors.BuildPostProcessor
         {
             var roots = scene.GetRootGameObjects();
 
-            var entities = roots.SelectMany(r => r.GetComponentsInChildren<Entity>());
+            var entities = roots.SelectMany(r => r.GetComponentsInChildren<EditorEntity>());
             foreach (var entity in entities) Object.DestroyImmediate(entity);
         }
     }

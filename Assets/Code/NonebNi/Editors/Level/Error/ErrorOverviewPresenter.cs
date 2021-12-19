@@ -20,14 +20,14 @@ namespace NonebNi.Editors.Level.Error
             _nonebEditorModel = nonebEditorModel;
         }
 
-        public void OnClickErrorNavigationButton(Entity errorEntity)
+        public void OnClickErrorNavigationButton(EditorEntity errorEditorEntity)
         {
-            Selection.SetActiveObjectWithContext(errorEntity, errorEntity);
-            EditorGUIUtility.PingObject(errorEntity);
+            Selection.SetActiveObjectWithContext(errorEditorEntity, errorEditorEntity);
+            EditorGUIUtility.PingObject(errorEditorEntity);
 
             var sceneView = SceneView.lastActiveSceneView;
 
-            var errorPosition = errorEntity.transform.position;
+            var errorPosition = errorEditorEntity.transform.position;
             var dir = (errorPosition - sceneView.camera.transform.position).normalized;
             var targetRotation = Quaternion.LookRotation(dir);
 

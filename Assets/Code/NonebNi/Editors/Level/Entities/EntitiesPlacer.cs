@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
 using Code.NonebNi.EditorComponent.Entities.Tile;
 using Code.NonebNi.EditorComponent.Entities.Unit;
-using NonebNi.Core.Coordinates;
-using NonebNi.Core.Maps;
+using NonebNi.Editors.Level.Data;
 using NonebNi.Editors.Level.Error;
 using NonebNi.Editors.Level.Maps;
 using UnityEditor;
@@ -13,7 +11,7 @@ using UnityEngine;
 namespace NonebNi.Editors.Level.Entities
 {
     /// <summary>
-    /// Monitor the placement of <see cref="Entity" /> within the active scene, and change the <see cref="Map" /> accordingly
+    /// Monitor the placement of <see cref="EditorEntity" /> within the active scene, and change the <see cref="EditorMap" /> accordingly
     /// todo: register to undo callback
     /// todo: deal with overlapping(error log etc)
     /// todo: deal with deletion
@@ -35,8 +33,9 @@ namespace NonebNi.Editors.Level.Entities
 
         public void UpdateEntitiesPlacement()
         {
+            //TODO: deal with duplication as GUID duplicates
             var selections = Selection.transforms;
-            var entities = selections.SelectMany(s => s.GetComponentsInChildren<Entity>()).ToArray();
+            var entities = selections.SelectMany(s => s.GetComponentsInChildren<EditorEntity>()).ToArray();
 
             var invalidEntities = _errorChecker.CheckForErrors(entities).Select(e => e.ErrorSource).Distinct();
             var validEntities = entities.Except(invalidEntities);
@@ -45,38 +44,34 @@ namespace NonebNi.Editors.Level.Entities
             foreach (var entity in validEntities) UpdateEntity(entity);
         }
 
-        private void UpdateEntity(Entity entity)
+        private void UpdateEntity(EditorEntity editorEntity)
         {
-            if (entity == null) return;
+            if (editorEntity == null) return;
 
-            var coordinates = _editorEntityPositioningService.FindOverlappedCoordinates(entity).ToArray();
+            var coordinates = _editorEntityPositioningService.FindOverlappedCoordinates(editorEntity).ToArray();
 
-            switch (entity)
+            switch (editorEntity)
             {
                 case Unit unit:
-                    UpdateUnit(unit, coordinates);
+                    UpdateUnit(unit);
                     break;
                 case TileModifier tileModifier:
-                    UpdateTiles(tileModifier, coordinates);
+                    UpdateTiles(tileModifier);
                     break;
             }
 
-            Debug.Log($"{entity.name}");
+            Debug.Log($"{editorEntity.name}");
             foreach (var coordinate in coordinates) Debug.Log(coordinate);
         }
 
-        private void UpdateTiles(TileModifier tileModifier, Coordinate[] coordinates)
+        private void UpdateTiles(TileModifier tileModifier)
         {
-            throw new NotImplementedException();
+            _mapSyncService.SyncTileModifier(tileModifier);
         }
 
-        private void UpdateUnit(Unit unit, Coordinate[] coordinates)
+        private void UpdateUnit(Unit unit)
         {
-            var coordinateCount = coordinates.Length;
-            Debug.Assert(
-                coordinateCount == 1,
-                $"The method expects the unit {unit.name} is in a valid state, but it was not"
-            );
+            _mapSyncService.SyncUnit(unit);
         }
     }
 }

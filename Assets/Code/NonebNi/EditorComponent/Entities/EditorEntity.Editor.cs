@@ -1,13 +1,12 @@
-﻿using NonebNi.Core.Entities;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
 namespace Code.NonebNi.EditorComponent.Entities
 {
-    public partial class Entity<T> where T : EntityData
+    public partial class EditorEntity<T> where T : EditorEntityData
     {
-        [CustomEditor(typeof(Entity<>))]
+        [CustomEditor(typeof(EditorEntity<>))]
         [CanEditMultipleObjects]
         public class EntityEditor : Editor
         {
@@ -45,7 +44,7 @@ namespace Code.NonebNi.EditorComponent.Entities
                     }
                     else
                     {
-                        var entity = (Entity<T>)target;
+                        var entity = (EditorEntity<T>)target;
 
                         if (entity.IsCorrectSetUp)
                         {

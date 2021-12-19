@@ -1,24 +1,26 @@
-﻿using NonebNi.Core.Entities;
+﻿using System;
+using NonebNi.Core.Entities;
 using UnityEngine;
 
 namespace Code.NonebNi.EditorComponent.Entities
 {
     /// <summary>
-    /// An <see cref="Entity" /> is something that can be placed on the board within SceneView.
+    /// An <see cref="EditorEntity" /> is something that can be placed on the board within SceneView.
     /// This is necessary wrapper of <see cref="EntityData" /> to avoid the internal data being filled with
     /// <see cref="MonoBehaviour" />. This component is used to build the scene and will be stripped on build/play.
     /// 
-    /// An entity must at least be within one tile, it can potentially spans through multiple tile.
-    /// Which tiles an <see cref="Entity" /> is at/spanning through depends on the underlying bounding box.
-    /// We find out what an entity is by the other component it is holding(and create the level of the game by finding out all
+    /// An editorEntity must at least be within one tile, it can potentially spans through multiple tile.
+    /// Which tiles an <see cref="EditorEntity" /> is at/spanning through depends on the underlying bounding box.
+    /// We find out what an editorEntity is by the other component it is holding(and create the level of the game by finding out all
     /// entities if the map).
     /// </summary>
-    public abstract class Entity : MonoBehaviour
+    [ExecuteInEditMode]
+    public abstract class EditorEntity : MonoBehaviour
     {
         [SerializeField] protected Collider? boundingCollider;
 
         /// <summary>
-        /// We expect this is only called when the entity is <see cref="IsCorrectSetUp" />,
+        /// We expect this is only called when the editorEntity is <see cref="IsCorrectSetUp" />,
         /// in which case the underlying bounding collider is not null
         /// </summary>
         public Collider BoundingCollider => boundingCollider!;
@@ -31,9 +33,10 @@ namespace Code.NonebNi.EditorComponent.Entities
         }
     }
 
-    public abstract partial class Entity<T> : Entity where T : EntityData
+    public abstract partial class EditorEntity<T> : EditorEntity where T : EditorEntityData
     {
-        [SerializeField] protected EntityDataSource<T>? entityDataSource;
+        [SerializeField] protected EditorEntityDataSource<T>? entityDataSource;
+        [SerializeField] private Guid guid;
 
         private T? _cacheEntityData;
 
@@ -49,7 +52,7 @@ namespace Code.NonebNi.EditorComponent.Entities
                 else
                 {
                     if (_cacheEntityData == null && entityDataSource != null)
-                        _cacheEntityData = entityDataSource.CreateData();
+                        _cacheEntityData = entityDataSource.CreateData(guid);
                 }
 
                 return _cacheEntityData;

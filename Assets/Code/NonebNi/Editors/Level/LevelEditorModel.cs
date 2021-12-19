@@ -1,18 +1,17 @@
-﻿using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
+﻿using NonebNi.Editors.Level.Data;
 
 namespace NonebNi.Editors.Level
 {
     public class LevelEditorModel
     {
-        public LevelData LevelData { get; }
+        public EditorLevelData EditorLevelData { get; }
         public LevelDataSource LevelDataSource { get; }
-        public Map Map { get; }
+        public EditorMap EditorMap { get; }
 
-        public LevelEditorModel(LevelData levelData, Map map, LevelDataSource levelDataSource)
+        public LevelEditorModel(EditorLevelData editorLevelData, EditorMap editorMap, LevelDataSource levelDataSource)
         {
-            LevelData = levelData;
-            Map = map;
+            EditorLevelData = editorLevelData;
+            EditorMap = editorMap;
             LevelDataSource = levelDataSource;
         }
     }

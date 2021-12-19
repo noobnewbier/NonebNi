@@ -3,11 +3,12 @@ using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
 using UnityEngine;
 
-namespace Code.NonebNi.EditorComponent.Entities.Tile
+namespace Code.NonebNi.EditorComponent.Entities
 {
     [Serializable]
     public class TileEntityData : EntityData
     {
+        //TODO: Something went wrong, why the fuck an editor only data is an EntityData?
         [SerializeField] private float weight;
         [SerializeField] private string name;
 

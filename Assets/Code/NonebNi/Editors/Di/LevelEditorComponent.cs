@@ -64,7 +64,7 @@ namespace NonebNi.Editors.Di
                 () => new GridView(this, CoordinateAndPositionService, module.GetWorldConfigData)
             );
             _lazyTileInspectorView = new Lazy<TileInspectorView>(
-                () => new TileInspectorView(this, module.GetWorldConfigData, module.GetReadOnlyMap)
+                () => new TileInspectorView(this, module.GetWorldConfigData, module.GetEditorEditorMap)
             );
             _lazyErrorOverviewView = new Lazy<ErrorOverviewView>(() => new ErrorOverviewView(this));
 

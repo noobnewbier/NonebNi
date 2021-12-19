@@ -1,21 +1,21 @@
-﻿using NonebNi.Core.Level;
+﻿using NonebNi.Editors.Level.Data;
 
 namespace NonebNi.Editors.Level.Settings
 {
     public class LevelSavingService
     {
         private readonly LevelDataSource _dataSource;
-        private readonly LevelData _levelData;
+        private readonly EditorLevelData _editorLevelData;
 
-        public LevelSavingService(LevelDataSource dataSource, LevelData levelData)
+        public LevelSavingService(LevelDataSource dataSource, EditorLevelData editorLevelData)
         {
             _dataSource = dataSource;
-            _levelData = levelData;
+            _editorLevelData = editorLevelData;
         }
 
         public void Save()
         {
-            _dataSource.CopyFromData(_levelData);
+            _dataSource.CopyFromData(_editorLevelData);
         }
     }
 }

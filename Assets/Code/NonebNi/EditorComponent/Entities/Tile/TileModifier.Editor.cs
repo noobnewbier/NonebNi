@@ -2,7 +2,7 @@
 
 namespace Code.NonebNi.EditorComponent.Entities.Tile
 {
-    public partial class TileModifier : Entity<TileEntityData>
+    public partial class TileModifier : EditorEntity<EditorEntityData<TileEntityData>>
     {
         [CustomEditor(typeof(TileModifier))]
         [CanEditMultipleObjects]

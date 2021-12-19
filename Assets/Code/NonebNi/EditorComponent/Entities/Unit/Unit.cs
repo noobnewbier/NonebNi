@@ -2,7 +2,7 @@
 
 namespace Code.NonebNi.EditorComponent.Entities.Unit
 {
-    public partial class Unit : Entity<UnitData>
+    public partial class Unit : EditorEntity<EditorEntityData<UnitData>>
     {
     }
 }
