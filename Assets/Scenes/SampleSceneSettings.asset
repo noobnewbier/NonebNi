@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: SampleSceneSettings
   m_EditorClassIdentifier: 
   scene: {fileID: 102900000, guid: d1c3109bdb54ad54c8a2b2838528e640, type: 3}
-  map:
+  editorMap:
     height: 10
     width: 10
     nodes:
     - serializedUnitDatas:
-      - name: Noob
-        maxHealth: 100
-        health: 100
+      - serializedGuid: 
+        entityData:
+          name: 
+          maxHealth: 0
+          health: 0
       tileData:
         weight: 1
         name: 
@@ -421,3 +423,4 @@ MonoBehaviour:
         weight: 1
         name: 
   worldConfigScriptable: {fileID: 11400000, guid: 5aff3723d83826146b1e0d681e761d21, type: 2}
+  levleName: NoobLevel

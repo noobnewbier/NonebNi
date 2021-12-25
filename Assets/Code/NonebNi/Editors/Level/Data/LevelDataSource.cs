@@ -5,7 +5,6 @@ using NonebNi.Editors.Common;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityUtils.Constants;
 
 namespace NonebNi.Editors.Level.Data
@@ -23,13 +22,12 @@ namespace NonebNi.Editors.Level.Data
         /// </summary>
         [SerializeField] private SceneAsset? scene;
 
-        [FormerlySerializedAs("map")] [SerializeField]
-        private EditorMap editorMap = new EditorMap(10, 10);
-
+        [SerializeField] private EditorMap editorMap = new EditorMap(10, 10);
         [SerializeField] private WorldConfigSource? worldConfigScriptable;
+        [SerializeField] private string levelName;
 
+        public string LevelName => levelName;
         public string? SceneName => scene != null ? scene.name : null;
-
         public bool IsValid => worldConfigScriptable != null && scene != null;
 
         public WorldConfigSource? WorldConfig
