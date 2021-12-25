@@ -1,5 +1,5 @@
-﻿using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
+﻿using Code.NonebNi.Game.Coordinates;
+using Code.NonebNi.Game.Level;
 using UnityEngine;
 
 namespace NonebNi.Editors.Level.Inspector

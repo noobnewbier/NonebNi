@@ -1,10 +1,10 @@
-﻿using NonebNi.Core.Coordinates;
+﻿using Code.NonebNi.Game.Coordinates;
 using UnityEngine;
 
-namespace NonebNi.Core.Level
+namespace Code.NonebNi.Game.Level
 {
     /// <summary>
-    /// Given the <see cref="WorldConfigData"/>, convert between coordinate and position
+    /// Given the <see cref="WorldConfigData" />, convert between coordinate and position
     /// </summary>
     public class CoordinateAndPositionService
     {

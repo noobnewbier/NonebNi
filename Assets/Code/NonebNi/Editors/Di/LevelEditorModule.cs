@@ -1,5 +1,5 @@
 ﻿using System;
-using NonebNi.Core.Level;
+using Code.NonebNi.Game.Level;
 using NonebNi.Editors.Level;
 using NonebNi.Editors.Level.Data;
 using NonebNi.Editors.Level.Entities;

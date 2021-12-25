@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace NonebNi.Core.Level
+namespace Code.NonebNi.Game.Level
 {
     [Serializable]
     public class WorldConfigData

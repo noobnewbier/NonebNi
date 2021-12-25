@@ -1,5 +1,5 @@
 ﻿using System;
-using NonebNi.Core.Entities;
+using Code.NonebNi.Game.Entities;
 using UnityEngine;
 
 namespace Code.NonebNi.EditorComponent.Entities

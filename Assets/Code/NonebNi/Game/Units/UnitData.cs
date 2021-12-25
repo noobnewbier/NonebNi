@@ -1,8 +1,8 @@
 ﻿using System;
-using NonebNi.Core.Entities;
+using Code.NonebNi.Game.Entities;
 using UnityEngine;
 
-namespace NonebNi.Core.Units
+namespace Code.NonebNi.Game.Units
 {
     [Serializable]
     public class UnitData : EntityData

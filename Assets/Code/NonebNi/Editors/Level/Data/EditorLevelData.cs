@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.Level;
+﻿using Code.NonebNi.Game.Level;
 
 namespace NonebNi.Editors.Level.Data
 {

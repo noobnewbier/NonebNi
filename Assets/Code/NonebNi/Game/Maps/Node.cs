@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NonebNi.Core.Entities;
-using NonebNi.Core.Tiles;
+using Code.NonebNi.Game.Entities;
+using Code.NonebNi.Game.Tiles;
 using UnityEngine;
 
-namespace NonebNi.Core.Maps
+namespace Code.NonebNi.Game.Maps
 {
     /// <summary>
     /// The internal storage of <see cref="Map" />
@@ -14,7 +14,7 @@ namespace NonebNi.Core.Maps
     /// For any type of <see cref="EntityData" />, a node can only hold at most 1 of it.
     /// </summary>
     [Serializable] //Unity doesn't support polymorphism + Serialization, we need to hand craft it
-    public partial class Node
+    public class Node
     {
         [SerializeField] private TileData tileData;
 

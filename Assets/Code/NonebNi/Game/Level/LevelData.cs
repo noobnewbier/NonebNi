@@ -1,6 +1,6 @@
-﻿using NonebNi.Core.Maps;
+﻿using Code.NonebNi.Game.Maps;
 
-namespace NonebNi.Core.Level
+namespace Code.NonebNi.Game.Level
 {
     public class LevelData
     {

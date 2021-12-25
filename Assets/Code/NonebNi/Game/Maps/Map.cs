@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using NonebNi.Core.Coordinates;
-using NonebNi.Core.Entities;
-using NonebNi.Core.Tiles;
+using Code.NonebNi.Game.Coordinates;
+using Code.NonebNi.Game.Entities;
+using Code.NonebNi.Game.Tiles;
 using UnityEngine;
 
-namespace NonebNi.Core.Maps
+namespace Code.NonebNi.Game.Maps
 {
     public interface IReadOnlyMap
     {
@@ -21,8 +21,8 @@ namespace NonebNi.Core.Maps
 
     /// <summary>
     /// Storing weight of tiles and units positions.
-    ///
-    /// We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best to recover
+    /// We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best to
+    /// recover
     /// </summary>
     [Serializable]
     public class Map : IReadOnlyMap

@@ -1,6 +1,6 @@
-﻿using NonebNi.Core.Coordinates;
+﻿using Code.NonebNi.Game.Coordinates;
 
-namespace NonebNi.Core.Maps
+namespace Code.NonebNi.Game.Maps
 {
     public class HexDirection
     {
@@ -11,12 +11,12 @@ namespace NonebNi.Core.Maps
         public static readonly HexDirection PlusXPlusZ = new HexDirection(new Coordinate(1, 1));
         public static readonly HexDirection MinusXMinusZ = new HexDirection(new Coordinate(-1, -1));
 
+        private Coordinate Direction { get; }
+
         private HexDirection(Coordinate direction)
         {
             Direction = direction;
         }
-
-        private Coordinate Direction { get; }
 
         public static Coordinate operator +(Coordinate a, HexDirection d) => a + d.Direction;
     }

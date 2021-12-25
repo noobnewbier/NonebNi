@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace NonebNi.Core.Maps
+namespace Code.NonebNi.Game.Maps
 {
     [Serializable]
     public class MapConfigData

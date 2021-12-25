@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NonebNi.Core.Coordinates;
+using Code.NonebNi.Game.Coordinates;
 using Priority_Queue;
 using UnityEngine;
 
-namespace NonebNi.Core.Maps
+namespace Code.NonebNi.Game.Maps
 {
     //https://en.wikipedia.org/wiki/A*_search_algorithm
     public static class Pathfinding
@@ -46,7 +46,6 @@ namespace NonebNi.Core.Maps
                 }
 
                 foreach (var neighbourCoordinate in current.Neighbours)
-                {
                     //ignore tiles that does not exist(e.g. when current is at the top/bottom edge of the map)
                     if (map.TryGet(neighbourCoordinate, out var neighbourTile))
                     {
@@ -62,7 +61,6 @@ namespace NonebNi.Core.Maps
                         if (!tileToDiscover.TryUpdatePriority(neighbourCoordinate, newScoreForNeighbour))
                             tileToDiscover.Enqueue(neighbourCoordinate, newScoreForNeighbour);
                     }
-                }
             }
 
             return false;

@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.Level;
+﻿using Code.NonebNi.Game.Level;
 using NonebNi.Editors.Di;
 using NonebNi.Editors.Level.Data;
 using UnityEditor;
