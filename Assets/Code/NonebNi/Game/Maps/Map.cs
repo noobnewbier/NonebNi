@@ -48,6 +48,18 @@ namespace Code.NonebNi.Game.Maps
                 nodes[GetIndexFromStorageCoordinate(x, z)] = new Node(TileData.Default);
         }
 
+        public Map(int width, int height, Node[] nodes)
+        {
+            if (nodes.Length != height * width)
+                throw new ArgumentException(
+                    $"{nameof(nodes)}'s length is invalid, expected to be {width * height} but is {nodes.Length}"
+                );
+
+            this.height = height;
+            this.width = width;
+            this.nodes = nodes;
+        }
+
         #endregion
 
         #region Tile specifics
@@ -149,15 +161,6 @@ namespace Code.NonebNi.Game.Maps
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
-        }
-
-        public bool TryMoveEntityTo<T>(T entityData, Coordinate coordinate) where T : EntityData
-        {
-            if (TryFind(entityData, out var currentCoordinate))
-                //todo: how do we deal with tile modifier?
-                return true;
-
-            return false;
         }
 
         #endregion
