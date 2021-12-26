@@ -1,6 +1,6 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using Code.NonebNi.Game.Level;
 using NonebNi.Editors.Common;
 using UnityEditor;
 using UnityEngine;
@@ -12,19 +12,21 @@ namespace NonebNi.Editors.Level.Data
     /// <summary>
     /// Created this as we anticipate the need for custom BGMs and stuffs in the future
     /// </summary>
-    [CreateAssetMenu(fileName = nameof(LevelDataSource), menuName = MenuName.Data + nameof(LevelDataSource))]
-    public class LevelDataSource : ScriptableObject
+    [CreateAssetMenu(fileName = nameof(EditorLevelDataSource), menuName = MenuName.Data + nameof(EditorLevelDataSource))]
+    public class EditorLevelDataSource : ScriptableObject
     {
+        [SerializeField] private LevelDataSource dataSource;
+
         /// <summary>
-        /// The scene that should be using this settings, so instead of the scene holding a reference to <see cref="LevelDataSource" />,
-        /// the <see cref="LevelDataSource" /> holds a reference to the scene itself, and we use it to backtrack and find which level
+        /// The scene that should be using this settings, so instead of the scene holding a reference to <see cref="EditorLevelDataSource" />,
+        /// the <see cref="EditorLevelDataSource" /> holds a reference to the scene itself, and we use it to backtrack and find which level
         /// data we should be using.
         /// </summary>
         [SerializeField] private SceneAsset? scene;
 
         [SerializeField] private EditorMap editorMap = new EditorMap(10, 10);
         [SerializeField] private WorldConfigSource? worldConfigScriptable;
-        [SerializeField] private string levelName;
+        [SerializeField] private string levelName = string.Empty;
 
         public string LevelName => levelName;
         public string? SceneName => scene != null ? scene.name : null;
@@ -36,22 +38,16 @@ namespace NonebNi.Editors.Level.Data
             set
             {
                 worldConfigScriptable = value;
-                DirtyThis();
+                EditorUtility.SetDirty(this);
             }
         }
 
-        [Conditional("UNITY_EDITOR")]
-        private void DirtyThis()
-        {
-            EditorUtility.SetDirty(this);
-        }
-
         public EditorLevelData? CreateData() =>
-            IsValid ? new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap) : null;
+            IsValid ? new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName) : null;
 
-        public static LevelDataSource CreateSource(Scene scene)
+        public static EditorLevelDataSource CreateSource(Scene scene)
         {
-            var toReturn = CreateInstance<LevelDataSource>();
+            var toReturn = CreateInstance<EditorLevelDataSource>();
             var sceneAssets = AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}")
                                            .Select(AssetDatabase.GUIDToAssetPath)
                                            .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>);
@@ -76,7 +72,20 @@ namespace NonebNi.Editors.Level.Data
                 AssetDatabase.CreateAsset(worldConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
             }
 
-            DirtyThis();
+            if (dataSource == null)
+            {
+                dataSource = CreateInstance<LevelDataSource>();
+
+                var scenePath = AssetDatabase.GetAssetPath(scene);
+                var sceneParentFolder = scenePath.Remove(scenePath.LastIndexOf(Path.AltDirectorySeparatorChar) + 1);
+
+                AssetDatabase.CreateAsset(dataSource, $"{sceneParentFolder}{levelName}GameData.asset");
+            }
+
+            dataSource.WriteData(editorLevelData.ToLevelData());
+
+            EditorUtility.SetDirty(dataSource);
+            EditorUtility.SetDirty(this);
         }
     }
 }

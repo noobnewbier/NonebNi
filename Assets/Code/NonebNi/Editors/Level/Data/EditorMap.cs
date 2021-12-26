@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
 using Code.NonebNi.Game.Coordinates;
 using Code.NonebNi.Game.Maps;
@@ -53,6 +54,11 @@ namespace NonebNi.Editors.Level.Data
         }
 
         #endregion
+
+        public Map ToMap()
+        {
+            return new Map(width, height, nodes.Select(n => n.ToNode()).ToArray());
+        }
 
         #region Tile specifics
 

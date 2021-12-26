@@ -32,7 +32,7 @@ namespace NonebNi.Editors.Toolbar
 
         public void ConvertActiveSceneToLevel()
         {
-            LevelDataSource.CreateSource(SceneManager.GetActiveScene());
+            EditorLevelDataSource.CreateSource(SceneManager.GetActiveScene());
         }
     }
 }

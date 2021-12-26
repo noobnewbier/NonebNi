@@ -22,9 +22,14 @@ namespace NonebNi.Editors.Level
         private readonly LevelDataSyncer _levelDataSyncer;
         private readonly TileInspectorView _tileInspectorView;
 
-        public LevelEditor(Scene editedScene, LevelDataSource levelDataSource, INonebEditorComponent nonebEditorComponent)
+        public LevelEditor(Scene editedScene,
+                           EditorLevelDataSource editorLevelDataSource,
+                           INonebEditorComponent nonebEditorComponent)
         {
-            _component = new LevelEditorComponent(new LevelEditorModule(levelDataSource, editedScene), nonebEditorComponent);
+            _component = new LevelEditorComponent(
+                new LevelEditorModule(editorLevelDataSource, editedScene),
+                nonebEditorComponent
+            );
 
             _gridView = _component.GridView;
             _tileInspectorView = _component.TileInspectorView;

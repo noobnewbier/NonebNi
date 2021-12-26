@@ -14,6 +14,7 @@ namespace Code.NonebNi.EditorComponent.Entities
 
         public Guid Guid { get; private set; }
 
+        public abstract EntityData ToEntityData();
 
         #region Serialization
 
@@ -43,5 +44,6 @@ namespace Code.NonebNi.EditorComponent.Entities
         }
 
         public T EntityData => entityData;
+        public override EntityData ToEntityData() => entityData;
     }
 }

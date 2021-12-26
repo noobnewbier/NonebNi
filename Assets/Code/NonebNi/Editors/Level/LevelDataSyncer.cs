@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 namespace NonebNi.Editors.Level
 {
     /// <summary>
-    /// Synchronizing the currently edited level(scene) and the backing data(<see cref="LevelDataSource" />).
+    /// Synchronizing the currently edited level(scene) and the backing data(<see cref="EditorLevelDataSource" />).
     /// The data needs to be synced:
     /// 1. Before exiting edit mode(i.e, before entering play mode)
     /// 2. On the "level" scene being saved

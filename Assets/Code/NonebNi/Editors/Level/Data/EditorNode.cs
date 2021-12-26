@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
+using Code.NonebNi.Game.Maps;
 using Code.NonebNi.Game.Tiles;
 using UnityEngine;
 
@@ -34,6 +35,11 @@ namespace NonebNi.Editors.Level.Data
 
             _entityDatas.RemoveAll(e => e is T);
             if (entityData != null) _entityDatas.Add(entityData);
+        }
+
+        public Node ToNode()
+        {
+            return new Node(tileData, _entityDatas.Select(d => d.ToEntityData()).ToList());
         }
     }
 }

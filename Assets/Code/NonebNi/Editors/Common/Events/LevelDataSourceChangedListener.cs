@@ -25,9 +25,9 @@ namespace NonebNi.Editors.Common.Events
                 var existingAssets = changedAssets.Concat(addedAssets)
                                                   .Where(p => p.EndsWith(".asset"))
                                                   .Select(AssetDatabase.LoadAssetAtPath<Object>);
-                var levelDataSources = existingAssets.OfType<LevelDataSource>();
-                var deletedDataSource =
-                    deletedAssets.Select(AssetDatabase.LoadAssetAtPath<Object>).OfType<LevelDataSource>();
+                var levelDataSources = existingAssets.OfType<EditorLevelDataSource>();
+                var deletedDataSource = deletedAssets.Select(AssetDatabase.LoadAssetAtPath<Object>)
+                                                     .OfType<EditorLevelDataSource>();
 
                 if (levelDataSources.Any() || deletedDataSource.Any()) OnLevelDataSourceChanged?.Invoke();
             }
@@ -39,7 +39,7 @@ namespace NonebNi.Editors.Common.Events
             {
                 //The doc actually explicit says don't call any AssetDatabase APIs within OnWillDeleteAsset, but there are no way we can do this type safely without loading the asset, 
                 //plus it seems to be working so /shrug
-                var isLevelData = AssetDatabase.LoadAssetAtPath<Object>(assetPath) is LevelDataSource;
+                var isLevelData = AssetDatabase.LoadAssetAtPath<Object>(assetPath) is EditorLevelDataSource;
 
                 if (isLevelData) OnLevelDataSourceChanged?.Invoke();
 

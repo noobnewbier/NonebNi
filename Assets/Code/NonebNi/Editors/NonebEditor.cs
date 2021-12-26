@@ -58,12 +58,12 @@ namespace NonebNi.Editors
             _toolbar.DrawSceneToolbar(sceneView);
         }
 
-        private static LevelDataSource? FindLevelDataSourceForActiveScene()
+        private static EditorLevelDataSource? FindLevelDataSourceForActiveScene()
         {
             var activeScene = SceneManager.GetActiveScene();
-            var allLevelDatas = AssetDatabase.FindAssets($"t:{nameof(LevelDataSource)}")
+            var allLevelDatas = AssetDatabase.FindAssets($"t:{nameof(EditorLevelDataSource)}")
                                              .Select(AssetDatabase.GUIDToAssetPath)
-                                             .Select(AssetDatabase.LoadAssetAtPath<LevelDataSource>);
+                                             .Select(AssetDatabase.LoadAssetAtPath<EditorLevelDataSource>);
             var matchingData = allLevelDatas.FirstOrDefault(s => s.SceneName == activeScene.name);
 
             return matchingData;

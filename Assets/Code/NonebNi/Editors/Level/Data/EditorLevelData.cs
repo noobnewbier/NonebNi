@@ -6,11 +6,16 @@ namespace NonebNi.Editors.Level.Data
     {
         public WorldConfigData WorldConfig { get; }
         public EditorMap Map { get; }
+        public string LevelName { get; }
 
-        public EditorLevelData(WorldConfigData worldConfig, EditorMap map)
+
+        public EditorLevelData(WorldConfigData worldConfig, EditorMap map, string levelName)
         {
             WorldConfig = worldConfig;
             Map = map;
+            LevelName = levelName;
         }
+
+        public LevelData ToLevelData() => new LevelData(WorldConfig, Map.ToMap(), LevelName);
     }
 }

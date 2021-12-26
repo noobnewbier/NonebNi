@@ -17,7 +17,7 @@ namespace NonebNi.Editors.Level.Settings
         {
             GUILayout.Label("LevelSettings", EditorStyles.boldLabel);
 
-            var levelDataSource = _dataModel.LevelDataSource;
+            var levelDataSource = _dataModel.EditorLevelDataSource;
             using (new EditorGUILayout.HorizontalScope())
             {
                 using (new EditorGUI.DisabledScope(true))
@@ -25,7 +25,7 @@ namespace NonebNi.Editors.Level.Settings
                     EditorGUILayout.ObjectField(
                         nameof(levelDataSource),
                         levelDataSource,
-                        typeof(LevelDataSource),
+                        typeof(EditorLevelDataSource),
                         false
                     );
                 }

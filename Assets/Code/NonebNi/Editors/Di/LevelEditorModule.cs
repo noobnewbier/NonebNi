@@ -14,14 +14,14 @@ namespace NonebNi.Editors.Di
     {
         private readonly EditorLevelData _editorLevelData;
         private readonly EditorMap _editorMap;
-        private readonly LevelDataSource _levelDataSource;
+        private readonly EditorLevelDataSource _levelDataSource;
         private readonly Scene _scene;
 
         public WorldConfigData GetWorldConfigData => _editorLevelData.WorldConfig;
 
         public IEditorMap GetEditorEditorMap => _editorMap;
 
-        public LevelEditorModule(LevelDataSource levelDataSource, Scene scene)
+        public LevelEditorModule(EditorLevelDataSource levelDataSource, Scene scene)
         {
             _levelDataSource = levelDataSource;
             if (!_levelDataSource.IsValid)
