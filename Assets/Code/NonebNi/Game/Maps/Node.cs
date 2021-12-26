@@ -14,7 +14,7 @@ namespace Code.NonebNi.Game.Maps
     /// For any type of <see cref="EntityData" />, a node can only hold at most 1 of it.
     /// </summary>
     [Serializable] //Unity doesn't support polymorphism + Serialization, we need to hand craft it
-    public class Node
+    public partial class Node
     {
         [SerializeField] private TileData tileData;
 
@@ -24,6 +24,12 @@ namespace Code.NonebNi.Game.Maps
         {
             this.tileData = tileData;
             _entityDatas = new List<EntityData>();
+        }
+
+        public Node(TileData tileData, List<EntityData> entityDatas)
+        {
+            this.tileData = tileData;
+            _entityDatas = entityDatas;
         }
 
         public TileData TileData => tileData;
