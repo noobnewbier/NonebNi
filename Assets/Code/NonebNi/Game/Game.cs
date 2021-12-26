@@ -18,7 +18,7 @@ namespace NonebNi.Game
         {
             var module = new GameModule(levelDataSource.GetData());
 
-            hud.Init(module);
+            hud.Init(new HudComponent(module));
             grid.Init(new GridComponent(module));
         }
     }

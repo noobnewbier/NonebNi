@@ -9,9 +9,9 @@ namespace NonebNi.Game.Huds
 
         private IHudComponent _hudComponent = null!;
 
-        public void Init(GameModule gameModule)
+        public void Init(IHudComponent hudComponent)
         {
-            _hudComponent = new HudComponent(gameModule);
+            _hudComponent = hudComponent;
 
             levelNameView.Init(_hudComponent);
         }
