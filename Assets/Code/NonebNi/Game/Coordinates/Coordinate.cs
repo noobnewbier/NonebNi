@@ -1,8 +1,8 @@
 ﻿using System;
-using Code.NonebNi.Game.Maps;
+using NonebNi.Game.Maps;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Coordinates
+namespace NonebNi.Game.Coordinates
 {
     /// <summary>
     /// Using Cube Coordinate(which is just axial coordinate) : https://www.redblobgames.com/grids/hexagons/#map-storage

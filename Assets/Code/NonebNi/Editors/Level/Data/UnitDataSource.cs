@@ -1,6 +1,6 @@
 ﻿using System;
 using Code.NonebNi.EditorComponent.Entities;
-using Code.NonebNi.Game.Units;
+using NonebNi.Game.Units;
 using UnityEngine;
 using UnityUtils.Constants;
 

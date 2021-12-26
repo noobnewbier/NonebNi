@@ -1,6 +1,6 @@
-﻿using Code.NonebNi.Game.Coordinates;
+﻿using NonebNi.Game.Coordinates;
 
-namespace Code.NonebNi.Game.Maps
+namespace NonebNi.Game.Maps
 {
     public class HexDirection
     {

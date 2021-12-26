@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityUtils;
 
-namespace Code.NonebNi.Game.Level
+namespace NonebNi.Game.Level
 {
     /// <summary>
     /// The backing data for a <see cref="Game" />

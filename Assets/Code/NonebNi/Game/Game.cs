@@ -1,9 +1,9 @@
-﻿using Code.NonebNi.Game.Di;
-using Code.NonebNi.Game.Huds;
-using Code.NonebNi.Game.Level;
+﻿using NonebNi.Game.Di;
+using NonebNi.Game.Huds;
+using NonebNi.Game.Level;
 using UnityEngine;
 
-namespace Code.NonebNi.Game
+namespace NonebNi.Game
 {
     public class Game : MonoBehaviour
     {

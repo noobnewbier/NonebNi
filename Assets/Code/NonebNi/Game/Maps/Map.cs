@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Code.NonebNi.Game.Coordinates;
-using Code.NonebNi.Game.Entities;
-using Code.NonebNi.Game.Tiles;
+using NonebNi.Game.Coordinates;
+using NonebNi.Game.Entities;
+using NonebNi.Game.Tiles;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Maps
+namespace NonebNi.Game.Maps
 {
     public interface IReadOnlyMap
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Code.NonebNi.Game.Maps;
+using NonebNi.Game.Maps;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Level
+namespace NonebNi.Game.Level
 {
     [Serializable]
     public class LevelData

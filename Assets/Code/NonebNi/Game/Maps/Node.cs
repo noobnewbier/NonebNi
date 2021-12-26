@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Code.NonebNi.Game.Entities;
-using Code.NonebNi.Game.Tiles;
+using NonebNi.Game.Entities;
+using NonebNi.Game.Tiles;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Maps
+namespace NonebNi.Game.Maps
 {
     /// <summary>
     /// The internal storage of <see cref="Map" />

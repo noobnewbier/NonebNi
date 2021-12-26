@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Code.NonebNi.Game.Coordinates;
+using NonebNi.Game.Coordinates;
 using Priority_Queue;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Maps
+namespace NonebNi.Game.Maps
 {
     //https://en.wikipedia.org/wiki/A*_search_algorithm
     public static class Pathfinding

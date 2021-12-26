@@ -3,10 +3,10 @@ using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
 using Code.NonebNi.EditorComponent.Entities.Tile;
 using Code.NonebNi.EditorComponent.Entities.Unit;
-using Code.NonebNi.Game.Tiles;
-using Code.NonebNi.Game.Units;
 using NonebNi.Editors.Level.Data;
 using NonebNi.Editors.Level.Entities;
+using NonebNi.Game.Tiles;
+using NonebNi.Game.Units;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editors.Level.Maps

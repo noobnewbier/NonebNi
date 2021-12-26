@@ -1,7 +1,7 @@
-﻿using Code.NonebNi.Game.Di;
+﻿using NonebNi.Game.Di;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Huds
+namespace NonebNi.Game.Huds
 {
     public class Hud : MonoBehaviour
     {

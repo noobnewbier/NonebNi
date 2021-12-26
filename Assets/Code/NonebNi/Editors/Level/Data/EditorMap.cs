@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
-using Code.NonebNi.Game.Coordinates;
-using Code.NonebNi.Game.Maps;
-using Code.NonebNi.Game.Tiles;
+using NonebNi.Game.Coordinates;
+using NonebNi.Game.Maps;
+using NonebNi.Game.Tiles;
 using UnityEngine;
 
 namespace NonebNi.Editors.Level.Data

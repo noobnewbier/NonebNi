@@ -1,7 +1,7 @@
-﻿using Code.NonebNi.Game.Coordinates;
+﻿using NonebNi.Game.Coordinates;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Level
+namespace NonebNi.Game.Level
 {
     /// <summary>
     /// Given the <see cref="WorldConfigData" />, convert between coordinate and position

@@ -1,6 +1,6 @@
-﻿using Code.NonebNi.Game.Level;
-using NonebNi.Editors.Di;
+﻿using NonebNi.Editors.Di;
 using NonebNi.Editors.Level.Data;
+using NonebNi.Game.Level;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;

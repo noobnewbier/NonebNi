@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Tiles
+namespace NonebNi.Game.Tiles
 {
     /// <summary>
     /// The actual data to be placed in the map

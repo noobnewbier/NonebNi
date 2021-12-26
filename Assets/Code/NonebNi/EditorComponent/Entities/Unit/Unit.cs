@@ -1,4 +1,4 @@
-﻿using Code.NonebNi.Game.Units;
+﻿using NonebNi.Game.Units;
 
 namespace Code.NonebNi.EditorComponent.Entities.Unit
 {

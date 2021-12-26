@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Entities
+namespace NonebNi.Game.Entities
 {
     /// <summary>
     /// Todo: add in SAUCE so the change of one data reflects on all level(or just all units in the same scene)

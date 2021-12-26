@@ -1,6 +1,6 @@
-﻿using Code.NonebNi.Game.Level;
+﻿using NonebNi.Game.Level;
 
-namespace Code.NonebNi.Game.Di
+namespace NonebNi.Game.Di
 {
     public class GameModule
     {

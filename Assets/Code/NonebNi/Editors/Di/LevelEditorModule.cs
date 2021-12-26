@@ -1,11 +1,11 @@
 ﻿using System;
-using Code.NonebNi.Game.Level;
 using NonebNi.Editors.Level;
 using NonebNi.Editors.Level.Data;
 using NonebNi.Editors.Level.Entities;
 using NonebNi.Editors.Level.Error;
 using NonebNi.Editors.Level.Maps;
 using NonebNi.Editors.Level.Settings;
+using NonebNi.Game.Level;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.Editors.Di

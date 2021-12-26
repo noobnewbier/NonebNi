@@ -1,8 +1,8 @@
-﻿using Code.NonebNi.Game.Di;
+﻿using NonebNi.Game.Di;
 using TMPro;
 using UnityEngine;
 
-namespace Code.NonebNi.Game.Huds
+namespace NonebNi.Game.Huds
 {
     /// <summary>
     /// Not intended for usage in production. Just to show something quick here
