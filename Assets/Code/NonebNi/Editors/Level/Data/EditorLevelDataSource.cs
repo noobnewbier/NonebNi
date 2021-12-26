@@ -15,7 +15,7 @@ namespace NonebNi.Editors.Level.Data
     [CreateAssetMenu(fileName = nameof(EditorLevelDataSource), menuName = MenuName.Data + nameof(EditorLevelDataSource))]
     public class EditorLevelDataSource : ScriptableObject
     {
-        [SerializeField] private LevelDataSource dataSource;
+        [SerializeField] private LevelDataSource? dataSource;
 
         /// <summary>
         /// The scene that should be using this settings, so instead of the scene holding a reference to <see cref="EditorLevelDataSource" />,

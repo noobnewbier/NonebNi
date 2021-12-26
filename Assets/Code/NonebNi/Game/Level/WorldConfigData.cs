@@ -7,18 +7,15 @@ namespace NonebNi.Game.Level
     public class WorldConfigData
     {
         [SerializeField] private Vector3 mapStartingPosition;
-        [SerializeField] private Vector3 upAxis;
         [SerializeField] private float innerRadius;
 
-        public WorldConfigData(float innerRadius, Vector3 mapStartingPosition, Vector3 upAxis)
+        public WorldConfigData(float innerRadius, Vector3 mapStartingPosition)
         {
             this.innerRadius = innerRadius;
             this.mapStartingPosition = mapStartingPosition;
-            this.upAxis = upAxis;
         }
 
         public Vector3 MapStartingPosition => mapStartingPosition;
-        public Vector3 UpAxis => upAxis;
         public float InnerRadius => innerRadius;
 
         // 0.866025 -> sqrt(3) / 2, read https://catlikecoding.com/unity/tutorials/hex-map/part-1/, session "about hexagons" for details

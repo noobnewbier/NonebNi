@@ -10,5 +10,8 @@ namespace NonebNi.Game.Di
         {
             LevelData = levelData;
         }
+
+        public CoordinateAndPositionService GetCoordinateAndPositionService() =>
+            new CoordinateAndPositionService(LevelData.WorldConfig);
     }
 }
