@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb47f8e7c3d4d7d91c395d937cb81b4, type: 3}
   m_Name: SampleSceneSettings
   m_EditorClassIdentifier: 
+  dataSource: {fileID: 11400000, guid: f18eaf03c42da134bae298b7795f1533, type: 2}
   scene: {fileID: 102900000, guid: d1c3109bdb54ad54c8a2b2838528e640, type: 3}
   editorMap:
     height: 10
     width: 10
     nodes:
     - serializedUnitDatas:
-      - serializedGuid: 
+      - serializedGuid: 00000000000000000000000000000000
         entityData:
-          name: 
-          maxHealth: 0
-          health: 0
+          name: Noob
+          maxHealth: 100
+          health: 100
       tileData:
         weight: 1
         name: 
@@ -423,4 +424,4 @@ MonoBehaviour:
         weight: 1
         name: 
   worldConfigScriptable: {fileID: 11400000, guid: 5aff3723d83826146b1e0d681e761d21, type: 2}
-  levleName: NoobLevel
+  levelName: NoobScene
