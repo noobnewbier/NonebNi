@@ -22,8 +22,10 @@ MonoBehaviour:
       - serializedGuid: 00000000000000000000000000000000
         entityData:
           name: Noob
-          maxHealth: 100
-          health: 100
+          maxHealth: 0
+          health: 0
+          icon: {fileID: 0}
+          skillDatas: []
       tileData:
         weight: 1
         name: 
