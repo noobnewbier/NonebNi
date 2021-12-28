@@ -1,5 +1,5 @@
 ﻿using System;
-using NonebNi.Game.Level;
+using NonebNi.Core.Level;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Constants;

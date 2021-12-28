@@ -1,64 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Code.NonebNi.EditorComponent.Entities;
 using NonebNi.Core.Coordinates;
-using NonebNi.Core.Maps;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
 using UnityEngine;
 
-namespace NonebNi.Editors.Level.Data
+namespace NonebNi.Core.Maps
 {
-    public interface IEditorMap
+    public interface IReadOnlyMap
     {
         bool TryGet(Coordinate axialCoordinate, out TileData tileData);
         TileData Get(Coordinate axialCoordinate);
-        T? Get<T>(Coordinate axialCoordinate) where T : EditorEntityData;
-        bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EditorEntityData;
-        bool Has<T>(Coordinate axialCoordinate) where T : EditorEntityData;
-        bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EditorEntityData;
+        T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
+        bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData;
+        bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
+        bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
     }
 
     /// <summary>
-    /// Editor version of <see cref="Map" />
-    /// It consist of basically copy-pasted code from Map, except we are using EditorNodes here. The main reason for this WET thing
-    /// is that I really want to avoid changing
-    /// implementation of the gameplay code because of the editor(with the fundamental idea that the editor-version should augments
-    /// the game-version data)
-    /// I'm not sure how best to handle this yet, we will see how this goes
+    /// Storing weight of tiles and units positions.
+    /// We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best to
+    /// recover
     /// </summary>
     [Serializable]
-    public class EditorMap : IEditorMap
+    public class Map : IReadOnlyMap
     {
         [SerializeField] private int height;
         [SerializeField] private int width;
-        [SerializeField] private EditorNode[] nodes;
+        [SerializeField] private Node[] nodes;
 
         #region Init
 
         /// <summary>
-        /// Create a editorMap and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
+        /// Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
         /// </summary>
-        /// <returns>An empty <see cref="EditorMap" /> with no board items, where all tiles weight is set to 1</returns>
-        public EditorMap(int width, int height)
+        /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
+        public Map(int width, int height)
         {
             this.width = width;
             this.height = height;
-            nodes = new EditorNode[this.width * this.height];
+            nodes = new Node[this.width * this.height];
 
             for (var x = 0; x < width; x++)
             for (var z = 0; z < height; z++)
-                nodes[GetIndexFromStorageCoordinate(x, z)] = new EditorNode(TileData.Default);
+                nodes[GetIndexFromStorageCoordinate(x, z)] = new Node(TileData.Default);
+        }
+
+        public Map(int width, int height, Node[] nodes)
+        {
+            if (nodes.Length != height * width)
+                throw new ArgumentException(
+                    $"{nameof(nodes)}'s length is invalid, expected to be {width * height} but is {nodes.Length}"
+                );
+
+            this.height = height;
+            this.width = width;
+            this.nodes = nodes;
         }
 
         #endregion
-
-        public Map ToMap()
-        {
-            return new Map(width, height, nodes.Select(n => n.ToNode()).ToArray());
-        }
 
         #region Tile specifics
 
@@ -102,15 +104,15 @@ namespace NonebNi.Editors.Level.Data
 
         #endregion
 
-        #region EditorEntity
+        #region Entity
 
-        public T? Get<T>(Coordinate axialCoordinate) where T : EditorEntityData
+        public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             return nodes[storageCoordinate.X + storageCoordinate.Z * width].Get<T>();
         }
 
-        public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EditorEntityData
+        public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             t = GetBoardItemWithDefault<T>(storageCoordinate)!;
@@ -122,14 +124,14 @@ namespace NonebNi.Editors.Level.Data
             return t != null;
         }
 
-        public bool Has<T>(Coordinate axialCoordinate) where T : EditorEntityData
+        public bool Has<T>(Coordinate axialCoordinate) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
 
             return GetBoardItemWithDefault<T>(storageCoordinate) != null;
         }
 
-        public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EditorEntityData
+        public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
         {
             for (var i = 0; i < nodes.Length; i++)
                 if (nodes[i].Has(entityData))
@@ -143,7 +145,7 @@ namespace NonebNi.Editors.Level.Data
             return false;
         }
 
-        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EditorEntityData
+        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
         {
             try
             {
@@ -155,7 +157,7 @@ namespace NonebNi.Editors.Level.Data
             }
         }
 
-        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EditorEntityData
+        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);

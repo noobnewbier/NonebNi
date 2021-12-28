@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
-using NonebNi.Game.Units;
+using NonebNi.Core.Units;
 using UnityEngine;
 
 namespace NonebNi.Editors.Level.Data

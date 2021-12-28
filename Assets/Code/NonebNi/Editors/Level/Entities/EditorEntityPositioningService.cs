@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
+using NonebNi.Core.Coordinates;
+using NonebNi.Core.Level;
 using NonebNi.Editors.Level.Data;
-using NonebNi.Game.Coordinates;
-using NonebNi.Game.Level;
 
 namespace NonebNi.Editors.Level.Entities
 {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
-using NonebNi.Game.Maps;
-using NonebNi.Game.Tiles;
+using NonebNi.Core.Maps;
+using NonebNi.Core.Tiles;
 using UnityEngine;
 
 namespace NonebNi.Editors.Level.Data

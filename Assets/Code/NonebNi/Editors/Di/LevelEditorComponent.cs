@@ -1,11 +1,11 @@
 ﻿using System;
+using NonebNi.Core.Level;
 using NonebNi.Editors.Level;
 using NonebNi.Editors.Level.Entities;
 using NonebNi.Editors.Level.Error;
 using NonebNi.Editors.Level.Inspector;
 using NonebNi.Editors.Level.Maps;
 using NonebNi.Editors.Level.Settings;
-using NonebNi.Game.Level;
 
 namespace NonebNi.Editors.Di
 {

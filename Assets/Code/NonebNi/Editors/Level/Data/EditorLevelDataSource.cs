@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
+using NonebNi.Core.Level;
 using NonebNi.Editors.Common;
-using NonebNi.Game.Level;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;

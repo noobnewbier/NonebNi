@@ -1,6 +1,6 @@
 ﻿using System;
-using NonebNi.Game.Entities;
-using NonebNi.Game.Tiles;
+using NonebNi.Core.Entities;
+using NonebNi.Core.Tiles;
 using UnityEngine;
 
 namespace Code.NonebNi.EditorComponent.Entities

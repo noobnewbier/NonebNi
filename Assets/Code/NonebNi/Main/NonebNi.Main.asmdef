@@ -1,0 +1,19 @@
+{
+  "name": "NonebNi.Main",
+  "rootNamespace": "",
+  "references": [
+    "GUID:acf43146c4364d2419bdbdeac67deb96",
+    "GUID:80f4e914640856644a52944f8f2647f6",
+    "GUID:893a62e173c68f6478bfef27032343b1",
+    "GUID:8c9f0f875c743b643bbea480a5e687c3"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
