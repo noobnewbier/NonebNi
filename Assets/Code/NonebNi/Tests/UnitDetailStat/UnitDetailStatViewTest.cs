@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using NonebNi.Core.Units;
 using NonebNi.Core.Units.Skills;
 using NonebNi.Ui.Statistics.Skill;
@@ -30,6 +31,7 @@ namespace NonebNi.Tests.UnitDetailStat
         private UnitDetailStatView _unitDetailStatView = null!;
 
         [UnitySetUp]
+        [UsedImplicitly]
         public IEnumerator SetUp()
         {
             const string? sceneName = "UnitDetailStatViewTestScene";
