@@ -6,18 +6,22 @@ namespace NonebNi.Core.Units.Skills
     [Serializable]
     public class SkillData
     {
+        [SerializeField] private string name;
+        [SerializeField] private int cooldown;
+        [SerializeField] private Sprite icon;
+
         public SkillData(string name, int cooldown, Sprite icon)
         {
-            Name = name;
-            Cooldown = cooldown;
-            Icon = icon;
+            this.name = name;
+            this.cooldown = cooldown;
+            this.icon = icon;
         }
 
-        public string Name { get; }
+        public string Name => name;
 
-        public int Cooldown { get; }
+        public int Cooldown => cooldown;
 
-        public Sprite Icon { get; }
+        public Sprite Icon => icon;
 
         public int TurnsBeforeAvailable { get; private set; }
     }

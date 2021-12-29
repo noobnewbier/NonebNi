@@ -12,7 +12,6 @@ namespace NonebNi.Editors.Level.Data
     {
         [SerializeField] private int health;
         [SerializeField] private int maxHealth;
-        [SerializeField] private Sprite icon;
         [SerializeField] private SkillDataSource[] skillDataSource = Array.Empty<SkillDataSource>();
 
 

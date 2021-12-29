@@ -1,27 +1,53 @@
-﻿using NonebNi.Core.Units;
+﻿using System.Collections;
+using NonebNi.Core.Units;
 using NonebNi.Ui.Statistics.Skill;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NonebNi.Ui.Statistics.Unit
 {
-    public class UnitDetailStatView : MonoBehaviour
+    public interface IUnitDetailStatView
     {
-        [SerializeField] private Transform skillPanelRoot;
-        [SerializeField] private Image image;
-        [SerializeField] private HealthBarView healthBarView;
+        Coroutine Show(UnitData unitData);
+    }
 
-        [SerializeField] private SkillView skillViewPrefab;
+    public class UnitDetailStatView : MonoBehaviour, IUnitDetailStatView
+    {
+        private HealthBarView _healthBarView = null!;
+        private Image _image = null!;
+        private Transform _skillPanelRoot = null!;
+        private SkillView _skillViewPrefab = null!;
 
-        public void Show(UnitData unitData)
+        public Coroutine Show(UnitData unitData)
         {
-            image.sprite = unitData.Icon;
-            healthBarView.Show(unitData.Health, unitData.MaxHealth);
-            foreach (var data in unitData.SkillDatas)
+            IEnumerator Coroutine()
             {
-                var skillView = Instantiate(skillViewPrefab, skillPanelRoot);
-                skillView.Show(data);
+                _image.sprite = unitData.Icon;
+                _healthBarView.Show(unitData.Health, unitData.MaxHealth);
+
+                foreach (Transform child in _skillPanelRoot) Destroy(child.gameObject);
+
+                foreach (var data in unitData.SkillDatas)
+                {
+                    var skillView = Instantiate(_skillViewPrefab, _skillPanelRoot);
+                    skillView.Show(data);
+                }
+
+                yield break;
             }
+
+            return StartCoroutine(Coroutine());
+        }
+
+        public void Init(Transform skillPanelRoot,
+                         Image image,
+                         HealthBarView healthBarView,
+                         SkillView skillViewPrefab)
+        {
+            _skillPanelRoot = skillPanelRoot;
+            _image = image;
+            _healthBarView = healthBarView;
+            _skillViewPrefab = skillViewPrefab;
         }
     }
 }

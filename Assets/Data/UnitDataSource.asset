@@ -16,3 +16,4 @@ MonoBehaviour:
   entityName: Noob
   health: 100
   maxHealth: 100
+  skillDataSource: []
