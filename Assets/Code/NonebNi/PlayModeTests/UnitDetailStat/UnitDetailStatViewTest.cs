@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityUtils.TestUtils;
 
-namespace NonebNi.Tests.UnitDetailStat
+namespace NonebNi.PlayModeTests.UnitDetailStat
 {
     public class UnitDetailStatViewTest
     {
