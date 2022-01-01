@@ -1,5 +1,5 @@
 ﻿using System;
-using NonebNi.Core.Level;
+using NonebNi.Core.Coordinates;
 using NonebNi.Editors.Level;
 using NonebNi.Editors.Level.Entities;
 using NonebNi.Editors.Level.Error;

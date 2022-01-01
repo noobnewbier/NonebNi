@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
 using NonebNi.Editors.Level;
 using NonebNi.Editors.Level.Data;

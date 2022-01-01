@@ -1,7 +1,7 @@
-﻿using NonebNi.Core.Coordinates;
+﻿using NonebNi.Core.Level;
 using UnityEngine;
 
-namespace NonebNi.Core.Level
+namespace NonebNi.Core.Coordinates
 {
     /// <summary>
     /// Given the <see cref="WorldConfigData" />, convert between coordinate and position

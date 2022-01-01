@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
 
 namespace NonebNi.Ui.Di
