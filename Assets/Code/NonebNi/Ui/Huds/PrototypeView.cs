@@ -1,19 +1,23 @@
 ﻿using NonebNi.Ui.Di;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NonebNi.Ui.Huds
 {
     /// <summary>
     /// Not intended for usage in production. Just to show something quick here
     /// </summary>
-    public class LevelNameView : MonoBehaviour
+    public class PrototypeView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI levelNameTextMesh = null!;
+        [SerializeField] private Button endTurnButton = null!;
+
 
         public void Init(IHudComponent hudComponent)
         {
             levelNameTextMesh.text = hudComponent.GetLevelData().LevelName;
+            endTurnButton.onClick.AddListener(() => hudComponent.GetLevelFlowController().EndTurn());
         }
     }
 }

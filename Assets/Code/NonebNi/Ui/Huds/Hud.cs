@@ -1,11 +1,13 @@
 ﻿using NonebNi.Ui.Di;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NonebNi.Ui.Huds
 {
     public class Hud : MonoBehaviour
     {
-        [SerializeField] private LevelNameView levelNameView;
+        [FormerlySerializedAs("levelNameView")] [SerializeField]
+        private PrototypeView prototypeView;
 
         private IHudComponent _hudComponent = null!;
 
@@ -13,7 +15,7 @@ namespace NonebNi.Ui.Huds
         {
             _hudComponent = hudComponent;
 
-            levelNameView.Init(_hudComponent);
+            prototypeView.Init(_hudComponent);
         }
     }
 }
