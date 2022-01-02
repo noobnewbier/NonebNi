@@ -2,6 +2,10 @@
 {
     public interface IState
     {
-        void Tick();
+        void OnUpdate();
+
+        void OnEnterState();
+
+        void OnExitState();
     }
 }

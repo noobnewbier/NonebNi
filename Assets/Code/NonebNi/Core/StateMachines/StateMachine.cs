@@ -16,39 +16,45 @@ namespace NonebNi.Core.StateMachines
     /// </summary>
     public class StateMachine
     {
+        private readonly IState _defaultState;
         private readonly Dictionary<IState, Transition[]> _sourceStateAndTransitions;
         private readonly Dictionary<string, BooleanWrapper> _triggers;
 
-        private IState _currentState;
+        private IState? _currentState;
 
         public StateMachine(IState defaultState)
         {
-            _currentState = defaultState;
-
+            _defaultState = defaultState;
             _triggers = new Dictionary<string, BooleanWrapper>();
             _sourceStateAndTransitions = new Dictionary<IState, Transition[]>();
         }
 
-        public void Tick()
+        public void UpdateState()
         {
-            _currentState = GetNextState();
+            var nextState = GetNextState();
+            if (nextState != _currentState)
+            {
+                _currentState?.OnExitState();
+                nextState.OnEnterState();
 
-            _currentState.Tick();
+                _currentState = nextState;
+            }
+            else
+            {
+                _currentState.OnUpdate();
+            }
         }
 
         public void AddTransition(IState sourceState, params Transition[] transitions)
         {
-            if (!_sourceStateAndTransitions.ContainsKey(sourceState))
-            {
-                _sourceStateAndTransitions[sourceState] = transitions;
-                return;
-            }
+            if (!_sourceStateAndTransitions.ContainsKey(sourceState)) _sourceStateAndTransitions[sourceState] = transitions;
+            else
+                _sourceStateAndTransitions[sourceState] = _sourceStateAndTransitions[sourceState]
+                                                          .Concat(transitions)
+                                                          .OrderBy(t => t.Priority)
+                                                          .ThenByDescending(t => t.Parameters.Count)
+                                                          .ToArray();
 
-            _sourceStateAndTransitions[sourceState] = _sourceStateAndTransitions[sourceState]
-                                                      .Concat(transitions)
-                                                      .OrderBy(t => t.Priority)
-                                                      .ThenByDescending(t => t.Parameters.Count)
-                                                      .ToArray();
 
             foreach (var parameter in transitions.SelectMany(t => t.Parameters).Distinct())
                 if (!_triggers.ContainsKey(parameter))
@@ -65,6 +71,8 @@ namespace NonebNi.Core.StateMachines
 
         private IState GetNextState()
         {
+            if (_currentState == null) return _defaultState;
+
             //assuming Transition is ordered in priority
             if (_sourceStateAndTransitions.ContainsKey(_currentState))
             {
