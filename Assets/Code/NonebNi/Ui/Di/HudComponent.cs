@@ -1,21 +1,25 @@
-﻿using NonebNi.Core.Level;
+﻿using NonebNi.Core.Di;
+using NonebNi.Core.FlowControl;
+using NonebNi.Core.Level;
 
 namespace NonebNi.Ui.Di
 {
     public interface IHudComponent
     {
         public LevelData GetLevelData();
+        public ILevelFlowController GetLevelFlowController();
     }
 
     public class HudComponent : IHudComponent
     {
-        private readonly GameModule _module;
+        private readonly ILevelComponent _levelComponent;
 
-        public HudComponent(GameModule module)
+        public HudComponent(ILevelComponent levelComponent)
         {
-            _module = module;
+            _levelComponent = levelComponent;
         }
 
-        public LevelData GetLevelData() => _module.LevelData;
+        public LevelData GetLevelData() => _levelComponent.GetLevelData();
+        public ILevelFlowController GetLevelFlowController() => _levelComponent.GetLevelFlowController();
     }
 }

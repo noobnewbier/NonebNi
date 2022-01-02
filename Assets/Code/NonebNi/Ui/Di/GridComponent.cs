@@ -1,5 +1,6 @@
 ﻿using System;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Di;
 using NonebNi.Core.Level;
 
 namespace NonebNi.Ui.Di
@@ -12,17 +13,22 @@ namespace NonebNi.Ui.Di
 
     public class GridComponent : IGridComponent
     {
-        private readonly GameModule _gameModule;
-        private readonly Lazy<CoordinateAndPositionService> _lazyCoordinateAndPositionService;
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly CoordinateAndPositionServiceModule _coordinateAndPositionServiceModule;
 
-        public GridComponent(GameModule gameModule)
+        private readonly Lazy<CoordinateAndPositionService> _lazyCoordinateAndPositionService;
+        private readonly LevelModule _levelModule;
+
+        public GridComponent(CoordinateAndPositionServiceModule coordinateAndPositionServiceModule, LevelModule levelModule)
         {
-            _gameModule = gameModule;
-            _lazyCoordinateAndPositionService =
-                new Lazy<CoordinateAndPositionService>(() => _gameModule.GetCoordinateAndPositionService());
+            _coordinateAndPositionServiceModule = coordinateAndPositionServiceModule;
+            _levelModule = levelModule;
+            _lazyCoordinateAndPositionService = new Lazy<CoordinateAndPositionService>(
+                () => _coordinateAndPositionServiceModule.GetCoordinateAndPositionService(_levelModule.LevelData)
+            );
         }
 
-        public LevelData GetLevelData() => _gameModule.LevelData;
+        public LevelData GetLevelData() => _levelModule.LevelData;
         public CoordinateAndPositionService CoordinateAndPositionService => _lazyCoordinateAndPositionService.Value;
     }
 }
