@@ -24,7 +24,7 @@ namespace NonebNi.Ui.Di
             _coordinateAndPositionServiceModule = coordinateAndPositionServiceModule;
             _levelModule = levelModule;
             _lazyCoordinateAndPositionService = new Lazy<CoordinateAndPositionService>(
-                () => _coordinateAndPositionServiceModule.GetCoordinateAndPositionService(_levelModule.LevelData)
+                () => _coordinateAndPositionServiceModule.GetCoordinateAndPositionService()
             );
         }
 
