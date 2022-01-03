@@ -11,7 +11,8 @@ using UnityEngine;
 namespace NonebNi.Editors.Level.Entities
 {
     /// <summary>
-    /// Monitor the placement of <see cref="EditorEntity" /> within the active scene, and change the <see cref="EditorMap" /> accordingly
+    /// Monitor the placement of <see cref="EditorEntity" /> within the active scene, and change the <see cref="EditorMap" />
+    /// accordingly
     /// todo: register to undo callback
     /// todo: deal with overlapping(error log etc)
     /// todo: deal with deletion

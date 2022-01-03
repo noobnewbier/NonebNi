@@ -1,15 +1,15 @@
 {
-    "name": "Noneb.PlayModeTests",
-    "rootNamespace": "",
-    "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "NonebNi.Ui",
-        "NonebNi.Core",
-        "UnityUtils"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
+  "name": "Noneb.PlayModeTests",
+  "rootNamespace": "",
+  "references": [
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner",
+    "NonebNi.Ui",
+    "NonebNi.Core",
+    "UnityUtils"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
   "allowUnsafeCode": false,
   "overrideReferences": true,
   "precompiledReferences": [

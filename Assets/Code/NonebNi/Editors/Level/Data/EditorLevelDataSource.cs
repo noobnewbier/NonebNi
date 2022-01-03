@@ -18,8 +18,10 @@ namespace NonebNi.Editors.Level.Data
         [SerializeField] private LevelDataSource? dataSource;
 
         /// <summary>
-        /// The scene that should be using this settings, so instead of the scene holding a reference to <see cref="EditorLevelDataSource" />,
-        /// the <see cref="EditorLevelDataSource" /> holds a reference to the scene itself, and we use it to backtrack and find which level
+        /// The scene that should be using this settings, so instead of the scene holding a reference to
+        /// <see cref="EditorLevelDataSource" />,
+        /// the <see cref="EditorLevelDataSource" /> holds a reference to the scene itself, and we use it to backtrack and find which
+        /// level
         /// data we should be using.
         /// </summary>
         [SerializeField] private SceneAsset? scene;

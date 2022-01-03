@@ -2,7 +2,6 @@
 using System.Linq;
 using Code.NonebNi.EditorComponent.Entities;
 using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
 using NonebNi.Editors.Level.Data;
 
 namespace NonebNi.Editors.Level.Entities
@@ -19,7 +18,8 @@ namespace NonebNi.Editors.Level.Entities
         }
 
         /// <summary>
-        /// Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of bounds(tbd).
+        /// Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
+        /// bounds(tbd).
         /// </summary>
         public IEnumerable<Coordinate> FindOverlappedCoordinates(EditorEntity editorEntity)
         {

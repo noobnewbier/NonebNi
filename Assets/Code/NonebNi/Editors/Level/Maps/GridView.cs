@@ -40,7 +40,6 @@ namespace NonebNi.Editors.Level.Maps
             var coordinates = _presenter.Map.GetAllCoordinates();
 
             foreach (var coordinate in coordinates)
-            {
                 if (_presenter.Map.TryGet(coordinate, out _))
                 {
                     var center = _coordinateAndPositionService.FindPosition(coordinate);
@@ -49,7 +48,6 @@ namespace NonebNi.Editors.Level.Maps
                     Handles.DrawLine(corners[0], corners[5]);
                     for (var i = 0; i < corners.Count - 1; i++) Handles.DrawLine(corners[i], corners[i + 1]);
                 }
-            }
 
             Handles.zTest = originalZTest;
         }

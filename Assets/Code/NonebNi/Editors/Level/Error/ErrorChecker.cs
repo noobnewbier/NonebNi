@@ -85,15 +85,13 @@ namespace NonebNi.Editors.Level.Error
             where !coordinates.Any()
             select new ErrorEntry(entity, $"{entity.name} is not placed on a valid coordinate");
 
-        private IEnumerable<ErrorEntry> CheckForMultiCoordUnit(IEnumerable<Unit> units)
-        {
-            return from unit in units
-                let coordinates = _editorEntityPositioningService.FindOverlappedCoordinates(unit).ToArray()
-                where coordinates.Length > 1
-                select new ErrorEntry(
-                    unit,
-                    $"{unit.name} is overlapping with multiple coordinates \nchecking the collider and see if it is crossing boundaries"
-                );
-        }
+        private IEnumerable<ErrorEntry> CheckForMultiCoordUnit(IEnumerable<Unit> units) =>
+            from unit in units
+            let coordinates = _editorEntityPositioningService.FindOverlappedCoordinates(unit).ToArray()
+            where coordinates.Length > 1
+            select new ErrorEntry(
+                unit,
+                $"{unit.name} is overlapping with multiple coordinates \nchecking the collider and see if it is crossing boundaries"
+            );
     }
 }
