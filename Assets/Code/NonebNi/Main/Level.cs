@@ -15,6 +15,8 @@ namespace NonebNi.Main
 
         [SerializeField] private Hud hud = null!;
         [SerializeField] private Grid grid = null!;
+        [SerializeField] private CameraControl cameraControl = null!;
+
         [SerializeField] private UnitDetailStat unitDetailStat = null!;
 
         private ILevelFlowController _levelFlowController = null!;
@@ -23,13 +25,15 @@ namespace NonebNi.Main
         {
             var levelModule = new LevelModule(levelDataSource.GetData());
             var commandEvaluationModule = new CommandEvaluationModule();
-            var coordinateAndPositionServiceModule = new CoordinateAndPositionServiceModule();
+            var coordinateAndPositionServiceModule = new CoordinateAndPositionServiceModule(levelModule);
 
             var levelComponent = new LevelComponent(levelModule, commandEvaluationModule);
 
             _levelFlowController = levelComponent.GetLevelFlowController();
+
             hud.Init(new HudComponent(levelComponent));
             grid.Init(new GridComponent(coordinateAndPositionServiceModule, levelModule));
+            cameraControl.Init(levelComponent, coordinateAndPositionServiceModule);
 
             unitDetailStat.Init();
         }
