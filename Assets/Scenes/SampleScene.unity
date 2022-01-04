@@ -661,7 +661,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164805443}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.01, y: 3.0079236, z: 3.72}
+  m_LocalPosition: {x: -2.16, y: 3.0079236, z: 0.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 615602445}
@@ -680,6 +680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundingCollider: {fileID: 1164805446}
+  serializedGuid: 0c6635653b60874c8effe91b70b08d60
   entityDataSource: {fileID: 11400000, guid: 51b9faeb1be47774ca472d7eb59195e3, type: 2}
 --- !u!65 &1164805446
 BoxCollider:
@@ -1068,6 +1069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundingCollider: {fileID: 1548526991}
+  serializedGuid: 4abdcb51430d534aa834d83cdae1b362
   entityDataSource: {fileID: 11400000, guid: 46b29cf50eb5c1941b858ffde4129995, type: 2}
 --- !u!65 &1548526991
 BoxCollider:

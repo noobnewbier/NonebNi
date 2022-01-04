@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NonebNi.Core.Entities;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace Code.NonebNi.EditorComponent.Entities
     public abstract class EditorEntity : MonoBehaviour
     {
         [SerializeField] protected Collider? boundingCollider;
+        [SerializeField] protected byte[] serializedGuid = new byte[16]; //16 is the guid's length in bytes
 
         /// <summary>
         /// We expect this is only called when the editorEntity is <see cref="IsCorrectSetUp" />,
@@ -26,16 +28,24 @@ namespace Code.NonebNi.EditorComponent.Entities
 
         public virtual bool IsCorrectSetUp => boundingCollider != null;
 
+        protected Guid Guid => new Guid(serializedGuid);
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.DrawSphere(transform.position, 0.125f);
+        }
+
+        private void OnValidate()
+        {
+            var otherEditorEntity = FindObjectsOfType<EditorEntity>().Where(e => e != this);
+            if (Guid == Guid.Empty || otherEditorEntity.Any(e => e.Guid == Guid))
+                serializedGuid = Guid.NewGuid().ToByteArray();
         }
     }
 
     public abstract partial class EditorEntity<T> : EditorEntity where T : EditorEntityData
     {
         [SerializeField] protected EditorEntityDataSource<T>? entityDataSource;
-        [SerializeField] private Guid guid;
 
         private T? _cacheEntityData;
 
@@ -51,7 +61,7 @@ namespace Code.NonebNi.EditorComponent.Entities
                 else
                 {
                     if (_cacheEntityData == null && entityDataSource != null)
-                        _cacheEntityData = entityDataSource.CreateData(guid);
+                        _cacheEntityData = entityDataSource.CreateData(Guid);
                 }
 
                 return _cacheEntityData;

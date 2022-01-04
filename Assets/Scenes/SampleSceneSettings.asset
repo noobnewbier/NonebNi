@@ -18,88 +18,20 @@ MonoBehaviour:
     height: 10
     width: 10
     nodes:
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
-    - serializedUnitDatas: []
+    - serializedUnitDatas:
+      - serializedGuid: 4abdcb51430d534aa834d83cdae1b362
+        entityData:
+          name: Noob
+          maxHealth: 100
+          health: 100
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          skillDatas: []
+          initiative: 0
       tileData:
         weight: 1
         name: 
     - serializedUnitDatas:
-      - serializedGuid: 00000000000000000000000000000000
+      - serializedGuid: 0c6635653b60874c8effe91b70b08d60
         entityData:
           name: Newb
           maxHealth: 100
@@ -107,6 +39,82 @@ MonoBehaviour:
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           skillDatas: []
           initiative: 1
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
+      tileData:
+        weight: 1
+        name: 
+    - serializedUnitDatas: []
       tileData:
         weight: 1
         name: 

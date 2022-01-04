@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Code.NonebNi.EditorComponent.Entities
 {
     [Serializable]
-    public abstract class EditorEntityData
+    public abstract class EditorEntityData : ISerializationCallbackReceiver
     {
         protected EditorEntityData(Guid guid)
         {
