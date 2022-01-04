@@ -12,23 +12,27 @@ namespace NonebNi.Core.Units
         [SerializeField] private int health;
         [SerializeField] private Sprite icon;
         [SerializeField] private SkillData[] skillDatas;
+        [Range(0, 100)] [SerializeField] private int initiative;
+
 
         public UnitData(string name,
                         int maxHealth,
                         int health,
                         Sprite icon,
-                        SkillData[] skillDatas) : base(name)
+                        SkillData[] skillDatas,
+                        int initiative) : base(name)
         {
             this.maxHealth = maxHealth;
             this.health = health;
             this.icon = icon;
             this.skillDatas = skillDatas;
+            this.initiative = initiative;
         }
 
+        public int Initiative => initiative;
+
         public SkillData[] SkillDatas => skillDatas;
-
         public Sprite Icon => icon;
-
         public int MaxHealth => maxHealth;
         public int Health => health;
     }
