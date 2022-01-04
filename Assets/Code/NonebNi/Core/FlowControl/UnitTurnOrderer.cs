@@ -6,7 +6,7 @@ using Priority_Queue;
 
 namespace NonebNi.Core.FlowControl
 {
-    public interface IUnitTurnManager
+    public interface IUnitTurnOrderer
     {
         UnitData ToNextUnit();
     }
@@ -14,7 +14,7 @@ namespace NonebNi.Core.FlowControl
     /// <summary>
     /// Initiative base, all units must have took one turn before others can go again
     /// </summary>
-    public class UnitTurnOrderer : IUnitTurnManager
+    public class UnitTurnOrderer : IUnitTurnOrderer
     {
         private readonly IReadOnlyMap _map;
 

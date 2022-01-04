@@ -15,5 +15,7 @@ namespace NonebNi.Core.Entities
         {
             this.name = name;
         }
+
+        public string Name => name;
     }
 }

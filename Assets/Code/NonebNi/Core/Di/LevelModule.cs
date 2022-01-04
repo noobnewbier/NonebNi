@@ -13,6 +13,8 @@ namespace NonebNi.Core.Di
         }
 
         public ILevelFlowController GetLevelFlowController(ICommandEvaluationService commandEvaluationService) =>
-            new LevelFlowController(commandEvaluationService);
+            new LevelFlowController(commandEvaluationService, GetUnitTurnOrderer());
+
+        private IUnitTurnOrderer GetUnitTurnOrderer() => new UnitTurnOrderer(LevelData.Map);
     }
 }
