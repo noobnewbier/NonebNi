@@ -1,5 +1,7 @@
 ﻿using System;
+using Moq;
 using NonebNi.Core.FlowControl;
+using NonebNi.Core.Maps;
 using NonebNi.Core.Units;
 using NonebNi.Core.Units.Skills;
 using NUnit.Framework;
@@ -34,7 +36,9 @@ namespace NonebNi.EditModeTests.GameLogic
         [Test]
         public void UnitsWithLargerInitiativeGoesFirst()
         {
-            var unitsOrderer = new UnitTurnOrderer(new[] { _lowPriorityUnit, _highPriorityUnit });
+            var stubMap = new Mock<IReadOnlyMap>();
+            stubMap.Setup(m => m.GetAllUnits()).Returns(new[] { _lowPriorityUnit, _highPriorityUnit });
+            var unitsOrderer = new UnitTurnOrderer(stubMap.Object);
 
             Assert.AreSame(unitsOrderer.ToNextUnit(), _highPriorityUnit);
             Assert.AreSame(unitsOrderer.ToNextUnit(), _lowPriorityUnit);
@@ -43,7 +47,9 @@ namespace NonebNi.EditModeTests.GameLogic
         [Test]
         public void AfterAllUnitsActOnce_TheFirstUnitActsAgain()
         {
-            var unitsOrderer = new UnitTurnOrderer(new[] { _lowPriorityUnit, _highPriorityUnit });
+            var stubMap = new Mock<IReadOnlyMap>();
+            stubMap.Setup(m => m.GetAllUnits()).Returns(new[] { _lowPriorityUnit, _highPriorityUnit });
+            var unitsOrderer = new UnitTurnOrderer(stubMap.Object);
 
             unitsOrderer.ToNextUnit();
             unitsOrderer.ToNextUnit();
@@ -54,7 +60,9 @@ namespace NonebNi.EditModeTests.GameLogic
         [Test]
         public void WhenOnlyOneUnit_TheOnlyUnitsAlwaysActs()
         {
-            var unitsOrderer = new UnitTurnOrderer(new[] { _highPriorityUnit });
+            var stubMap = new Mock<IReadOnlyMap>();
+            stubMap.Setup(m => m.GetAllUnits()).Returns(new[] { _highPriorityUnit });
+            var unitsOrderer = new UnitTurnOrderer(stubMap.Object);
 
             Assert.AreSame(unitsOrderer.ToNextUnit(), _highPriorityUnit);
             Assert.AreSame(unitsOrderer.ToNextUnit(), _highPriorityUnit);

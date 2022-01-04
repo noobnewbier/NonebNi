@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
+using NonebNi.Core.Units;
 using UnityEngine;
 
 namespace NonebNi.Core.Maps
@@ -17,6 +19,7 @@ namespace NonebNi.Core.Maps
         bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
+        IEnumerable<UnitData> GetAllUnits();
     }
 
     /// <summary>
@@ -185,6 +188,14 @@ namespace NonebNi.Core.Maps
             var storageCoord = StorageCoordinate.FromAxial(coordinate);
 
             return storageCoord.X < width && storageCoord.Z < height && storageCoord.X >= 0 && storageCoord.Z >= 0;
+        }
+
+        public IEnumerable<UnitData> GetAllUnits()
+        {
+            // ReSharper disable once LoopCanBeConvertedToQuery : Using linq will force us to use null-forgiving operator, which is worst than a foreach
+            foreach (var unitData in nodes.Select(n => n.Get<UnitData>()))
+                if (unitData != null)
+                    yield return unitData;
         }
 
         private int GetIndexFromStorageCoordinate(StorageCoordinate storageCoordinate) =>
