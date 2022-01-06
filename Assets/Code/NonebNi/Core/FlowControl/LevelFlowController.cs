@@ -14,10 +14,12 @@ namespace NonebNi.Core.FlowControl
     {
         private readonly StateMachine _stateMachine;
 
-        public LevelFlowController(ICommandEvaluationService evaluationService, IUnitTurnOrderer unitTurnOrderer)
+        public LevelFlowController(ICommandEvaluationService evaluationService,
+                                   IUnitTurnOrderer unitTurnOrderer,
+                                   IPlayerDecisionService playerDecisionService)
         {
             var decisionState = new DecisionState(unitTurnOrderer);
-            var evaluationState = new EvaluationState(evaluationService, this);
+            var evaluationState = new EvaluationState(evaluationService, this, playerDecisionService);
             var endState = new EndState();
 
             _stateMachine = new StateMachine(decisionState);

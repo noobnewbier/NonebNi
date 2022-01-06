@@ -12,9 +12,13 @@ namespace NonebNi.Core.Di
             LevelData = levelData;
         }
 
-        public ILevelFlowController GetLevelFlowController(ICommandEvaluationService commandEvaluationService) =>
-            new LevelFlowController(commandEvaluationService, GetUnitTurnOrderer());
+        public ILevelFlowController GetLevelFlowController() =>
+            new LevelFlowController(GetCommandEvaluationService(), GetUnitTurnOrderer(), GetPlayerDecisionService());
+
+        private IPlayerDecisionService GetPlayerDecisionService() => new PlayerDecisionService();
 
         private IUnitTurnOrderer GetUnitTurnOrderer() => new UnitTurnOrderer(LevelData.Map);
+
+        private ICommandEvaluationService GetCommandEvaluationService() => new CommandEvaluationService(LevelData.Map);
     }
 }
