@@ -34,6 +34,11 @@ namespace NonebNi.Core.Units
         public SkillData[] SkillDatas => skillDatas;
         public Sprite Icon => icon;
         public int MaxHealth => maxHealth;
-        public int Health => health;
+
+        public int Health
+        {
+            get => health;
+            set => health = Mathf.Clamp(value, 0, maxHealth);
+        }
     }
 }
