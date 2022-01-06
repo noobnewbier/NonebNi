@@ -22,13 +22,20 @@ namespace NonebNi.Core.Maps
         IEnumerable<UnitData> GetAllUnits();
     }
 
+    public interface IMap : IReadOnlyMap
+    {
+        void Set(Coordinate axialCoordinate, TileData tileData);
+        void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData;
+        bool Remove<T>(T entityData) where T : EntityData;
+    }
+
     /// <summary>
     /// Storing weight of tiles and units positions.
     /// We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best to
     /// recover
     /// </summary>
     [Serializable]
-    public class Map : IReadOnlyMap
+    public class Map : IMap
     {
         [SerializeField] private int height;
         [SerializeField] private int width;
@@ -164,6 +171,18 @@ namespace NonebNi.Core.Maps
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
             nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
+        }
+
+        public bool Remove<T>(T entityData) where T : EntityData
+        {
+            if (TryFind(entityData, out var coord))
+            {
+                Set<T>(coord, null);
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
