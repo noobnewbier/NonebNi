@@ -1,11 +1,9 @@
-﻿using NonebNi.Core.Di;
+﻿using System.Collections;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
-using NonebNi.Ui.Di;
-using NonebNi.Ui.Huds;
+using NonebNi.Main.Di;
 using NonebNi.Ui.Statistics.Unit;
 using UnityEngine;
-using Grid = NonebNi.Ui.Grids.Grid;
 
 namespace NonebNi.Main
 {
@@ -35,11 +33,17 @@ namespace NonebNi.Main
             cameraControl.Init(levelComponent, coordinateAndPositionServiceModule);
 
             unitDetailStat.Init();
+
+            StartCoroutine(UpdateLevelFlowControllerRoutine());
         }
 
-        private void Update()
+        private IEnumerator UpdateLevelFlowControllerRoutine()
         {
-            _levelFlowController.UpdateState();
+            while (true)
+            {
+                var routine = StartCoroutine(_levelFlowController.UpdateState());
+                yield return routine;
+            }
         }
     }
 }

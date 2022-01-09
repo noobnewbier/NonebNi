@@ -1,6 +1,5 @@
-﻿using NonebNi.Core.Di;
+﻿using NonebNi.Main.Di;
 using NonebNi.Ui.Cameras;
-using NonebNi.Ui.Di;
 using UnityEngine;
 
 namespace NonebNi.Main

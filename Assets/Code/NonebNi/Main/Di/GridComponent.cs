@@ -1,9 +1,8 @@
 ﻿using System;
 using NonebNi.Core.Coordinates;
-using NonebNi.Core.Di;
 using NonebNi.Core.Level;
 
-namespace NonebNi.Ui.Di
+namespace NonebNi.Main.Di
 {
     public interface IGridComponent
     {

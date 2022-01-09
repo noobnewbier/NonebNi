@@ -1,8 +1,7 @@
-﻿using NonebNi.Core.Di;
-using NonebNi.Ui.Cameras;
+﻿using NonebNi.Ui.Cameras;
 using UnityUtils.Factories;
 
-namespace NonebNi.Ui.Di
+namespace NonebNi.Main.Di
 {
     public interface ICameraControlComponent
     {

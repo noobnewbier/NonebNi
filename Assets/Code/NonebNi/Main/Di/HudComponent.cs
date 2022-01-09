@@ -1,8 +1,7 @@
-﻿using NonebNi.Core.Di;
-using NonebNi.Core.FlowControl;
+﻿using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 
-namespace NonebNi.Ui.Di
+namespace NonebNi.Main.Di
 {
     public interface IHudComponent
     {

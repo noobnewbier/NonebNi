@@ -1,7 +1,7 @@
 ﻿using System;
 using NonebNi.Core.Coordinates;
 
-namespace NonebNi.Core.Di
+namespace NonebNi.Main.Di
 {
     public class CoordinateAndPositionServiceModule
     {

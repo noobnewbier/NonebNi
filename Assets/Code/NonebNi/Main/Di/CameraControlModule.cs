@@ -1,7 +1,7 @@
 ﻿using NonebNi.Ui.Cameras;
 using UnityEngine;
 
-namespace NonebNi.Ui.Di
+namespace NonebNi.Main.Di
 {
     public class CameraControlModule
     {

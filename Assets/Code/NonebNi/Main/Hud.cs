@@ -1,8 +1,9 @@
-﻿using NonebNi.Ui.Di;
+﻿using NonebNi.Main.Di;
+using NonebNi.Ui.Huds;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace NonebNi.Ui.Huds
+namespace NonebNi.Main
 {
     public class Hud : MonoBehaviour
     {
@@ -15,7 +16,7 @@ namespace NonebNi.Ui.Huds
         {
             _hudComponent = hudComponent;
 
-            prototypeView.Init(_hudComponent);
+            prototypeView.Init(_hudComponent.GetLevelData(), _hudComponent.GetLevelFlowController());
         }
     }
 }

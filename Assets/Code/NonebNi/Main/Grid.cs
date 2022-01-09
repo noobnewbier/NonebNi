@@ -1,7 +1,8 @@
-﻿using NonebNi.Ui.Di;
+﻿using NonebNi.Main.Di;
+using NonebNi.Ui.Grids;
 using UnityEngine;
 
-namespace NonebNi.Ui.Grids
+namespace NonebNi.Main
 {
     //todo: consider moving this to the Main asmdef
     public class Grid : MonoBehaviour

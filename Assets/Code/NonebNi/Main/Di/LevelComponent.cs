@@ -2,7 +2,7 @@
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 
-namespace NonebNi.Core.Di
+namespace NonebNi.Main.Di
 {
     public interface ILevelComponent
     {
