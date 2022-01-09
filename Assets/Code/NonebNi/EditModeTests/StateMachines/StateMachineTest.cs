@@ -1,38 +1,60 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Moq;
 using NonebNi.Core.StateMachines;
 using NUnit.Framework;
+using UnityEngine.TestTools;
 
 namespace NonebNi.EditModeTests.StateMachines
 {
     public class StateMachineTest
     {
-        [Test]
-        public void StateMachineWithOnlyOneState_TickStateMachine_DefaultStateIsUsed()
+        [UnityTest]
+        public IEnumerator StateMachineWithOnlyOneState_TickStateMachine_DefaultStateIsUsed()
         {
             var defaultStateMock = new Mock<IState>();
             var stateMachine = new StateMachine(defaultStateMock.Object);
 
-            stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
 
             defaultStateMock.Verify(s => s.OnEnterState(), Times.Once);
         }
 
-        [Test]
-        public void StateMachineWithOnlyOneState_TickStateMachineTwice_UpdateIsCalledOnce()
+        [UnityTest]
+        public IEnumerator UpdateState_ForTheFirstTime_OnExitForThePreviousStateIsCalled()
+        {
+            var defaultStateMock = new Mock<IState>();
+            var otherStateMock = new Mock<IState>();
+            var stateMachine = new StateMachine(defaultStateMock.Object);
+            stateMachine.AddTransition(
+                defaultStateMock.Object,
+                new Transition(new HashSet<string> { TestParams.ToOtherState }, otherStateMock.Object)
+            );
+            yield return stateMachine.UpdateState();
+            yield return null;
+
+            stateMachine.SetTrigger(TestParams.ToOtherState);
+            yield return stateMachine.UpdateState();
+            yield return null;
+
+            defaultStateMock.Verify(s => s.OnExitState(), Times.Once);
+        }
+
+        [UnityTest]
+        public IEnumerator StateMachineWithOnlyOneState_TickStateMachineTwice_UpdateIsCalledOnce()
         {
             var defaultStateMock = new Mock<IState>();
             var stateMachine = new StateMachine(defaultStateMock.Object);
 
-            stateMachine.UpdateState();
-            stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
 
             defaultStateMock.Verify(s => s.OnUpdate(), Times.Once);
         }
 
-        [Test]
-        public void StateMachineWithTransition_NoParametersAreSet_DefaultStateIsUsed()
+        [UnityTest]
+        public IEnumerator StateMachineWithTransition_NoParametersAreSet_DefaultStateIsUsed()
         {
             var defaultStateMock = new Mock<IState>();
             var otherStateMock = new Mock<IState>();
@@ -42,14 +64,14 @@ namespace NonebNi.EditModeTests.StateMachines
                 new Transition(new HashSet<string> { TestParams.ToOtherState }, otherStateMock.Object)
             );
 
-            stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
 
             defaultStateMock.Verify(s => s.OnEnterState(), Times.Once);
             otherStateMock.Verify(s => s.OnEnterState(), Times.Never);
         }
 
-        [Test]
-        public void WithPossibleTransitionDefinedAtFirstFrame_TickOnlyOnce_DefaultStateIsUsed()
+        [UnityTest]
+        public IEnumerator WithPossibleTransitionDefinedAtFirstFrame_TickOnlyOnce_DefaultStateIsUsed()
         {
             var defaultStateMock = new Mock<IState>();
             var otherStateMock = new Mock<IState>();
@@ -60,14 +82,14 @@ namespace NonebNi.EditModeTests.StateMachines
             );
 
             stateMachine.SetTrigger(TestParams.ToOtherState);
-            stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
 
             otherStateMock.Verify(s => s.OnEnterState(), Times.Never);
             defaultStateMock.Verify(s => s.OnEnterState(), Times.Once);
         }
 
-        [Test]
-        public void WithPossibleTransitionDefinedAtFirstFrame_TickTwice_MoveToOtherState()
+        [UnityTest]
+        public IEnumerator WithPossibleTransitionDefinedAtFirstFrame_TickTwice_MoveToOtherState()
         {
             var defaultStateMock = new Mock<IState>();
             var otherStateMock = new Mock<IState>();
@@ -78,16 +100,16 @@ namespace NonebNi.EditModeTests.StateMachines
             );
 
             stateMachine.SetTrigger(TestParams.ToOtherState);
-            stateMachine.UpdateState();
-            stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
 
             otherStateMock.Verify(s => s.OnEnterState(), Times.Once);
             defaultStateMock.Verify(s => s.OnEnterState(), Times.Once);
             defaultStateMock.Verify(s => s.OnExitState(), Times.Once);
         }
 
-        [Test]
-        public void GivenMultiplePossibleTransitions_OneWithHighestPriorityIsUsed()
+        [UnityTest]
+        public IEnumerator GivenMultiplePossibleTransitions_OneWithHighestPriorityIsUsed()
         {
             var defaultStateMock = new Mock<IState>();
             var lowerPriorityStateMock = new Mock<IState>();
@@ -104,15 +126,15 @@ namespace NonebNi.EditModeTests.StateMachines
 
             stateMachine.SetTrigger(TestParams.ToLowerState);
             stateMachine.SetTrigger(TestParams.ToHigherState);
-            stateMachine.UpdateState();
-            stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
 
             higherPriorityStateMock.Verify(s => s.OnEnterState(), Times.Once);
             lowerPriorityStateMock.Verify(s => s.OnEnterState(), Times.Never);
         }
 
-        [Test]
-        public void GivenMultiplePossibleTransitionsWithSamePriority_OneWithMoreParametersIsUsed()
+        [UnityTest]
+        public IEnumerator GivenMultiplePossibleTransitionsWithSamePriority_OneWithMoreParametersIsUsed()
         {
             var defaultStateMock = new Mock<IState>();
             var lowerPriorityStateMock = new Mock<IState>();
@@ -132,8 +154,8 @@ namespace NonebNi.EditModeTests.StateMachines
 
             stateMachine.SetTrigger(TestParams.ToOtherState);
             stateMachine.SetTrigger(TestParams.ExtraParamToOtherState);
-            stateMachine.UpdateState();
-            stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
+            yield return stateMachine.UpdateState();
 
             higherPriorityStateMock.Verify(s => s.OnEnterState(), Times.Once);
             lowerPriorityStateMock.Verify(s => s.OnEnterState(), Times.Never);

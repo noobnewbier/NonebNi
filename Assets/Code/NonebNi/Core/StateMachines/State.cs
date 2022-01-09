@@ -1,11 +1,13 @@
-﻿namespace NonebNi.Core.StateMachines
+﻿using System.Collections;
+
+namespace NonebNi.Core.StateMachines
 {
     public interface IState
     {
-        void OnUpdate();
+        IEnumerator OnUpdate();
 
-        void OnEnterState();
+        IEnumerator OnEnterState();
 
-        void OnExitState();
+        IEnumerator OnExitState();
     }
 }

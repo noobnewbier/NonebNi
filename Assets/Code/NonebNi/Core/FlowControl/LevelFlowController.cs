@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using NonebNi.Core.Sequences;
 using NonebNi.Core.StateMachines;
 
 namespace NonebNi.Core.FlowControl
 {
     public interface ILevelFlowController
     {
-        void UpdateState();
+        IEnumerator UpdateState();
         void EndTurn();
         void FinishEvaluation();
     }
@@ -16,10 +18,16 @@ namespace NonebNi.Core.FlowControl
 
         public LevelFlowController(ICommandEvaluationService evaluationService,
                                    IUnitTurnOrderer unitTurnOrderer,
-                                   IPlayerDecisionService playerDecisionService)
+                                   IPlayerDecisionService playerDecisionService,
+                                   ISequencePlayer sequencePlayer)
         {
             var decisionState = new DecisionState(unitTurnOrderer);
-            var evaluationState = new EvaluationState(evaluationService, this, playerDecisionService);
+            var evaluationState = new EvaluationState(
+                evaluationService,
+                this,
+                playerDecisionService,
+                sequencePlayer
+            );
             var endState = new EndState();
 
             _stateMachine = new StateMachine(decisionState);
@@ -34,9 +42,9 @@ namespace NonebNi.Core.FlowControl
             );
         }
 
-        public void UpdateState()
+        public IEnumerator UpdateState()
         {
-            _stateMachine.UpdateState();
+            yield return _stateMachine.UpdateState();
         }
 
         public void EndTurn()

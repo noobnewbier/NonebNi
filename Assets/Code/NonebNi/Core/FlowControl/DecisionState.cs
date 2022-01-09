@@ -1,4 +1,5 @@
-﻿using NonebNi.Core.StateMachines;
+﻿using System.Collections;
+using NonebNi.Core.StateMachines;
 using UnityEngine;
 
 namespace NonebNi.Core.FlowControl
@@ -12,21 +13,27 @@ namespace NonebNi.Core.FlowControl
             _unitTurnOrderer = unitTurnOrderer;
         }
 
-        public void OnUpdate()
+        public IEnumerator OnUpdate()
         {
             Debug.Log("[Decision] Update");
+
+            yield break;
         }
 
-        public void OnEnterState()
+        public IEnumerator OnEnterState()
         {
             var currentUnit = _unitTurnOrderer.ToNextUnit();
 
             Debug.Log($"[Decision] Enter - {currentUnit.Name}");
+
+            yield break;
         }
 
-        public void OnExitState()
+        public IEnumerator OnExitState()
         {
             Debug.Log("[Decision] Exit");
+
+            yield break;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,19 +30,19 @@ namespace NonebNi.Core.StateMachines
             _sourceStateAndTransitions = new Dictionary<IState, Transition[]>();
         }
 
-        public void UpdateState()
+        public IEnumerator UpdateState()
         {
             var nextState = GetNextState();
             if (nextState != _currentState)
             {
-                _currentState?.OnExitState();
-                nextState.OnEnterState();
+                yield return _currentState?.OnExitState();
+                yield return nextState.OnEnterState();
 
                 _currentState = nextState;
             }
             else
             {
-                _currentState.OnUpdate();
+                yield return _currentState.OnUpdate();
             }
         }
 
