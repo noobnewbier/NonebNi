@@ -19,7 +19,10 @@ namespace NonebNi.EditModeTests.GameLogic
             mockMap.Setup(m => m.Remove(deadUnit)).Returns(true);
             var evaluationService = new CommandEvaluationService(mockMap.Object);
 
-            evaluationService.Evaluate(stubNullCommand.Object);
+            using var enumerator = evaluationService.Evaluate(stubNullCommand.Object).GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+            }
 
             mockMap.Verify(m => m.Remove(deadUnit), Times.Once);
         }
@@ -34,7 +37,8 @@ namespace NonebNi.EditModeTests.GameLogic
             mockMap.Setup(m => m.Remove(deadUnit)).Returns(false);
             var evaluationService = new CommandEvaluationService(mockMap.Object);
 
-            Assert.Throws<InvalidOperationException>(() => evaluationService.Evaluate(stubNullCommand.Object));
+            using var enumerator = evaluationService.Evaluate(stubNullCommand.Object).GetEnumerator();
+            Assert.Throws<InvalidOperationException>(() => enumerator.MoveNext());
 
             mockMap.Verify(m => m.Remove(deadUnit), Times.Once);
         }
@@ -48,7 +52,10 @@ namespace NonebNi.EditModeTests.GameLogic
             stubNullCommand.Setup(c => c.Evaluate()).Returns(() => new[] { livingUnit });
             var evaluationService = new CommandEvaluationService(mockMap.Object);
 
-            evaluationService.Evaluate(stubNullCommand.Object);
+            using var enumerator = evaluationService.Evaluate(stubNullCommand.Object).GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+            }
 
             mockMap.Verify(m => m.Remove(livingUnit), Times.Never);
         }
