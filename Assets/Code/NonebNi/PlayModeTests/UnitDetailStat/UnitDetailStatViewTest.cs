@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using JetBrains.Annotations;
 using NonebNi.Core.Units;
@@ -9,6 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityUtils.TestUtils;
+using Object = UnityEngine.Object;
 
 namespace NonebNi.PlayModeTests.UnitDetailStat
 {
@@ -42,6 +44,7 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
 
 
             _testData = new UnitData(
+                Guid.Empty,
                 "Noob",
                 100,
                 200,

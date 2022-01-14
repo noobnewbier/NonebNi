@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityUtils.SerializableGuid;
 
 namespace NonebNi.Core.Entities
 {
@@ -10,10 +11,12 @@ namespace NonebNi.Core.Entities
     public abstract class EntityData
     {
         [SerializeField] private string name;
+        [SerializeField] private SerializableGuid serializableGuid;
 
-        protected EntityData(string name)
+        protected EntityData(string name, Guid serializableGuid)
         {
             this.name = name;
+            this.serializableGuid = new SerializableGuid(serializableGuid);
         }
 
         public string Name => name;

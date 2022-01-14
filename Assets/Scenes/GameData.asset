@@ -23,6 +23,8 @@ MonoBehaviour:
       nodes:
       - serializedUnitDatas:
         - name: Noob
+          serializableGuid:
+            serializedGuid: 
           maxHealth: 100
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
@@ -33,6 +35,8 @@ MonoBehaviour:
           name: 
       - serializedUnitDatas:
         - name: Newb
+          serializableGuid:
+            serializedGuid: 
           maxHealth: 100
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}

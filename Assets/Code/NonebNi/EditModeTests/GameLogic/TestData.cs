@@ -10,6 +10,7 @@ namespace NonebNi.EditModeTests.GameLogic
     {
         public static UnitData CreateDeadUnit() =>
             new UnitData(
+                Guid.NewGuid(),
                 "DeadUnit",
                 1,
                 0,
@@ -20,6 +21,7 @@ namespace NonebNi.EditModeTests.GameLogic
 
         public static UnitData CreateLivingUnit() =>
             new UnitData(
+                Guid.NewGuid(),
                 "LivingUnit",
                 1,
                 1,
@@ -30,6 +32,7 @@ namespace NonebNi.EditModeTests.GameLogic
 
         public static UnitData CreateHighPriorityUnit() =>
             new UnitData(
+                Guid.NewGuid(),
                 "HighPriorityUnit",
                 1,
                 1,
@@ -40,6 +43,7 @@ namespace NonebNi.EditModeTests.GameLogic
 
         public static UnitData CreateLowPriorityUnit() =>
             new UnitData(
+                Guid.NewGuid(),
                 "LowPriorityUnit",
                 1,
                 1,

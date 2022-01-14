@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8680139171545852121}
   - component: {fileID: 8680139171545852120}
+  - component: {fileID: 6807835621299629819}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -45,8 +46,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundingCollider: {fileID: 8680139172277401164}
-  serializedGuid: 60894f154807cc438215d2ab7a5acaff
+  serializableGuid:
+    serializedGuid: 00000000000000000000000000000000
+  entity: {fileID: 6807835621299629819}
   entityDataSource: {fileID: 11400000, guid: 46b29cf50eb5c1941b858ffde4129995, type: 2}
+--- !u!114 &6807835621299629819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8680139171545852122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b9f23724c0d4b9ca1f2dd14934c9955, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  guid:
+    serializedGuid: 00000000000000000000000000000000
 --- !u!1 &8680139172277401166
 GameObject:
   m_ObjectHideFlags: 0

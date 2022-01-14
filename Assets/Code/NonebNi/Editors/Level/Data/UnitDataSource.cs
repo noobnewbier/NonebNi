@@ -20,6 +20,7 @@ namespace NonebNi.Editors.Level.Data
             new EditorEntityData<UnitData>(
                 guid,
                 new UnitData(
+                    guid,
                     entityName,
                     maxHealth,
                     health,

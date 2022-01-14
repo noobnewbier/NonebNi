@@ -15,12 +15,13 @@ namespace NonebNi.Core.Units
         [Range(0, 100)] [SerializeField] private int initiative;
 
 
-        public UnitData(string name,
+        public UnitData(Guid guid,
+                        string name,
                         int maxHealth,
                         int health,
                         Sprite icon,
                         SkillData[] skillDatas,
-                        int initiative) : base(name)
+                        int initiative) : base(name, guid)
         {
             this.maxHealth = maxHealth;
             this.health = health;

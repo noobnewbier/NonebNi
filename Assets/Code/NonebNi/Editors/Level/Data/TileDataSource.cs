@@ -13,6 +13,6 @@ namespace NonebNi.Editors.Level.Data
         public float Weight => weight;
 
         public override EditorEntityData<TileEntityData> CreateData(Guid guid) =>
-            new EditorEntityData<TileEntityData>(guid, new TileEntityData(tileName, weight));
+            new EditorEntityData<TileEntityData>(guid, new TileEntityData(guid, tileName, weight));
     }
 }

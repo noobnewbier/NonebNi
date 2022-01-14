@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Linq;
 using NonebNi.Core.Entities;
+using NonebNi.Ui;
+using UnityEditor;
+using UnityEditor.Experimental.SceneManagement;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityUtils.SerializableGuid;
 
 namespace Code.NonebNi.EditorComponent.Entities
 {
@@ -18,7 +23,8 @@ namespace Code.NonebNi.EditorComponent.Entities
     public abstract class EditorEntity : MonoBehaviour
     {
         [SerializeField] protected Collider? boundingCollider;
-        [SerializeField] protected byte[] serializedGuid = new byte[16]; //16 is the guid's length in bytes
+        [SerializeField] protected SerializableGuid serializableGuid;
+        [SerializeField] private Entity? entity;
 
         /// <summary>
         /// We expect this is only called when the editorEntity is <see cref="IsCorrectSetUp" />,
@@ -28,7 +34,12 @@ namespace Code.NonebNi.EditorComponent.Entities
 
         public virtual bool IsCorrectSetUp => boundingCollider != null;
 
-        protected Guid Guid => new Guid(serializedGuid);
+        protected Guid Guid => serializableGuid;
+
+        private void Update()
+        {
+            OnValidate();
+        }
 
         private void OnDrawGizmosSelected()
         {
@@ -37,9 +48,55 @@ namespace Code.NonebNi.EditorComponent.Entities
 
         private void OnValidate()
         {
-            var otherEditorEntity = FindObjectsOfType<EditorEntity>().Where(e => e != this);
-            if (Guid == Guid.Empty || otherEditorEntity.Any(e => e.Guid == Guid))
-                serializedGuid = Guid.NewGuid().ToByteArray();
+            void ValidateGuid()
+            {
+                var currentPrefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+                var isPrefabAsset = PrefabUtility.IsPartOfPrefabAsset(this);
+                var isEditingPrefab = currentPrefabStage != null && currentPrefabStage == StageUtility.GetStage(gameObject);
+                if (isEditingPrefab || isPrefabAsset)
+                {
+                    serializableGuid.Value = Guid.Empty;
+                    EditorUtility.SetDirty(gameObject);
+                }
+                else
+                {
+                    var otherEditorEntity = FindObjectsOfType<EditorEntity>().Where(e => e != this);
+                    if (Guid == Guid.Empty || otherEditorEntity.Any(e => e.Guid == Guid))
+                    {
+                        serializableGuid.Value = Guid.NewGuid();
+                        EditorUtility.SetDirty(gameObject);
+                    }
+                }
+            }
+
+            void ValidateEntity()
+            {
+                if (entity == null)
+                {
+                    entity = GetComponent<Entity>();
+                    if (entity == null)
+                    {
+                        entity = gameObject.AddComponent<Entity>();
+
+                        // ReSharper disable once Unity.InefficientPropertyAccess
+                        EditorUtility.SetDirty(gameObject);
+                    }
+                }
+
+                if (entity.guid != Guid)
+                {
+                    entity.guid.Value = Guid;
+                    EditorUtility.SetDirty(gameObject);
+                }
+            }
+
+            ValidateGuid();
+            ValidateEntity();
+
+            //Check the prefab section: https://blog.unity.com/technology/spotlight-team-best-practices-guid-based-references
+            var prefabInstanceStatus = PrefabUtility.GetPrefabInstanceStatus(this);
+            if (prefabInstanceStatus == PrefabInstanceStatus.Connected)
+                PrefabUtility.RecordPrefabInstancePropertyModifications(this);
         }
     }
 
