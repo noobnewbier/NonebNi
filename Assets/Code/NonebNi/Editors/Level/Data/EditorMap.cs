@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Code.NonebNi.EditorComponent.Entities;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
+using NonebNi.EditorComponent.Entities;
 using UnityEngine;
 
 namespace NonebNi.Editors.Level.Data

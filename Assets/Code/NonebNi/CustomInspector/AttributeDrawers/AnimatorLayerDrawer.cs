@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using NonebNi.Ui.Common.Attributes;
+﻿using NonebNi.Ui.Common.Attributes;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.Editors.AttributeDrawers
+namespace NonebNi.CustomInspector.AttributeDrawers
 {
-    [CustomPropertyDrawer(typeof(AnimatorStateAttribute))]
-    internal class AnimatorStateDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AnimatorLayerAttribute))]
+    internal class AnimatorLayerDrawer : PropertyDrawer
     {
         private static SerializedObject? _lastSerializedObject;
 
@@ -15,7 +14,7 @@ namespace NonebNi.Editors.AttributeDrawers
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            AnimatorStateAttribute typedAttribute = (AnimatorStateAttribute)attribute;
+            AnimatorLayerAttribute typedAttribute = (AnimatorLayerAttribute)attribute;
             RefreshCache();
 
             var animator =
@@ -28,18 +27,15 @@ namespace NonebNi.Editors.AttributeDrawers
             else
             {
                 var paramTable = AnimatorInfoCache.GetParamTable(animatorRuntimeAnimatorController);
-                var targetLayer = typedAttribute.TargetLayerName == null ?
-                    0 :
-                    NonebEditorUtils.FindPropertyIntInSameDepth(property, typedAttribute.TargetLayerName);
-                var states = paramTable.GetStates(targetLayer);
-                NonebEditorGUI.ShowStringPopup(
+                var layers = paramTable.GetLayers();
+                var newIndex = NonebEditorGUI.ShowStringPopup(
                     position,
-                    property,
-                    $"{label.text}",
-                    states
+                    layers[property.intValue],
+                    label.text,
+                    layers
                 );
 
-                if (!states.Contains(property.stringValue)) property.stringValue = states.FirstOrDefault() ?? string.Empty;
+                if (newIndex != property.intValue) property.intValue = newIndex;
             }
 
             EditorGUI.EndProperty();

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Code.NonebNi.EditorComponent.Entities;
-using Code.NonebNi.EditorComponent.Entities.Tile;
-using Code.NonebNi.EditorComponent.Entities.Unit;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
+using NonebNi.EditorComponent.Entities;
+using NonebNi.EditorComponent.Entities.Tile;
+using NonebNi.EditorComponent.Entities.Unit;
 using NonebNi.Editors.Level.Data;
 using NonebNi.Editors.Level.Entities;
 using UnityEngine.SceneManagement;

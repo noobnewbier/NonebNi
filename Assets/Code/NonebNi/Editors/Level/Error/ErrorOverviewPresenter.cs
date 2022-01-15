@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Code.NonebNi.EditorComponent.Entities;
+using NonebNi.EditorComponent.Entities;
 using UnityEditor;
 using UnityEngine;
 

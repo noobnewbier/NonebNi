@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Code.NonebNi.EditorComponent.Entities;
 using NonebNi.Core.Units;
+using NonebNi.EditorComponent.Entities;
 using UnityEngine;
 
 namespace NonebNi.Editors.Level.Data

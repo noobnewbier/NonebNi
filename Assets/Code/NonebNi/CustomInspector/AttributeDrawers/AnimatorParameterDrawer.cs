@@ -3,10 +3,10 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.Editors.AttributeDrawers
+namespace NonebNi.CustomInspector.AttributeDrawers
 {
-    [CustomPropertyDrawer(typeof(AnimatorLayerAttribute))]
-    internal class AnimatorLayerDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AnimatorParameterAttribute))]
+    internal class AnimatorParameterDrawer : PropertyDrawer
     {
         private static SerializedObject? _lastSerializedObject;
 
@@ -14,7 +14,7 @@ namespace NonebNi.Editors.AttributeDrawers
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            AnimatorLayerAttribute typedAttribute = (AnimatorLayerAttribute)attribute;
+            AnimatorParameterAttribute typedAttribute = (AnimatorParameterAttribute)attribute;
             RefreshCache();
 
             var animator =
@@ -27,15 +27,13 @@ namespace NonebNi.Editors.AttributeDrawers
             else
             {
                 var paramTable = AnimatorInfoCache.GetParamTable(animatorRuntimeAnimatorController);
-                var layers = paramTable.GetLayers();
-                var newIndex = NonebEditorGUI.ShowStringPopup(
+                var parameters = paramTable.GetParameters(typedAttribute.ParameterType);
+                NonebEditorGUI.ShowStringPopup(
                     position,
-                    layers[property.intValue],
-                    label.text,
-                    layers
+                    property,
+                    $"{label.text} ({typedAttribute.ParameterType})",
+                    parameters
                 );
-
-                if (newIndex != property.intValue) property.intValue = newIndex;
             }
 
             EditorGUI.EndProperty();

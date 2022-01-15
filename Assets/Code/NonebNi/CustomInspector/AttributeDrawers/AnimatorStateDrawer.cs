@@ -1,12 +1,13 @@
-﻿using NonebNi.Ui.Common.Attributes;
+﻿using System.Linq;
+using NonebNi.Ui.Common.Attributes;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.Editors.AttributeDrawers
+namespace NonebNi.CustomInspector.AttributeDrawers
 {
-    [CustomPropertyDrawer(typeof(AnimatorParameterAttribute))]
-    internal class AnimatorParameterDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AnimatorStateAttribute))]
+    internal class AnimatorStateDrawer : PropertyDrawer
     {
         private static SerializedObject? _lastSerializedObject;
 
@@ -14,7 +15,7 @@ namespace NonebNi.Editors.AttributeDrawers
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            AnimatorParameterAttribute typedAttribute = (AnimatorParameterAttribute)attribute;
+            AnimatorStateAttribute typedAttribute = (AnimatorStateAttribute)attribute;
             RefreshCache();
 
             var animator =
@@ -27,13 +28,18 @@ namespace NonebNi.Editors.AttributeDrawers
             else
             {
                 var paramTable = AnimatorInfoCache.GetParamTable(animatorRuntimeAnimatorController);
-                var parameters = paramTable.GetParameters(typedAttribute.ParameterType);
+                var targetLayer = typedAttribute.TargetLayerName == null ?
+                    0 :
+                    NonebEditorUtils.FindPropertyIntInSameDepth(property, typedAttribute.TargetLayerName);
+                var states = paramTable.GetStates(targetLayer);
                 NonebEditorGUI.ShowStringPopup(
                     position,
                     property,
-                    $"{label.text} ({typedAttribute.ParameterType})",
-                    parameters
+                    $"{label.text}",
+                    states
                 );
+
+                if (!states.Contains(property.stringValue)) property.stringValue = states.FirstOrDefault() ?? string.Empty;
             }
 
             EditorGUI.EndProperty();

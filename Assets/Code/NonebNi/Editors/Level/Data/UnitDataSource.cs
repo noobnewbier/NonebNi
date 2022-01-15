@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Code.NonebNi.EditorComponent.Entities;
 using NonebNi.Core.Units;
+using NonebNi.EditorComponent.Entities;
 using UnityEngine;
 using UnityUtils.Constants;
 

@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor.Animations;
 using UnityEngine;
 
-namespace NonebNi.Editors.AttributeDrawers
+namespace NonebNi.CustomInspector.AttributeDrawers
 {
     internal class AnimatorInfoCache
     {
