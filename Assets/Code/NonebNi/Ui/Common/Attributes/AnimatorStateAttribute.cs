@@ -5,12 +5,12 @@ namespace NonebNi.Ui.Common.Attributes
     public class AnimatorStateAttribute : PropertyAttribute
     {
         public readonly string AnimatorName;
-        public readonly int StateLayerIndex; //-1 if it's not specified
+        public readonly string? TargetLayerName;
 
-        public AnimatorStateAttribute(string animatorName, int layerIndex = -1)
+        public AnimatorStateAttribute(string animatorName, string? targetLayerName = null)
         {
             AnimatorName = animatorName;
-            StateLayerIndex = layerIndex;
+            TargetLayerName = targetLayerName;
         }
     }
 }

@@ -10,11 +10,21 @@ namespace NonebNi.Editors.AttributeDrawers
     {
         private static readonly Dictionary<int, AnimatorInfoCache> Cache = new Dictionary<int, AnimatorInfoCache>();
         private readonly string[][] _layeredStates;
-
+        private readonly string[] _layerNames;
         private readonly Dictionary<AnimatorControllerParameterType, string[]> _parameters;
 
         private AnimatorInfoCache(RuntimeAnimatorController animatorController)
         {
+            _parameters = new Dictionary<AnimatorControllerParameterType, string[]>
+            {
+                [AnimatorControllerParameterType.Trigger] = FindParametersOfType(AnimatorControllerParameterType.Trigger),
+                [AnimatorControllerParameterType.Bool] = FindParametersOfType(AnimatorControllerParameterType.Bool),
+                [AnimatorControllerParameterType.Int] = FindParametersOfType(AnimatorControllerParameterType.Int),
+                [AnimatorControllerParameterType.Float] = FindParametersOfType(AnimatorControllerParameterType.Float)
+            };
+            _layeredStates = FindStates();
+            _layerNames = FindLayers();
+
             string[] FindParametersOfType(AnimatorControllerParameterType type)
             {
                 var result = new List<string>();
@@ -25,20 +35,13 @@ namespace NonebNi.Editors.AttributeDrawers
                 return result.ToArray();
             }
 
-            _parameters = new Dictionary<AnimatorControllerParameterType, string[]>
-            {
-                [AnimatorControllerParameterType.Trigger] = FindParametersOfType(AnimatorControllerParameterType.Trigger),
-                [AnimatorControllerParameterType.Bool] = FindParametersOfType(AnimatorControllerParameterType.Bool),
-                [AnimatorControllerParameterType.Int] = FindParametersOfType(AnimatorControllerParameterType.Int),
-                [AnimatorControllerParameterType.Float] = FindParametersOfType(AnimatorControllerParameterType.Float)
-            };
 
             string[][] FindStates()
             {
-                var ctrl = GetAnimatorController(animatorController);
-                if (ctrl != null)
+                var controller = GetAnimatorController(animatorController);
+                if (controller != null)
                 {
-                    var allLayer = ctrl.layers;
+                    var allLayer = controller.layers;
                     return allLayer.Select(t => t.stateMachine.states)
                                    .Select(states => states.Select(s => s.state.name).ToArray())
                                    .ToArray();
@@ -47,8 +50,13 @@ namespace NonebNi.Editors.AttributeDrawers
                 return Array.Empty<string[]>();
             }
 
-            _layeredStates = FindStates();
+            string[] FindLayers()
+            {
+                var controller = GetAnimatorController(animatorController);
+                return controller != null ? controller.layers.Select(l => l.name).ToArray() : Array.Empty<string>();
+            }
         }
+
 
         internal static void ClearData()
         {
@@ -74,6 +82,8 @@ namespace NonebNi.Editors.AttributeDrawers
             var isReturnAllLayers = layerIndex == -1;
             return isReturnAllLayers ? _layeredStates.SelectMany(i => i).ToArray() : _layeredStates[layerIndex];
         }
+
+        internal string[] GetLayers() => _layerNames;
 
         private static AnimatorController? GetAnimatorController(RuntimeAnimatorController? controller)
         {
