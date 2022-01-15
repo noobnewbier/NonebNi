@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Code.NonebNi.EditorComponent.Entities
+namespace NonebNi.EditorComponent.Entities
 {
     public abstract class EntityDataSource : ScriptableObject
     {

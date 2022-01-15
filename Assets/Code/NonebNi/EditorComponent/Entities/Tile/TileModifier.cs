@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Code.NonebNi.EditorComponent.Entities.Tile
+namespace NonebNi.EditorComponent.Entities.Tile
 {
     //todo: currently not implemented
     [Obsolete("Not implemented yet")]

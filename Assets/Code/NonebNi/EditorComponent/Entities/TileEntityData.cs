@@ -3,7 +3,7 @@ using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
 using UnityEngine;
 
-namespace Code.NonebNi.EditorComponent.Entities
+namespace NonebNi.EditorComponent.Entities
 {
     //TODO: Something went wrong, why the fuck an editor only data is an EntityData?
     [Obsolete("Something went terribly wrong here")]

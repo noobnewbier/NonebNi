@@ -2,7 +2,7 @@
 using NonebNi.Core.Entities;
 using UnityEngine;
 
-namespace Code.NonebNi.EditorComponent.Entities
+namespace NonebNi.EditorComponent.Entities
 {
     [Serializable]
     public abstract class EditorEntityData : ISerializationCallbackReceiver

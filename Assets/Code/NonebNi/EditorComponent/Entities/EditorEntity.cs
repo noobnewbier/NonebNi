@@ -8,7 +8,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityUtils.SerializableGuid;
 
-namespace Code.NonebNi.EditorComponent.Entities
+namespace NonebNi.EditorComponent.Entities
 {
     /// <summary>
     /// An <see cref="EditorEntity" /> is something that can be placed on the board within SceneView.
