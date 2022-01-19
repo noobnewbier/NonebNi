@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NonebNi.Core.Entities;
-using NonebNi.Ui;
+using NonebNi.Ui.Entities;
 using UnityEditor;
 using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
@@ -48,6 +48,14 @@ namespace NonebNi.EditorComponent.Entities
 
         private void OnValidate()
         {
+            ValidateGuid();
+            ValidateEntity();
+
+            //Check the prefab section: https://blog.unity.com/technology/spotlight-team-best-practices-guid-based-references
+            var prefabInstanceStatus = PrefabUtility.GetPrefabInstanceStatus(this);
+            if (prefabInstanceStatus == PrefabInstanceStatus.Connected)
+                PrefabUtility.RecordPrefabInstancePropertyModifications(this);
+
             void ValidateGuid()
             {
                 var currentPrefabStage = PrefabStageUtility.GetCurrentPrefabStage();
@@ -89,14 +97,6 @@ namespace NonebNi.EditorComponent.Entities
                     EditorUtility.SetDirty(gameObject);
                 }
             }
-
-            ValidateGuid();
-            ValidateEntity();
-
-            //Check the prefab section: https://blog.unity.com/technology/spotlight-team-best-practices-guid-based-references
-            var prefabInstanceStatus = PrefabUtility.GetPrefabInstanceStatus(this);
-            if (prefabInstanceStatus == PrefabInstanceStatus.Connected)
-                PrefabUtility.RecordPrefabInstancePropertyModifications(this);
         }
     }
 

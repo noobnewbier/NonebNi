@@ -4,6 +4,6 @@ namespace NonebNi.Core.Sequences
 {
     public interface ISequencePlayer
     {
-        Coroutine Play(ISequence sequence);
+        Coroutine? Play(ISequence sequence);
     }
 }

@@ -19,6 +19,7 @@ namespace NonebNi.Core.Entities
             this.serializableGuid = new SerializableGuid(serializableGuid);
         }
 
+        public SerializableGuid Guid => serializableGuid;
         public string Name => name;
     }
 }
