@@ -98,6 +98,8 @@ namespace NonebNi.EditorComponent.Entities
                 }
             }
         }
+
+        public abstract void RefreshCache();
     }
 
     public abstract partial class EditorEntity<T> : EditorEntity where T : EditorEntityData
@@ -126,5 +128,10 @@ namespace NonebNi.EditorComponent.Entities
         }
 
         public override bool IsCorrectSetUp => base.IsCorrectSetUp && EntityData != null;
+
+        public override void RefreshCache()
+        {
+            _cacheEntityData = null;
+        }
     }
 }

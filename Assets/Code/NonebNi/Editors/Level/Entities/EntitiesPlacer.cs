@@ -34,7 +34,6 @@ namespace NonebNi.Editors.Level.Entities
 
         public void UpdateEntitiesPlacement()
         {
-            //TODO: deal with duplication as GUID duplicates
             var selections = Selection.transforms;
             var entities = selections.SelectMany(s => s.GetComponentsInChildren<EditorEntity>()).ToArray();
 

@@ -41,6 +41,9 @@ namespace NonebNi.Editors.Level.Maps
 
             var allEntities = _scene.GetRootGameObjects().SelectMany(g => g.GetComponentsInChildren<EditorEntity>());
             foreach (var entity in allEntities.Where(e => e.IsCorrectSetUp))
+            {
+                entity.RefreshCache();
+
                 switch (entity)
                 {
                     case Unit unit:
@@ -50,6 +53,7 @@ namespace NonebNi.Editors.Level.Maps
                         SyncTileModifier(tileModifier);
                         break;
                 }
+            }
         }
 
         //todo: there should be an error code-ish thing so the caller can print debug info etc.

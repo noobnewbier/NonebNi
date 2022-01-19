@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Editors.Common.Events;
 using NonebNi.Editors.Level.Data;
+using NonebNi.Editors.Level.Maps;
 using NonebNi.Editors.Level.Settings;
 using UnityEngine.SceneManagement;
 
@@ -18,11 +19,13 @@ namespace NonebNi.Editors.Level
     {
         private readonly LevelSavingService _levelSavingService;
         private readonly Scene _levelScene;
+        private readonly MapSyncService _mapSyncService;
 
-        public LevelDataSyncer(LevelSavingService levelSavingService, Scene levelScene)
+        public LevelDataSyncer(LevelSavingService levelSavingService, Scene levelScene, MapSyncService mapSyncService)
         {
             _levelSavingService = levelSavingService;
             _levelScene = levelScene;
+            _mapSyncService = mapSyncService;
 
             PlayModeStateListener.OnExitEditMode += Sync;
             SaveAssetEventListener.OnPreSaveAssetsEvent += SyncIfLevelSceneIsSaved;
@@ -36,6 +39,7 @@ namespace NonebNi.Editors.Level
 
         private void Sync()
         {
+            _mapSyncService.Sync();
             _levelSavingService.Save();
         }
 

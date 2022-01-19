@@ -58,7 +58,8 @@ namespace NonebNi.Editors.Di
                 () => module.GetEntitiesPlacer(MapSyncService, EditorEntityPositioningService, ErrorChecker)
             );
             _lazyErrorChecker = new Lazy<ErrorChecker>(() => module.GetErrorChecker(EditorEntityPositioningService));
-            _lazyLevelDataSyncer = new Lazy<LevelDataSyncer>(() => module.GetLevelDataSyncer(LevelSavingService));
+            _lazyLevelDataSyncer =
+                new Lazy<LevelDataSyncer>(() => module.GetLevelDataSyncer(LevelSavingService, MapSyncService));
 
             _lazyMapView = new Lazy<GridView>(
                 () => new GridView(this, CoordinateAndPositionService, module.GetWorldConfigData)

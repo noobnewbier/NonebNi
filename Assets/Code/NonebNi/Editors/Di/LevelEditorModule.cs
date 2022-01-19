@@ -59,7 +59,7 @@ namespace NonebNi.Editors.Di
         public LevelSavingService GetLevelSavingService() =>
             new LevelSavingService(_levelDataSource, _editorLevelData);
 
-        public LevelDataSyncer GetLevelDataSyncer(LevelSavingService levelSavingService) =>
-            new LevelDataSyncer(levelSavingService, _scene);
+        public LevelDataSyncer GetLevelDataSyncer(LevelSavingService levelSavingService, MapSyncService mapSyncService) =>
+            new LevelDataSyncer(levelSavingService, _scene, mapSyncService);
     }
 }
