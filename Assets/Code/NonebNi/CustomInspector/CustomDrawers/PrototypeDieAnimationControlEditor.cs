@@ -1,4 +1,5 @@
 ﻿using NonebNi.Ui;
+using NonebNi.Ui.Entities;
 using UnityEditor;
 using UnityEngine;
 
