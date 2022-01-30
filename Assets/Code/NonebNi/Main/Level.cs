@@ -19,18 +19,20 @@ namespace NonebNi.Main
 
         private ILevelFlowController _levelFlowController = null!;
 
+        public LevelComponent? LevelComponent { get; private set; }
+
         private void Awake()
         {
             var levelModule = new LevelModule(levelDataSource.GetData());
             var coordinateAndPositionServiceModule = new CoordinateAndPositionServiceModule(levelModule);
 
-            var levelComponent = new LevelComponent(levelModule);
+            LevelComponent = new LevelComponent(levelModule);
 
-            _levelFlowController = levelComponent.GetLevelFlowController();
+            _levelFlowController = LevelComponent.GetLevelFlowController();
 
-            hud.Init(new HudComponent(levelComponent));
+            hud.Init(new HudComponent(LevelComponent));
             grid.Init(new GridComponent(coordinateAndPositionServiceModule, levelModule));
-            cameraControl.Init(levelComponent, coordinateAndPositionServiceModule);
+            cameraControl.Init(LevelComponent, coordinateAndPositionServiceModule);
 
             unitDetailStat.Init();
 

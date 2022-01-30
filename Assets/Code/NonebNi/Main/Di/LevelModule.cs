@@ -17,20 +17,23 @@ namespace NonebNi.Main.Di
             EntityRepository = new EntityRepository();
         }
 
-        public ILevelFlowController GetLevelFlowController() =>
+        public ILevelFlowController GetLevelFlowController(ICommandEvaluationService commandEvaluationService,
+                                                           IUnitTurnOrderer unitTurnOrderer,
+                                                           IPlayerDecisionService playerDecisionService,
+                                                           ISequencePlayer sequencePlayer) =>
             new LevelFlowController(
-                GetCommandEvaluationService(),
-                GetUnitTurnOrderer(),
-                GetPlayerDecisionService(),
-                GetSequencePlayer()
+                commandEvaluationService,
+                unitTurnOrderer,
+                playerDecisionService,
+                sequencePlayer
             );
 
-        private IPlayerDecisionService GetPlayerDecisionService() => new PlayerDecisionService();
+        public IPlayerDecisionService GetPlayerDecisionService() => new PlayerDecisionService();
 
-        private IUnitTurnOrderer GetUnitTurnOrderer() => new UnitTurnOrderer(LevelData.Map);
+        public IUnitTurnOrderer GetUnitTurnOrderer() => new UnitTurnOrderer(LevelData.Map);
 
-        private ICommandEvaluationService GetCommandEvaluationService() => new CommandEvaluationService(LevelData.Map);
+        public ICommandEvaluationService GetCommandEvaluationService() => new CommandEvaluationService(LevelData.Map);
 
-        private ISequencePlayer GetSequencePlayer() => new SequencePlayer(EntityRepository);
+        public ISequencePlayer GetSequencePlayer() => new SequencePlayer(EntityRepository);
     }
 }
