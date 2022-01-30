@@ -47,19 +47,6 @@ namespace NonebNi.LevelEditor.Level.Data
         public EditorLevelData? CreateData() =>
             IsValid ? new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName) : null;
 
-        public static EditorLevelDataSource CreateSource(Scene scene)
-        {
-            var toReturn = CreateInstance<EditorLevelDataSource>();
-            var sceneAssets = AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}")
-                                           .Select(AssetDatabase.GUIDToAssetPath)
-                                           .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>);
-            toReturn.scene = sceneAssets.FirstOrDefault(s => s.name == scene.name);
-
-            var sceneFolder = scene.path.Remove(scene.path.LastIndexOf(Path.AltDirectorySeparatorChar) + 1);
-            AssetDatabase.CreateAsset(toReturn, $"{sceneFolder}{scene.name}Settings.asset");
-
-            return toReturn;
-        }
 
         public void CopyFromData(EditorLevelData editorLevelData)
         {
@@ -88,6 +75,31 @@ namespace NonebNi.LevelEditor.Level.Data
 
             EditorUtility.SetDirty(dataSource);
             EditorUtility.SetDirty(this);
+        }
+
+        public static EditorLevelDataSource CreateSource(Scene scene)
+        {
+            var toReturn = CreateInstance<EditorLevelDataSource>();
+            var sceneAssets = AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}")
+                                           .Select(AssetDatabase.GUIDToAssetPath)
+                                           .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>);
+            toReturn.scene = sceneAssets.FirstOrDefault(s => s.name == scene.name);
+
+            var sceneFolder = scene.path.Remove(scene.path.LastIndexOf(Path.AltDirectorySeparatorChar) + 1);
+            AssetDatabase.CreateAsset(toReturn, $"{sceneFolder}{scene.name}Settings.asset");
+
+            return toReturn;
+        }
+
+        public static EditorLevelDataSource? FindLevelDataSourceForActiveScene()
+        {
+            var activeScene = SceneManager.GetActiveScene();
+            var allLevelDatas = AssetDatabase.FindAssets($"t:{nameof(EditorLevelDataSource)}")
+                                             .Select(AssetDatabase.GUIDToAssetPath)
+                                             .Select(AssetDatabase.LoadAssetAtPath<EditorLevelDataSource>);
+            var matchingData = allLevelDatas.FirstOrDefault(s => s.SceneName == activeScene.name);
+
+            return matchingData;
         }
     }
 }

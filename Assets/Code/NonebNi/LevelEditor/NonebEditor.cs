@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using NonebNi.LevelEditor.Common.Events;
 using NonebNi.LevelEditor.Di;
 using NonebNi.LevelEditor.Level.Data;
@@ -57,17 +56,6 @@ namespace NonebNi.LevelEditor
             _toolbar.DrawSceneToolbar(sceneView);
         }
 
-        private static EditorLevelDataSource? FindLevelDataSourceForActiveScene()
-        {
-            var activeScene = SceneManager.GetActiveScene();
-            var allLevelDatas = AssetDatabase.FindAssets($"t:{nameof(EditorLevelDataSource)}")
-                                             .Select(AssetDatabase.GUIDToAssetPath)
-                                             .Select(AssetDatabase.LoadAssetAtPath<EditorLevelDataSource>);
-            var matchingData = allLevelDatas.FirstOrDefault(s => s.SceneName == activeScene.name);
-
-            return matchingData;
-        }
-
         private void OnActiveSceneChanged(Scene _, Scene __)
         {
             TryInitLevelEditor();
@@ -77,7 +65,7 @@ namespace NonebNi.LevelEditor
         {
             LevelEditor?.Dispose();
             LevelEditor = null;
-            var dataSource = FindLevelDataSourceForActiveScene();
+            var dataSource = EditorLevelDataSource.FindLevelDataSourceForActiveScene();
             if (dataSource != null && dataSource.IsValid)
                 LevelEditor = new Level.LevelEditor(SceneManager.GetActiveScene(), dataSource, _component);
         }
