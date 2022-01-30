@@ -8,6 +8,12 @@ namespace NonebNi.Core.Commands
         private readonly int _damage;
         private readonly IEnumerable<UnitData> _targets;
 
+        public DamageCommand(int damage, params UnitData[] targets)
+        {
+            _damage = damage;
+            _targets = targets;
+        }
+
         public DamageCommand(int damage, IEnumerable<UnitData> targets)
         {
             _damage = damage;
