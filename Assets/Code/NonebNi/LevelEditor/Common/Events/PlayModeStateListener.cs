@@ -7,7 +7,7 @@ namespace NonebNi.LevelEditor.Common.Events
     /// Stripped from UnityEditor.ProGrids.PlayModeStateListener
     /// </summary>
     [InitializeOnLoad]
-    internal class PlayModeStateListener
+    public class PlayModeStateListener
     {
         static PlayModeStateListener()
         {
@@ -35,10 +35,10 @@ namespace NonebNi.LevelEditor.Common.Events
         }
 #pragma warning disable 649
         // ReSharper disable MemberCanBePrivate.Global
-        internal static event Action? OnEnterPlayMode;
-        internal static event Action? OnExitPlayMode;
-        internal static event Action? OnEnterEditMode;
-        internal static event Action? OnExitEditMode;
+        public static event Action? OnEnterPlayMode;
+        public static event Action? OnExitPlayMode;
+        public static event Action? OnEnterEditMode;
+        public static event Action? OnExitEditMode;
         // ReSharper restore MemberCanBePrivate.Global
 #pragma warning restore 649
     }
