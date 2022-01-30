@@ -21,10 +21,14 @@ MonoBehaviour:
       height: 10
       width: 10
       nodes:
+      - serializedUnitDatas: []
+        tileData:
+          weight: 1
+          name: 
       - serializedUnitDatas:
         - name: Noob
           serializableGuid:
-            serializedGuid: 
+            serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
           maxHealth: 100
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
@@ -34,18 +38,14 @@ MonoBehaviour:
           weight: 1
           name: 
       - serializedUnitDatas:
-        - name: Newb
+        - name: Noob
           serializableGuid:
-            serializedGuid: 
+            serializedGuid: 02e86fd465fe8244ab6689e836e8394a
           maxHealth: 100
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           skillDatas: []
-          initiative: 1
-        tileData:
-          weight: 1
-          name: 
-      - serializedUnitDatas: []
+          initiative: 0
         tileData:
           weight: 1
           name: 
