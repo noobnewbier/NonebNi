@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using NonebNi.EditorConsole.Parsers;
 
 namespace NonebNi.EditorConsole
 {
@@ -9,14 +8,14 @@ namespace NonebNi.EditorConsole
         private readonly TextLexer _lexer;
         private readonly ExpressionParser _parser;
 
-        public StringBuilder AccumulatedOutput { get; } = new StringBuilder();
-
         public NonebDebugConsole(CommandHandler commandHandler, ExpressionParser parser, TextLexer lexer)
         {
             _commandHandler = commandHandler;
             _parser = parser;
             _lexer = lexer;
         }
+
+        public StringBuilder AccumulatedOutput { get; } = new StringBuilder();
 
         public void InterpretInput(string input)
         {

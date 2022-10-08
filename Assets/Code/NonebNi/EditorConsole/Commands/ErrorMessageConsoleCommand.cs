@@ -2,11 +2,11 @@
 {
     public class ErrorMessageConsoleCommand : IConsoleCommand
     {
-        public string Message { get; }
-
         public ErrorMessageConsoleCommand(string message)
         {
             Message = message;
         }
+
+        public string Message { get; }
     }
 }
