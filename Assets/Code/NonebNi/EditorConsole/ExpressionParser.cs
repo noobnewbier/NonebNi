@@ -28,7 +28,8 @@ namespace NonebNi.EditorConsole.Parsers
             foreach (var constructorInfo in data.CommandType.GetConstructors())
             {
                 var constructorArgTypes = constructorInfo.GetParameters().Select(p => p.ParameterType).ToArray();
-                var isConstructorMatchingArguments = constructorArgTypes.SequenceEqual(commandArgs.Select(a => a.ConvertableType));
+                var isConstructorMatchingArguments =
+                    constructorArgTypes.SequenceEqual(commandArgs.Select(a => a.ConvertableType));
                 if (isConstructorMatchingArguments)
                     return (IConsoleCommand)constructorInfo.Invoke(commandArgs.Select(a => a.Value).ToArray());
             }
