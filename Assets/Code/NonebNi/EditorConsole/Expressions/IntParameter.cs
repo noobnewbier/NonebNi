@@ -1,15 +1,19 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace NonebNi.EditorConsole.Expressions
 {
     public class IntParameter : Expression
     {
         public static readonly Regex Pattern = new Regex(@"(\+|-| )?[0-9]+");
-        public int Value { get; }
 
         public IntParameter(int value) : base(value.ToString())
         {
-            Value = value;
+            IntValue = value;
         }
+
+        public override Type ConvertableType => typeof(int);
+        public override object Value => IntValue;
+        public int IntValue { get; }
     }
 }

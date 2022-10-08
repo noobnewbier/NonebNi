@@ -12,12 +12,12 @@ namespace NonebNi.EditorConsole
         {
             do
             {
-                if (TryMatchFirstArg(CommandName.Pattern, input, out var commandNameMatch))
+                if (TryMatchFirstArg(StringExpression.Pattern, input, out var commandNameMatch))
                 {
                     input = input.Remove(0, commandNameMatch.Length);
                     var commandName = commandNameMatch.Value;
 
-                    yield return new CommandName(commandName);
+                    yield return new StringExpression(commandName);
                 }
                 else if (TryMatchFirstArg(CoordinateParameter.Pattern, input, out var coordinateMatch))
                 {
@@ -27,7 +27,7 @@ namespace NonebNi.EditorConsole
                     var intExpressions = Lex(coordinateToSpaceSeparatedInts).Cast<IntParameter>().ToArray();
 
                     yield return new CoordinateParameter(
-                        new Coordinate(intExpressions[0].Value, intExpressions[2].Value),
+                        new Coordinate(intExpressions[0].IntValue, intExpressions[2].IntValue),
                         coordinateMatch.Value
                     );
                 }

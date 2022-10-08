@@ -1,3 +1,4 @@
+using NonebNi.EditorConsole.Commands;
 using NonebNi.EditorConsole.Parsers;
 using NonebNi.Main;
 using UnityEditor;
@@ -91,21 +92,20 @@ namespace NonebNi.EditorConsole
         private bool TryActivateConsole()
         {
             var levelComponent = FindObjectOfType<Level>()?.LevelComponent;
-            if (levelComponent != null)
-            {
-                var commandHandler = new CommandHandler(
-                    levelComponent.GetCommandEvaluationService(),
-                    levelComponent.GetLevelData().Map,
-                    levelComponent.GetSequencePlayer()
-                );
-                var parser = new ExpressionParser();
-                var lexer = new TextLexer();
-                _console = new NonebDebugConsole(commandHandler, parser, lexer);
+            if (levelComponent == null) return false;
 
-                return true;
-            }
+            var commandsDataRepository = new CommandsDataRepository();
+            var commandHandler = new CommandHandler(
+                levelComponent.GetCommandEvaluationService(),
+                levelComponent.GetLevelData().Map,
+                levelComponent.GetSequencePlayer(),
+                commandsDataRepository
+            );
+            var parser = new ExpressionParser(commandsDataRepository);
+            var lexer = new TextLexer();
+            _console = new NonebDebugConsole(commandHandler, parser, lexer);
 
-            return false;
+            return true;
         }
     }
 }

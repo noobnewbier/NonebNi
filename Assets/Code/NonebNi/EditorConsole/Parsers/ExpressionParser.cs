@@ -5,29 +5,36 @@ using NonebNi.EditorConsole.Expressions;
 
 namespace NonebNi.EditorConsole.Parsers
 {
-    public partial class ExpressionParser
+    public class ExpressionParser
     {
-        private readonly CommandParser[] _parserDelegates =
+        private readonly ICommandsDataRepository _commandsDataRepository;
+
+        public ExpressionParser(ICommandsDataRepository commandsDataRepository)
         {
-            ParseDamageConsoleCommand,
-            ParseClearConsoleCommand,
-            ParseErrorMessageCommand
-        };
+            _commandsDataRepository = commandsDataRepository;
+        }
 
         public IConsoleCommand Parse(IEnumerable<Expression> expressions)
         {
             var expressionArray = expressions as Expression[] ?? expressions.ToArray();
             if (!expressionArray.Any()) return new ErrorMessageConsoleCommand("invalid input");
 
-            foreach (var parserDelegate in _parserDelegates)
+            var firstExpression = expressionArray[0];
+            if (!(firstExpression is StringExpression commandName) ||
+                !_commandsDataRepository.TryGetCommand(commandName.StringValue, out var data))
+                return new ErrorMessageConsoleCommand("invalid input - no recognized command name");
+
+            var commandArgs = expressionArray.Skip(1).ToArray();
+            foreach (var constructorInfo in data.CommandType.GetConstructors())
             {
-                var command = parserDelegate(expressionArray);
-                if (command != null) return command;
+                var constructorArgTypes = constructorInfo.GetParameters().Select(p => p.ParameterType).ToArray();
+                var isConstructorMatchingArguments = constructorArgTypes.SequenceEqual(commandArgs.Select(a => a.ConvertableType));
+                if (isConstructorMatchingArguments)
+                    return (IConsoleCommand)constructorInfo.Invoke(commandArgs.Select(a => a.Value).ToArray());
             }
 
-            return new ErrorMessageConsoleCommand("invalid input");
+            //can't find matching constructor - user provided non-matching arguments -> print help message to provide hint
+            return new HelpCommand(commandName.StringValue);
         }
-
-        private delegate IConsoleCommand? CommandParser(IReadOnlyList<Expression> expressions);
     }
 }
