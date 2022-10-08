@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using NonebNi.Core.Coordinates;
+using NonebNi.EditorConsole.Commands.Attributes;
 
 namespace NonebNi.EditorConsole.Commands
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NonebNi.EditorConsole.Commands
+namespace NonebNi.EditorConsole.Commands.Attributes
 {
     public class SignatureInfoAttribute : Attribute
     {

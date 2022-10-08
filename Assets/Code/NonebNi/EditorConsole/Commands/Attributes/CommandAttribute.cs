@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NonebNi.EditorConsole.Commands
+namespace NonebNi.EditorConsole.Commands.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class CommandAttribute : Attribute

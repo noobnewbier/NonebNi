@@ -3,7 +3,7 @@ using System.Linq;
 using NonebNi.EditorConsole.Commands;
 using NonebNi.EditorConsole.Expressions;
 
-namespace NonebNi.EditorConsole.Parsers
+namespace NonebNi.EditorConsole
 {
     public class ExpressionParser
     {

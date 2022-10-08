@@ -6,6 +6,7 @@ using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using NonebNi.Core.Units;
 using NonebNi.EditorConsole.Commands;
+using NonebNi.EditorConsole.Commands.Attributes;
 using UnityUtils;
 
 namespace NonebNi.EditorConsole

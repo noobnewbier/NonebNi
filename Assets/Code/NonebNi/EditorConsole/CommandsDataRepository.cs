@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using NonebNi.EditorConsole.Commands;
+using NonebNi.EditorConsole.Commands.Attributes;
 using UnityEngine;
 using UnityUtils;
 
-namespace NonebNi.EditorConsole.Commands
+namespace NonebNi.EditorConsole
 {
     public interface ICommandsDataRepository
     {

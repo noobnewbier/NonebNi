@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using NonebNi.EditorConsole.Commands.Attributes;
 
 namespace NonebNi.EditorConsole.Commands
 {
