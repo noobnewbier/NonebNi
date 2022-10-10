@@ -5,26 +5,19 @@ namespace NonebNi.Core.Commands
 {
     public class DamageCommand : ICommand
     {
-        private readonly int _damage;
-        private readonly IEnumerable<UnitData> _targets;
+        public readonly int Damage;
+        public readonly IEnumerable<UnitData> Targets;
 
         public DamageCommand(int damage, params UnitData[] targets)
         {
-            _damage = damage;
-            _targets = targets;
+            Damage = damage;
+            Targets = targets;
         }
 
         public DamageCommand(int damage, IEnumerable<UnitData> targets)
         {
-            _damage = damage;
-            _targets = targets;
-        }
-
-        public IEnumerable<UnitData> Evaluate()
-        {
-            foreach (var target in _targets) target.Health -= _damage;
-
-            return _targets;
+            Damage = damage;
+            Targets = targets;
         }
     }
 }
