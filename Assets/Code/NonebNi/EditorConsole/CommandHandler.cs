@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using System.Text;
 using NonebNi.Core.Commands;
 using NonebNi.Core.FlowControl;
@@ -37,10 +38,15 @@ namespace NonebNi.EditorConsole
                     var isValid = _readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out var unitData);
                     if (isValid)
                     {
-                        var damageCommand = new DamageCommand(damageConsoleCommand.Damage, unitData);
-                        var sequences = _commandEvaluationService.Evaluate(damageCommand);
+                        IEnumerable EvalSequence()
+                        {
+                            var damageCommand = new DamageCommand(damageConsoleCommand.Damage, unitData);
+                            var sequences = _commandEvaluationService.Evaluate(damageCommand);
 
-                        foreach (var sequence in sequences) _sequencePlayer.Play(sequence);
+                            foreach (var sequence in sequences) yield return _sequencePlayer.Play(sequence);
+                        }
+
+                        _ = EvalSequence();
                     }
 
                     break;
@@ -88,9 +94,9 @@ Command description:
                         foreach (var constructorInfo in commandData.CommandType.GetConstructors())
                         {
                             var parameters = constructorInfo.GetParameters();
-                            var commandFormat = parameters.Any()
-                                ? string.Join(", ", parameters.Select(p => p.Name))
-                                : "NO_ARG";
+                            var commandFormat = parameters.Any() ?
+                                string.Join(", ", parameters.Select(p => p.Name)) :
+                                "NO_ARG";
 
                             outputBuffer.AppendLine($"Signature: [{commandFormat}]");
 
