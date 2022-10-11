@@ -63,8 +63,11 @@ namespace NonebNi.EditorComponent.Entities
                 var isEditingPrefab = currentPrefabStage != null && currentPrefabStage == StageUtility.GetStage(gameObject);
                 if (isEditingPrefab || isPrefabAsset)
                 {
-                    serializableGuid.Value = Guid.Empty;
-                    EditorUtility.SetDirty(gameObject);
+                    if (serializableGuid.Value != Guid.Empty)
+                    {
+                        serializableGuid.Value = Guid.Empty;
+                        EditorUtility.SetDirty(gameObject);
+                    }
                 }
                 else
                 {
