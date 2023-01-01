@@ -37,6 +37,13 @@ namespace NonebNi.EditorConsole
 
                     yield return new IntParameter(int.Parse(intMatch.Value));
                 }
+                else
+                {
+                    //can't match anything - it's an undefined expression
+                    yield return new UndefinedExpression(input);
+
+                    input = string.Empty;
+                }
 
                 input = input.TrimStart();
             } while (input.Any());
