@@ -15,20 +15,23 @@ namespace NonebNi.Core.FlowControl
     public class CommandEvaluationService : ICommandEvaluationService
     {
         private readonly DamageCommandHandler _damageCommandHandler;
+        private readonly TeleportCommandHandler _teleportCommandHandler;
 
         public CommandEvaluationService(IMap map)
         {
+            //TODO: inject the command handler
             _damageCommandHandler = new DamageCommandHandler(map);
+            _teleportCommandHandler = new TeleportCommandHandler(map);
         }
 
         public IEnumerable<ISequence> Evaluate(ICommand command)
         {
-            if (command is DamageCommand damageCommand)
+            return command switch
             {
-                return _damageCommandHandler.Evaluate(damageCommand);
-            }
-            
-            return Enumerable.Empty<ISequence>();
+                DamageCommand damageCommand => _damageCommandHandler.Evaluate(damageCommand),
+                TeleportCommand teleportCommand => _teleportCommandHandler.Evaluate(teleportCommand),
+                _ => Enumerable.Empty<ISequence>()
+            };
         }
     }
 }

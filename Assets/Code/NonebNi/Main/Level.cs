@@ -23,9 +23,10 @@ namespace NonebNi.Main
 
         private void Awake()
         {
-            var levelModule = new LevelModule(levelDataSource.GetData());
-            var coordinateAndPositionServiceModule = new CoordinateAndPositionServiceModule(levelModule);
+            var levelData = levelDataSource.GetData();
+            var coordinateAndPositionServiceModule = new CoordinateAndPositionServiceModule(levelData.WorldConfig);
 
+            var levelModule = new LevelModule(levelData, coordinateAndPositionServiceModule);
             LevelComponent = new LevelComponent(levelModule);
 
             _levelFlowController = LevelComponent.GetLevelFlowController();

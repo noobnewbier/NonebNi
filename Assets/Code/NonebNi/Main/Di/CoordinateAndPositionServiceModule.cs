@@ -1,22 +1,20 @@
 ﻿using System;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Level;
 
 namespace NonebNi.Main.Di
 {
     public class CoordinateAndPositionServiceModule
     {
         private readonly Lazy<CoordinateAndPositionService> _lazy;
-        private readonly LevelModule _levelModule;
 
-        public CoordinateAndPositionServiceModule(LevelModule levelModule)
+        public CoordinateAndPositionServiceModule(WorldConfigData worldConfig)
         {
-            _levelModule = levelModule;
             _lazy = new Lazy<CoordinateAndPositionService>(
-                () => new CoordinateAndPositionService(_levelModule.LevelData.WorldConfig)
+                () => new CoordinateAndPositionService(worldConfig)
             );
         }
 
-        public CoordinateAndPositionService GetCoordinateAndPositionService() =>
-            _lazy.Value;
+        public CoordinateAndPositionService GetCoordinateAndPositionService() => _lazy.Value;
     }
 }

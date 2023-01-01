@@ -1,12 +1,13 @@
 ﻿using System.Collections;
+using NonebNi.Ui.Animation.Sequence;
 using NonebNi.Ui.Common;
 using NonebNi.Ui.Common.Attributes;
-using NonebNi.Ui.Entities;
 using UnityEngine;
 
-namespace NonebNi.Ui
+namespace NonebNi.Ui.Animation
 {
-    public class PrototypeDieAnimationControl : MonoBehaviour, IAnimationControl
+    public class PrototypeAnimationControl : MonoBehaviour, IPlayAnimation<DieAnimSequence>,
+        IPlayAnimation<TeleportAnimSequence>
     {
         [SerializeField] private Animator animator = null!;
 
@@ -19,15 +20,26 @@ namespace NonebNi.Ui
         [AnimatorLayer(nameof(animator))] [SerializeField]
         private int finishAnimLayerIndex;
 
-
-        [ContextMenu("Play")]
-        public Coroutine Play(Context context)
+        [ContextMenu("Die")]
+        public Coroutine Play(DieAnimSequence sequence)
         {
             IEnumerator Coroutine()
             {
                 animator.SetTrigger(triggerName);
 
                 yield return new WaitForAnimatorState(animator, finishAnimLayerIndex, finishAnimState);
+            }
+
+            return StartCoroutine(Coroutine());
+        }
+
+        public Coroutine Play(TeleportAnimSequence sequence)
+        {
+            IEnumerator Coroutine()
+            {
+                transform.position = sequence.TargetTilePosition;
+
+                yield break;
             }
 
             return StartCoroutine(Coroutine());
