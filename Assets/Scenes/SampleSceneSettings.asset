@@ -18,11 +18,14 @@ MonoBehaviour:
     height: 10
     width: 10
     nodes:
-    - serializedUnitDatas: []
-      tileData:
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas:
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+      serializedUnitDatas:
       - serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
         entityData:
           name: Noob
@@ -33,10 +36,10 @@ MonoBehaviour:
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           skillDatas: []
           initiative: 0
-      tileData:
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas:
+      serializedUnitDatas:
       - serializedGuid: 02e86fd465fe8244ab6689e836e8394a
         entityData:
           name: Noob
@@ -47,396 +50,393 @@ MonoBehaviour:
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           skillDatas: []
           initiative: 0
-      tileData:
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
+      serializedUnitDatas: []
+    - tileData:
         weight: 1
         name: 
-    - serializedUnitDatas: []
-      tileData:
-        weight: 1
-        name: 
+      serializedUnitDatas: []
   worldConfigScriptable: {fileID: 11400000, guid: 5aff3723d83826146b1e0d681e761d21, type: 2}
   levelName: NoobScene
