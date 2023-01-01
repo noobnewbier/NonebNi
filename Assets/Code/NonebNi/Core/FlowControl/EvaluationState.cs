@@ -13,9 +13,9 @@ namespace NonebNi.Core.FlowControl
         private readonly ISequencePlayer _sequencePlayer;
 
         public EvaluationState(ICommandEvaluationService evaluationService,
-                               ILevelFlowController levelFlowController,
-                               IPlayerDecisionService playerDecisionService,
-                               ISequencePlayer sequencePlayer)
+            ILevelFlowController levelFlowController,
+            IPlayerDecisionService playerDecisionService,
+            ISequencePlayer sequencePlayer)
         {
             _evaluationService = evaluationService;
             _levelFlowController = levelFlowController;
@@ -36,7 +36,7 @@ namespace NonebNi.Core.FlowControl
 
             var sequences = _evaluationService.Evaluate(_playerDecisionService.Command);
 
-            foreach (var sequence in sequences) yield return _sequencePlayer.Play(sequence);
+            yield return _sequencePlayer.Play(sequences);
 
             _levelFlowController.FinishEvaluation();
         }

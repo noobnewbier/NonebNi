@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace NonebNi.Core.Sequences
 {
     public interface ISequencePlayer
     {
-        Coroutine? Play(ISequence sequence);
+        Coroutine Play(IEnumerable<ISequence> sequences);
     }
 }

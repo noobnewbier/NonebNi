@@ -33,21 +33,21 @@ namespace NonebNi.EditorConsole
         {
             switch (command)
             {
-                case DamageConsoleCommand damageConsoleCommand:
-                    var isValid = _readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out var unitData);
-                    if (isValid)
-                    {
-                        var damageCommand = new DamageCommand(damageConsoleCommand.Damage, unitData);
-                        var sequences = _commandEvaluationService.Evaluate(damageCommand);
-
-                        foreach (var sequence in sequences) _sequencePlayer.Play(sequence);
-                    }
-
+                case TeleportConsoleCommand teleportCommand:
+                    if (_readOnlyMap.TryGet<UnitData>(teleportCommand.StartPos, out var unit))
+                        EvaluateSequence(new TeleportCommand(unit, teleportCommand.TargetPos));
                     break;
+
+                case DamageConsoleCommand damageConsoleCommand:
+                    if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out var unitData))
+                        EvaluateSequence(new DamageCommand(damageConsoleCommand.Damage, unitData));
+                    break;
+
                 case ErrorMessageConsoleCommand errorMessageConsoleCommand:
                     outputBuffer.Append(errorMessageConsoleCommand.Message);
                     outputBuffer.AppendLine();
                     break;
+
                 case ClearConsoleCommand _:
                     outputBuffer.Clear();
                     break;
@@ -59,7 +59,6 @@ namespace NonebNi.EditorConsole
                         PrintHelpMessageForCommand(d);
 
                     outputBuffer.AppendLine();
-                    break;
 
                     void PrintHelpMessageForAllCommands()
                     {
@@ -88,9 +87,9 @@ Command description:
                         foreach (var constructorInfo in commandData.CommandType.GetConstructors())
                         {
                             var parameters = constructorInfo.GetParameters();
-                            var commandFormat = parameters.Any()
-                                ? string.Join(", ", parameters.Select(p => p.Name))
-                                : "NO_ARG";
+                            var commandFormat = parameters.Any() ?
+                                string.Join(", ", parameters.Select(p => p.Name)) :
+                                "NO_ARG";
 
                             outputBuffer.AppendLine($"Signature: [{commandFormat}]");
 
@@ -109,7 +108,16 @@ Command description:
                             outputBuffer.AppendLine();
                         }
                     }
+
+                    break;
             }
+        }
+
+        private void EvaluateSequence(ICommand command)
+        {
+            var sequences = _commandEvaluationService.Evaluate(command);
+
+            _sequencePlayer.Play(sequences);
         }
     }
 }

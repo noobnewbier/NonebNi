@@ -22,17 +22,27 @@ namespace NonebNi.Core.Maps
         IEnumerable<UnitData> GetAllUnits();
     }
 
+    public enum MoveResult
+    {
+        Success,
+        ErrorTargetOccupied,
+        ErrorNotExist,
+        NoEffect
+    }
+
     public interface IMap : IReadOnlyMap
     {
         void Set(Coordinate axialCoordinate, TileData tileData);
         void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData;
+        MoveResult Move<T>(T entity, Coordinate axialCoordinate) where T : EntityData;
         bool Remove<T>(T entityData) where T : EntityData;
     }
 
     /// <summary>
-    /// Storing weight of tiles and units positions.
-    /// We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best to
-    /// recover
+    ///     Storing weight of tiles and units positions.
+    ///     We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best
+    ///     to
+    ///     recover
     /// </summary>
     [Serializable]
     public class Map : IMap
@@ -44,7 +54,7 @@ namespace NonebNi.Core.Maps
         #region Init
 
         /// <summary>
-        /// Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
+        ///     Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
         /// </summary>
         /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
         public Map(int width, int height)
@@ -173,6 +183,19 @@ namespace NonebNi.Core.Maps
             nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
         }
 
+        public MoveResult Move<T>(T entity, Coordinate axialCoordinate) where T : EntityData
+        {
+            if (TryGet<T>(axialCoordinate, out var targetPosEntity))
+                return entity == targetPosEntity ?
+                    MoveResult.NoEffect : //Move to current pos does nothing 
+                    MoveResult.ErrorTargetOccupied;
+
+            if (!Remove(entity)) return MoveResult.ErrorNotExist;
+
+            Set(axialCoordinate, entity);
+            return MoveResult.Success;
+        }
+
         public bool Remove<T>(T entityData) where T : EntityData
         {
             if (TryFind(entityData, out var coord))
@@ -220,8 +243,7 @@ namespace NonebNi.Core.Maps
         private int GetIndexFromStorageCoordinate(StorageCoordinate storageCoordinate) =>
             GetIndexFromStorageCoordinate(storageCoordinate.X, storageCoordinate.Z);
 
-        private int GetIndexFromStorageCoordinate(int x, int z) =>
-            x + z * width;
+        private int GetIndexFromStorageCoordinate(int x, int z) => x + z * width;
 
         private StorageCoordinate StorageCoordinateFromIndex(int i)
         {
@@ -232,9 +254,10 @@ namespace NonebNi.Core.Maps
         }
 
         /// <summary>
-        /// The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
-        /// While they should be accessed through the axial coordinate(<seealso cref="Coordinate" />), we will convert them internally
-        /// for both storage and accessing.
+        ///     The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
+        ///     While they should be accessed through the axial coordinate(<seealso cref="Coordinate" />), we will convert them
+        ///     internally
+        ///     for both storage and accessing.
         /// </summary>
         private readonly struct StorageCoordinate
         {

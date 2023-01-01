@@ -8,19 +8,24 @@ namespace NonebNi.Main.Di
 {
     public class LevelModule
     {
-        public LevelData LevelData { get; }
-        public IEntityRepository EntityRepository { get; }
+        private readonly CoordinateAndPositionServiceModule _coordinateAndPositionServiceModule;
 
-        public LevelModule(LevelData levelData)
+        public LevelModule(LevelData levelData, CoordinateAndPositionServiceModule coordinateAndPositionServiceModule)
         {
             LevelData = levelData;
+            _coordinateAndPositionServiceModule = coordinateAndPositionServiceModule;
             EntityRepository = new EntityRepository();
         }
 
-        public ILevelFlowController GetLevelFlowController(ICommandEvaluationService commandEvaluationService,
-                                                           IUnitTurnOrderer unitTurnOrderer,
-                                                           IPlayerDecisionService playerDecisionService,
-                                                           ISequencePlayer sequencePlayer) =>
+        public LevelData LevelData { get; }
+        public IEntityRepository EntityRepository { get; }
+
+        public ILevelFlowController GetLevelFlowController(
+            ICommandEvaluationService commandEvaluationService,
+            IUnitTurnOrderer unitTurnOrderer,
+            IPlayerDecisionService playerDecisionService,
+            ISequencePlayer sequencePlayer
+        ) =>
             new LevelFlowController(
                 commandEvaluationService,
                 unitTurnOrderer,
@@ -34,6 +39,10 @@ namespace NonebNi.Main.Di
 
         public ICommandEvaluationService GetCommandEvaluationService() => new CommandEvaluationService(LevelData.Map);
 
-        public ISequencePlayer GetSequencePlayer() => new SequencePlayer(EntityRepository);
+        public ISequencePlayer GetSequencePlayer() =>
+            new SequencePlayer(
+                EntityRepository,
+                _coordinateAndPositionServiceModule.GetCoordinateAndPositionService()
+            );
     }
 }
