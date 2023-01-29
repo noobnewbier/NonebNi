@@ -6,7 +6,6 @@ using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Error;
 using NonebNi.LevelEditor.Level.Maps;
 using UnityEditor;
-using UnityEngine;
 
 namespace NonebNi.LevelEditor.Level.Entities
 {
@@ -48,8 +47,6 @@ namespace NonebNi.LevelEditor.Level.Entities
         {
             if (editorEntity == null) return;
 
-            var coordinates = _editorEntityPositioningService.FindOverlappedCoordinates(editorEntity).ToArray();
-
             switch (editorEntity)
             {
                 case Unit unit:
@@ -59,9 +56,6 @@ namespace NonebNi.LevelEditor.Level.Entities
                     UpdateTiles(tileModifier);
                     break;
             }
-
-            Debug.Log($"{editorEntity.name}");
-            foreach (var coordinate in coordinates) Debug.Log(coordinate);
         }
 
         private void UpdateTiles(TileModifier tileModifier)

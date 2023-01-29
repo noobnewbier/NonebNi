@@ -56,7 +56,7 @@ namespace NonebNi.LevelEditor.Level
             var position = new Vector2(0, sceneViewSize.y - TileInspectorView.WindowSize.y - paddingFromBottom);
 
             _tileInspectorView.OnSceneDraw(position);
-            _errorOverviewView.OnSceneDraw(position + Vector2.right * TileInspectorView.WindowSize.x);
+            _errorOverviewView.OnSceneDraw(position + Vector2.right * TileInspectorView.WindowSize.x, view);
 
             _entitiesPlacer.UpdateEntitiesPlacement();
         }
