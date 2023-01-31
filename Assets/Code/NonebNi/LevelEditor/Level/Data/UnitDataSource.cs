@@ -16,12 +16,12 @@ namespace NonebNi.LevelEditor.Level.Data
         [Range(0, 100)] [SerializeField] private int initiative;
 
 
-        public override EditorEntityData<UnitData> CreateData(Guid guid) =>
-            new EditorEntityData<UnitData>(
+        public override EditorEntityData<UnitData> CreateData(Guid guid, string factionId) =>
+            new(
                 guid,
                 new UnitData(
                     guid,
-                    entityName,
+                    entityName, factionId,
                     maxHealth,
                     health,
                     icon,

@@ -45,7 +45,7 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
 
             _testData = new UnitData(
                 Guid.Empty,
-                "Noob",
+                "Noob", "TestFaction",
                 100,
                 200,
                 _testSprite,

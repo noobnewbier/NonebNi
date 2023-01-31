@@ -12,11 +12,14 @@ namespace NonebNi.Core.Entities
     {
         [SerializeField] private string name;
         [SerializeField] private SerializableGuid serializableGuid;
-
-        protected EntityData(string name, Guid serializableGuid)
+        [field: SerializeField] public string FactionId { get; private set; }
+        
+        
+        protected EntityData(string name, Guid serializableGuid, string factionId)
         {
             this.name = name;
             this.serializableGuid = new SerializableGuid(serializableGuid);
+            FactionId = factionId;
         }
 
         public SerializableGuid Guid => serializableGuid;
