@@ -5,7 +5,10 @@ using UnityUtils.SerializableGuid;
 namespace NonebNi.Core.Entities
 {
     /// <summary>
-    /// Todo: add in SAUCE so the change of one data reflects on all level(or just all units in the same scene)
+    /// Todo:
+    /// Rename this to Entity? Not sure about the data suffix here.
+    /// add in SAUCE so the change of one data reflects on all level(or just all units in the same scene)
+    /// OR we can just resync every scene file to update it with the newest data -> either way works? But I suppose one with SAUCE makes more sense(as that way we don't need reload for a better workflow?
     /// </summary>
     [Serializable]
     public abstract class EntityData
