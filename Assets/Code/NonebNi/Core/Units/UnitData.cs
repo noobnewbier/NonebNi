@@ -16,12 +16,13 @@ namespace NonebNi.Core.Units
 
 
         public UnitData(Guid guid,
-                        string name,
-                        int maxHealth,
-                        int health,
-                        Sprite icon,
-                        SkillData[] skillDatas,
-                        int initiative) : base(name, guid)
+            string name,
+            string factionId,
+            int maxHealth,
+            int health,
+            Sprite icon,
+            SkillData[] skillDatas,
+            int initiative) : base(name, guid, factionId)
         {
             this.maxHealth = maxHealth;
             this.health = health;

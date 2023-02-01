@@ -38,55 +38,69 @@ namespace NonebNi.LevelEditor.Level.Error
 
                 if (!_sceneViewAndErrorsContainer.TryGetValue(sceneView, out var errorEntryContainer))
                 {
-                    var helpWindow = new VisualElement
+                    const string errorEntryContainerName = "error-entry-container";
+                    var inSceneContainer = sceneView.rootVisualElement.Q<ScrollView>(errorEntryContainerName);
+                    if (inSceneContainer != null)
                     {
-                        name = "helper-window-container",
-                        style =
-                        {
-                            position = Position.Absolute,
-                            backgroundColor = NonebGUIStyle.SceneHelpBoxColor,
-
-                            width = WindowSize.x,
-                            height = WindowSize.y,
-
-                            top = startingPosition.y,
-                            left = startingPosition.x
-                        }
-                    };
-
-                    var title = new Label
+                        //recompile leads to lost of reference - relink it and call it a day
+                        errorEntryContainer = inSceneContainer;
+                        _sceneViewAndErrorsContainer[sceneView] = errorEntryContainer;
+                    }
+                    else
                     {
-                        name = "title-container",
-                        text = "Faulty Objects",
-                        style =
+                        var helpWindow = new VisualElement
                         {
-                            color = Color.white,
-                            unityTextAlign = TextAnchor.MiddleCenter,
-                            fontSize = 13,
-                            paddingTop = 2,
-                            paddingBottom = 2
-                        }
-                    };
+                            name = "helper-window-container",
+                            style =
+                            {
+                                position = Position.Absolute,
+                                backgroundColor = NonebGUIStyle.SceneHelpBoxColor,
+                            
+                                width = WindowSize.x,
+                                height = WindowSize.y,
+                            
+                                bottom = -6.5f, //magic value that seems to work well
+                                left = startingPosition.x
+                            }
+                        };
 
-                    errorEntryContainer = new ScrollView();
-
-                    var noErrorHint = new Label("No Error Found")
-                    {
-                        name = noErrorLabel,
-                        style =
+                        var title = new Label
                         {
-                            color = NonebGUIStyle.HintTextColor
-                        },
-                    };
+                            name = "title-container",
+                            text = "Faulty Objects",
+                            style =
+                            {
+                                color = Color.white,
+                                unityTextAlign = TextAnchor.MiddleCenter,
+                                fontSize = 13,
+                                paddingTop = 2,
+                                paddingBottom = 2
+                            }
+                        };
+                    
+                        errorEntryContainer = new ScrollView
+                        {
+                            name = errorEntryContainerName
+                        };
 
-                    helpWindow.Add(title);
-                    helpWindow.Add(errorEntryContainer);
+                        var noErrorHint = new Label("No Error Found")
+                        {
+                            name = noErrorLabel,
+                            style =
+                            {
+                                color = NonebGUIStyle.HintTextColor
+                            },
+                        };
 
-                    errorEntryContainer.Add(noErrorHint);
+                        helpWindow.Add(title);
+                        helpWindow.Add(errorEntryContainer);
 
-                    sceneView.rootVisualElement.Add(helpWindow);
+                        errorEntryContainer.Add(noErrorHint);
 
-                    _sceneViewAndErrorsContainer[sceneView] = errorEntryContainer;
+                        sceneView.rootVisualElement.Add(helpWindow);
+
+                        _sceneViewAndErrorsContainer[sceneView] = errorEntryContainer;    
+                    }
                 }
 
 
