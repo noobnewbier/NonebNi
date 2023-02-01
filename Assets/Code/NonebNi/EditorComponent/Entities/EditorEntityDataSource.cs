@@ -12,6 +12,6 @@ namespace NonebNi.EditorComponent.Entities
         [SerializeField] protected Sprite icon = null!;
         [SerializeField] protected string entityName = null!;
 
-        public abstract T CreateData(Guid guid);
+        public abstract T CreateData(Guid guid, string factionId);
     }
 }

@@ -8,10 +8,12 @@ namespace NonebNi.EditModeTests.GameLogic
 {
     public static class TestData
     {
+        private const string TestFactionId = "TestFaction";
+
         public static UnitData CreateDeadUnit() =>
-            new UnitData(
+            new(
                 Guid.NewGuid(),
-                "DeadUnit",
+                "DeadUnit", TestFactionId,
                 1,
                 0,
                 GetDefaultSprite(),
@@ -20,9 +22,9 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateLivingUnit() =>
-            new UnitData(
+            new(
                 Guid.NewGuid(),
-                "LivingUnit",
+                "LivingUnit", TestFactionId,
                 1,
                 1,
                 GetDefaultSprite(),
@@ -31,9 +33,9 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateHighPriorityUnit() =>
-            new UnitData(
+            new(
                 Guid.NewGuid(),
-                "HighPriorityUnit",
+                "HighPriorityUnit", TestFactionId,
                 1,
                 1,
                 GetDefaultSprite(),
@@ -42,9 +44,9 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateLowPriorityUnit() =>
-            new UnitData(
+            new(
                 Guid.NewGuid(),
-                "LowPriorityUnit",
+                "LowPriorityUnit", TestFactionId,
                 1,
                 1,
                 GetDefaultSprite(),

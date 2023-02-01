@@ -45,11 +45,11 @@ namespace NonebNi.LevelEditor.Level.Error
                         {
                             position = Position.Absolute,
                             backgroundColor = NonebGUIStyle.SceneHelpBoxColor,
-
+                            
                             width = WindowSize.x,
                             height = WindowSize.y,
-
-                            top = startingPosition.y,
+                            
+                            bottom = -6.5f, //magic value that seems to work well
                             left = startingPosition.x
                         }
                     };

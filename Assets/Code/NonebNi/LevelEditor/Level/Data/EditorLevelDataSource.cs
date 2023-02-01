@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Common;
 using UnityEditor;
@@ -26,9 +28,10 @@ namespace NonebNi.LevelEditor.Level.Data
         /// </summary>
         [SerializeField] private SceneAsset? scene;
 
-        [SerializeField] private EditorMap editorMap = new EditorMap(10, 10);
+        [SerializeField] private EditorMap editorMap = new(10, 10);
         [SerializeField] private WorldConfigSource? worldConfigScriptable;
         [SerializeField] private string levelName = string.Empty;
+        [SerializeField] private Faction[] factions = FactionsData.AllFactions.ToArray();
 
         public string LevelName => levelName;
         public string? SceneName => scene != null ? scene.name : null;
@@ -45,7 +48,7 @@ namespace NonebNi.LevelEditor.Level.Data
         }
 
         public EditorLevelData? CreateData() =>
-            IsValid ? new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName) : null;
+            IsValid ? new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName, factions) : null;
 
 
         public void CopyFromData(EditorLevelData editorLevelData)
@@ -72,6 +75,8 @@ namespace NonebNi.LevelEditor.Level.Data
             }
 
             dataSource.WriteData(editorLevelData.ToLevelData());
+
+            factions = editorLevelData.Factions;
 
             EditorUtility.SetDirty(dataSource);
             EditorUtility.SetDirty(this);

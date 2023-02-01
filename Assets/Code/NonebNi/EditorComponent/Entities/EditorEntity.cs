@@ -3,7 +3,6 @@ using System.Linq;
 using NonebNi.Core.Entities;
 using NonebNi.Ui.Entities;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityUtils.SerializableGuid;
@@ -108,6 +107,7 @@ namespace NonebNi.EditorComponent.Entities
     public abstract partial class EditorEntity<T> : EditorEntity where T : EditorEntityData
     {
         [SerializeField] protected EditorEntityDataSource<T>? entityDataSource;
+        [SerializeField] private string factionId = string.Empty;
 
         private T? _cacheEntityData;
 
@@ -123,7 +123,7 @@ namespace NonebNi.EditorComponent.Entities
                 else
                 {
                     if (_cacheEntityData == null && entityDataSource != null)
-                        _cacheEntityData = entityDataSource.CreateData(Guid);
+                        _cacheEntityData = entityDataSource.CreateData(Guid, factionId);
                 }
 
                 return _cacheEntityData;
