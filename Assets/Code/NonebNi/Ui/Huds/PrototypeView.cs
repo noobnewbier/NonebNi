@@ -1,5 +1,5 @@
-﻿using NonebNi.Core.Decision;
-using NonebNi.Core.FlowControl;
+﻿using NonebNi.Core.Agents;
+using NonebNi.Core.Decision;
 using NonebNi.Core.Level;
 using TMPro;
 using UnityEngine;
@@ -16,10 +16,10 @@ namespace NonebNi.Ui.Huds
         [SerializeField] private Button endTurnButton = null!;
 
 
-        public void Init(LevelData levelData, IAgentDecisionService agentDecisionService)
+        public void Init(LevelData levelData, IPlayerAgent playerAgent)
         {
             levelNameTextMesh.text = levelData.LevelName;
-            endTurnButton.onClick.AddListener(() => agentDecisionService.SetDecision(EndTurnDecision.Instance));
+            endTurnButton.onClick.AddListener(() => playerAgent.SetDecision(EndTurnDecision.Instance));
         }
     }
 }

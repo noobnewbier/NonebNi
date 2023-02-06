@@ -16,7 +16,7 @@ namespace NonebNi.Main
         {
             _hudComponent = hudComponent;
 
-            prototypeView.Init(_hudComponent.GetLevelData(), _hudComponent.GetAgentDecisionService());
+            prototypeView.Init(_hudComponent.GetLevelData(), _hudComponent.GetPlayerAgent());
         }
     }
 }
