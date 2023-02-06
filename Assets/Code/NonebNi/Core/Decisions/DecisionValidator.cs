@@ -14,13 +14,15 @@ namespace NonebNi.Core.Decision
     /// </summary>
     public interface IDecisionValidator
     {
-        (Error? error, ICommand command) ValidateDecision(IDecision decision);
+        (Error? error, ICommand command) ValidateDecision(IDecision? decision);
 
         /// <summary>
         /// Describe why a decision is invalid.
         /// </summary>
         public class Error
         {
+            public const string UnknownId = "unknown";
+
             private Error(string id, string description)
             {
                 Id = id;
@@ -29,8 +31,6 @@ namespace NonebNi.Core.Decision
 
             public string Id { get; }
             public string Description { get; }
-
-            public const string UnknownId = "unknown";
 
             public static Error Unknown { get; } = new(UnknownId, "Failed for an undefined reason");
         }
@@ -45,13 +45,14 @@ namespace NonebNi.Core.Decision
             _map = map;
         }
 
-        public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision decision)
+        public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision? decision)
         {
             return decision switch
             {
                 EndTurnDecision => (null, new EndTurnCommand()),
                 MoveDecision md => (null, new MoveUnitCommand(md.MovedUnit, md.EndCoord)), //TODO: validate
 
+                null => (IDecisionValidator.Error.Unknown, NullCommand.Instance),
                 _ => (IDecisionValidator.Error.Unknown, NullCommand.Instance)
             };
         }

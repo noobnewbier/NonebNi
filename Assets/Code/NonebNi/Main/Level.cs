@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NonebNi.Core.Agents;
+using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Main.Di;
@@ -27,7 +28,11 @@ namespace NonebNi.Main
             var coordinateAndPositionServiceModule = new CoordinateAndPositionServiceModule(levelData.WorldConfig);
 
             var levelModule = new LevelModule(levelData, coordinateAndPositionServiceModule);
-            LevelComponent = new LevelComponent(levelModule);
+            LevelComponent = new LevelComponent(levelModule, new IAgent[]
+            {
+                new PlayerAgent(FactionsData.Player.Id),
+                new DummyAgent(FactionsData.EnemyNpc.Id),
+            });
 
             _levelFlowController = LevelComponent.GetLevelFlowController();
 

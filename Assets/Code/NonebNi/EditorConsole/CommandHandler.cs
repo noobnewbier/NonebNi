@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using Cysharp.Threading.Tasks;
+using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decision;
 using NonebNi.Core.FlowControl;
@@ -15,25 +16,25 @@ namespace NonebNi.EditorConsole
 {
     public class CommandHandler
     {
+        private readonly IAgentsService _agentsService;
         private readonly ICommandEvaluationService _commandEvaluationService;
         private readonly ICommandsDataRepository _commandsDataRepository;
-        private readonly IAgentDecisionService _agentDecisionService;
-        private readonly IUnitTurnOrderer _turnOrderer;
         private readonly IReadOnlyMap _readOnlyMap;
         private readonly ISequencePlayer _sequencePlayer;
+        private readonly IUnitTurnOrderer _turnOrderer;
 
         public CommandHandler(ICommandEvaluationService commandEvaluationService,
             IReadOnlyMap readOnlyMap,
             ISequencePlayer sequencePlayer,
             ICommandsDataRepository commandsDataRepository,
-            IAgentDecisionService agentDecisionService,
+            IAgentsService agentsService,
             IUnitTurnOrderer turnOrderer)
         {
             _commandEvaluationService = commandEvaluationService;
             _readOnlyMap = readOnlyMap;
             _sequencePlayer = sequencePlayer;
             _commandsDataRepository = commandsDataRepository;
-            _agentDecisionService = agentDecisionService;
+            _agentsService = agentsService;
             _turnOrderer = turnOrderer;
         }
 
@@ -57,13 +58,13 @@ namespace NonebNi.EditorConsole
 
                 case MoveConsoleCommand moveConsoleCommand:
                 {
-                    _agentDecisionService.SetDecision(new MoveDecision(_turnOrderer.CurrentUnit,
+                    _agentsService.OverrideDecision(new MoveDecision(_turnOrderer.CurrentUnit,
                         moveConsoleCommand.TargetPos));
                     break;
                 }
 
                 case EndTurnDecisionCommand:
-                    _agentDecisionService.SetDecision(EndTurnDecision.Instance);
+                    _agentsService.OverrideDecision(EndTurnDecision.Instance);
                     break;
 
                 case ErrorMessageConsoleCommand errorMessageConsoleCommand:

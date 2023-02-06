@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.FlowControl;
+﻿using NonebNi.Core.Agents;
 using NonebNi.Core.Level;
 
 namespace NonebNi.Main.Di
@@ -6,7 +6,7 @@ namespace NonebNi.Main.Di
     public interface IHudComponent
     {
         public LevelData GetLevelData();
-        public IAgentDecisionService GetAgentDecisionService();
+        public IPlayerAgent GetPlayerAgent();
     }
 
     public class HudComponent : IHudComponent
@@ -19,7 +19,6 @@ namespace NonebNi.Main.Di
         }
 
         public LevelData GetLevelData() => _levelComponent.GetLevelData();
-        public IAgentDecisionService GetAgentDecisionService() => _levelComponent.GetAgentDecisionService();
-
+        public IPlayerAgent GetPlayerAgent() => _levelComponent.GetPlayerAgent();
     }
 }

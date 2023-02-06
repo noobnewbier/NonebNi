@@ -1,4 +1,5 @@
-﻿using NonebNi.Core.Decision;
+﻿using NonebNi.Core.Agents;
+using NonebNi.Core.Decision;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Core.Sequences;
@@ -23,25 +24,25 @@ namespace NonebNi.Main.Di
 
         public ILevelFlowController GetLevelFlowController(ICommandEvaluationService commandEvaluationService,
             IUnitTurnOrderer unitTurnOrderer,
-            IAgentDecisionService agentDecisionService,
+            IAgentsService agentsService,
             ISequencePlayer sequencePlayer,
             IDecisionValidator decisionValidator) =>
             new LevelFlowController(
                 commandEvaluationService,
                 unitTurnOrderer,
-                agentDecisionService,
+                agentsService,
                 sequencePlayer,
                 decisionValidator
             );
 
-        public IAgentDecisionService GetAgentDecisionService() => new AgentDecisionService();
+        public IAgentsService GetAgentsService(IAgent[] agents) => new AgentsService(agents);
 
         public IUnitTurnOrderer GetUnitTurnOrderer() => new UnitTurnOrderer(LevelData.Map);
 
         public ICommandEvaluationService GetCommandEvaluationService() => new CommandEvaluationService(LevelData.Map);
 
         public IDecisionValidator GetDecisionValidator() => new DecisionValidator(LevelData.Map);
-        
+
         public ISequencePlayer GetSequencePlayer() =>
             new SequencePlayer(
                 EntityRepository,

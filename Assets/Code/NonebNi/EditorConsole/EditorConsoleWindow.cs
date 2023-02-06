@@ -98,7 +98,7 @@ namespace NonebNi.EditorConsole
                 levelComponent.GetLevelData().Map,
                 levelComponent.GetSequencePlayer(),
                 commandsDataRepository,
-                levelComponent.GetAgentDecisionService(),
+                levelComponent.GetAgentsService(),
                 levelComponent.GetUnitTurnOrderer()
             );
             var parser = new ExpressionParser(commandsDataRepository);
