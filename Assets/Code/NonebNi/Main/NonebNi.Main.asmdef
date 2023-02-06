@@ -1,19 +1,24 @@
 {
-    "name": "NonebNi.Main",
-    "rootNamespace": "",
-    "references": [
-        "GUID:acf43146c4364d2419bdbdeac67deb96",
-        "GUID:893a62e173c68f6478bfef27032343b1",
-        "GUID:8c9f0f875c743b643bbea480a5e687c3",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
-    ],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": false,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+  "name": "NonebNi.Main",
+  "rootNamespace": "",
+  "references": [
+    "GUID:acf43146c4364d2419bdbdeac67deb96",
+    "GUID:893a62e173c68f6478bfef27032343b1",
+    "GUID:8c9f0f875c743b643bbea480a5e687c3",
+    "GUID:f51ebe6a0ceec4240a699833d6309b23",
+    "GUID:28c1f145fefff0e49967bb8b497250a6"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "StrongInject.dll",
+    "Microsoft.Bcl.AsyncInterfaces.dll",
+    "System.Collections.Immutable.dll"
+  ],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

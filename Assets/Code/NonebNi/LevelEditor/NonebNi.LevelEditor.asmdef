@@ -2,20 +2,22 @@
   "name": "NonebNi.LevelEditor",
   "rootNamespace": "",
   "references": [
-    "GUID:8c9f0f875c743b643bbea480a5e687c3",
-    "GUID:80f4e914640856644a52944f8f2647f6",
     "GUID:457e662bc0cb0c04b93310af337db38c",
     "GUID:acf43146c4364d2419bdbdeac67deb96",
     "GUID:6719f8f28c4bed147bde1d256fc2a72f",
-    "GUID:22f72075764e7f3429d2e98109cc90bc"
+    "GUID:22f72075764e7f3429d2e98109cc90bc",
+    "GUID:28c1f145fefff0e49967bb8b497250a6",
+    "GUID:8c9f0f875c743b643bbea480a5e687c3"
   ],
   "includePlatforms": [
     "Editor"
   ],
   "excludePlatforms": [],
   "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "StrongInject.dll"
+  ],
   "autoReferenced": false,
   "defineConstraints": [],
   "versionDefines": [],
