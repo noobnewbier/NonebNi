@@ -58,6 +58,17 @@ namespace NonebNi.Ui.Sequences
 
                             break;
                         }
+
+                        case MoveSequence moveSequence:
+                        {
+                            var entity = _entityRepository.GetEntity(moveSequence.MovedUnit.Guid);
+                            if (entity != null)
+                                yield return entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
+                                    .Play(new MoveAnimSequence(
+                                        _coordinateAndPositionService.FindPosition(moveSequence.UnitCommandTargetCoord)));
+
+                            break;
+                        }
                     }
             }
 
