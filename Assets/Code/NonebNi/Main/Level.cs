@@ -37,16 +37,7 @@ namespace NonebNi.Main
 
             unitDetailStat.Init();
 
-            StartCoroutine(UpdateLevelFlowControllerRoutine());
-        }
-
-        private IEnumerator UpdateLevelFlowControllerRoutine()
-        {
-            while (true)
-            {
-                var routine = StartCoroutine(_levelFlowController.UpdateState());
-                yield return routine;
-            }
+            _levelFlowController.Run();
         }
     }
 }

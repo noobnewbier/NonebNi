@@ -6,7 +6,7 @@ namespace NonebNi.Main.Di
     public interface IHudComponent
     {
         public LevelData GetLevelData();
-        public ILevelFlowController GetLevelFlowController();
+        public IAgentDecisionService GetAgentDecisionService();
     }
 
     public class HudComponent : IHudComponent
@@ -19,6 +19,7 @@ namespace NonebNi.Main.Di
         }
 
         public LevelData GetLevelData() => _levelComponent.GetLevelData();
-        public ILevelFlowController GetLevelFlowController() => _levelComponent.GetLevelFlowController();
+        public IAgentDecisionService GetAgentDecisionService() => _levelComponent.GetAgentDecisionService();
+
     }
 }

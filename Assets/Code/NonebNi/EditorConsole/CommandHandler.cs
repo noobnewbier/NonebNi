@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Text;
+using Cysharp.Threading.Tasks;
 using NonebNi.Core.Commands;
+using NonebNi.Core.Decision;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
@@ -15,18 +17,24 @@ namespace NonebNi.EditorConsole
     {
         private readonly ICommandEvaluationService _commandEvaluationService;
         private readonly ICommandsDataRepository _commandsDataRepository;
+        private readonly IAgentDecisionService _agentDecisionService;
+        private readonly IUnitTurnOrderer _turnOrderer;
         private readonly IReadOnlyMap _readOnlyMap;
         private readonly ISequencePlayer _sequencePlayer;
 
         public CommandHandler(ICommandEvaluationService commandEvaluationService,
             IReadOnlyMap readOnlyMap,
             ISequencePlayer sequencePlayer,
-            ICommandsDataRepository commandsDataRepository)
+            ICommandsDataRepository commandsDataRepository,
+            IAgentDecisionService agentDecisionService,
+            IUnitTurnOrderer turnOrderer)
         {
             _commandEvaluationService = commandEvaluationService;
             _readOnlyMap = readOnlyMap;
             _sequencePlayer = sequencePlayer;
             _commandsDataRepository = commandsDataRepository;
+            _agentDecisionService = agentDecisionService;
+            _turnOrderer = turnOrderer;
         }
 
         public void Handle(IConsoleCommand command, StringBuilder outputBuffer)
@@ -34,13 +42,28 @@ namespace NonebNi.EditorConsole
             switch (command)
             {
                 case TeleportConsoleCommand teleportCommand:
+                {
                     if (_readOnlyMap.TryGet<UnitData>(teleportCommand.StartPos, out var unit))
-                        EvaluateSequence(new TeleportCommand(unit, teleportCommand.TargetPos));
+                        _ = EvaluateSequence(new TeleportCommand(unit, teleportCommand.TargetPos));
                     break;
+                }
 
                 case DamageConsoleCommand damageConsoleCommand:
-                    if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out var unitData))
-                        EvaluateSequence(new DamageCommand(damageConsoleCommand.Damage, unitData));
+                {
+                    if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out var unit))
+                        _ = EvaluateSequence(new DamageCommand(damageConsoleCommand.Damage, unit));
+                    break;
+                }
+
+                case MoveConsoleCommand moveConsoleCommand:
+                {
+                    _agentDecisionService.SetDecision(new MoveDecision(_turnOrderer.CurrentUnit,
+                        moveConsoleCommand.TargetPos));
+                    break;
+                }
+
+                case EndTurnDecisionCommand:
+                    _agentDecisionService.SetDecision(EndTurnDecision.Instance);
                     break;
 
                 case ErrorMessageConsoleCommand errorMessageConsoleCommand:
@@ -48,7 +71,7 @@ namespace NonebNi.EditorConsole
                     outputBuffer.AppendLine();
                     break;
 
-                case ClearConsoleCommand _:
+                case ClearConsoleCommand:
                     outputBuffer.Clear();
                     break;
 
@@ -113,11 +136,11 @@ Command description:
             }
         }
 
-        private void EvaluateSequence(ICommand command)
+        private async UniTask EvaluateSequence(ICommand command)
         {
             var sequences = _commandEvaluationService.Evaluate(command);
 
-            _sequencePlayer.Play(sequences);
+            await _sequencePlayer.Play(sequences).ToUniTask();
         }
     }
 }

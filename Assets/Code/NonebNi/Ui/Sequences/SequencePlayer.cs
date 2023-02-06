@@ -30,7 +30,7 @@ namespace NonebNi.Ui.Sequences
             _coroutineRunner = coroutineRunnerObject.AddComponent<CoroutineRunner>();
         }
 
-        public Coroutine Play(IEnumerable<ISequence> sequences)
+        public IEnumerator Play(IEnumerable<ISequence> sequences)
         {
             IEnumerator PlaySequences()
             {
@@ -61,7 +61,7 @@ namespace NonebNi.Ui.Sequences
                     }
             }
 
-            return _coroutineRunner.StartCoroutine(PlaySequences());
+            yield return _coroutineRunner.StartCoroutine(PlaySequences());
         }
 
         /// <summary>

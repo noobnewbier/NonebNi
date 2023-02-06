@@ -1,67 +1,73 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using NonebNi.Core.Commands;
+using NonebNi.Core.Decision;
 using NonebNi.Core.Sequences;
 using NonebNi.Core.StateMachines;
+using UnityEngine;
 
 namespace NonebNi.Core.FlowControl
 {
     public interface ILevelFlowController
     {
-        IEnumerator UpdateState();
-        void EndTurn();
-        void FinishEvaluation();
+        UniTask Run();
     }
 
     public class LevelFlowController : ILevelFlowController
     {
-        private readonly StateMachine _stateMachine;
+        private readonly ICommandEvaluationService _evaluationService;
+        private readonly IUnitTurnOrderer _unitTurnOrderer;
+        private readonly IAgentDecisionService _agentDecisionService;
+        private readonly ISequencePlayer _sequencePlayer;
+        private readonly IDecisionValidator _decisionValidator;
 
         public LevelFlowController(ICommandEvaluationService evaluationService,
-                                   IUnitTurnOrderer unitTurnOrderer,
-                                   IPlayerDecisionService playerDecisionService,
-                                   ISequencePlayer sequencePlayer)
+            IUnitTurnOrderer unitTurnOrderer,
+            IAgentDecisionService agentDecisionService,
+            ISequencePlayer sequencePlayer,
+            IDecisionValidator decisionValidator)
         {
-            var decisionState = new DecisionState(unitTurnOrderer);
-            var evaluationState = new EvaluationState(
-                evaluationService,
-                this,
-                playerDecisionService,
-                sequencePlayer
-            );
-            var endState = new EndState();
-
-            _stateMachine = new StateMachine(decisionState);
-            _stateMachine.AddTransition(
-                decisionState,
-                new Transition(new HashSet<string> { Params.EndTurn }, evaluationState)
-            );
-            _stateMachine.AddTransition(
-                evaluationState,
-                new Transition(new HashSet<string> { Params.EndGame }, endState),
-                new Transition(new HashSet<string> { Params.NextTurn }, decisionState)
-            );
+            _evaluationService = evaluationService;
+            _unitTurnOrderer = unitTurnOrderer;
+            _agentDecisionService = agentDecisionService;
+            _sequencePlayer = sequencePlayer;
+            _decisionValidator = decisionValidator;
         }
 
-        public IEnumerator UpdateState()
+        public async UniTask Run()
         {
-            yield return _stateMachine.UpdateState();
-        }
+            //TODO: replace all these logging w/ a Decorator using StrongInject.
+            
+            var turnNum = 0; //Mostly for debug purposes - but probably necessary for UI at some point
+            while (true)
+            {
+                Debug.Log($"[Level] Turn {turnNum}, {_unitTurnOrderer.CurrentUnit.Name}'s turn");
+                
+                // ReSharper disable RedundantAssignment - Can't declare value tuple without assigning
+                var (err, command) = (default(IDecisionValidator.Error), NullCommand.Instance);
+                // ReSharper restore RedundantAssignment
+                do
+                {
+                    var decision = await _agentDecisionService.GetNextDecision();
+                    Debug.Log($"[Level] Received Decision: {decision.GetType()}");
 
-        public void EndTurn()
-        {
-            _stateMachine.SetTrigger(Params.EndTurn);
-        }
+                    (err, command) = _decisionValidator.ValidateDecision(decision);
 
-        public void FinishEvaluation()
-        {
-            _stateMachine.SetTrigger(Params.NextTurn);
-        }
+                    if (err != null)
+                    {
+                        Debug.Log($"[Level] Decision Error: {err.Id}, {err.Description}");
+                    }
+                } while (err != null);
 
-        private static class Params
-        {
-            public const string EndTurn = nameof(EndTurn);
-            public const string NextTurn = nameof(NextTurn);
-            public const string EndGame = nameof(EndGame);
+
+                Debug.Log($"[Level] Evaluate Command: {command.GetType()}");
+                var sequences = _evaluationService.Evaluate(command);
+                await _sequencePlayer.Play(sequences).ToUniTask();
+
+                turnNum++;
+                _unitTurnOrderer.ToNextUnit();
+                Debug.Log($"[Level] Finished Evaluation");
+            }
         }
     }
 }

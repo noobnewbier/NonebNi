@@ -8,7 +8,7 @@ namespace NonebNi.Main
     public class Hud : MonoBehaviour
     {
         [FormerlySerializedAs("levelNameView")] [SerializeField]
-        private PrototypeView prototypeView;
+        private PrototypeView prototypeView = null!;
 
         private IHudComponent _hudComponent = null!;
 
@@ -16,7 +16,7 @@ namespace NonebNi.Main
         {
             _hudComponent = hudComponent;
 
-            prototypeView.Init(_hudComponent.GetLevelData(), _hudComponent.GetLevelFlowController());
+            prototypeView.Init(_hudComponent.GetLevelData(), _hudComponent.GetAgentDecisionService());
         }
     }
 }

@@ -8,6 +8,7 @@ namespace NonebNi.Core.FlowControl
 {
     public interface IUnitTurnOrderer
     {
+        UnitData CurrentUnit { get; }
         UnitData ToNextUnit();
     }
 
@@ -20,6 +21,8 @@ namespace NonebNi.Core.FlowControl
 
         private readonly SimplePriorityQueue<UnitData> _unitInOrder;
 
+        public UnitData CurrentUnit { get; private set; }
+
         public UnitTurnOrderer(IReadOnlyMap map)
         {
             _map = map;
@@ -27,6 +30,10 @@ namespace NonebNi.Core.FlowControl
                 //the priority queue prioritize elements with lower priority value, we want the opposite
                 Comparer<float>.Create((a, b) => -a.CompareTo(b))
             );
+
+            //Initializing the queue
+            CurrentUnit = null!; //Assigned by calling ToNextUnit
+            ToNextUnit();
         }
 
         public UnitData ToNextUnit()
@@ -35,7 +42,8 @@ namespace NonebNi.Core.FlowControl
                 foreach (var unitData in _map.GetAllUnits())
                     _unitInOrder.Enqueue(unitData, unitData.Initiative);
 
-            return _unitInOrder.Dequeue();
+            CurrentUnit = _unitInOrder.Dequeue();
+            return CurrentUnit;
         }
     }
 }
