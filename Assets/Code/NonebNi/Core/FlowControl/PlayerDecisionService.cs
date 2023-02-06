@@ -1,20 +1,31 @@
-﻿using NonebNi.Core.Commands;
+﻿using Cysharp.Threading.Tasks;
+using NonebNi.Core.Decision;
 
 namespace NonebNi.Core.FlowControl
 {
-    public interface IPlayerDecisionService
+    public interface IAgentDecisionService
     {
-        ICommand Command { get; }
-        void SetCommand(ICommand command);
+        void SetDecision(IDecision decision);
+        UniTask<IDecision> GetNextDecision();
     }
 
-    public class PlayerDecisionService : IPlayerDecisionService
+    public class AgentDecisionService : IAgentDecisionService
     {
-        public ICommand Command { get; private set; } = NullCommand.Instance;
+        private IDecision? _currentDecision;
 
-        public void SetCommand(ICommand command)
+        public void SetDecision(IDecision decision)
         {
-            Command = command;
+            _currentDecision = decision;
+        }
+
+        public async UniTask<IDecision> GetNextDecision()
+        {
+            //Resetting the previous value
+            _currentDecision = null;
+
+            await UniTask.WaitUntil(() => _currentDecision != null);
+
+            return _currentDecision!;
         }
     }
 }

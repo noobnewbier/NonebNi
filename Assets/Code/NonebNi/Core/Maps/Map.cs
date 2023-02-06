@@ -26,7 +26,8 @@ namespace NonebNi.Core.Maps
     {
         Success,
         ErrorTargetOccupied,
-        ErrorNotExist,
+        ErrorMoverNotInMap,
+        ErrorNoTargetInStartPos,
         NoEffect
     }
 
@@ -34,8 +35,9 @@ namespace NonebNi.Core.Maps
     {
         void Set(Coordinate axialCoordinate, TileData tileData);
         void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData;
-        MoveResult Move<T>(T entity, Coordinate axialCoordinate) where T : EntityData;
+        MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData;
         bool Remove<T>(T entityData) where T : EntityData;
+        MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData;
     }
 
     /// <summary>
@@ -183,17 +185,27 @@ namespace NonebNi.Core.Maps
             nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
         }
 
-        public MoveResult Move<T>(T entity, Coordinate axialCoordinate) where T : EntityData
+        public MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData
         {
-            if (TryGet<T>(axialCoordinate, out var targetPosEntity))
+            if (TryGet<T>(targetCoord, out var targetPosEntity))
                 return entity == targetPosEntity ?
                     MoveResult.NoEffect : //Move to current pos does nothing 
                     MoveResult.ErrorTargetOccupied;
 
-            if (!Remove(entity)) return MoveResult.ErrorNotExist;
+            if (!Remove(entity)) return MoveResult.ErrorMoverNotInMap;
 
-            Set(axialCoordinate, entity);
+            Set(targetCoord, entity);
             return MoveResult.Success;
+        }
+        
+        public MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData
+        {
+            if (!TryGet<T>(startCoord, out var target))
+            {
+                return MoveResult.ErrorNoTargetInStartPos;
+            }
+
+            return Move(target, targetCoord);
         }
 
         public bool Remove<T>(T entityData) where T : EntityData

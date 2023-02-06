@@ -1,0 +1,17 @@
+﻿using NonebNi.Core.Coordinates;
+using NonebNi.Core.Units;
+
+namespace NonebNi.Core.Commands
+{
+    public class MoveUnitCommand : ICommand
+    {
+        public readonly UnitData MovedUnit;
+        public readonly Coordinate EndCoord;
+        
+        public MoveUnitCommand(UnitData movedUnit, Coordinate endCoord)
+        {
+            MovedUnit = movedUnit;
+            EndCoord = endCoord;
+        }
+    }
+}

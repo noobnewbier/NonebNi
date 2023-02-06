@@ -30,7 +30,7 @@ namespace NonebNi.Ui.Sequences
             _coroutineRunner = coroutineRunnerObject.AddComponent<CoroutineRunner>();
         }
 
-        public Coroutine Play(IEnumerable<ISequence> sequences)
+        public IEnumerator Play(IEnumerable<ISequence> sequences)
         {
             IEnumerator PlaySequences()
             {
@@ -58,10 +58,21 @@ namespace NonebNi.Ui.Sequences
 
                             break;
                         }
+
+                        case MoveSequence moveSequence:
+                        {
+                            var entity = _entityRepository.GetEntity(moveSequence.MovedUnit.Guid);
+                            if (entity != null)
+                                yield return entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
+                                    .Play(new MoveAnimSequence(
+                                        _coordinateAndPositionService.FindPosition(moveSequence.UnitCommandTargetCoord)));
+
+                            break;
+                        }
                     }
             }
 
-            return _coroutineRunner.StartCoroutine(PlaySequences());
+            yield return _coroutineRunner.StartCoroutine(PlaySequences());
         }
 
         /// <summary>

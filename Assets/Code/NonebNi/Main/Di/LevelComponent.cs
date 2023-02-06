@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.Core.Decision;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Core.Sequences;
@@ -11,6 +12,8 @@ namespace NonebNi.Main.Di
         ILevelFlowController GetLevelFlowController();
         ICommandEvaluationService GetCommandEvaluationService();
         ISequencePlayer GetSequencePlayer();
+        IAgentDecisionService GetAgentDecisionService();
+        IUnitTurnOrderer GetUnitTurnOrderer();
     }
 
     public class LevelComponent : ILevelComponent
@@ -18,7 +21,8 @@ namespace NonebNi.Main.Di
         private readonly Lazy<ICommandEvaluationService> _lazyCommandEvaluationService;
         private readonly Lazy<ILevelFlowController> _lazyLevelFlowController;
 
-        private readonly Lazy<IPlayerDecisionService> _lazyPlayerDecisionService;
+        private readonly Lazy<IAgentDecisionService> _lazyAgentDecisionService;
+        private readonly Lazy<IDecisionValidator> _lazyDecisionValidator;
         private readonly Lazy<ISequencePlayer> _lazySequencePlayer;
         private readonly Lazy<IUnitTurnOrderer> _lazyUnitTurnOrderer;
 
@@ -28,7 +32,8 @@ namespace NonebNi.Main.Di
         {
             _levelModule = levelModule;
 
-            _lazyPlayerDecisionService = new Lazy<IPlayerDecisionService>(levelModule.GetPlayerDecisionService);
+            _lazyDecisionValidator = new Lazy<IDecisionValidator>(levelModule.GetDecisionValidator);
+            _lazyAgentDecisionService = new Lazy<IAgentDecisionService>(levelModule.GetAgentDecisionService);
             _lazyUnitTurnOrderer = new Lazy<IUnitTurnOrderer>(levelModule.GetUnitTurnOrderer);
             _lazyCommandEvaluationService = new Lazy<ICommandEvaluationService>(levelModule.GetCommandEvaluationService);
             _lazySequencePlayer = new Lazy<ISequencePlayer>(levelModule.GetSequencePlayer);
@@ -36,8 +41,9 @@ namespace NonebNi.Main.Di
                 () => levelModule.GetLevelFlowController(
                     GetCommandEvaluationService(),
                     _lazyUnitTurnOrderer.Value,
-                    _lazyPlayerDecisionService.Value,
-                    GetSequencePlayer()
+                    _lazyAgentDecisionService.Value,
+                    GetSequencePlayer(),
+                    _lazyDecisionValidator.Value
                 )
             );
         }
@@ -47,5 +53,7 @@ namespace NonebNi.Main.Di
         public ILevelFlowController GetLevelFlowController() => _lazyLevelFlowController.Value;
         public ICommandEvaluationService GetCommandEvaluationService() => _lazyCommandEvaluationService.Value;
         public ISequencePlayer GetSequencePlayer() => _lazySequencePlayer.Value;
+        public IAgentDecisionService GetAgentDecisionService() => _lazyAgentDecisionService.Value;
+        public IUnitTurnOrderer GetUnitTurnOrderer() => _lazyUnitTurnOrderer.Value;
     }
 }
