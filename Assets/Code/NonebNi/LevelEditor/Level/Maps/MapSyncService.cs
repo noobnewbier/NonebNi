@@ -17,12 +17,12 @@ namespace NonebNi.LevelEditor.Level.Maps
     public class MapSyncService
     {
         private readonly EditorEntityPositioningService _editorEntityPositioningService;
-        private readonly EditorMap _editorMap;
+        private readonly IEditorMap _editorMap;
         private Scene _scene;
 
         public MapSyncService(EditorEntityPositioningService editorEntityPositioningService,
-                              Scene scene,
-                              EditorMap editorMap)
+            Scene scene,
+            IEditorMap editorMap)
         {
             _editorEntityPositioningService = editorEntityPositioningService;
             _scene = scene;

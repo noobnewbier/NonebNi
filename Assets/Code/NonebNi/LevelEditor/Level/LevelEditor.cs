@@ -1,6 +1,4 @@
 ﻿using System;
-using NonebNi.LevelEditor.Di;
-using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Entities;
 using NonebNi.LevelEditor.Level.Error;
 using NonebNi.LevelEditor.Level.Inspector;
@@ -8,34 +6,37 @@ using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.LevelEditor.Level.Settings;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace NonebNi.LevelEditor.Level
 {
     public class LevelEditor : IDisposable
     {
-        private readonly LevelEditorComponent _component;
-
+        private readonly LevelEditorModel _editorModel;
         private readonly EntitiesPlacer _entitiesPlacer;
         private readonly ErrorOverviewView _errorOverviewView;
         private readonly GridView _gridView;
         private readonly LevelDataSyncer _levelDataSyncer;
+        private readonly LevelSavingService _levelSavingService;
+        private readonly MapSyncService _mapSyncService;
         private readonly TileInspectorView _tileInspectorView;
 
-        public LevelEditor(Scene editedScene,
-                           EditorLevelDataSource editorLevelDataSource,
-                           INonebEditorComponent nonebEditorComponent)
+        public LevelEditor(GridView gridView,
+            TileInspectorView tileInspectorView,
+            ErrorOverviewView errorOverviewView,
+            EntitiesPlacer entitiesPlacer,
+            LevelDataSyncer levelDataSyncer,
+            LevelEditorModel editorModel,
+            MapSyncService mapSyncService,
+            LevelSavingService levelSavingService)
         {
-            _component = new LevelEditorComponent(
-                new LevelEditorModule(editorLevelDataSource, editedScene),
-                nonebEditorComponent
-            );
-
-            _gridView = _component.GridView;
-            _tileInspectorView = _component.TileInspectorView;
-            _errorOverviewView = _component.ErrorOverviewView;
-            _entitiesPlacer = _component.EntitiesPlacer;
-            _levelDataSyncer = _component.LevelDataSyncer;
+            _gridView = gridView;
+            _tileInspectorView = tileInspectorView;
+            _errorOverviewView = errorOverviewView;
+            _entitiesPlacer = entitiesPlacer;
+            _levelDataSyncer = levelDataSyncer;
+            _editorModel = editorModel;
+            _mapSyncService = mapSyncService;
+            _levelSavingService = levelSavingService;
 
             SceneView.duringSceneGui += OnSceneGUI;
         }
@@ -61,6 +62,11 @@ namespace NonebNi.LevelEditor.Level
             _entitiesPlacer.UpdateEntitiesPlacement();
         }
 
-        public LevelEditorSettingsWindow GetSettingsWindow() => LevelEditorSettingsWindow.Init(_component);
+        public LevelEditorSettingsWindow GetSettingsWindow() =>
+            LevelEditorSettingsWindow.Init(
+                _editorModel,
+                _mapSyncService,
+                _levelSavingService
+            );
     }
 }

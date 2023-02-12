@@ -18,16 +18,13 @@ namespace NonebNi.LevelEditor.Level.Entities
     /// </summary>
     public class EntitiesPlacer
     {
-        private readonly EditorEntityPositioningService _editorEntityPositioningService;
         private readonly ErrorChecker _errorChecker;
         private readonly MapSyncService _mapSyncService;
 
         public EntitiesPlacer(MapSyncService entityService,
-                              EditorEntityPositioningService editorEntityPositioningService,
-                              ErrorChecker errorChecker)
+            ErrorChecker errorChecker)
         {
             _mapSyncService = entityService;
-            _editorEntityPositioningService = editorEntityPositioningService;
             _errorChecker = errorChecker;
         }
 

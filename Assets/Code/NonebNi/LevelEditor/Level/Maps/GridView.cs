@@ -1,28 +1,28 @@
 ﻿using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
-using NonebNi.LevelEditor.Di;
 using UnityEditor;
 using UnityEngine.Rendering;
+using UnityUtils.Factories;
 
 namespace NonebNi.LevelEditor.Level.Maps
 {
     public class GridView
     {
-        private readonly CoordinateAndPositionService _coordinateAndPositionService;
+        private readonly ICoordinateAndPositionService _coordinateAndPositionService;
 
         //We need to reuse the same GUIContent for all labels, otherwise it is generating way too much GC per frame
 
         private readonly GridPresenter _presenter;
         private readonly WorldConfigData _worldConfig;
 
-        public GridView(ILevelEditorComponent component,
-                        CoordinateAndPositionService coordinateAndPositionService,
-                        WorldConfigData worldConfig)
+        public GridView(IFactory<GridView, GridPresenter> presenterFactory,
+            ICoordinateAndPositionService coordinateAndPositionService,
+            WorldConfigData worldConfig)
         {
             _coordinateAndPositionService = coordinateAndPositionService;
             _worldConfig = worldConfig;
-            _presenter = component.CreateMapPresenter(this);
+            _presenter = presenterFactory.Create(this);
         }
 
         public void OnSceneDraw()

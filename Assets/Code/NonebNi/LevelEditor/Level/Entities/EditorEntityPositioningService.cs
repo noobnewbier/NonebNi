@@ -8,10 +8,10 @@ namespace NonebNi.LevelEditor.Level.Entities
 {
     public class EditorEntityPositioningService
     {
-        private readonly CoordinateAndPositionService _coordinateAndPositionService;
+        private readonly ICoordinateAndPositionService _coordinateAndPositionService;
         private readonly IEditorMap _map;
 
-        public EditorEntityPositioningService(CoordinateAndPositionService coordinateAndPositionService, IEditorMap map)
+        public EditorEntityPositioningService(ICoordinateAndPositionService coordinateAndPositionService, IEditorMap map)
         {
             _coordinateAndPositionService = coordinateAndPositionService;
             _map = map;

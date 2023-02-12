@@ -32,6 +32,8 @@ namespace NonebNi.LevelEditor
             }
         }
 
+        public Level.LevelEditor? LevelEditor { get; set; }
+
         public event Action<bool>? OnGridVisibilityChanged;
         public event Action<bool>? OnInspectorVisibilityChanged;
     }

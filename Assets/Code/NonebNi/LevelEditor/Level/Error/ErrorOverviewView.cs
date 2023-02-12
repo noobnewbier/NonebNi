@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using NonebNi.EditorComponent.Entities;
-using NonebNi.LevelEditor.Di;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityUtils.Editor;
+using UnityUtils.Factories;
 
 namespace NonebNi.LevelEditor.Level.Error
 {
@@ -21,9 +21,9 @@ namespace NonebNi.LevelEditor.Level.Error
         private readonly ErrorOverviewPresenter _presenter;
         private readonly Dictionary<SceneView, VisualElement> _sceneViewAndErrorsContainer = new();
 
-        public ErrorOverviewView(ILevelEditorComponent component)
+        public ErrorOverviewView(IFactory<ErrorOverviewView, ErrorOverviewPresenter> presenterFactory)
         {
-            _presenter = component.CreateErrorOverviewPresenter(this);
+            _presenter = presenterFactory.Create(this);
         }
 
         public void OnSceneDraw(Vector2 startingPosition, SceneView sceneView)
@@ -55,10 +55,10 @@ namespace NonebNi.LevelEditor.Level.Error
                             {
                                 position = Position.Absolute,
                                 backgroundColor = NonebGUIStyle.SceneHelpBoxColor,
-                            
+
                                 width = WindowSize.x,
                                 height = WindowSize.y,
-                            
+
                                 bottom = -6.5f, //magic value that seems to work well
                                 left = startingPosition.x
                             }
@@ -77,7 +77,7 @@ namespace NonebNi.LevelEditor.Level.Error
                                 paddingBottom = 2
                             }
                         };
-                    
+
                         errorEntryContainer = new ScrollView
                         {
                             name = errorEntryContainerName
@@ -99,7 +99,7 @@ namespace NonebNi.LevelEditor.Level.Error
 
                         sceneView.rootVisualElement.Add(helpWindow);
 
-                        _sceneViewAndErrorsContainer[sceneView] = errorEntryContainer;    
+                        _sceneViewAndErrorsContainer[sceneView] = errorEntryContainer;
                     }
                 }
 
@@ -138,7 +138,7 @@ namespace NonebNi.LevelEditor.Level.Error
                     var labelBottomLeftWorldPos = sourceWorldPos + Vector3.up * 0.25f;
                     var labelContent = EditorGUIUtility.TrTempContent(
                         errorGroup.Select((e, i) => $"{i + 1}. {e.Description}")
-                                  .Aggregate((current, next) => $"{current}\n\n{next}")
+                            .Aggregate((current, next) => $"{current}\n\n{next}")
                     );
                     var labelSizedRect = HandleUtility.WorldPointToSizedRect(
                         labelBottomLeftWorldPos,

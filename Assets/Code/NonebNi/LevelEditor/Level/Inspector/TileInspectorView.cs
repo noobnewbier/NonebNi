@@ -1,9 +1,9 @@
 ﻿using NonebNi.Core.Level;
-using NonebNi.LevelEditor.Di;
 using NonebNi.LevelEditor.Level.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
+using UnityUtils.Factories;
 
 namespace NonebNi.LevelEditor.Level.Inspector
 {
@@ -23,10 +23,12 @@ namespace NonebNi.LevelEditor.Level.Inspector
 
         private Plane _gridPlane;
 
-        public TileInspectorView(ILevelEditorComponent component, WorldConfigData worldConfigData, IEditorMap map)
+        public TileInspectorView(IFactory<TileInspectorView, TileInspectorPresenter> presenterFactory,
+            WorldConfigData worldConfigData,
+            IEditorMap map)
         {
             _map = map;
-            _presenter = component.CreateTileInspectorPresenter(this);
+            _presenter = presenterFactory.Create(this);
 
             _gridPlane = new Plane(Vector3.up, worldConfigData.MapStartingPosition);
         }
