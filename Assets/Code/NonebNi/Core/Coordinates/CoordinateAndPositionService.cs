@@ -3,21 +3,35 @@ using UnityEngine;
 
 namespace NonebNi.Core.Coordinates
 {
+    public interface ICoordinateAndPositionService
+    {
+        Vector3 FindPosition(Coordinate coordinate);
+        Coordinate NearestCoordinateForPoint(Vector3 point);
+
+        /// <summary>
+        /// Find out if a position resides within a given coordinate.
+        /// </summary>
+        /// <param name="point">The position to test</param>
+        /// <param name="coordinate">Coordinate to test</param>
+        /// <returns>Whether the <see cref="point" /> is within the given <see cref="coordinate" /></returns>
+        bool IsPointWithinCoordinate(Vector3 point, Coordinate coordinate);
+    }
+
     /// <summary>
     /// Given the <see cref="WorldConfigData" />, convert between coordinate and position
     /// </summary>
-    public class CoordinateAndPositionService
+    public class CoordinateAndPositionService : ICoordinateAndPositionService
     {
         private readonly WorldConfigData _worldConfig;
-
-        private float SideDistanceOfHex => _worldConfig.InnerRadius * 2f;
-
-        private float UpDistanceOfHex => _worldConfig.OuterRadius * 1.5f;
 
         public CoordinateAndPositionService(WorldConfigData worldConfig)
         {
             _worldConfig = worldConfig;
         }
+
+        private float SideDistanceOfHex => _worldConfig.InnerRadius * 2f;
+
+        private float UpDistanceOfHex => _worldConfig.OuterRadius * 1.5f;
 
         public Vector3 FindPosition(Coordinate coordinate)
         {

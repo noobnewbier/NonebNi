@@ -1,21 +1,19 @@
 ﻿using NonebNi.LevelEditor.Common;
-using NonebNi.LevelEditor.Di;
 using NonebNi.LevelEditor.Level.Settings;
 using UnityEditor;
 using UnityEngine;
+using UnityUtils.Factories;
 
 namespace NonebNi.LevelEditor.Toolbar
 {
     //todo: allow toggle of toolbar itself
     public class NonebEditorToolbarView
     {
-        private readonly NonebEditorComponent _component;
-        private readonly SceneToolbarPresenter _presenter;
+        private readonly NonebEditorToolbarPresenter _presenter;
 
-        public NonebEditorToolbarView(NonebEditorComponent component)
+        public NonebEditorToolbarView(IFactory<NonebEditorToolbarView, NonebEditorToolbarPresenter> presenterFactory)
         {
-            _presenter = new SceneToolbarPresenter(this, component);
-            _component = component;
+            _presenter = presenterFactory.Create(this);
         }
 
         public void DrawSceneToolbar(SceneView sceneView)
@@ -49,28 +47,28 @@ namespace NonebNi.LevelEditor.Toolbar
             void DrawGridButton()
             {
                 if (ToggleContent.ToggleButton(
-                    menuRect,
-                    Contents.GridEnabled,
-                    _presenter.IsGridVisible,
-                    Styles.ToggleButton,
-                    EditorStyles.miniButton
-                )) _presenter.OnToggleGridVisibility();
+                        menuRect,
+                        Contents.GridEnabled,
+                        _presenter.IsGridVisible,
+                        Styles.ToggleButton,
+                        EditorStyles.miniButton
+                    )) _presenter.OnToggleGridVisibility();
             }
 
             void DrawGizmosButton()
             {
                 if (ToggleContent.ToggleButton(
-                    menuRect,
-                    Contents.GizmosEnabled,
-                    _presenter.IsHelperWindowsVisible,
-                    Styles.ToggleButton,
-                    EditorStyles.miniButton
-                )) _presenter.OnToggleHelperWindowsVisibility();
+                        menuRect,
+                        Contents.GizmosEnabled,
+                        _presenter.IsHelperWindowsVisible,
+                        Styles.ToggleButton,
+                        EditorStyles.miniButton
+                    )) _presenter.OnToggleHelperWindowsVisibility();
             }
 
             void DrawSettingsButton()
             {
-                if (_presenter.NonebEditor.LevelEditor != null)
+                if (_presenter.TryGetSettingsWindow(out var settingsWindow))
                 {
                     /*
                      * There is a minor issue where if the user have already opened the window
@@ -87,7 +85,6 @@ namespace NonebNi.LevelEditor.Toolbar
                     if (GUI.Button(menuRect, "Settings", Styles.Button))
                         if (!EditorWindow.HasOpenInstances<LevelEditorSettingsWindow>())
                         {
-                            var settingsWindow = _presenter.NonebEditor.LevelEditor.GetSettingsWindow();
                             var screenRect = sceneView.position;
                             settingsWindow.ShowAsDropDown(
                                 new Rect(

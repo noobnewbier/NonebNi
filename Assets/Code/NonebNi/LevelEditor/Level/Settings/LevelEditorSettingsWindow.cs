@@ -1,5 +1,4 @@
-﻿using NonebNi.LevelEditor.Di;
-using NonebNi.LevelEditor.Level.Data;
+﻿using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Maps;
 using UnityEditor;
 using UnityEngine;
@@ -49,12 +48,14 @@ namespace NonebNi.LevelEditor.Level.Settings
                 Close();
         }
 
-        public static LevelEditorSettingsWindow Init(ILevelEditorComponent component)
+        public static LevelEditorSettingsWindow Init(LevelEditorModel editorModel,
+            MapSyncService mapSyncService,
+            LevelSavingService levelSavingService)
         {
             var toReturn = CreateInstance<LevelEditorSettingsWindow>();
-            toReturn._dataModel = component.LevelEditorModel;
-            toReturn._mapSyncService = component.MapSyncService;
-            toReturn._levelSavingService = component.LevelSavingService;
+            toReturn._dataModel = editorModel;
+            toReturn._mapSyncService = mapSyncService;
+            toReturn._levelSavingService = levelSavingService;
 
             return toReturn;
         }

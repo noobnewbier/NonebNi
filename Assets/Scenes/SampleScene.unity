@@ -579,6 +579,10 @@ PrefabInstance:
       value: 211
       objectReference: {fileID: 0}
     - target: {fileID: 8680139171545852120, guid: 5799df1feb5cea64c9e734e824873d38, type: 3}
+      propertyPath: factionId
+      value: EnemyNpc
+      objectReference: {fileID: 0}
+    - target: {fileID: 8680139171545852120, guid: 5799df1feb5cea64c9e734e824873d38, type: 3}
       propertyPath: serializedGuid.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -728,7 +732,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8680139171545852121, guid: 5799df1feb5cea64c9e734e824873d38, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.47
+      value: 0.61
       objectReference: {fileID: 0}
     - target: {fileID: 8680139171545852121, guid: 5799df1feb5cea64c9e734e824873d38, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2216,6 +2220,10 @@ PrefabInstance:
     - target: {fileID: 6807835621299629819, guid: 5799df1feb5cea64c9e734e824873d38, type: 3}
       propertyPath: guid.serializedGuid.Array.data[15]
       value: 74
+      objectReference: {fileID: 0}
+    - target: {fileID: 8680139171545852120, guid: 5799df1feb5cea64c9e734e824873d38, type: 3}
+      propertyPath: factionId
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8680139171545852120, guid: 5799df1feb5cea64c9e734e824873d38, type: 3}
       propertyPath: serializedGuid.Array.size

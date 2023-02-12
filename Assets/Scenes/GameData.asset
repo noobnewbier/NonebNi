@@ -17,6 +17,17 @@ MonoBehaviour:
     worldConfig:
       mapStartingPosition: {x: 0, y: 0, z: 0}
       innerRadius: 1
+    factions:
+    - <Id>k__BackingField: Player
+      <AlliesId>k__BackingField:
+      - AllyNpc
+    - <Id>k__BackingField: AllyNpc
+      <AlliesId>k__BackingField:
+      - Player
+    - <Id>k__BackingField: EnemyNpc
+      <AlliesId>k__BackingField: []
+    - <Id>k__BackingField: Neutral
+      <AlliesId>k__BackingField: []
     map:
       height: 10
       width: 10
@@ -32,6 +43,7 @@ MonoBehaviour:
         - name: Noob
           serializableGuid:
             serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
+          <FactionId>k__BackingField: EnemyNpc
           maxHealth: 100
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
@@ -44,6 +56,7 @@ MonoBehaviour:
         - name: Noob
           serializableGuid:
             serializedGuid: 02e86fd465fe8244ab6689e836e8394a
+          <FactionId>k__BackingField: Player
           maxHealth: 100
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}

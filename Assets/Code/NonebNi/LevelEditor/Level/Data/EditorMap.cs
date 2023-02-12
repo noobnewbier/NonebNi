@@ -19,6 +19,9 @@ namespace NonebNi.LevelEditor.Level.Data
         bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EditorEntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
+        void Set(Coordinate axialCoordinate, TileData tileData);
+        void Set<T>(Coordinate axialCoordinate, T? value) where T : EditorEntityData;
+        Map ToMap();
     }
 
     /// <summary>

@@ -3,6 +3,7 @@ using NonebNi.LevelEditor.Common.Events;
 using NonebNi.LevelEditor.Di;
 using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Toolbar;
+using StrongInject;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
@@ -11,19 +12,15 @@ namespace NonebNi.LevelEditor
 {
     public class NonebEditor : IDisposable
     {
-        private readonly NonebEditorComponent _component;
-        private readonly NonebEditorModel _model;
-
+        private readonly NonebEditorModel _editorModel;
         private readonly NonebEditorToolbarView _toolbar;
 
-        public Level.LevelEditor? LevelEditor { get; private set; }
+        private Owned<Level.LevelEditor>? _levelEditor;
 
-        public NonebEditor()
+        public NonebEditor(NonebEditorToolbarView toolbar, NonebEditorModel editorModel)
         {
-            _component = new NonebEditorComponent(new NonebEditorModule(this));
-            _model = _component.NonebEditorModel;
-
-            _toolbar = new NonebEditorToolbarView(_component);
+            _toolbar = toolbar;
+            _editorModel = editorModel;
 
             TryInitLevelEditor();
 
@@ -44,7 +41,7 @@ namespace NonebNi.LevelEditor
 
         private void CleanUp()
         {
-            LevelEditor?.Dispose();
+            _levelEditor?.Dispose();
 
             SceneView.duringSceneGui -= OnSceneGUI;
             LevelDataSourceChangedListener.OnLevelDataSourceChanged -= TryInitLevelEditorAfterOneFrame;
@@ -63,11 +60,13 @@ namespace NonebNi.LevelEditor
 
         private void TryInitLevelEditor()
         {
-            LevelEditor?.Dispose();
-            LevelEditor = null;
+            _levelEditor?.Dispose();
+            _levelEditor = null;
             var dataSource = EditorLevelDataSource.FindLevelDataSourceForActiveScene();
-            if (dataSource != null && dataSource.IsValid)
-                LevelEditor = new Level.LevelEditor(SceneManager.GetActiveScene(), dataSource, _component);
+            if (dataSource == null || !dataSource.IsValid) return;
+
+            _levelEditor = new LevelEditorContainer(dataSource, SceneManager.GetActiveScene(), _editorModel).Resolve();
+            _editorModel.LevelEditor = _levelEditor.Value;
         }
 
         private void TryInitLevelEditorAfterOneFrame()

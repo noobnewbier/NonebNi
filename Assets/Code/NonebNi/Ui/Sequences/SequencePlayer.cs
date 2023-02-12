@@ -11,7 +11,7 @@ namespace NonebNi.Ui.Sequences
 {
     public class SequencePlayer : ISequencePlayer
     {
-        private readonly CoordinateAndPositionService _coordinateAndPositionService;
+        private readonly ICoordinateAndPositionService _coordinateAndPositionService;
 
         //Deliberately not creating a static API for it - we might want to migrate to UniTask in the future which may resolve the issue without doing this?
         //By not having an external class we keep the whole mess in one place which is better than scattering it through multiple files
@@ -19,7 +19,7 @@ namespace NonebNi.Ui.Sequences
 
         private readonly IEntityRepository _entityRepository;
 
-        public SequencePlayer(IEntityRepository entityRepository, CoordinateAndPositionService coordinateAndPositionService)
+        public SequencePlayer(IEntityRepository entityRepository, ICoordinateAndPositionService coordinateAndPositionService)
         {
             _entityRepository = entityRepository;
             _coordinateAndPositionService = coordinateAndPositionService;
@@ -53,7 +53,8 @@ namespace NonebNi.Ui.Sequences
                             if (entity != null)
                                 yield return entity.GetAnimationControl<IPlayAnimation<TeleportAnimSequence>>().Play(
                                     new TeleportAnimSequence(
-                                        _coordinateAndPositionService.FindPosition(teleportSequence.TargetPos))
+                                        _coordinateAndPositionService.FindPosition(teleportSequence.TargetPos)
+                                    )
                                 );
 
                             break;
@@ -64,8 +65,11 @@ namespace NonebNi.Ui.Sequences
                             var entity = _entityRepository.GetEntity(moveSequence.MovedUnit.Guid);
                             if (entity != null)
                                 yield return entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
-                                    .Play(new MoveAnimSequence(
-                                        _coordinateAndPositionService.FindPosition(moveSequence.UnitCommandTargetCoord)));
+                                    .Play(
+                                        new MoveAnimSequence(
+                                            _coordinateAndPositionService.FindPosition(moveSequence.UnitCommandTargetCoord)
+                                        )
+                                    );
 
                             break;
                         }

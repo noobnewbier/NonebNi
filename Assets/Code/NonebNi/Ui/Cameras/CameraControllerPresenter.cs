@@ -26,10 +26,10 @@ namespace NonebNi.Ui.Cameras
         private readonly ICameraControllerView _view;
 
         public CameraControllerPresenter(CameraConfig config,
-                                         IReadOnlyMap map,
-                                         WorldConfigData worldConfigData,
-                                         CoordinateAndPositionService coordinateAndPositionService,
-                                         ICameraControllerView view)
+            IReadOnlyMap map,
+            WorldConfigData worldConfigData,
+            ICoordinateAndPositionService coordinateAndPositionService,
+            ICameraControllerView view)
         {
             _config = config;
             _view = view;

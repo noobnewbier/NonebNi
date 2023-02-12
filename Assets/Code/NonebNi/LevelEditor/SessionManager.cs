@@ -1,4 +1,6 @@
 ﻿using NonebNi.LevelEditor.Common.Events;
+using NonebNi.LevelEditor.Di;
+using StrongInject;
 using UnityEditor;
 
 namespace NonebNi.LevelEditor
@@ -9,11 +11,11 @@ namespace NonebNi.LevelEditor
     /// </summary>
     public class SessionManager
     {
-        private NonebEditor? _nonebEditor;
+        private Owned<NonebEditor>? _nonebEditor;
 
         private void StartSession()
         {
-            _nonebEditor = new NonebEditor();
+            _nonebEditor = new NonebEditorContainer().Resolve();
         }
 
         private void EndSession()

@@ -67,9 +67,6 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# ASP.NET Scaffolding
-ScaffoldingReadMe.txt
-
 # StyleCop
 StyleCopReport.xml
 
@@ -102,9 +99,6 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-
-# Chutzpah Test files
-_Chutzpah*
 
 # Visual C++ cache files
 ipch/
@@ -181,30 +175,15 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
-# Click-Once directory
-publish/
-
-# Publish Web Output
-*.[Pp]ublish.xml
-*.azurePubxml
-# Note: Comment the next line if you want to checkin your web deploy settings,
-# but database connection strings (with potential passwords) will be unencrypted
-*.pubxml
-*.publishproj
-
-# Microsoft Azure Web App publish settings. Comment the next line if you want to
-# checkin your Azure Web App publish settings, but sensitive information contained
-# in these scripts will be unencrypted
-PublishScripts/
-
 # NuGet Packages
 *.nupkg
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
-**/[Pp]ackages/*
+**/Assets/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
+
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/[Pp]ackages/repositories.config
 # NuGet v3's project.json files produces more ignorable files
@@ -214,13 +193,6 @@ PublishScripts/
 # Nuget personal access tokens and Credentials
 nuget.config
 
-# Microsoft Azure Build Output
-csx/
-*.build.csdef
-
-# Microsoft Azure Emulator
-ecf/
-rcf/
 
 # Windows Store app package directories and files
 AppPackages/

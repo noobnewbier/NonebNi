@@ -1,48 +1,49 @@
 ﻿using NonebNi.Core.Agents;
-using NonebNi.Core.Entities;
-using NonebNi.Core.FlowControl;
+using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
-using NonebNi.Main.Di;
+using NonebNi.Core.Maps;
+using NonebNi.Ui.Cameras;
 using NonebNi.Ui.Statistics.Unit;
-using UnityEngine;
 
 namespace NonebNi.Main
 {
-    public class Level : MonoBehaviour
+    public interface ILevelUi
     {
-        [SerializeField] private LevelDataSource levelDataSource = null!;
+        void Run();
+    }
 
-        [SerializeField] private Hud hud = null!;
-        [SerializeField] private Grid grid = null!;
-        [SerializeField] private CameraControl cameraControl = null!;
+    public class LevelUi : ILevelUi
+    {
+        private readonly CameraControl _cameraControl;
+        private readonly Grid _grid;
+        private readonly Hud _hud;
+        private readonly UnitDetailStat _stat;
 
-        [SerializeField] private UnitDetailStat unitDetailStat = null!;
-
-        private ILevelFlowController _levelFlowController = null!;
-
-        public LevelComponent? LevelComponent { get; private set; }
-
-        private void Awake()
+        public LevelUi(CameraControl cameraControl,
+            Hud hud,
+            Grid grid,
+            UnitDetailStat stat,
+            ICameraControllerView cameraControllerView,
+            LevelData levelData,
+            IPlayerAgent playerAgent,
+            ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map,
+            WorldConfigData worldConfig)
         {
-            var levelData = levelDataSource.GetData();
-            var coordinateAndPositionServiceModule = new CoordinateAndPositionServiceModule(levelData.WorldConfig);
+            _cameraControl = cameraControl;
+            _hud = hud;
+            _grid = grid;
+            _stat = stat;
 
-            var levelModule = new LevelModule(levelData, coordinateAndPositionServiceModule);
-            LevelComponent = new LevelComponent(levelModule, new IAgent[]
-            {
-                new PlayerAgent(FactionsData.Player.Id),
-                new DummyAgent(FactionsData.EnemyNpc.Id),
-            });
+            _cameraControl.Init(cameraControllerView);
+            _hud.Init(levelData, playerAgent);
+            _grid.Init(coordinateAndPositionService, map, worldConfig);
+            _stat.Init();
+        }
 
-            _levelFlowController = LevelComponent.GetLevelFlowController();
-
-            hud.Init(new HudComponent(LevelComponent));
-            grid.Init(new GridComponent(coordinateAndPositionServiceModule, levelModule));
-            cameraControl.Init(LevelComponent, coordinateAndPositionServiceModule);
-
-            unitDetailStat.Init();
-
-            _levelFlowController.Run();
+        public void Run()
+        {
+            _cameraControl.Run();
         }
     }
 }
