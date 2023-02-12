@@ -1,4 +1,5 @@
-﻿using NonebNi.Main.Di;
+﻿using NonebNi.Core.Agents;
+using NonebNi.Core.Level;
 using NonebNi.Ui.Huds;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,13 +11,10 @@ namespace NonebNi.Main
         [FormerlySerializedAs("levelNameView")] [SerializeField]
         private PrototypeView prototypeView = null!;
 
-        private IHudComponent _hudComponent = null!;
 
-        public void Init(IHudComponent hudComponent)
+        public void Init(LevelData levelData, IPlayerAgent playerAgent)
         {
-            _hudComponent = hudComponent;
-
-            prototypeView.Init(_hudComponent.GetLevelData(), _hudComponent.GetPlayerAgent());
+            prototypeView.Init(levelData, playerAgent);
         }
     }
 }

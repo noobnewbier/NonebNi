@@ -1,4 +1,6 @@
-﻿using NonebNi.Main.Di;
+﻿using NonebNi.Core.Coordinates;
+using NonebNi.Core.Level;
+using NonebNi.Core.Maps;
 using NonebNi.Ui.Grids;
 using UnityEngine;
 
@@ -9,10 +11,11 @@ namespace NonebNi.Main
     {
         [SerializeField] private GridView gridView = null!;
 
-        public void Init(IGridComponent gridComponent)
+        public void Init(ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map,
+            WorldConfigData worldConfig)
         {
-            var levelData = gridComponent.GetLevelData();
-            gridView.Init(gridComponent.CoordinateAndPositionService, levelData.Map, levelData.WorldConfig);
+            gridView.Init(coordinateAndPositionService, map, worldConfig);
         }
     }
 }

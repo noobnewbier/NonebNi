@@ -9,29 +9,37 @@ namespace NonebNi.Core.FlowControl
 {
     public interface ILevelFlowController
     {
+        IAgentsService AgentsService { get; }
+        ICommandEvaluationService EvaluationService { get; }
+        ISequencePlayer SequencePlayer { get; }
+        IUnitTurnOrderer UnitTurnOrderer { get; }
         UniTask Run();
     }
 
     public class LevelFlowController : ILevelFlowController
     {
-        private readonly IAgentsService _agentService;
-        private readonly IDecisionValidator _decisionValidator;
-        private readonly ICommandEvaluationService _evaluationService;
-        private readonly ISequencePlayer _sequencePlayer;
-        private readonly IUnitTurnOrderer _unitTurnOrderer;
-
         public LevelFlowController(ICommandEvaluationService evaluationService,
             IUnitTurnOrderer unitTurnOrderer,
             IAgentsService agentService,
             ISequencePlayer sequencePlayer,
             IDecisionValidator decisionValidator)
         {
-            _evaluationService = evaluationService;
-            _unitTurnOrderer = unitTurnOrderer;
-            _agentService = agentService;
-            _sequencePlayer = sequencePlayer;
-            _decisionValidator = decisionValidator;
+            EvaluationService = evaluationService;
+            UnitTurnOrderer = unitTurnOrderer;
+            AgentsService = agentService;
+            SequencePlayer = sequencePlayer;
+            DecisionValidator = decisionValidator;
         }
+
+        public IDecisionValidator DecisionValidator { get; }
+
+        public IAgentsService AgentsService { get; }
+
+        public ICommandEvaluationService EvaluationService { get; }
+
+        public ISequencePlayer SequencePlayer { get; }
+
+        public IUnitTurnOrderer UnitTurnOrderer { get; }
 
         public async UniTask Run()
         {
@@ -40,7 +48,7 @@ namespace NonebNi.Core.FlowControl
             var turnNum = 0; //Mostly for debug purposes - but probably necessary for UI at some point
             while (true)
             {
-                var currentUnit = _unitTurnOrderer.CurrentUnit;
+                var currentUnit = UnitTurnOrderer.CurrentUnit;
                 Debug.Log($"[Level] Turn {turnNum}, {currentUnit.Name}'s turn");
 
                 // ReSharper disable RedundantAssignment - Can't declare value tuple without assigning
@@ -48,25 +56,22 @@ namespace NonebNi.Core.FlowControl
                 // ReSharper restore RedundantAssignment
                 do
                 {
-                    var decision = await _agentService.GetAgentDecision(currentUnit.FactionId);
+                    var decision = await AgentsService.GetAgentDecision(currentUnit.FactionId);
                     Debug.Log($"[Level] Received Decision: {decision?.GetType()}");
 
-                    (err, command) = _decisionValidator.ValidateDecision(decision);
+                    (err, command) = DecisionValidator.ValidateDecision(decision);
 
-                    if (err != null)
-                    {
-                        Debug.Log($"[Level] Decision Error: {err.Id}, {err.Description}");
-                    }
+                    if (err != null) Debug.Log($"[Level] Decision Error: {err.Id}, {err.Description}");
                 } while (err != null);
 
 
                 Debug.Log($"[Level] Evaluate Command: {command.GetType()}");
-                var sequences = _evaluationService.Evaluate(command);
-                await _sequencePlayer.Play(sequences).ToUniTask();
+                var sequences = EvaluationService.Evaluate(command);
+                await SequencePlayer.Play(sequences).ToUniTask();
 
                 turnNum++;
-                _unitTurnOrderer.ToNextUnit();
-                Debug.Log($"[Level] Finished Evaluation");
+                UnitTurnOrderer.ToNextUnit();
+                Debug.Log("[Level] Finished Evaluation");
             }
         }
     }

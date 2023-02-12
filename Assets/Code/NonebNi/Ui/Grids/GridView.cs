@@ -9,7 +9,9 @@ namespace NonebNi.Ui.Grids
     {
         [SerializeField] private TileView tileViewPrefab = null!;
 
-        public void Init(CoordinateAndPositionService coordinateAndPositionService, Map map, WorldConfigData worldConfigData)
+        public void Init(ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map,
+            WorldConfigData worldConfigData)
         {
             foreach (var coordinate in map.GetAllCoordinates())
             {

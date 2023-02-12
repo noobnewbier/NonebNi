@@ -89,17 +89,22 @@ namespace NonebNi.EditorConsole
 
         private bool TryActivateConsole()
         {
-            var levelComponent = FindObjectOfType<Level>()?.LevelComponent;
-            if (levelComponent == null) return false;
+            var levelRunner = FindObjectOfType<LevelRunner>();
+            if (levelRunner == null) return false;
+
+            var levelFlowController = levelRunner.LevelFlowController;
+            var levelData = levelRunner.LevelData;
+
+            if (levelFlowController == null || levelData == null) return false;
 
             var commandsDataRepository = new CommandsDataRepository();
             var commandHandler = new CommandHandler(
-                levelComponent.GetCommandEvaluationService(),
-                levelComponent.GetLevelData().Map,
-                levelComponent.GetSequencePlayer(),
+                levelFlowController.EvaluationService,
+                levelData.Map,
+                levelFlowController.SequencePlayer,
                 commandsDataRepository,
-                levelComponent.GetAgentsService(),
-                levelComponent.GetUnitTurnOrderer()
+                levelFlowController.AgentsService,
+                levelFlowController.UnitTurnOrderer
             );
             var parser = new ExpressionParser(commandsDataRepository);
             var lexer = new TextLexer();

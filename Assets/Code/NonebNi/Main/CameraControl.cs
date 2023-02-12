@@ -1,5 +1,4 @@
-﻿using NonebNi.Main.Di;
-using NonebNi.Ui.Cameras;
+﻿using NonebNi.Ui.Cameras;
 using UnityEngine;
 
 namespace NonebNi.Main
@@ -11,21 +10,25 @@ namespace NonebNi.Main
 
         private ICameraControllerView _cameraControllerView = null!;
 
-        private bool _initialized;
+        private bool _isRunning;
+
+        public CameraConfig Config => config;
+
+        public Camera TargetCamera => targetCamera;
 
         private void Update()
         {
-            if (_initialized) _cameraControllerView.UpdateCamera();
+            if (_isRunning) _cameraControllerView.UpdateCamera();
         }
 
-        public void Init(ILevelComponent levelComponent,
-                         CoordinateAndPositionServiceModule coordinateAndPositionServiceModule)
+        public void Init(ICameraControllerView cameraControllerView)
         {
-            _initialized = true;
+            _cameraControllerView = cameraControllerView;
+        }
 
-            var module = new CameraControlModule(config, targetCamera);
-            var component = new CameraControlComponent(module, levelComponent, coordinateAndPositionServiceModule);
-            _cameraControllerView = component.CreateCameraControllerView();
+        public void Run()
+        {
+            _isRunning = true;
         }
     }
 }
