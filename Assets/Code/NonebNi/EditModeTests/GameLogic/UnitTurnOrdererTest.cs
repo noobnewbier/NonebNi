@@ -16,7 +16,7 @@ namespace NonebNi.EditModeTests.GameLogic
             stubMap.Setup(m => m.GetAllUnits()).Returns(new[] { lowPriorityUnit, highPriorityUnit });
             var unitsOrderer = new UnitTurnOrderer(stubMap.Object);
 
-            Assert.AreSame(unitsOrderer.ToNextUnit(), highPriorityUnit);
+            Assert.AreSame(unitsOrderer.CurrentUnit, highPriorityUnit);
             Assert.AreSame(unitsOrderer.ToNextUnit(), lowPriorityUnit);
         }
 
@@ -29,7 +29,6 @@ namespace NonebNi.EditModeTests.GameLogic
             stubMap.Setup(m => m.GetAllUnits()).Returns(new[] { lowPriorityUnit, highPriorityUnit });
             var unitsOrderer = new UnitTurnOrderer(stubMap.Object);
 
-            unitsOrderer.ToNextUnit();
             unitsOrderer.ToNextUnit();
 
             Assert.AreSame(unitsOrderer.ToNextUnit(), highPriorityUnit);
