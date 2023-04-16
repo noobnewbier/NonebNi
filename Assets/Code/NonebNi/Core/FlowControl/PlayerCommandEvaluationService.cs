@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Commands.Handlers;
-using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 
 namespace NonebNi.Core.FlowControl
@@ -16,17 +14,19 @@ namespace NonebNi.Core.FlowControl
     public class CommandEvaluationService : ICommandEvaluationService
     {
         private readonly ICommandHandler<DamageCommand> _damageCommandHandler;
-        private readonly ICommandHandler<TeleportCommand> _teleportCommandHandler;
         private readonly ICommandHandler<EndTurnCommand> _endTurnCommandHandler;
         private readonly ICommandHandler<MoveUnitCommand> _moveCommandHandler;
+        private readonly ICommandHandler<TeleportCommand> _teleportCommandHandler;
 
-        public CommandEvaluationService(IMap map)
+        public CommandEvaluationService(ICommandHandler<DamageCommand> damageCommandHandler,
+            ICommandHandler<TeleportCommand> teleportCommandHandler,
+            ICommandHandler<EndTurnCommand> endTurnCommandHandler,
+            ICommandHandler<MoveUnitCommand> moveCommandHandler)
         {
-            //TODO: inject the command handler
-            _damageCommandHandler = new DamageCommandHandler(map);
-            _teleportCommandHandler = new TeleportCommandHandler(map);
-            _endTurnCommandHandler = new EndTurnCommandHandler();
-            _moveCommandHandler = new MoveUnitCommandHandler(map);
+            _damageCommandHandler = damageCommandHandler;
+            _teleportCommandHandler = teleportCommandHandler;
+            _endTurnCommandHandler = endTurnCommandHandler;
+            _moveCommandHandler = moveCommandHandler;
         }
 
         public IEnumerable<ISequence> Evaluate(ICommand command)
@@ -37,7 +37,7 @@ namespace NonebNi.Core.FlowControl
                 TeleportCommand teleportCommand => _teleportCommandHandler.Evaluate(teleportCommand),
                 EndTurnCommand endTurnCommand => _endTurnCommandHandler.Evaluate(endTurnCommand),
                 MoveUnitCommand moveUnitCommand => _moveCommandHandler.Evaluate(moveUnitCommand),
-                
+
                 _ => throw new NotImplementedException("Something went wrong - unexpected type")
             };
         }
