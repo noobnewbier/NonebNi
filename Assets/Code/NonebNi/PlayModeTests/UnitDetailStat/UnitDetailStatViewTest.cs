@@ -45,7 +45,8 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
 
             _testData = new UnitData(
                 Guid.Empty,
-                "Noob", "TestFaction",
+                "Noob",
+                "TestFaction",
                 100,
                 200,
                 _testSprite,
@@ -54,7 +55,8 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
                     new SkillData("NoobSkill1", 1, _testSprite),
                     new SkillData("NoobSkill2", 2, _testSprite)
                 },
-                0
+                0,
+                5
             );
 
             _detailStat = Object.FindObjectOfType<Ui.Statistics.Unit.UnitDetailStat>();

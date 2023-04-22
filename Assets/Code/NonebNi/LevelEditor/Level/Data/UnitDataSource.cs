@@ -14,6 +14,7 @@ namespace NonebNi.LevelEditor.Level.Data
         [SerializeField] private int maxHealth;
         [SerializeField] private SkillDataSource[] skillDataSource = Array.Empty<SkillDataSource>();
         [Range(0, 100)] [SerializeField] private int initiative;
+        [SerializeField] private int speed;
 
 
         public override EditorEntityData<UnitData> CreateData(Guid guid, string factionId) =>
@@ -21,12 +22,14 @@ namespace NonebNi.LevelEditor.Level.Data
                 guid,
                 new UnitData(
                     guid,
-                    entityName, factionId,
+                    entityName,
+                    factionId,
                     maxHealth,
                     health,
                     icon,
                     skillDataSource.Select(s => s.CreateData()).ToArray(),
-                    initiative
+                    initiative,
+                    speed
                 )
             );
     }

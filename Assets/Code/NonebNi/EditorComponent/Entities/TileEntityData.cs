@@ -11,10 +11,10 @@ namespace NonebNi.EditorComponent.Entities
     [Serializable]
     public class TileEntityData : EntityData
     {
-        [SerializeField] private float weight;
+        [SerializeField] private int weight;
         [SerializeField] private string name;
 
-        public TileEntityData(Guid guid, string factionId, string name, float weight) : base(name, guid, factionId)
+        public TileEntityData(Guid guid, string factionId, string name, int weight) : base(name, guid, factionId)
         {
             this.name = name;
             this.weight = weight;

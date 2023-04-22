@@ -8,9 +8,9 @@ namespace NonebNi.LevelEditor.Level.Data
     public class TileDataSource : EditorEntityDataSource<EditorEntityData<TileEntityData>>
     {
         [SerializeField] private string tileName = null!;
-        [SerializeField] private float weight;
+        [SerializeField] private int weight;
 
-        public float Weight => weight;
+        public int Weight => weight;
 
         public override EditorEntityData<TileEntityData> CreateData(Guid guid, string factionId) =>
             new EditorEntityData<TileEntityData>(guid, new TileEntityData(guid, factionId, tileName, weight));
