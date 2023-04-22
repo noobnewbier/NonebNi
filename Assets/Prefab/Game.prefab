@@ -40,8 +40,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8045598353599930386}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6f1750902a343e98f9f003d32185ae6, type: 3}
+  m_Script: {fileID: 11500000, guid: c28d7b86275d400f825a75ce0d9cb737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hud: {fileID: 0}
   levelDataSource: {fileID: 0}
+  hud: {fileID: 0}
+  grid: {fileID: 0}
+  cameraControl: {fileID: 0}
+  unitDetailStat: {fileID: 0}

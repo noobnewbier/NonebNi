@@ -62,7 +62,7 @@ namespace NonebNi.LevelEditor.Level
             _entitiesPlacer.UpdateEntitiesPlacement();
         }
 
-        public LevelEditorSettingsWindow GetSettingsWindow() =>
+        public LevelEditorSettingsWindow CreateSettingsWindow() =>
             LevelEditorSettingsWindow.Init(
                 _editorModel,
                 _mapSyncService,
