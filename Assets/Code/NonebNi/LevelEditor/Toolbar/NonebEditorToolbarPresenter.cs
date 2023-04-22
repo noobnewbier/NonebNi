@@ -9,6 +9,7 @@ namespace NonebNi.LevelEditor.Toolbar
     {
         private readonly NonebEditorModel _model;
         private readonly NonebEditorToolbarView _view;
+        private LevelEditorSettingsWindow? _settingsWindowCache;
 
         public NonebEditorToolbarPresenter(NonebEditorToolbarView view, NonebEditorModel nonebEditorModel)
         {
@@ -39,11 +40,18 @@ namespace NonebNi.LevelEditor.Toolbar
             if (_model.LevelEditor == null)
             {
                 settingsWindow = default;
+                _settingsWindowCache = null;
+
                 return false;
             }
 
-            settingsWindow = _model.LevelEditor.GetSettingsWindow();
-            return _model.LevelEditor.GetSettingsWindow();
+            if (_settingsWindowCache == null)
+            {
+                _settingsWindowCache = _model.LevelEditor.CreateSettingsWindow();
+            }
+
+            settingsWindow = _settingsWindowCache;
+            return settingsWindow != null;
         }
     }
 }
