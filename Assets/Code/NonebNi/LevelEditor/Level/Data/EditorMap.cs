@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
@@ -14,7 +15,7 @@ namespace NonebNi.LevelEditor.Level.Data
         bool TryGet(Coordinate axialCoordinate, out TileData tileData);
         TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EditorEntityData;
-        bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EditorEntityData;
+        bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : EditorEntityData;
         bool Has<T>(Coordinate axialCoordinate) where T : EditorEntityData;
         bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EditorEntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
@@ -113,15 +114,11 @@ namespace NonebNi.LevelEditor.Level.Data
             return nodes[storageCoordinate.X + storageCoordinate.Z * width].Get<T>();
         }
 
-        public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EditorEntityData
+        public bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EditorEntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            t = GetBoardItemWithDefault<T>(storageCoordinate)!;
+            t = GetBoardItemWithDefault<T>(storageCoordinate);
 
-            // no, t can be null here, it's just without some MaybeNullWhenAttribute(as unity doesn't support .net 2.1)
-            // there is no clear way to express my intent here. User should be checking the bool value anyway,
-            // so I think we are safe here.
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             return t != null;
         }
 
@@ -200,34 +197,6 @@ namespace NonebNi.LevelEditor.Level.Data
             var x = i - z;
 
             return new StorageCoordinate(x, z);
-        }
-
-        /// <summary>
-        /// The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
-        /// While they should be accessed through the axial coordinate(<seealso cref="Coordinate" />), we will convert them internally
-        /// for both storage and accessing.
-        /// </summary>
-        private readonly struct StorageCoordinate
-        {
-            public readonly int X;
-            public readonly int Z;
-
-            public StorageCoordinate(int x, int z)
-            {
-                X = x;
-                Z = z;
-            }
-
-            public static StorageCoordinate FromAxial(Coordinate coordinate)
-            {
-                var z = coordinate.Z;
-                var x = coordinate.X + z / 2;
-                return new StorageCoordinate(x, z);
-            }
-
-            public Coordinate ToAxial() => ToAxial(X, Z);
-
-            public static Coordinate ToAxial(int x, int z) => new Coordinate(Mathf.CeilToInt(x - z / 2), z);
         }
 
         #endregion

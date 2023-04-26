@@ -20,6 +20,6 @@ namespace NonebNi.EditorComponent.Entities
             this.weight = weight;
         }
 
-        public TileData CreateTileData() => new TileData(name, weight);
+        public TileData CreateTileData() => new(name, weight);
     }
 }
