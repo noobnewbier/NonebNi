@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using NonebNi.Core.Units.Skills;
 using UnityEditor;
@@ -9,6 +10,9 @@ namespace NonebNi.EditModeTests.GameLogic
     public static class TestData
     {
         private const string TestFactionId = "TestFaction";
+
+        public static readonly TileData Road = new("Road", 1);
+        public static readonly TileData Wall = new("Wall", TileData.ObstacleWeight);
 
         public static UnitData CreateDeadUnit() =>
             new(

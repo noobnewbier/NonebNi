@@ -34,6 +34,18 @@ namespace NonebNi.Core.Units
             this.speed = speed;
         }
 
+        public UnitData(UnitData unitData) : this(
+            System.Guid.NewGuid(),
+            unitData.Name,
+            unitData.FactionId,
+            unitData.maxHealth,
+            unitData.health,
+            unitData.icon,
+            unitData.skillDatas,
+            unitData.initiative,
+            unitData.speed
+        ) { }
+
         public int Speed => speed;
 
         public int Initiative => initiative;
@@ -46,6 +58,16 @@ namespace NonebNi.Core.Units
         {
             get => health;
             set => health = Mathf.Clamp(value, 0, maxHealth);
+        }
+
+        public UnitData WithSpeed(int newSpeed)
+        {
+            var newData = new UnitData(this)
+            {
+                speed = newSpeed
+            };
+
+            return newData;
         }
     }
 }

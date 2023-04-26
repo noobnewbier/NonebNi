@@ -2,6 +2,7 @@
 using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using UnityEngine;
 using UnityUtils;
@@ -61,15 +62,19 @@ namespace NonebNi.Core.Pathfinding
                 start
             };
             var cameFrom = new Dictionary<Coordinate, Coordinate>();
-            var gScore = new DefaultDictionary<Coordinate, int>(int.MaxValue)
+            var gScore = new DefaultDictionary<Coordinate, float>(TileData.ObstacleWeight)
             {
                 [start] = 0
             };
 
-            var fScore = new DefaultDictionary<Coordinate, int>(int.MaxValue);
+            var fScore = new DefaultDictionary<Coordinate, float>(TileData.ObstacleWeight)
+            {
+                [start] = Heuristic(start, goal)
+            };
+
             while (openSet.Any())
             {
-                var current = fScore.MinBy(pair => pair.Value).Key;
+                var current = openSet.MinBy(c => fScore[c]);
                 openSet.Remove(current);
 
                 if (current == goal)
@@ -88,13 +93,18 @@ namespace NonebNi.Core.Pathfinding
 
                 foreach (var neighbour in current.Neighbours)
                 {
-                    var tentativeGScore = gScore[current] + _map.Get(neighbour).Weight;
+                    if (!_map.TryGet(neighbour, out var neighbourTileData))
+                    {
+                        //Doesn't exist in the map
+                        continue;
+                    }
+
+                    var tentativeGScore = gScore[current] + neighbourTileData.Value.Weight;
                     if (tentativeGScore >= gScore[neighbour]) continue;
 
-                    const int heuristic = 1;
                     cameFrom[neighbour] = current;
                     gScore[neighbour] = tentativeGScore;
-                    fScore[neighbour] = tentativeGScore + heuristic;
+                    fScore[neighbour] = tentativeGScore + Heuristic(neighbour, goal);
 
                     if (!openSet.Contains(neighbour))
                     {
@@ -104,6 +114,13 @@ namespace NonebNi.Core.Pathfinding
             }
 
             return (false, Enumerable.Empty<Coordinate>());
+        }
+
+        private static float Heuristic(Coordinate tileCoordinate, Coordinate goalCoordinate)
+        {
+            var diff = tileCoordinate - goalCoordinate;
+
+            return (Mathf.Abs(diff.X) + Mathf.Abs(diff.Y) + Mathf.Abs(diff.Z)) / 2f;
         }
 
         /// <summary>

@@ -51,15 +51,13 @@ namespace NonebNi.Core.Coordinates
 
         public override string ToString() => $"({X}, {Y}, {Z})";
 
-        public static Coordinate operator +(Coordinate a, Coordinate b) => new Coordinate(a.X + b.X, a.Z + b.Z);
+        public static Coordinate operator +(Coordinate a, Coordinate b) => new(a.X + b.X, a.Z + b.Z);
+        public static Coordinate operator -(Coordinate a, Coordinate b) => new(a.X - b.X, a.Z - b.Z);
 
         public static bool operator ==(Coordinate a, Coordinate b) => a.Equals(b);
 
         public static bool operator !=(Coordinate a, Coordinate b) => !(a == b);
 
-        public static Coordinate operator -(Coordinate c) => new Coordinate(-c.X, -c.Z);
-
-        public static float ManhattanDistance(Coordinate a, Coordinate b) =>
-            a.X - b.X + (a.Y - b.Y) + (a.Z - b.Z);
+        public static Coordinate operator -(Coordinate c) => new(-c.X, -c.Z);
     }
 }

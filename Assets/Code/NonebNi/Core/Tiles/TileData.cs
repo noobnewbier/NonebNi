@@ -9,7 +9,8 @@ namespace NonebNi.Core.Tiles
     [Serializable]
     public struct TileData
     {
-        public static readonly TileData Default = new TileData("Default", 1);
+        public const int ObstacleWeight = 999999;
+        public static readonly TileData Default = new("Default", 1);
 
         [SerializeField] private int weight;
         [SerializeField] private string name;
