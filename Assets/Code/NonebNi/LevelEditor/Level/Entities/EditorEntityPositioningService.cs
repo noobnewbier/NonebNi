@@ -3,10 +3,22 @@ using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.EditorComponent.Entities;
 using NonebNi.LevelEditor.Level.Data;
+using UnityEngine;
 
 namespace NonebNi.LevelEditor.Level.Entities
 {
-    public class EditorEntityPositioningService
+    public interface IEditorEntityPositioningService
+    {
+        /// <summary>
+        /// Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
+        /// bounds(tbd).
+        /// </summary>
+        IEnumerable<Coordinate> FindOverlappedCoordinates(EditorEntity editorEntity);
+
+        IEnumerable<Coordinate> FindOverlappedCoordinates(Collider collider);
+    }
+
+    public class EditorEntityPositioningService : IEditorEntityPositioningService
     {
         private readonly ICoordinateAndPositionService _coordinateAndPositionService;
         private readonly IEditorMap _map;
@@ -23,14 +35,21 @@ namespace NonebNi.LevelEditor.Level.Entities
         /// </summary>
         public IEnumerable<Coordinate> FindOverlappedCoordinates(EditorEntity editorEntity)
         {
-            if (!editorEntity.IsCorrectSetUp) yield break;
-
             //bounding collider is defined only when editorEntity is initialized
-            var boundingCollider = editorEntity.BoundingCollider;
+            return !editorEntity.IsCorrectSetUp ?
+                Enumerable.Empty<Coordinate>() :
+                FindOverlappedCoordinates(editorEntity.BoundingCollider);
+        }
 
+        /// <summary>
+        /// Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
+        /// bounds(tbd).
+        /// </summary>
+        public IEnumerable<Coordinate> FindOverlappedCoordinates(Collider collider)
+        {
             var searchedCoordinate = new HashSet<Coordinate>();
             var toSearchCoordinate = new Stack<Coordinate>();
-            toSearchCoordinate.Push(_coordinateAndPositionService.NearestCoordinateForPoint(boundingCollider.bounds.center));
+            toSearchCoordinate.Push(_coordinateAndPositionService.NearestCoordinateForPoint(collider.bounds.center));
 
             while (toSearchCoordinate.Any())
             {
@@ -41,7 +60,7 @@ namespace NonebNi.LevelEditor.Level.Entities
                 searchedCoordinate.Add(coordinate);
 
                 var coordinatePos = _coordinateAndPositionService.FindPosition(coordinate);
-                var closestPosOnBoundToCoordinate = boundingCollider.ClosestPoint(coordinatePos);
+                var closestPosOnBoundToCoordinate = collider.ClosestPoint(coordinatePos);
 
                 var overLapped = _coordinateAndPositionService.IsPointWithinCoordinate(
                     closestPosOnBoundToCoordinate,
