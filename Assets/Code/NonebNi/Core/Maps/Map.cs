@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
@@ -11,10 +12,10 @@ namespace NonebNi.Core.Maps
 {
     public interface IReadOnlyMap
     {
-        bool TryGet(Coordinate axialCoordinate, out TileData tileData);
+        bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out TileData? tileData);
         TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
-        bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData;
+        bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData;
         bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
@@ -42,187 +43,24 @@ namespace NonebNi.Core.Maps
 
     /// <summary>
     ///     Storing weight of tiles and units positions.
-    ///     We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid, we try our best
-    ///     to
-    ///     recover
+    ///     We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid,
+    ///
+    ///     we try our best to recover
     /// </summary>
     [Serializable]
     public class Map : IMap
     {
         [SerializeField] private int height;
         [SerializeField] private int width;
-        [SerializeField] private Node[] nodes;
-
-        #region Init
 
         /// <summary>
-        ///     Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
+        ///     The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in a jagged array,
+        ///     which we further flatten the array into a single row for efficiency.
+        /// 
+        ///     While they should be accessed from the public API through the axial coordinate(<seealso cref="Coordinate" />),
+        ///     we will convert them internally for both storage and accessing.
         /// </summary>
-        /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
-        public Map(int width, int height)
-        {
-            this.width = width;
-            this.height = height;
-            nodes = new Node[this.width * this.height];
-
-            for (var x = 0; x < width; x++)
-            for (var z = 0; z < height; z++)
-                nodes[GetIndexFromStorageCoordinate(x, z)] = new Node(TileData.Default);
-        }
-
-        public Map(int width, int height, Node[] nodes)
-        {
-            if (nodes.Length != height * width)
-                throw new ArgumentException(
-                    $"{nameof(nodes)}'s length is invalid, expected to be {width * height} but is {nodes.Length}"
-                );
-
-            this.height = height;
-            this.width = width;
-            this.nodes = nodes;
-        }
-
-        #endregion
-
-        #region Tile specifics
-
-        /*
-         * As C# 8.0 doesn't support generics that can deal with both nullable reference and value type,
-         * we can't share the helper method such as GetBoardItemWithDefaults here
-         *
-         * The best thing we can do without changing the TileData from a struct to class is to write the same code twice here
-         * :sad face:
-         */
-
-        public bool TryGet(Coordinate axialCoordinate, out TileData tileData)
-        {
-            tileData = default;
-
-            try
-            {
-                var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-                tileData = nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData;
-                return true;
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return false;
-            }
-        }
-
-        public TileData Get(Coordinate axialCoordinate)
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-
-            return nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData;
-        }
-
-        public void Set(Coordinate axialCoordinate, TileData tileData)
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-
-            nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData.CopyValueFrom(tileData);
-        }
-
-        #endregion
-
-        #region Entity
-
-        public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            return nodes[storageCoordinate.X + storageCoordinate.Z * width].Get<T>();
-        }
-
-        public bool TryGet<T>(Coordinate axialCoordinate, out T t) where T : EntityData
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            t = GetBoardItemWithDefault<T>(storageCoordinate)!;
-
-            // no, t can be null here, it's just without some MaybeNullWhenAttribute(as unity doesn't support .net 2.1)
-            // there is no clear way to express my intent here. User should be checking the bool value anyway,
-            // so I think we are safe here.
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            return t != null;
-        }
-
-        public bool Has<T>(Coordinate axialCoordinate) where T : EntityData
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-
-            return GetBoardItemWithDefault<T>(storageCoordinate) != null;
-        }
-
-        public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
-        {
-            for (var i = 0; i < nodes.Length; i++)
-                if (nodes[i].Has(entityData))
-                {
-                    var storageCoordinate = StorageCoordinateFromIndex(i);
-                    coordinate = storageCoordinate.ToAxial();
-                    return true;
-                }
-
-            coordinate = default;
-            return false;
-        }
-
-        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
-        {
-            try
-            {
-                return nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Get<T>();
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return default;
-            }
-        }
-
-        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
-        {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
-        }
-
-        public MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData
-        {
-            if (TryGet<T>(targetCoord, out var targetPosEntity))
-                return entity == targetPosEntity ?
-                    MoveResult.NoEffect : //Move to current pos does nothing 
-                    MoveResult.ErrorTargetOccupied;
-
-            if (!Remove(entity)) return MoveResult.ErrorMoverNotInMap;
-
-            Set(targetCoord, entity);
-            return MoveResult.Success;
-        }
-        
-        public MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData
-        {
-            if (!TryGet<T>(startCoord, out var target))
-            {
-                return MoveResult.ErrorNoTargetInStartPos;
-            }
-
-            return Move(target, targetCoord);
-        }
-
-        public bool Remove<T>(T entityData) where T : EntityData
-        {
-            if (TryFind(entityData, out var coord))
-            {
-                Set<T>(coord, null);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
-        #region Coordinates
+        [SerializeField] private Node[] nodes;
 
         public IEnumerable<Coordinate> GetAllCoordinates()
         {
@@ -252,46 +90,160 @@ namespace NonebNi.Core.Maps
                     yield return unitData;
         }
 
-        private int GetIndexFromStorageCoordinate(StorageCoordinate storageCoordinate) =>
-            GetIndexFromStorageCoordinate(storageCoordinate.X, storageCoordinate.Z);
-
-        private int GetIndexFromStorageCoordinate(int x, int z) => x + z * width;
-
-        private StorageCoordinate StorageCoordinateFromIndex(int i)
-        {
-            var z = i / width;
-            var x = i - z;
-
-            return new StorageCoordinate(x, z);
-        }
+        #region Init
 
         /// <summary>
-        ///     The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in the 2d array.
-        ///     While they should be accessed through the axial coordinate(<seealso cref="Coordinate" />), we will convert them
-        ///     internally
-        ///     for both storage and accessing.
+        ///     Create a map and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
         /// </summary>
-        private readonly struct StorageCoordinate
+        /// <returns>An empty <see cref="Map" /> with no board items, where all tiles weight is set to 1</returns>
+        public Map(int width, int height)
         {
-            public readonly int X;
-            public readonly int Z;
+            this.width = width;
+            this.height = height;
+            nodes = new Node[this.width * this.height];
 
-            public StorageCoordinate(int x, int z)
+            for (var x = 0; x < width; x++)
+            for (var z = 0; z < height; z++)
+                nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(x, z, width)] = new Node(TileData.Default);
+        }
+
+        public Map(int width, int height, Node[] nodes)
+        {
+            if (nodes.Length != height * width)
+                throw new ArgumentException(
+                    $"{nameof(nodes)}'s length is invalid, expected to be {width * height} but is {nodes.Length}"
+                );
+
+            this.height = height;
+            this.width = width;
+            this.nodes = nodes;
+        }
+
+        #endregion
+
+        #region Tile specifics
+
+        public bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out TileData? tileData)
+        {
+            tileData = default;
+
+            try
             {
-                X = x;
-                Z = z;
+                var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+                tileData = nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData;
+                return true;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+        }
+
+        public TileData Get(Coordinate axialCoordinate)
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+
+            return nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData;
+        }
+
+        public void Set(Coordinate axialCoordinate, TileData tileData)
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+
+            nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData
+                .CopyValueFrom(tileData);
+        }
+
+        #endregion
+
+        #region Entity
+
+        public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+            return nodes[storageCoordinate.X + storageCoordinate.Z * width].Get<T>();
+        }
+
+        public bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+            t = GetBoardItemWithDefault<T>(storageCoordinate);
+
+            return t != null;
+        }
+
+        public bool Has<T>(Coordinate axialCoordinate) where T : EntityData
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+
+            return GetBoardItemWithDefault<T>(storageCoordinate) != null;
+        }
+
+        public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
+        {
+            for (var i = 0; i < nodes.Length; i++)
+                if (nodes[i].Has(entityData))
+                {
+                    var storageCoordinate = StorageCoordinate.StorageCoordinateFromIndex(i, width);
+                    coordinate = storageCoordinate.ToAxial();
+                    return true;
+                }
+
+            coordinate = default;
+            return false;
+        }
+
+        private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
+        {
+            try
+            {
+                return nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].Get<T>();
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return default;
+            }
+        }
+
+        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+            nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].Set(value);
+        }
+
+        public MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData
+        {
+            if (TryGet<T>(targetCoord, out var targetPosEntity))
+                return entity == targetPosEntity ?
+                    MoveResult.NoEffect : //Move to current pos does nothing 
+                    MoveResult.ErrorTargetOccupied;
+
+            if (!Remove(entity)) return MoveResult.ErrorMoverNotInMap;
+
+            Set(targetCoord, entity);
+            return MoveResult.Success;
+        }
+
+        public MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData
+        {
+            if (!TryGet<T>(startCoord, out var target))
+            {
+                return MoveResult.ErrorNoTargetInStartPos;
             }
 
-            public static StorageCoordinate FromAxial(Coordinate coordinate)
+            return Move(target, targetCoord);
+        }
+
+        public bool Remove<T>(T entityData) where T : EntityData
+        {
+            if (TryFind(entityData, out var coord))
             {
-                var z = coordinate.Z;
-                var x = coordinate.X + z / 2;
-                return new StorageCoordinate(x, z);
+                Set<T>(coord, null);
+
+                return true;
             }
 
-            public Coordinate ToAxial() => ToAxial(X, Z);
-
-            public static Coordinate ToAxial(int x, int z) => new Coordinate(Mathf.CeilToInt(x - z / 2), z);
+            return false;
         }
 
         #endregion

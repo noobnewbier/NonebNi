@@ -9,12 +9,13 @@ namespace NonebNi.Core.Tiles
     [Serializable]
     public struct TileData
     {
-        public static readonly TileData Default = new TileData("Default", 1);
+        public const int ObstacleWeight = 999999;
+        public static readonly TileData Default = new("Default", 1);
 
-        [SerializeField] private float weight;
+        [SerializeField] private int weight;
         [SerializeField] private string name;
 
-        public TileData(string name, float weight)
+        public TileData(string name, int weight)
         {
             this.name = name;
             this.weight = weight;
@@ -22,7 +23,7 @@ namespace NonebNi.Core.Tiles
 
         public string Name => name;
 
-        public float Weight => weight;
+        public int Weight => weight;
 
         public void CopyValueFrom(TileData tileData)
         {
