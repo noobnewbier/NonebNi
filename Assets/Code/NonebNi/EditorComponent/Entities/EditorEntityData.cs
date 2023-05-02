@@ -18,7 +18,8 @@ namespace NonebNi.EditorComponent.Entities
 
         #region Serialization
 
-        [SerializeField] private byte[] serializedGuid = new byte[16]; //16 is the guid's length in bytes
+        private const int GuidLength = 16;
+        [SerializeField] private byte[] serializedGuid = new byte[GuidLength];
 
         public void OnBeforeSerialize()
         {
@@ -27,7 +28,7 @@ namespace NonebNi.EditorComponent.Entities
 
         public void OnAfterDeserialize()
         {
-            if (serializedGuid.Length == 16) Guid = new Guid(serializedGuid);
+            if (serializedGuid.Length == GuidLength) Guid = new Guid(serializedGuid);
         }
 
         #endregion
