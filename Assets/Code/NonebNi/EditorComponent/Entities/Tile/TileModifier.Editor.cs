@@ -6,6 +6,6 @@ namespace NonebNi.EditorComponent.Entities.Tile
     {
         [CustomEditor(typeof(TileModifier))]
         [CanEditMultipleObjects]
-        public class UnitEditor : EntityEditor { }
+        public class TileModifierEditor : EntityEditor { }
     }
 }

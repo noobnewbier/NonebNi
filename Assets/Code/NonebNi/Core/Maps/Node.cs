@@ -32,7 +32,15 @@ namespace NonebNi.Core.Maps
             _entityDatas = entityDatas;
         }
 
-        public TileData TileData => tileData;
+        public TileData TileData
+        {
+            get
+            {
+                var tileModifier = Get<TileModifierData>();
+
+                return tileModifier?.TileData ?? tileData;
+            }
+        }
 
         public T? Get<T>() where T : EntityData => _entityDatas.OfType<T>().FirstOrDefault();
         public bool Has<T>(T entityData) where T : EntityData => _entityDatas.Contains(entityData);
