@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using NonebNi.Core.Entities;
 
-namespace NonebNi.Core.Entities
+namespace NonebNi.Core.Factions
 {
     /// <summary>
-    /// Hard coded factions - no need for anything fancier than this for now - when the time comes this will be a json but this is not the time
+    ///     Hard coded factions - no need for anything fancier than this for now - when the time comes this will be a json but this
+    ///     is not the time
     /// </summary>
     public static class FactionsData
     {

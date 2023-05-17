@@ -44,7 +44,6 @@ namespace NonebNi.EditorComponent.Entities
             this.entityData = entityData;
         }
 
-        public T EntityData => entityData;
         public override EntityData ToEntityData() => entityData;
     }
 }

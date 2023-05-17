@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Common;
 using UnityEditor;
@@ -12,7 +12,7 @@ using UnityUtils.Constants;
 namespace NonebNi.LevelEditor.Level.Data
 {
     /// <summary>
-    /// Created this as we anticipate the need for custom BGMs and stuffs in the future
+    ///     Created this as we anticipate the need for custom BGMs and stuffs in the future
     /// </summary>
     [CreateAssetMenu(fileName = nameof(EditorLevelDataSource), menuName = MenuName.Data + nameof(EditorLevelDataSource))]
     public class EditorLevelDataSource : ScriptableObject
@@ -20,11 +20,12 @@ namespace NonebNi.LevelEditor.Level.Data
         [SerializeField] private LevelDataSource? dataSource;
 
         /// <summary>
-        /// The scene that should be using this settings, so instead of the scene holding a reference to
-        /// <see cref="EditorLevelDataSource" />,
-        /// the <see cref="EditorLevelDataSource" /> holds a reference to the scene itself, and we use it to backtrack and find which
-        /// level
-        /// data we should be using.
+        ///     The scene that should be using this settings, so instead of the scene holding a reference to
+        ///     <see cref="EditorLevelDataSource" />,
+        ///     the <see cref="EditorLevelDataSource" /> holds a reference to the scene itself, and we use it to backtrack and find
+        ///     which
+        ///     level
+        ///     data we should be using.
         /// </summary>
         [SerializeField] private SceneAsset? scene;
 
@@ -34,7 +35,11 @@ namespace NonebNi.LevelEditor.Level.Data
         [SerializeField] private Faction[] factions = FactionsData.AllFactions.ToArray();
 
         public string LevelName => levelName;
-        public string? SceneName => scene != null ? scene.name : null;
+
+        public string? SceneName => scene != null ?
+            scene.name :
+            null;
+
         public bool IsValid => worldConfigScriptable != null && scene != null;
 
         public WorldConfigSource? WorldConfig
@@ -48,7 +53,9 @@ namespace NonebNi.LevelEditor.Level.Data
         }
 
         public EditorLevelData? CreateData() =>
-            IsValid ? new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName, factions) : null;
+            IsValid ?
+                new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName, factions) :
+                null;
 
 
         public void CopyFromData(EditorLevelData editorLevelData)
@@ -86,8 +93,8 @@ namespace NonebNi.LevelEditor.Level.Data
         {
             var toReturn = CreateInstance<EditorLevelDataSource>();
             var sceneAssets = AssetDatabase.FindAssets($"t:{nameof(SceneAsset)}")
-                                           .Select(AssetDatabase.GUIDToAssetPath)
-                                           .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>);
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<SceneAsset>);
             toReturn.scene = sceneAssets.FirstOrDefault(s => s.name == scene.name);
 
             var sceneFolder = scene.path.Remove(scene.path.LastIndexOf(Path.AltDirectorySeparatorChar) + 1);
@@ -100,8 +107,8 @@ namespace NonebNi.LevelEditor.Level.Data
         {
             var activeScene = SceneManager.GetActiveScene();
             var allLevelDatas = AssetDatabase.FindAssets($"t:{nameof(EditorLevelDataSource)}")
-                                             .Select(AssetDatabase.GUIDToAssetPath)
-                                             .Select(AssetDatabase.LoadAssetAtPath<EditorLevelDataSource>);
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Select(AssetDatabase.LoadAssetAtPath<EditorLevelDataSource>);
             var matchingData = allLevelDatas.FirstOrDefault(s => s.SceneName == activeScene.name);
 
             return matchingData;

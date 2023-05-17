@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -21,8 +21,10 @@ namespace NonebNi.EditorComponent.Entities
             {
                 _boundingColliderProp = serializedObject.FindProperty(nameof(boundingCollider));
                 _entityDataSourceProp = serializedObject.FindProperty(nameof(entityDataSource));
-                _factionIdField = new AutoCompleteField(serializedObject.FindProperty(nameof(factionId)),
-                    () => FactionsData.AllFactions.Select(f => f.Id));
+                _factionIdField = new AutoCompleteField(
+                    serializedObject.FindProperty(nameof(factionId)),
+                    () => FactionsData.AllFactions.Select(f => f.Id)
+                );
             }
 
             public override void OnInspectorGUI()
