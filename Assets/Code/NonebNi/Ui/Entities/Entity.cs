@@ -4,6 +4,7 @@ using UnityUtils.SerializableGuid;
 
 namespace NonebNi.Ui.Entities
 {
+    [SelectionBase]
     public class Entity : MonoBehaviour
     {
         public SerializableGuid guid;

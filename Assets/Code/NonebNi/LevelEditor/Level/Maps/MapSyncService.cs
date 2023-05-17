@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using NonebNi.EditorComponent.Entities;
@@ -12,7 +11,7 @@ using UnityEngine.SceneManagement;
 namespace NonebNi.LevelEditor.Level.Maps
 {
     /// <summary>
-    /// Synchronizing the <see cref="EditorMap" /> with the given <see cref="Scene" />
+    ///     Synchronizing the <see cref="EditorMap" /> with the given <see cref="Scene" />
     /// </summary>
     public class MapSyncService
     {
@@ -68,24 +67,22 @@ namespace NonebNi.LevelEditor.Level.Maps
             if (_editorMap.Has<EditorEntityData<UnitData>>(targetCoord)) return false;
 
             //removing it from the existing coord
-            if (_editorMap.TryFind(unit.EntityData!, out var currentCoord))
-                _editorMap.Set<EditorEntityData<UnitData>>(currentCoord, null);
+            _editorMap.Remove(unit.EntityData!);
 
             _editorMap.Set(targetCoord, unit.EntityData);
             return true;
         }
 
-        //todo: there should be an error code-ish thing so the caller can print debug info etc.
-        [Obsolete]
         public bool SyncTileModifier(TileModifier tileModifier)
         {
+            if (!tileModifier.IsCorrectSetUp) return false;
+
             var coordinates = _editorEntityPositioningService.FindOverlappedCoordinates(tileModifier).ToArray();
             if (!coordinates.Any()) return false;
 
-            //todo: this doesn't deal with:
-            // 1. when A, B modifier or coordinate C.
-            // 2. remove A.
-            // 3. C is not updated with B
+            //removing it from the existing coord
+            _editorMap.Remove(tileModifier.EntityData!);
+
             foreach (var coordinate in coordinates) _editorMap.Set(coordinate, tileModifier.EntityData);
 
             return true;

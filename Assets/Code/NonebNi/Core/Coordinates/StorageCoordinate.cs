@@ -19,7 +19,7 @@
         public static StorageCoordinate StorageCoordinateFromIndex(int i, int width)
         {
             var z = i / width;
-            var x = i - z;
+            var x = i - z * width;
 
             return new StorageCoordinate(x, z);
         }

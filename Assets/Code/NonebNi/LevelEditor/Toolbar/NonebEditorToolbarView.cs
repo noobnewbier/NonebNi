@@ -1,5 +1,4 @@
 ﻿using NonebNi.LevelEditor.Common;
-using NonebNi.LevelEditor.Level.Settings;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Factories;
@@ -83,19 +82,18 @@ namespace NonebNi.LevelEditor.Toolbar
                      * But those are a bit hacky and dependent on Unity, plus this is not that big of an issue so.
                      */
                     if (GUI.Button(menuRect, "Settings", Styles.Button))
-                        if (!EditorWindow.HasOpenInstances<LevelEditorSettingsWindow>())
-                        {
-                            var screenRect = sceneView.position;
-                            settingsWindow.ShowAsDropDown(
-                                new Rect(
-                                    screenRect.x + menuRect.x + menuRect.width + Styles.MenuItemPadding,
-                                    screenRect.y + Styles.MenuStartingPosition.y + 24 + Styles.MenuItemPadding,
-                                    0,
-                                    0
-                                ),
-                                new Vector2(450, 140)
-                            );
-                        }
+                    {
+                        var screenRect = sceneView.position;
+                        settingsWindow.ShowAsDropDown(
+                            new Rect(
+                                screenRect.x + menuRect.x + menuRect.width + Styles.MenuItemPadding,
+                                screenRect.y + Styles.MenuStartingPosition.y + 24 + Styles.MenuItemPadding,
+                                0,
+                                0
+                            ),
+                            new Vector2(450, 140)
+                        );
+                    }
                 }
                 else
                 {

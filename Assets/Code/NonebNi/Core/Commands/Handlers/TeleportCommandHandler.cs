@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 
@@ -15,7 +16,7 @@ namespace NonebNi.Core.Commands.Handlers
 
         public IEnumerable<ISequence> Evaluate(TeleportCommand command)
         {
-            if (!_map.TryFind(command.UnitData, out _)) yield break;
+            if (!_map.TryFind(command.UnitData, out Coordinate _)) yield break;
 
             var moveResult = _map.Move(command.UnitData, command.TargetPos);
             if (moveResult == MoveResult.Success)

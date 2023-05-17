@@ -1,4 +1,7 @@
 ﻿using NonebNi.Core.Level;
+using NonebNi.Core.Tiles;
+using NonebNi.Core.Units;
+using NonebNi.EditorComponent.Entities;
 using NonebNi.LevelEditor.Level.Data;
 using UnityEditor;
 using UnityEngine;
@@ -10,9 +13,9 @@ namespace NonebNi.LevelEditor.Level.Inspector
     public class TileInspectorView
     {
         private const float MinRectWidth = 100;
-        private static readonly Vector2 TitleSize = new Vector2(MinRectWidth, 20);
-        private static readonly Vector2 ContentSize = new Vector2(MinRectWidth, 100);
-        public static readonly Vector2 WindowSize = new Vector2(MinRectWidth, TitleSize.y + ContentSize.y);
+        private static readonly Vector2 TitleSize = new(MinRectWidth, 20);
+        private static readonly Vector2 ContentSize = new(MinRectWidth, 100);
+        public static readonly Vector2 WindowSize = new(MinRectWidth, TitleSize.y + ContentSize.y);
 
         private static readonly int WindowID = nameof(TileInspectorView).GetHashCode();
 
@@ -82,6 +85,12 @@ namespace NonebNi.LevelEditor.Level.Inspector
 
                 if (_map.TryGet(coord, out var tile)) GUILayout.Label($"Weight: {tile.Weight}");
                 else GUILayout.Label("TILE IS NOT VALID", NonebGUIStyle.Error);
+
+                if (_map.TryGet<EditorEntityData<TileModifierData>>(coord, out var tileModifier))
+                    GUILayout.Label($"TileModifier:\n{tileModifier.ToEntityData().Name}");
+
+                if (_map.TryGet<EditorEntityData<UnitData>>(coord, out var unit))
+                    GUILayout.Label($"Unit: {unit.ToEntityData().Name}");
             }
 
 

@@ -1,16 +1,16 @@
 ﻿using System.Linq;
 using NonebNi.Core.Agents;
-using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using StrongInject;
 
 namespace NonebNi.Main.Di
 {
     public class AgentsModule
     {
-        [Instance] public static IAgent[] _agents = new IAgent[]
+        [Instance] public static IAgent[] _agents =
         {
             new PlayerAgent(FactionsData.Player.Id),
-            new DummyAgent(FactionsData.EnemyNpc.Id),
+            new DummyAgent(FactionsData.EnemyNpc.Id)
         };
 
         [Factory]
