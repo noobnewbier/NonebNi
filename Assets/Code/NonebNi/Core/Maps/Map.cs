@@ -18,6 +18,7 @@ namespace NonebNi.Core.Maps
         bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData;
         bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData;
+        bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
         IEnumerable<UnitData> GetAllUnits();
@@ -179,6 +180,20 @@ namespace NonebNi.Core.Maps
             return GetBoardItemWithDefault<T>(storageCoordinate) != null;
         }
 
+        public bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EntityData
+        {
+            var toReturn = new List<Coordinate>();
+            for (var i = 0; i < nodes.Length; i++)
+                if (nodes[i].Has(entityData))
+                {
+                    var storageCoordinate = StorageCoordinate.StorageCoordinateFromIndex(i, width);
+                    toReturn.Add(storageCoordinate.ToAxial());
+                }
+
+            coordinates = toReturn;
+            return coordinates.Any();
+        }
+
         public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
         {
             for (var i = 0; i < nodes.Length; i++)
@@ -236,7 +251,7 @@ namespace NonebNi.Core.Maps
 
         public bool Remove<T>(T entityData) where T : EntityData
         {
-            if (TryFind(entityData, out var coord))
+            if (TryFind(entityData, out Coordinate coord))
             {
                 Set<T>(coord, null);
 

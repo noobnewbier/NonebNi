@@ -26,7 +26,7 @@ namespace NonebNi.Core.Pathfinding
 
         public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal)
         {
-            var isOnMap = _map.TryFind(unit, out var unitPos);
+            var isOnMap = _map.TryFind(unit, out Coordinate unitPos);
             if (!isOnMap)
             {
                 Debug.LogWarning("Trying to find a path from a unit that doesn't exist on the map - something went wrong?");

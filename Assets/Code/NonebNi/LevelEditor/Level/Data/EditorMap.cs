@@ -15,9 +15,10 @@ namespace NonebNi.LevelEditor.Level.Data
         bool TryGet(Coordinate axialCoordinate, out TileData tileData);
         TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EditorEntityData;
-        bool TryGet<T>(Coordinate axialCoordinate, out T? t) where T : EditorEntityData;
+        bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EditorEntityData;
         bool Has<T>(Coordinate axialCoordinate) where T : EditorEntityData;
         bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EditorEntityData;
+        bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EditorEntityData;
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
         void Set(Coordinate axialCoordinate, TileData tileData);
@@ -141,6 +142,20 @@ namespace NonebNi.LevelEditor.Level.Data
 
             coordinate = default;
             return false;
+        }
+
+        public bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EditorEntityData
+        {
+            var toReturn = new List<Coordinate>();
+            for (var i = 0; i < nodes.Length; i++)
+                if (nodes[i].Has(entityData))
+                {
+                    var storageCoordinate = StorageCoordinateFromIndex(i);
+                    toReturn.Add(storageCoordinate.ToAxial());
+                }
+
+            coordinates = toReturn;
+            return coordinates.Any();
         }
 
         private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EditorEntityData
