@@ -189,14 +189,11 @@ namespace NonebNi.LevelEditor.Level.Data
             GetIndexFromStorageCoordinate(storageCoordinate.X, storageCoordinate.Z);
 
         private int GetIndexFromStorageCoordinate(int x, int z) =>
-            x + z * width;
+            StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(x, z, width);
 
         private StorageCoordinate StorageCoordinateFromIndex(int i)
         {
-            var z = i / width;
-            var x = i - z;
-
-            return new StorageCoordinate(x, z);
+            return StorageCoordinate.StorageCoordinateFromIndex(i, width);
         }
 
         #endregion
