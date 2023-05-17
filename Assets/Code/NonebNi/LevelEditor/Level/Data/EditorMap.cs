@@ -13,6 +13,7 @@ namespace NonebNi.LevelEditor.Level.Data
     public interface IEditorMap
     {
         bool TryGet(Coordinate axialCoordinate, out TileData tileData);
+        bool Remove(EditorEntityData entityData);
         TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EditorEntityData;
         bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EditorEntityData;
@@ -27,12 +28,14 @@ namespace NonebNi.LevelEditor.Level.Data
     }
 
     /// <summary>
-    /// Editor version of <see cref="Map" />
-    /// It consist of basically copy-pasted code from Map, except we are using EditorNodes here. The main reason for this WET thing
-    /// is that I really want to avoid changing
-    /// implementation of the gameplay code because of the editor(with the fundamental idea that the editor-version should augments
-    /// the game-version data)
-    /// I'm not sure how best to handle this yet, we will see how this goes
+    ///     Editor version of <see cref="Map" />
+    ///     It consist of basically copy-pasted code from Map, except we are using EditorNodes here. The main reason for this WET
+    ///     thing
+    ///     is that I really want to avoid changing
+    ///     implementation of the gameplay code because of the editor(with the fundamental idea that the editor-version should
+    ///     augments
+    ///     the game-version data)
+    ///     I'm not sure how best to handle this yet, we will see how this goes
     /// </summary>
     [Serializable]
     public class EditorMap : IEditorMap
@@ -44,7 +47,7 @@ namespace NonebNi.LevelEditor.Level.Data
         #region Init
 
         /// <summary>
-        /// Create a editorMap and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
+        ///     Create a editorMap and fill with tiles of weight 1 with the given <see cref="MapConfigScriptable" />
         /// </summary>
         /// <returns>An empty <see cref="EditorMap" /> with no board items, where all tiles weight is set to 1</returns>
         public EditorMap(int width, int height)
@@ -176,6 +179,15 @@ namespace NonebNi.LevelEditor.Level.Data
             nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
         }
 
+        public bool Remove(EditorEntityData entityData)
+        {
+            if (!TryFind(entityData, out IEnumerable<Coordinate> currentCoords)) return false;
+
+            foreach (var c in currentCoords) Set<EditorEntityData<TileModifierData>>(c, null);
+
+            return true;
+        }
+
         #endregion
 
         #region Coordinates
@@ -206,10 +218,8 @@ namespace NonebNi.LevelEditor.Level.Data
         private int GetIndexFromStorageCoordinate(int x, int z) =>
             StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(x, z, width);
 
-        private StorageCoordinate StorageCoordinateFromIndex(int i)
-        {
-            return StorageCoordinate.StorageCoordinateFromIndex(i, width);
-        }
+        private StorageCoordinate StorageCoordinateFromIndex(int i) =>
+            StorageCoordinate.StorageCoordinateFromIndex(i, width);
 
         #endregion
     }
