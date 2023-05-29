@@ -11,13 +11,13 @@ namespace NonebNi.LevelEditor.Level
 {
     public class LevelEditor : IDisposable
     {
+        private readonly EditorEntitySyncService _editorEntitySyncService;
         private readonly LevelEditorModel _editorModel;
         private readonly EntitiesPlacer _entitiesPlacer;
         private readonly ErrorOverviewView _errorOverviewView;
         private readonly GridView _gridView;
         private readonly LevelDataSyncer _levelDataSyncer;
         private readonly LevelSavingService _levelSavingService;
-        private readonly MapSyncService _mapSyncService;
         private readonly TileInspectorView _tileInspectorView;
 
         public LevelEditor(GridView gridView,
@@ -26,7 +26,7 @@ namespace NonebNi.LevelEditor.Level
             EntitiesPlacer entitiesPlacer,
             LevelDataSyncer levelDataSyncer,
             LevelEditorModel editorModel,
-            MapSyncService mapSyncService,
+            EditorEntitySyncService editorEntitySyncService,
             LevelSavingService levelSavingService)
         {
             _gridView = gridView;
@@ -35,7 +35,7 @@ namespace NonebNi.LevelEditor.Level
             _entitiesPlacer = entitiesPlacer;
             _levelDataSyncer = levelDataSyncer;
             _editorModel = editorModel;
-            _mapSyncService = mapSyncService;
+            _editorEntitySyncService = editorEntitySyncService;
             _levelSavingService = levelSavingService;
 
             SceneView.duringSceneGui += OnSceneGUI;
@@ -65,7 +65,7 @@ namespace NonebNi.LevelEditor.Level
         public LevelEditorSettingsWindow CreateSettingsWindow() =>
             LevelEditorSettingsWindow.Init(
                 _editorModel,
-                _mapSyncService,
+                _editorEntitySyncService,
                 _levelSavingService
             );
     }

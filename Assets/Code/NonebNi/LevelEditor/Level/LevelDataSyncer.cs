@@ -16,15 +16,17 @@ namespace NonebNi.LevelEditor.Level
     /// </summary>
     public class LevelDataSyncer : IDisposable
     {
+        private readonly EditorEntitySyncService _editorEntitySyncService;
         private readonly LevelSavingService _levelSavingService;
         private readonly Scene _levelScene;
-        private readonly MapSyncService _mapSyncService;
 
-        public LevelDataSyncer(LevelSavingService levelSavingService, Scene levelScene, MapSyncService mapSyncService)
+        public LevelDataSyncer(LevelSavingService levelSavingService,
+            Scene levelScene,
+            EditorEntitySyncService editorEntitySyncService)
         {
             _levelSavingService = levelSavingService;
             _levelScene = levelScene;
-            _mapSyncService = mapSyncService;
+            _editorEntitySyncService = editorEntitySyncService;
 
             PlayModeStateListener.OnExitEditMode += Sync;
             SaveAssetEventListener.OnPreSaveAssetsEvent += SyncIfLevelSceneIsSaved;
@@ -38,7 +40,7 @@ namespace NonebNi.LevelEditor.Level
 
         private void Sync()
         {
-            _mapSyncService.Sync();
+            _editorEntitySyncService.Sync();
             _levelSavingService.Save();
         }
 

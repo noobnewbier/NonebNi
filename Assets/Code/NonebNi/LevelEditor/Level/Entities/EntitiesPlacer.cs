@@ -17,13 +17,13 @@ namespace NonebNi.LevelEditor.Level.Entities
     /// </summary>
     public class EntitiesPlacer
     {
+        private readonly EditorEntitySyncService _editorEntitySyncService;
         private readonly ErrorChecker _errorChecker;
-        private readonly MapSyncService _mapSyncService;
 
-        public EntitiesPlacer(MapSyncService entityService,
+        public EntitiesPlacer(EditorEntitySyncService entityService,
             ErrorChecker errorChecker)
         {
-            _mapSyncService = entityService;
+            _editorEntitySyncService = entityService;
             _errorChecker = errorChecker;
         }
 
@@ -56,12 +56,12 @@ namespace NonebNi.LevelEditor.Level.Entities
 
         private void UpdateTiles(TileModifier tileModifier)
         {
-            _mapSyncService.SyncTileModifier(tileModifier);
+            _editorEntitySyncService.SyncTileModifier(tileModifier);
         }
 
         private void UpdateUnit(Unit unit)
         {
-            _mapSyncService.SyncUnit(unit);
+            _editorEntitySyncService.SyncUnit(unit);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace NonebNi.LevelEditor.Di
     [RegisterModule(typeof(ErrorOverviewModule))]
     [Register(typeof(CoordinateAndPositionService), typeof(ICoordinateAndPositionService))]
     [Register(typeof(LevelEditorModel))]
-    [Register(typeof(MapSyncService))]
+    [Register(typeof(EditorEntitySyncService))]
     [Register(typeof(EntitiesPlacer))]
     [Register(typeof(EditorEntityPositioningService))]
     [Register(typeof(ErrorChecker))]

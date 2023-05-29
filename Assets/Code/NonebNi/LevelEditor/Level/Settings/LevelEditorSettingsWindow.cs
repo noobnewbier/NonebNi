@@ -8,8 +8,8 @@ namespace NonebNi.LevelEditor.Level.Settings
     public class LevelEditorSettingsWindow : EditorWindow
     {
         private LevelEditorModel _dataModel = null!;
+        private EditorEntitySyncService _editorEntitySyncService = null!;
         private LevelSavingService _levelSavingService = null!;
-        private MapSyncService _mapSyncService = null!;
 
         private void OnGUI()
         {
@@ -39,7 +39,7 @@ namespace NonebNi.LevelEditor.Level.Settings
                 false
             ) as WorldConfigSource;
 
-            if (GUILayout.Button("Refresh")) _mapSyncService.Sync();
+            if (GUILayout.Button("Refresh")) _editorEntitySyncService.Sync();
             if (GUILayout.Button("Save")) _levelSavingService.Save();
 
 
@@ -48,12 +48,12 @@ namespace NonebNi.LevelEditor.Level.Settings
         }
 
         public static LevelEditorSettingsWindow Init(LevelEditorModel editorModel,
-            MapSyncService mapSyncService,
+            EditorEntitySyncService editorEntitySyncService,
             LevelSavingService levelSavingService)
         {
             var toReturn = CreateInstance<LevelEditorSettingsWindow>();
             toReturn._dataModel = editorModel;
-            toReturn._mapSyncService = mapSyncService;
+            toReturn._editorEntitySyncService = editorEntitySyncService;
             toReturn._levelSavingService = levelSavingService;
 
             return toReturn;
