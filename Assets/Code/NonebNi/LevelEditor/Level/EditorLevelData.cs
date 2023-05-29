@@ -1,7 +1,8 @@
 ﻿using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
+using NonebNi.LevelEditor.Level.Maps;
 
-namespace NonebNi.LevelEditor.Level.Data
+namespace NonebNi.LevelEditor.Level
 {
     public class EditorLevelData
     {

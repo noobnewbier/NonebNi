@@ -2,7 +2,6 @@
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Level;
-using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Entities;
 using NonebNi.LevelEditor.Level.Error;
 using NonebNi.LevelEditor.Level.Maps;

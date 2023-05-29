@@ -4,7 +4,6 @@ using NonebNi.Core.Units;
 using NonebNi.EditorComponent.Entities;
 using NonebNi.EditorComponent.Entities.Tile;
 using NonebNi.EditorComponent.Entities.Unit;
-using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Entities;
 using UnityEngine.SceneManagement;
 

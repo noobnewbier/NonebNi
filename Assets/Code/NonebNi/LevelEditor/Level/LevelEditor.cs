@@ -1,9 +1,9 @@
 ﻿using System;
 using NonebNi.LevelEditor.Level.Entities;
 using NonebNi.LevelEditor.Level.Error;
-using NonebNi.LevelEditor.Level.Inspector;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.LevelEditor.Level.Settings;
+using NonebNi.LevelEditor.Level.Tiles;
 using UnityEditor;
 using UnityEngine;
 

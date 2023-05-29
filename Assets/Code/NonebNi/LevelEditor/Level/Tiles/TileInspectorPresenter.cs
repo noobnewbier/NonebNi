@@ -1,7 +1,7 @@
 ﻿using NonebNi.Core.Coordinates;
 using UnityEngine;
 
-namespace NonebNi.LevelEditor.Level.Inspector
+namespace NonebNi.LevelEditor.Level.Tiles
 {
     public class TileInspectorPresenter
     {

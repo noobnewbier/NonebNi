@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NonebNi.LevelEditor.Common.Events;
-using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.LevelEditor.Level.Settings;
 using UnityEngine.SceneManagement;

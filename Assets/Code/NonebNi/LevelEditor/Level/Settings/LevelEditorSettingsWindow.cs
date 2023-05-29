@@ -1,5 +1,4 @@
-﻿using NonebNi.LevelEditor.Level.Data;
-using NonebNi.LevelEditor.Level.Maps;
+﻿using NonebNi.LevelEditor.Level.Maps;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;

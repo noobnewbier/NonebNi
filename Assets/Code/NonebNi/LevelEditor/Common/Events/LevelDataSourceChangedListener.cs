@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.Annotations;
-using NonebNi.LevelEditor.Level.Data;
+using NonebNi.LevelEditor.Level;
 using UnityEditor;
 using UnityEditor.Experimental;
 using Object = UnityEngine.Object;
@@ -18,16 +18,16 @@ namespace NonebNi.LevelEditor.Common.Events
         private class LevelDataSourceModifiedListener : AssetsModifiedProcessor
         {
             protected override void OnAssetsModified(string[] changedAssets,
-                                                     string[] addedAssets,
-                                                     string[] deletedAssets,
-                                                     AssetMoveInfo[] movedAssets)
+                string[] addedAssets,
+                string[] deletedAssets,
+                AssetMoveInfo[] movedAssets)
             {
                 var existingAssets = changedAssets.Concat(addedAssets)
-                                                  .Where(p => p.EndsWith(".asset"))
-                                                  .Select(AssetDatabase.LoadAssetAtPath<Object>);
+                    .Where(p => p.EndsWith(".asset"))
+                    .Select(AssetDatabase.LoadAssetAtPath<Object>);
                 var levelDataSources = existingAssets.OfType<EditorLevelDataSource>();
                 var deletedDataSource = deletedAssets.Select(AssetDatabase.LoadAssetAtPath<Object>)
-                                                     .OfType<EditorLevelDataSource>();
+                    .OfType<EditorLevelDataSource>();
 
                 if (levelDataSources.Any() || deletedDataSource.Any()) OnLevelDataSourceChanged?.Invoke();
             }

@@ -2,13 +2,13 @@
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using NonebNi.EditorComponent.Entities;
-using NonebNi.LevelEditor.Level.Data;
+using NonebNi.LevelEditor.Level.Maps;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 using UnityUtils.Factories;
 
-namespace NonebNi.LevelEditor.Level.Inspector
+namespace NonebNi.LevelEditor.Level.Tiles
 {
     public class TileInspectorView
     {

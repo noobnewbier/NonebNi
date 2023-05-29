@@ -1,4 +1,4 @@
-﻿using NonebNi.LevelEditor.Level.Data;
+﻿using NonebNi.LevelEditor.Level.Maps;
 
 namespace NonebNi.LevelEditor.Level
 {

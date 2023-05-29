@@ -1,6 +1,6 @@
 ﻿using System;
 using NonebNi.LevelEditor.Level.Error;
-using NonebNi.LevelEditor.Level.Inspector;
+using NonebNi.LevelEditor.Level.Tiles;
 using UnityEditor;
 
 namespace NonebNi.LevelEditor

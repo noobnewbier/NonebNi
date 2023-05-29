@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using NonebNi.LevelEditor.Level.Data;
+using NonebNi.LevelEditor.Level;
 using NonebNi.LevelEditor.Level.Settings;
 using UnityEngine.SceneManagement;
 

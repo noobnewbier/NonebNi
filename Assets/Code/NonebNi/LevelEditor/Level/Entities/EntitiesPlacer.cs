@@ -2,7 +2,6 @@
 using NonebNi.EditorComponent.Entities;
 using NonebNi.EditorComponent.Entities.Tile;
 using NonebNi.EditorComponent.Entities.Unit;
-using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Error;
 using NonebNi.LevelEditor.Level.Maps;
 using UnityEditor;

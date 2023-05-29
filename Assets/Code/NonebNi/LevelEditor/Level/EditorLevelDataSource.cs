@@ -4,12 +4,13 @@ using NonebNi.Core.Entities;
 using NonebNi.Core.Factions;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Common;
+using NonebNi.LevelEditor.Level.Maps;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityUtils.Constants;
 
-namespace NonebNi.LevelEditor.Level.Data
+namespace NonebNi.LevelEditor.Level
 {
     /// <summary>
     ///     Created this as we anticipate the need for custom BGMs and stuffs in the future
