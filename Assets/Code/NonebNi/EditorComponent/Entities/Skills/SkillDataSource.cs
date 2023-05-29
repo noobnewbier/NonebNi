@@ -2,8 +2,11 @@
 using UnityEngine;
 using UnityUtils.Constants;
 
-namespace NonebNi.LevelEditor.Level.Data
+namespace NonebNi.EditorComponent.Entities.Skills
 {
+    /// <summary>
+    /// Temporary implementation to fill in the gaps - to be removed
+    /// </summary>
     [CreateAssetMenu(fileName = nameof(SkillDataSource), menuName = MenuName.Data + nameof(SkillData))]
     public class SkillDataSource : ScriptableObject
     {
