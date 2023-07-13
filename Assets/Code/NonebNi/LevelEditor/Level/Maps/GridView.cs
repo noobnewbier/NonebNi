@@ -1,6 +1,5 @@
 ﻿using System.Linq;
-using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
+using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine.Rendering;
 using UnityUtils.Factories;
@@ -14,14 +13,11 @@ namespace NonebNi.LevelEditor.Level.Maps
         //We need to reuse the same GUIContent for all labels, otherwise it is generating way too much GC per frame
 
         private readonly GridPresenter _presenter;
-        private readonly WorldConfigData _worldConfig;
 
         public GridView(IFactory<GridView, GridPresenter> presenterFactory,
-            ICoordinateAndPositionService coordinateAndPositionService,
-            WorldConfigData worldConfig)
+            ICoordinateAndPositionService coordinateAndPositionService)
         {
             _coordinateAndPositionService = coordinateAndPositionService;
-            _worldConfig = worldConfig;
             _presenter = presenterFactory.Create(this);
         }
 
@@ -42,9 +38,7 @@ namespace NonebNi.LevelEditor.Level.Maps
             foreach (var coordinate in coordinates)
                 if (_presenter.Map.TryGet(coordinate, out _))
                 {
-                    var center = _coordinateAndPositionService.FindPosition(coordinate);
-
-                    var corners = _worldConfig.TileCornersOffset.Select(c => center + c).ToList();
+                    var corners = _coordinateAndPositionService.FindCorners(coordinate).ToList();
                     Handles.DrawLine(corners[0], corners[5]);
                     for (var i = 0; i < corners.Count - 1; i++) Handles.DrawLine(corners[i], corners[i + 1]);
                 }
