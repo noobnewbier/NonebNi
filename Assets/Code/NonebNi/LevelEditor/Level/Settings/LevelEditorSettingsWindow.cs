@@ -1,4 +1,5 @@
 ﻿using NonebNi.LevelEditor.Level.Maps;
+using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -35,9 +36,9 @@ namespace NonebNi.LevelEditor.Level.Settings
             levelDataSource.WorldConfig = EditorGUILayout.ObjectField(
                 nameof(levelDataSource.WorldConfig),
                 levelDataSource.WorldConfig,
-                typeof(WorldConfigSource),
+                typeof(TerrainConfigSource),
                 false
-            ) as WorldConfigSource;
+            ) as TerrainConfigSource;
 
             if (GUILayout.Button("Refresh")) _editorEntitySyncService.Sync();
             if (GUILayout.Button("Save")) _levelSavingService.Save();

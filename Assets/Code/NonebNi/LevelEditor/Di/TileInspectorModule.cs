@@ -1,7 +1,6 @@
-﻿using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
-using NonebNi.LevelEditor.Level.Maps;
+﻿using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.LevelEditor.Level.Tiles;
+using NonebNi.Terrain;
 using StrongInject;
 using UnityUtils.Factories;
 
@@ -13,13 +12,13 @@ namespace NonebNi.LevelEditor.Di
         public static TileInspectorView ProvideTileInspectorView(IEditorMap map,
             NonebEditorModel nonebEditorModel,
             ICoordinateAndPositionService coordinateAndPositionService,
-            WorldConfigData worldConfig)
+            TerrainConfigData terrainConfig)
         {
             var presenterFactory = Factory.Create<TileInspectorView, TileInspectorPresenter>(
                 view => new TileInspectorPresenter(view, coordinateAndPositionService, nonebEditorModel)
             );
 
-            return new TileInspectorView(presenterFactory, worldConfig, map);
+            return new TileInspectorView(presenterFactory, terrainConfig, map);
         }
     }
 }

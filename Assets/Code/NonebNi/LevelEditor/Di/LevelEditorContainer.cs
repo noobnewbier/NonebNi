@@ -1,11 +1,10 @@
 ﻿using System;
-using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Level;
 using NonebNi.LevelEditor.Level.Entities;
 using NonebNi.LevelEditor.Level.Error;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.LevelEditor.Level.Settings;
+using NonebNi.Terrain;
 using StrongInject;
 using UnityEngine.SceneManagement;
 
@@ -46,6 +45,6 @@ namespace NonebNi.LevelEditor.Di
         [Instance(Options.AsImplementedInterfacesAndBaseClasses)]
         private EditorMap EditorMap => _editorLevelData.Map;
 
-        [Instance] private WorldConfigData WorldConfig => _editorLevelData.WorldConfig;
+        [Instance] private TerrainConfigData TerrainConfig => _editorLevelData.TerrainConfig;
     }
 }

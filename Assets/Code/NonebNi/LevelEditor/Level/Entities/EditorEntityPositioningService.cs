@@ -3,6 +3,7 @@ using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.EditorComponent.Entities;
 using NonebNi.LevelEditor.Level.Maps;
+using NonebNi.Terrain;
 using UnityEngine;
 
 namespace NonebNi.LevelEditor.Level.Entities

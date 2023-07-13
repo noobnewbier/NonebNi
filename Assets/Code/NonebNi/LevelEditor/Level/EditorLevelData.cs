@@ -1,24 +1,25 @@
 ﻿using NonebNi.Core.Entities;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Level.Maps;
+using NonebNi.Terrain;
 
 namespace NonebNi.LevelEditor.Level
 {
     public class EditorLevelData
     {
-        public EditorLevelData(WorldConfigData worldConfig, EditorMap map, string levelName, Faction[] factions)
+        public EditorLevelData(TerrainConfigData terrainConfig, EditorMap map, string levelName, Faction[] factions)
         {
-            WorldConfig = worldConfig;
+            TerrainConfig = terrainConfig;
             Map = map;
             LevelName = levelName;
             Factions = factions;
         }
 
-        public WorldConfigData WorldConfig { get; }
+        public TerrainConfigData TerrainConfig { get; }
         public EditorMap Map { get; }
         public string LevelName { get; }
         public Faction[] Factions { get; }
 
-        public LevelData ToLevelData() => new(WorldConfig, Map.ToMap(), LevelName, Factions);
+        public LevelData ToLevelData() => new(Map.ToMap(), LevelName, Factions);
     }
 }

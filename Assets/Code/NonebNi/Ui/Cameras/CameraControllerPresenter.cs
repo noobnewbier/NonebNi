@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
+using NonebNi.Terrain;
 using UnityEngine;
 
 namespace NonebNi.Ui.Cameras
@@ -27,7 +26,7 @@ namespace NonebNi.Ui.Cameras
 
         public CameraControllerPresenter(CameraConfig config,
             IReadOnlyMap map,
-            WorldConfigData worldConfigData,
+            TerrainConfigData terrainConfigData,
             ICoordinateAndPositionService coordinateAndPositionService,
             ICameraControllerView view)
         {
@@ -54,7 +53,7 @@ namespace NonebNi.Ui.Cameras
 
             _cameraViewSize = new Vector2(minWidth, distanceToTop + distanceToBottom);
             _mapSize = new Vector2(mapMaxWidth - mapMinWidth, mapMaxHeight - mapMinHeight);
-            _minCameraY = _config.MinDistanceToMap + worldConfigData.MapStartingPosition.y;
+            _minCameraY = _config.MinDistanceToMap + terrainConfigData.MapStartingPosition.y;
 
             #endregion
         }

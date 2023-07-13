@@ -5,6 +5,7 @@ using NonebNi.Core.Factions;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Common;
 using NonebNi.LevelEditor.Level.Maps;
+using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,15 +24,16 @@ namespace NonebNi.LevelEditor.Level
         /// <summary>
         ///     The scene that should be using this settings, so instead of the scene holding a reference to
         ///     <see cref="EditorLevelDataSource" />,
-        ///     the <see cref="EditorLevelDataSource" /> holds a reference to the scene itself, and we use it to backtrack and find
-        ///     which
-        ///     level
-        ///     data we should be using.
+        ///     the <see cref="EditorLevelDataSource" /> holds a reference to the scene itself,
+        ///     and we use it to backtrack and find which level data we should be using.
         /// </summary>
         [SerializeField] private SceneAsset? scene;
 
         [SerializeField] private EditorMap editorMap = new(10, 10);
-        [SerializeField] private WorldConfigSource? worldConfigScriptable;
+
+        [SerializeField] private TerrainConfigSource? worldConfigScriptable;
+
+        //TODO: somehow fit in meshes info here.
         [SerializeField] private string levelName = string.Empty;
         [SerializeField] private Faction[] factions = FactionsData.AllFactions.ToArray();
 
@@ -43,7 +45,7 @@ namespace NonebNi.LevelEditor.Level
 
         public bool IsValid => worldConfigScriptable != null && scene != null;
 
-        public WorldConfigSource? WorldConfig
+        public TerrainConfigSource? WorldConfig
         {
             get => worldConfigScriptable;
             set
@@ -64,11 +66,11 @@ namespace NonebNi.LevelEditor.Level
             editorMap = editorLevelData.Map;
             if (worldConfigScriptable != null)
             {
-                worldConfigScriptable.CopyFromData(editorLevelData.WorldConfig);
+                worldConfigScriptable.CopyFromData(editorLevelData.TerrainConfig);
             }
             else
             {
-                worldConfigScriptable = WorldConfigSource.Create(editorLevelData.WorldConfig);
+                worldConfigScriptable = TerrainConfigSource.Create(editorLevelData.TerrainConfig);
                 AssetDatabase.CreateAsset(worldConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
             }
 
