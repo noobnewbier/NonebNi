@@ -1,6 +1,7 @@
 ﻿using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
+using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using NonebNi.Ui.Statistics.Unit;
 using StrongInject;
@@ -13,6 +14,7 @@ namespace NonebNi.Main.Di
     [RegisterModule(typeof(CoordinateAndPositionServiceModule))]
     [RegisterModule(typeof(LevelFlowControlModule))]
     [Register(typeof(LevelUi), typeof(ILevelUi))]
+    [Register(typeof(TerrainMeshCreator), typeof(ITerrainMeshCreator))]
     public partial class LevelContainer : IContainer<ILevelUi>, IContainer<ILevelFlowController>
     {
         [Instance] private readonly CameraControl _cameraControl;
@@ -21,6 +23,8 @@ namespace NonebNi.Main.Di
         [Instance] private readonly Hud _hud;
         [Instance] private readonly LevelData _levelData;
         [Instance] private readonly Camera _targetCamera;
+        [Instance] private readonly TerrainConfigData _terrainConfig;
+        [Instance] private readonly TerrainMeshData _terrainMeshData;
         [Instance] private readonly UnitDetailStat _unitDetailStat;
 
         public LevelContainer(CameraConfig config,
@@ -29,7 +33,9 @@ namespace NonebNi.Main.Di
             Hud hud,
             CameraControl cameraControl,
             Grid grid,
-            UnitDetailStat unitDetailStat)
+            UnitDetailStat unitDetailStat,
+            TerrainConfigData terrainConfig,
+            TerrainMeshData terrainMeshData)
         {
             _config = config;
             _targetCamera = targetCamera;
@@ -38,10 +44,11 @@ namespace NonebNi.Main.Di
             _cameraControl = cameraControl;
             _grid = grid;
             _unitDetailStat = unitDetailStat;
+            _terrainConfig = terrainConfig;
+            _terrainMeshData = terrainMeshData;
         }
 
         [Instance] private IMap Map => _levelData.Map;
         [Instance] private IReadOnlyMap ReadOnlyMap => _levelData.Map;
-        [Instance] private WorldConfigData WorldConfig => _levelData.WorldConfig;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using NonebNi.Core.Agents;
-using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
+using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using NonebNi.Ui.Statistics.Unit;
 
@@ -26,9 +25,7 @@ namespace NonebNi.Main
             ICameraControllerView cameraControllerView,
             LevelData levelData,
             IPlayerAgent playerAgent,
-            ICoordinateAndPositionService coordinateAndPositionService,
-            IReadOnlyMap map,
-            WorldConfigData worldConfig)
+            ITerrainMeshCreator meshCreator)
         {
             _cameraControl = cameraControl;
             _hud = hud;
@@ -37,7 +34,7 @@ namespace NonebNi.Main
 
             _cameraControl.Init(cameraControllerView);
             _hud.Init(levelData, playerAgent);
-            _grid.Init(coordinateAndPositionService, map, worldConfig);
+            _grid.Init(meshCreator);
             _stat.Init();
         }
 
