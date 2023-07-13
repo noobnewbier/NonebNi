@@ -29,12 +29,12 @@ namespace NonebNi.Core.Coordinates
 
         public Coordinate[] Neighbours => new[]
         {
-            this + HexDirection.MinusX,
-            this + HexDirection.PlusX,
-            this + HexDirection.MinusXMinusZ,
-            this + HexDirection.MinusZ,
-            this + HexDirection.PlusZ,
-            this + HexDirection.PlusXPlusZ
+            this + HexDirection.West,
+            this + HexDirection.NorthWest,
+            this + HexDirection.NorthEast,
+            this + HexDirection.East,
+            this + HexDirection.SouthEast,
+            this + HexDirection.SouthWest
         };
 
         public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
