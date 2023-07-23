@@ -16,7 +16,8 @@ namespace NonebNi.Core.Units
         [Range(0, 100)] [SerializeField] private int initiative;
 
 
-        public UnitData(Guid guid,
+        public UnitData(
+            Guid guid,
             string name,
             string factionId,
             int maxHealth,

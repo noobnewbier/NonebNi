@@ -20,7 +20,8 @@ namespace NonebNi.LevelEditor.Level
         private readonly LevelSavingService _levelSavingService;
         private readonly TileInspectorView _tileInspectorView;
 
-        public LevelEditor(GridView gridView,
+        public LevelEditor(
+            GridView gridView,
             TileInspectorView tileInspectorView,
             ErrorOverviewView errorOverviewView,
             EntitiesPlacer entitiesPlacer,

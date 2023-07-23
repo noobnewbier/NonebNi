@@ -1,6 +1,4 @@
 ﻿namespace NonebNi.Core.Commands
 {
-    public interface ICommand
-    {
-    }
+    public interface ICommand { }
 }

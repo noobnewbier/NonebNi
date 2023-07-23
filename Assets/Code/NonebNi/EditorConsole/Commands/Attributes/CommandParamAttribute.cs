@@ -3,7 +3,7 @@
 namespace NonebNi.EditorConsole.Commands.Attributes
 {
     /// <summary>
-    /// Description of any command parameter, expected to be used in parameter for commands' constructors
+    ///     Description of any command parameter, expected to be used in parameter for commands' constructors
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter)]
     public class CommandParamAttribute : Attribute

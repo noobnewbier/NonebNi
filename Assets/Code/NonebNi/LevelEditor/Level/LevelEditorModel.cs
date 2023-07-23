@@ -4,7 +4,8 @@ namespace NonebNi.LevelEditor.Level
 {
     public class LevelEditorModel
     {
-        public LevelEditorModel(EditorLevelData editorLevelData,
+        public LevelEditorModel(
+            EditorLevelData editorLevelData,
             IEditorMap editorMap,
             EditorLevelDataSource editorLevelDataSource)
         {

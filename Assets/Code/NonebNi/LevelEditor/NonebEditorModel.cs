@@ -19,7 +19,7 @@ namespace NonebNi.LevelEditor
         }
 
         /// <summary>
-        /// "HelperWindows" include both <see cref="TileInspectorView" /> and <see cref="ErrorOverviewView" />
+        ///     "HelperWindows" include both <see cref="TileInspectorView" /> and <see cref="ErrorOverviewView" />
         /// </summary>
         public bool IsHelperWindowsVisible
         {

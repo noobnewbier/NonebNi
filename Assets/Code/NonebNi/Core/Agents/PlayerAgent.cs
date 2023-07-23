@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using NonebNi.Core.Decision;
+using NonebNi.Core.Decisions;
 
 namespace NonebNi.Core.Agents
 {
@@ -10,7 +10,7 @@ namespace NonebNi.Core.Agents
     }
 
     /// <summary>
-    /// An <see cref="IAgent"/> that delegates its decision making to outside(e.g console, UI) input. 
+    ///     An <see cref="IAgent" /> that delegates its decision making to outside(e.g console, UI) input.
     /// </summary>
     public class PlayerAgent : IPlayerAgent
     {

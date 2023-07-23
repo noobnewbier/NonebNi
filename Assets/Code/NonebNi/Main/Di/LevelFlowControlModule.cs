@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.Decision;
+﻿using NonebNi.Core.Decisions;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Sequences;
 using NonebNi.Ui.Entities;

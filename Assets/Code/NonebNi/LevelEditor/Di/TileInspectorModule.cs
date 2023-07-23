@@ -9,7 +9,8 @@ namespace NonebNi.LevelEditor.Di
     public class TileInspectorModule
     {
         [Factory]
-        public static TileInspectorView ProvideTileInspectorView(IEditorMap map,
+        public static TileInspectorView ProvideTileInspectorView(
+            IEditorMap map,
             NonebEditorModel nonebEditorModel,
             ICoordinateAndPositionService coordinateAndPositionService,
             TerrainConfigData terrainConfig)

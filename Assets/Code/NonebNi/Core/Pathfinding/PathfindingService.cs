@@ -36,10 +36,7 @@ namespace NonebNi.Core.Pathfinding
             var (isPathExist, path) = FindPath(unitPos, goal);
             var pathAsArray = path as Coordinate[] ?? path.ToArray();
 
-            if (!isPathExist || pathAsArray.Length > unit.Speed)
-            {
-                return (false, Enumerable.Empty<Coordinate>());
-            }
+            if (!isPathExist || pathAsArray.Length > unit.Speed) return (false, Enumerable.Empty<Coordinate>());
 
             return (isPathExist, pathAsArray);
         }
@@ -94,10 +91,8 @@ namespace NonebNi.Core.Pathfinding
                 foreach (var neighbour in current.Neighbours)
                 {
                     if (!_map.TryGet(neighbour, out var neighbourTileData))
-                    {
                         //Doesn't exist in the map
                         continue;
-                    }
 
                     var tentativeGScore = gScore[current] + neighbourTileData.Value.Weight;
                     if (tentativeGScore >= gScore[neighbour]) continue;
@@ -106,10 +101,7 @@ namespace NonebNi.Core.Pathfinding
                     gScore[neighbour] = tentativeGScore;
                     fScore[neighbour] = tentativeGScore + Heuristic(neighbour, goal);
 
-                    if (!openSet.Contains(neighbour))
-                    {
-                        openSet.Add(neighbour);
-                    }
+                    if (!openSet.Contains(neighbour)) openSet.Add(neighbour);
                 }
             }
 
@@ -124,7 +116,7 @@ namespace NonebNi.Core.Pathfinding
         }
 
         /// <summary>
-        /// Analogue of Python's default dict - just make our implementation slightly cleaner
+        ///     Analogue of Python's default dict - just make our implementation slightly cleaner
         /// </summary>
         private class DefaultDictionary<TKey, TValue> : Dictionary<TKey, TValue>
         {

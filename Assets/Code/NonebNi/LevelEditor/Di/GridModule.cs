@@ -9,7 +9,8 @@ namespace NonebNi.LevelEditor.Di
     public class GridModule
     {
         [Factory]
-        public static GridView ProvideGridView(LevelEditorModel levelEditorModel,
+        public static GridView ProvideGridView(
+            LevelEditorModel levelEditorModel,
             NonebEditorModel nonebEditorModel,
             ICoordinateAndPositionService coordinateAndPositionService)
         {

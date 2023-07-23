@@ -18,7 +18,8 @@ namespace NonebNi.Core.FlowControl
         private readonly ICommandHandler<MoveUnitCommand> _moveCommandHandler;
         private readonly ICommandHandler<TeleportCommand> _teleportCommandHandler;
 
-        public CommandEvaluationService(ICommandHandler<DamageCommand> damageCommandHandler,
+        public CommandEvaluationService(
+            ICommandHandler<DamageCommand> damageCommandHandler,
             ICommandHandler<TeleportCommand> teleportCommandHandler,
             ICommandHandler<EndTurnCommand> endTurnCommandHandler,
             ICommandHandler<MoveUnitCommand> moveCommandHandler)

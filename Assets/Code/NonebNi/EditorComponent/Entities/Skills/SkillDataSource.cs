@@ -5,7 +5,7 @@ using UnityUtils.Constants;
 namespace NonebNi.EditorComponent.Entities.Skills
 {
     /// <summary>
-    /// Temporary implementation to fill in the gaps - to be removed
+    ///     Temporary implementation to fill in the gaps - to be removed
     /// </summary>
     [CreateAssetMenu(fileName = nameof(SkillDataSource), menuName = MenuName.Data + nameof(SkillData))]
     public class SkillDataSource : ScriptableObject
@@ -14,6 +14,6 @@ namespace NonebNi.EditorComponent.Entities.Skills
         [SerializeField] private int coolDown;
         [SerializeField] private Sprite icon = null!;
 
-        public SkillData CreateData() => new SkillData(skillName, coolDown, icon);
+        public SkillData CreateData() => new(skillName, coolDown, icon);
     }
 }

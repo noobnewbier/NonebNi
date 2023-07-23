@@ -9,8 +9,8 @@ namespace NonebNi.Ui.Cameras
     public interface ICameraControllerView
     {
         /// <summary>
-        /// Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
-        /// Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
+        ///     Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
+        ///     Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
         /// </summary>
         (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace();
 
@@ -31,10 +31,12 @@ namespace NonebNi.Ui.Cameras
         private float _accumulatedZoomingValue;
         private float _currentZoomingDirection;
 
-        public CameraControllerView(CameraConfig config,
+        public CameraControllerView(
+            CameraConfig config,
             Camera controlledCamera,
             TerrainConfigData terrainConfigData,
-            IFactory<ICameraControllerView, ICameraControllerPresenter> presenterFactory)
+            IFactory<ICameraControllerView, ICameraControllerPresenter> presenterFactory
+        )
         {
             _config = config;
             _camera = controlledCamera;
@@ -160,8 +162,8 @@ namespace NonebNi.Ui.Cameras
         #region Camera Bounds
 
         /// <summary>
-        /// Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
-        /// Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
+        ///     Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
+        ///     Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
         /// </summary>
         public (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace()
         {

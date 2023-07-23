@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
-using NonebNi.Core.Decision;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.Sequences;
 using UnityEngine;
 
@@ -18,7 +18,8 @@ namespace NonebNi.Core.FlowControl
 
     public class LevelFlowController : ILevelFlowController
     {
-        public LevelFlowController(ICommandEvaluationService evaluationService,
+        public LevelFlowController(
+            ICommandEvaluationService evaluationService,
             IUnitTurnOrderer unitTurnOrderer,
             IAgentsService agentService,
             ISequencePlayer sequencePlayer,

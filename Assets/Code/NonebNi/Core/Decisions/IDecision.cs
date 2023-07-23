@@ -1,7 +1,4 @@
-﻿namespace NonebNi.Core.Decision
+﻿namespace NonebNi.Core.Decisions
 {
-    public interface IDecision
-    {
-        
-    }
+    public interface IDecision { }
 }

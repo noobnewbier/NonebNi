@@ -4,7 +4,7 @@ using UnityEditor;
 namespace NonebNi.LevelEditor.Common.Events
 {
     /// <summary>
-    /// Stripped from UnityEditor.ProGrids.PlayModeStateListener
+    ///     Stripped from UnityEditor.ProGrids.PlayModeStateListener
     /// </summary>
     [InitializeOnLoad]
     public class PlayModeStateListener

@@ -24,7 +24,8 @@ namespace NonebNi.Ui.Cameras
         private readonly float _upBound;
         private readonly ICameraControllerView _view;
 
-        public CameraControllerPresenter(CameraConfig config,
+        public CameraControllerPresenter(
+            CameraConfig config,
             IReadOnlyMap map,
             TerrainConfigData terrainConfigData,
             ICoordinateAndPositionService coordinateAndPositionService,

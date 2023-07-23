@@ -18,7 +18,8 @@ namespace NonebNi.Main
         private readonly UnitDetailStat _stat;
         private readonly Terrain _terrain;
 
-        public LevelUi(CameraControl cameraControl,
+        public LevelUi(
+            CameraControl cameraControl,
             Hud hud,
             Terrain terrain,
             UnitDetailStat stat,

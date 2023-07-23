@@ -17,7 +17,8 @@ namespace NonebNi.LevelEditor.Common.Events
         [UsedImplicitly]
         private class LevelDataSourceModifiedListener : AssetsModifiedProcessor
         {
-            protected override void OnAssetsModified(string[] changedAssets,
+            protected override void OnAssetsModified(
+                string[] changedAssets,
                 string[] addedAssets,
                 string[] deletedAssets,
                 AssetMoveInfo[] movedAssets)
@@ -33,7 +34,7 @@ namespace NonebNi.LevelEditor.Common.Events
             }
         }
 
-        private class LevelDataSourceDeletedListener : UnityEditor.AssetModificationProcessor
+        private class LevelDataSourceDeletedListener : AssetModificationProcessor
         {
             private static AssetDeleteResult OnWillDeleteAsset(string assetPath, RemoveAssetOptions options)
             {

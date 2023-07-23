@@ -11,8 +11,8 @@ namespace NonebNi.LevelEditor.Level.Entities
     public interface IEditorEntityPositioningService
     {
         /// <summary>
-        /// Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
-        /// bounds(tbd).
+        ///     Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
+        ///     bounds(tbd).
         /// </summary>
         IEnumerable<Coordinate> FindOverlappedCoordinates(EditorEntity editorEntity);
 
@@ -31,20 +31,18 @@ namespace NonebNi.LevelEditor.Level.Entities
         }
 
         /// <summary>
-        /// Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
-        /// bounds(tbd).
+        ///     Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
+        ///     bounds(tbd).
         /// </summary>
-        public IEnumerable<Coordinate> FindOverlappedCoordinates(EditorEntity editorEntity)
-        {
+        public IEnumerable<Coordinate> FindOverlappedCoordinates(EditorEntity editorEntity) =>
             //bounding collider is defined only when editorEntity is initialized
-            return !editorEntity.IsCorrectSetUp ?
+            !editorEntity.IsCorrectSetUp ?
                 Enumerable.Empty<Coordinate>() :
                 FindOverlappedCoordinates(editorEntity.BoundingCollider);
-        }
 
         /// <summary>
-        /// Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
-        /// bounds(tbd).
+        ///     Find all overlapping coordinates of any given <see cref="EditorEntity" />, note it also returns coordinates out of
+        ///     bounds(tbd).
         /// </summary>
         public IEnumerable<Coordinate> FindOverlappedCoordinates(Collider collider)
         {

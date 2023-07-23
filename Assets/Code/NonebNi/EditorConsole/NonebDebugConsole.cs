@@ -15,7 +15,7 @@ namespace NonebNi.EditorConsole
             _lexer = lexer;
         }
 
-        public StringBuilder AccumulatedOutput { get; } = new StringBuilder();
+        public StringBuilder AccumulatedOutput { get; } = new();
 
         public void InterpretInput(string input)
         {

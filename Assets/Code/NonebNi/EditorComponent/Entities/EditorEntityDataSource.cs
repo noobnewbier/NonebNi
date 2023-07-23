@@ -3,9 +3,7 @@ using UnityEngine;
 
 namespace NonebNi.EditorComponent.Entities
 {
-    public abstract class EntityDataSource : ScriptableObject
-    {
-    }
+    public abstract class EntityDataSource : ScriptableObject { }
 
     public abstract class EditorEntityDataSource<T> : EntityDataSource where T : EditorEntityData
     {

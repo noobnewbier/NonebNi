@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using NonebNi.Core.Decision;
+using NonebNi.Core.Decisions;
 using UnityEngine;
 
 namespace NonebNi.Core.Agents
@@ -24,9 +24,7 @@ namespace NonebNi.Core.Agents
         public AgentsService(IReadOnlyList<IAgent> agents)
         {
             if (agents.GroupBy(a => a.FactionId).Any(g => g.Count() > 1))
-            {
                 Debug.LogError("More than one agent shares the same faction id - this is invalid");
-            }
 
             _agents = agents;
         }
@@ -38,10 +36,7 @@ namespace NonebNi.Core.Agents
             _overridingDecision = null;
 
             var agent = _agents.FirstOrDefault(a => a.FactionId == factionId);
-            if (agent == null)
-            {
-                return null;
-            }
+            if (agent == null) return null;
 
             var ct = _getDecisionCts.Token;
             var agentDecision = await agent.GetDecision(ct);
@@ -52,10 +47,8 @@ namespace NonebNi.Core.Agents
         public void OverrideDecision(IDecision decision)
         {
             if (_getDecisionCts == null)
-            {
                 //not trying to get a decision atm -> nothing to override.
                 return;
-            }
 
             _overridingDecision = decision;
             _getDecisionCts.Cancel();

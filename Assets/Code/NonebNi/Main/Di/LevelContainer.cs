@@ -27,7 +27,8 @@ namespace NonebNi.Main.Di
         [Instance] private readonly TerrainMeshData _terrainMeshData;
         [Instance] private readonly UnitDetailStat _unitDetailStat;
 
-        public LevelContainer(CameraConfig config,
+        public LevelContainer(
+            CameraConfig config,
             Camera targetCamera,
             LevelData levelData,
             Hud hud,

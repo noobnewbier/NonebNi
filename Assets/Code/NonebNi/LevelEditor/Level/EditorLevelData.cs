@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.Entities;
+﻿using NonebNi.Core.Factions;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.Terrain;

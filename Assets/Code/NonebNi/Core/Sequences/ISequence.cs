@@ -1,6 +1,4 @@
 ﻿namespace NonebNi.Core.Sequences
 {
-    public interface ISequence
-    {
-    }
+    public interface ISequence { }
 }

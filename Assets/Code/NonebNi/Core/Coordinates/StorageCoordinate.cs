@@ -1,9 +1,8 @@
 ﻿namespace NonebNi.Core.Coordinates
 {
     /// <summary>
-    /// Representing an Axial coordinate in a form that can be easily accessed in a jagged array.
-    ///
-    /// Ref: https://www.redblobgames.com/grids/hexagons/#map-storage
+    ///     Representing an Axial coordinate in a form that can be easily accessed in a jagged array.
+    ///     Ref: https://www.redblobgames.com/grids/hexagons/#map-storage
     /// </summary>
     public readonly struct StorageCoordinate
     {

@@ -67,7 +67,8 @@ namespace NonebNi.Terrain
             if (direction.LessThanOrEqualWith(HexDirection.SouthEast)) TriangulateConnection(direction, cell, e);
         }
 
-        private void TriangulateConnection(HexDirection direction,
+        private void TriangulateConnection(
+            HexDirection direction,
             Coordinate coord,
             EdgeVertices e1)
         {

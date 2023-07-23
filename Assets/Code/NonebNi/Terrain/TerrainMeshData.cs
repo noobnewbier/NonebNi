@@ -85,7 +85,7 @@ namespace NonebNi.Terrain
         }
 
         /// <summary>
-        /// Add a triangle verbatim, without perturbing the positions.
+        ///     Add a triangle verbatim, without perturbing the positions.
         /// </summary>
         /// <param name="v1">First vertex position.</param>
         /// <param name="v2">Second vertex position.</param>

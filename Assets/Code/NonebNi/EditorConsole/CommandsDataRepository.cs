@@ -27,13 +27,15 @@ namespace NonebNi.EditorConsole
 
             foreach (var erroneousType in typesWithAttribute.Except(typeWithAttributeAndImplIConsoleCommand))
                 Debug.LogError(
-                    $"{erroneousType.type.Name} is marked as a command but does not implement {nameof(IConsoleCommand)} - ignored in console app");
+                    $"{erroneousType.type.Name} is marked as a command but does not implement {nameof(IConsoleCommand)} - ignored in console app"
+                );
 
             foreach (var duplicatedNameGroup in typeWithAttributeAndImplIConsoleCommand
                          .GroupBy(v => v.attachedAttribute.Name)
                          .Where(g => g.Count() > 1))
                 throw new InvalidOperationException(
-                    $"Commands \"{string.Join(",", duplicatedNameGroup.Select(v => v.type.FullName))}\" are sharing the same alias - unable to proceed as there's no way to identify which command is being called when they share the same alias");
+                    $"Commands \"{string.Join(",", duplicatedNameGroup.Select(v => v.type.FullName))}\" are sharing the same alias - unable to proceed as there's no way to identify which command is being called when they share the same alias"
+                );
 
             _manual = typeWithAttributeAndImplIConsoleCommand
                 .Select(v => new CommandData(v.type, v.attachedAttribute.Name, v.attachedAttribute.Description))
@@ -48,9 +50,6 @@ namespace NonebNi.EditorConsole
             return false;
         }
 
-        public IEnumerable<CommandData> GetAllCommands()
-        {
-            return _manual.Values;
-        }
+        public IEnumerable<CommandData> GetAllCommands() => _manual.Values;
     }
 }

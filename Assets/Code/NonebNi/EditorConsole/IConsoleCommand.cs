@@ -1,6 +1,4 @@
 ﻿namespace NonebNi.EditorConsole
 {
-    public interface IConsoleCommand
-    {
-    }
+    public interface IConsoleCommand { }
 }

@@ -48,7 +48,8 @@ namespace NonebNi.LevelEditor.Level.Settings
                 Close();
         }
 
-        public static LevelEditorSettingsWindow Init(LevelEditorModel editorModel,
+        public static LevelEditorSettingsWindow Init(
+            LevelEditorModel editorModel,
             EditorEntitySyncService editorEntitySyncService,
             LevelSavingService levelSavingService)
         {

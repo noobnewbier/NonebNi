@@ -9,18 +9,19 @@ using UnityEditor;
 namespace NonebNi.LevelEditor.Level.Entities
 {
     /// <summary>
-    /// Monitor the placement of <see cref="EditorEntity" /> within the active scene, and change the <see cref="EditorMap" />
-    /// accordingly
-    /// todo: register to undo callback
-    /// todo: deal with overlapping(error log etc)
-    /// todo: deal with deletion
+    ///     Monitor the placement of <see cref="EditorEntity" /> within the active scene, and change the <see cref="EditorMap" />
+    ///     accordingly
+    ///     todo: register to undo callback
+    ///     todo: deal with overlapping(error log etc)
+    ///     todo: deal with deletion
     /// </summary>
     public class EntitiesPlacer
     {
         private readonly EditorEntitySyncService _editorEntitySyncService;
         private readonly ErrorChecker _errorChecker;
 
-        public EntitiesPlacer(EditorEntitySyncService entityService,
+        public EntitiesPlacer(
+            EditorEntitySyncService entityService,
             ErrorChecker errorChecker)
         {
             _editorEntitySyncService = entityService;

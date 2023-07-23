@@ -14,12 +14,14 @@ namespace NonebNi.CustomInspector.AttributeDrawers
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            AnimatorParameterAttribute typedAttribute = (AnimatorParameterAttribute)attribute;
+            var typedAttribute = (AnimatorParameterAttribute)attribute;
             RefreshCache();
 
             var animator =
                 NonebEditorUtils.FindPropertyObjectReferenceInSameDepth<Animator>(property, typedAttribute.AnimatorName);
-            var animatorRuntimeAnimatorController = animator != null ? animator.runtimeAnimatorController : null;
+            var animatorRuntimeAnimatorController = animator != null ?
+                animator.runtimeAnimatorController :
+                null;
             if (animator == null || animatorRuntimeAnimatorController == null)
             {
                 GUI.Label(position, $"{property.name} : Referenced animator is null", NonebGUIStyle.Error);

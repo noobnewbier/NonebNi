@@ -26,7 +26,8 @@ namespace NonebNi.LevelEditor.Level.Tiles
 
         private Plane _gridPlane;
 
-        public TileInspectorView(IFactory<TileInspectorView, TileInspectorPresenter> presenterFactory,
+        public TileInspectorView(
+            IFactory<TileInspectorView, TileInspectorPresenter> presenterFactory,
             TerrainConfigData terrainConfigData,
             IEditorMap map)
         {

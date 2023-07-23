@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NonebNi.Core.Tiles
 {
     /// <summary>
-    /// The actual data to be placed in the map
+    ///     The actual data to be placed in the map
     /// </summary>
     [Serializable]
     public struct TileData

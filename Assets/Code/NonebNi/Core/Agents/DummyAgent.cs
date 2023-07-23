@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using NonebNi.Core.Decision;
+using NonebNi.Core.Decisions;
 
 namespace NonebNi.Core.Agents
 {
     /// <summary>
-    /// A "Dummy" agent is an agent that always simply ends its turn and does nothing
+    ///     A "Dummy" agent is an agent that always simply ends its turn and does nothing
     /// </summary>
     public class DummyAgent : IAgent
     {
@@ -16,9 +16,6 @@ namespace NonebNi.Core.Agents
 
         public string FactionId { get; }
 
-        public UniTask<IDecision?> GetDecision(CancellationToken ct)
-        {
-            return new UniTask<IDecision?>(new EndTurnDecision());
-        }
+        public UniTask<IDecision?> GetDecision(CancellationToken ct) => new UniTask<IDecision?>(new EndTurnDecision());
     }
 }

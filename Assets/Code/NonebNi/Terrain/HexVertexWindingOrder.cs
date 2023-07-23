@@ -16,7 +16,7 @@ namespace NonebNi.Terrain
         };
 
         /// <summary>
-        /// Get the direction of the next edge representing in the generated mesh in clockwise rotation.
+        ///     Get the direction of the next edge representing in the generated mesh in clockwise rotation.
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
@@ -30,7 +30,7 @@ namespace NonebNi.Terrain
         }
 
         /// <summary>
-        /// Get the direction of the previous edge representing in the generated mesh in clockwise rotation.
+        ///     Get the direction of the previous edge representing in the generated mesh in clockwise rotation.
         /// </summary>
         /// <param name="direction"></param>
         /// <returns></returns>
@@ -43,19 +43,13 @@ namespace NonebNi.Terrain
                 DirectionOrder[index - 1];
         }
 
-        public static bool LessThanOrEqualWith(this HexDirection a, HexDirection b)
-        {
-            return Array.IndexOf(DirectionOrder, a) <= Array.IndexOf(DirectionOrder, b);
-        }
+        public static bool LessThanOrEqualWith(this HexDirection a, HexDirection b) =>
+            Array.IndexOf(DirectionOrder, a) <= Array.IndexOf(DirectionOrder, b);
 
-        public static bool GreaterThan(this HexDirection a, HexDirection b)
-        {
-            return Array.IndexOf(DirectionOrder, a) > Array.IndexOf(DirectionOrder, b);
-        }
+        public static bool GreaterThan(this HexDirection a, HexDirection b) =>
+            Array.IndexOf(DirectionOrder, a) > Array.IndexOf(DirectionOrder, b);
 
-        public static int GetVerticesWindingOrderIndex(this HexDirection direction)
-        {
-            return Array.IndexOf(DirectionOrder, direction);
-        }
+        public static int GetVerticesWindingOrderIndex(this HexDirection direction) =>
+            Array.IndexOf(DirectionOrder, direction);
     }
 }

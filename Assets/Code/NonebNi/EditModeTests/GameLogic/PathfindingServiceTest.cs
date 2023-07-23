@@ -114,15 +114,13 @@ namespace NonebNi.EditModeTests.GameLogic
             var width = datas.GetLength(1);
             var height = datas.GetLength(0);
             for (var z = 0; z < height; z++)
+            for (var x = 0; x < width; x++)
             {
-                for (var x = 0; x < width; x++)
-                {
-                    TileData? data = datas[z, x];
-                    var coord = new StorageCoordinate(x, z).ToAxial();
+                TileData? data = datas[z, x];
+                var coord = new StorageCoordinate(x, z).ToAxial();
 
-                    allCoordinates.Add(coord);
-                    _mockMap.Setup(m => m.TryGet(coord, out data)).Returns(true);
-                }
+                allCoordinates.Add(coord);
+                _mockMap.Setup(m => m.TryGet(coord, out data)).Returns(true);
             }
 
             _mockMap.Setup(m => m.GetAllCoordinates()).Returns(allCoordinates);

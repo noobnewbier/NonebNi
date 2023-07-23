@@ -45,10 +45,7 @@ namespace NonebNi.LevelEditor.Toolbar
                 return false;
             }
 
-            if (_settingsWindowCache == null)
-            {
-                _settingsWindowCache = _model.LevelEditor.CreateSettingsWindow();
-            }
+            if (_settingsWindowCache == null) _settingsWindowCache = _model.LevelEditor.CreateSettingsWindow();
 
             settingsWindow = _settingsWindowCache;
             return settingsWindow != null;

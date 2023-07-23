@@ -1,5 +1,5 @@
 ﻿using System;
-using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using UnityEngine;
 

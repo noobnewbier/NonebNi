@@ -3,8 +3,10 @@ using NonebNi.EditorConsole.Commands.Attributes;
 
 namespace NonebNi.EditorConsole.Commands
 {
-    [Command("help",
-        "Print help message for a specific command, or list all available commands if no command name is provided")]
+    [Command(
+        "help",
+        "Print help message for a specific command, or list all available commands if no command name is provided"
+    )]
     public class HelpCommand : IConsoleCommand
     {
         public readonly string? CommandName;
@@ -17,8 +19,6 @@ namespace NonebNi.EditorConsole.Commands
 
         [UsedImplicitly]
         [SignatureInfo("Print a list of all available commands and their descriptions")]
-        public HelpCommand()
-        {
-        }
+        public HelpCommand() { }
     }
 }

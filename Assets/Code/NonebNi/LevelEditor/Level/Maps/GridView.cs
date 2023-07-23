@@ -14,7 +14,8 @@ namespace NonebNi.LevelEditor.Level.Maps
 
         private readonly GridPresenter _presenter;
 
-        public GridView(IFactory<GridView, GridPresenter> presenterFactory,
+        public GridView(
+            IFactory<GridView, GridPresenter> presenterFactory,
             ICoordinateAndPositionService coordinateAndPositionService)
         {
             _coordinateAndPositionService = coordinateAndPositionService;

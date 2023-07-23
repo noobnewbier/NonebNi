@@ -13,15 +13,13 @@ namespace NonebNi.Core.FlowControl
     }
 
     /// <summary>
-    /// Initiative base, all units must have took one turn before others can go again
+    ///     Initiative base, all units must have took one turn before others can go again
     /// </summary>
     public class UnitTurnOrderer : IUnitTurnOrderer
     {
         private readonly IReadOnlyMap _map;
 
         private readonly SimplePriorityQueue<UnitData> _unitInOrder;
-
-        public UnitData CurrentUnit { get; private set; }
 
         public UnitTurnOrderer(IReadOnlyMap map)
         {
@@ -35,6 +33,8 @@ namespace NonebNi.Core.FlowControl
             CurrentUnit = null!; //Assigned by calling ToNextUnit
             ToNextUnit();
         }
+
+        public UnitData CurrentUnit { get; private set; }
 
         public UnitData ToNextUnit()
         {

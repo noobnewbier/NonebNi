@@ -1,4 +1,4 @@
-﻿namespace NonebNi.Core.Decision
+﻿namespace NonebNi.Core.Decisions
 {
     public class EndTurnDecision : IDecision
     {

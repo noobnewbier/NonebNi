@@ -10,7 +10,8 @@ namespace NonebNi.LevelEditor.Level.Tiles
         private readonly NonebEditorModel _nonebEditorModel;
         private readonly TileInspectorView _view;
 
-        public TileInspectorPresenter(TileInspectorView view,
+        public TileInspectorPresenter(
+            TileInspectorView view,
             ICoordinateAndPositionService coordinateAndPositionService,
             NonebEditorModel nonebEditorModel)
         {

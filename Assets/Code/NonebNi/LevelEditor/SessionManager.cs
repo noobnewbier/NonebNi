@@ -6,8 +6,8 @@ using UnityEditor;
 namespace NonebNi.LevelEditor
 {
     /// <summary>
-    /// Managing "editor session", can be seen as the entry point of every single editor session.
-    /// An "editor session" is the time between the time of entering edit mode and exiting edit mode.
+    ///     Managing "editor session", can be seen as the entry point of every single editor session.
+    ///     An "editor session" is the time between the time of entering edit mode and exiting edit mode.
     /// </summary>
     public class SessionManager
     {

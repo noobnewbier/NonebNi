@@ -104,7 +104,7 @@ namespace NonebNi.LevelEditor.Toolbar
 
         private static class Contents
         {
-            public static readonly ToggleContent GizmosEnabled = new ToggleContent(
+            public static readonly ToggleContent GizmosEnabled = new(
                 "Hide",
                 "Show",
                 IconUtility.LoadIcon("NonebNi_GUI_Gizmos_On.png"),
@@ -112,7 +112,7 @@ namespace NonebNi.LevelEditor.Toolbar
                 "Toggles drawing of gizmos."
             );
 
-            public static readonly ToggleContent GridEnabled = new ToggleContent(
+            public static readonly ToggleContent GridEnabled = new(
                 "Hide",
                 "Show",
                 IconUtility.LoadIcon("NonebNi_GUI_Grid_On.png"),
@@ -124,9 +124,9 @@ namespace NonebNi.LevelEditor.Toolbar
         private static class Styles
         {
             public const int MenuItemPadding = 3;
-            public static readonly GUIStyle ToggleButton = new GUIStyle();
+            public static readonly GUIStyle ToggleButton = new();
 
-            public static readonly GUIStyle Button = new GUIStyle
+            public static readonly GUIStyle Button = new()
             {
                 fontSize = 8,
                 alignment = TextAnchor.MiddleCenter,
@@ -142,9 +142,9 @@ namespace NonebNi.LevelEditor.Toolbar
                 }
             };
 
-            public static readonly Vector2Int MenuStartingPosition = new Vector2Int(8, 8 + MenuItemPadding);
+            public static readonly Vector2Int MenuStartingPosition = new(8, 8 + MenuItemPadding);
 
-            public static readonly Rect StartingButtonRect = new Rect(
+            public static readonly Rect StartingButtonRect = new(
                 MenuStartingPosition.x,
                 MenuStartingPosition.y,
                 42,

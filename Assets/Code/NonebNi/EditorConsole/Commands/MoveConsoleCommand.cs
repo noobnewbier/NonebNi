@@ -4,8 +4,10 @@ using NonebNi.EditorConsole.Commands.Attributes;
 
 namespace NonebNi.EditorConsole.Commands
 {
-    [Command("move",
-        "Send a move decision for the active unit, the game proceeds as normal after the decision is sent. Note this simply make a decision on the AI/Player behalf - aka all rules still applies")]
+    [Command(
+        "move",
+        "Send a move decision for the active unit, the game proceeds as normal after the decision is sent. Note this simply make a decision on the AI/Player behalf - aka all rules still applies"
+    )]
     [UsedImplicitly]
     public class MoveConsoleCommand : IConsoleCommand
     {

@@ -1,5 +1,5 @@
 ﻿using NonebNi.Core.Agents;
-using NonebNi.Core.Decision;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.Level;
 using TMPro;
 using UnityEngine;
@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace NonebNi.Ui.Huds
 {
     /// <summary>
-    /// Not intended for usage in production. Just to show something quick here
+    ///     Not intended for usage in production. Just to show something quick here
     /// </summary>
     public class PrototypeView : MonoBehaviour
     {

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 
 namespace NonebNi.LevelEditor.Common.Events
 {
-    public class SaveAssetEventListener : UnityEditor.AssetModificationProcessor
+    public class SaveAssetEventListener : AssetModificationProcessor
     {
         private static string[] OnWillSaveAssets(string[] paths)
         {

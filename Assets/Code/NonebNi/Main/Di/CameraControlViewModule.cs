@@ -10,7 +10,8 @@ namespace NonebNi.Main.Di
     public class CameraControlViewModule
     {
         [Factory]
-        public static ICameraControllerView CreateCameraControllerView(IReadOnlyMap map,
+        public static ICameraControllerView CreateCameraControllerView(
+            IReadOnlyMap map,
             TerrainConfigData terrainConfig,
             ICoordinateAndPositionService coordinateAndPositionService,
             CameraConfig cameraConfig,
