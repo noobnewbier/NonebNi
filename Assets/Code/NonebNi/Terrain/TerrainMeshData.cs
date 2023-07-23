@@ -9,18 +9,15 @@ namespace NonebNi.Terrain
     ///     Class containing all data used to generate a mesh while triangulating a hex map.
     /// </summary>
     [Serializable]
-    public class
-        TerrainMeshData //TODO: we can make it pure data? and leave the mesh editing func outside.(apply, sharedmesh assignment etc)
+    public class TerrainMeshData
     {
+        // ReSharper disable once InconsistentNaming -- it cannot handle "s" after 2 and want to rename it with capital:) 
+        [SerializeField] private List<Vector2> uv2s, uvs;
+        [SerializeField] private List<Color> cellWeights;
+        [SerializeField] private List<int> triangles;
+        [SerializeField] private List<Vector3> vertices, cellIndices;
         private readonly Mesh _hexMesh;
-        private List<Color> _cellWeights;
-        private List<int> _triangles;
 
-        // ReSharper disable once InconsistentNaming - jesus it just can't deal with the fact that uv2 is one word.
-        private List<Vector2> _uv2s;
-
-        private List<Vector2> _uvs;
-        private List<Vector3> _vertices, _cellIndices;
 
         public TerrainMeshData()
         {
@@ -28,12 +25,12 @@ namespace NonebNi.Terrain
             {
                 name = "Terrain Mesh"
             };
-            _uvs = ListPool<Vector2>.Get();
-            _uv2s = ListPool<Vector2>.Get();
-            _cellWeights = ListPool<Color>.Get();
-            _triangles = ListPool<int>.Get();
-            _vertices = ListPool<Vector3>.Get();
-            _cellIndices = ListPool<Vector3>.Get();
+            uvs = ListPool<Vector2>.Get();
+            uv2s = ListPool<Vector2>.Get();
+            cellWeights = ListPool<Color>.Get();
+            triangles = ListPool<int>.Get();
+            vertices = ListPool<Vector3>.Get();
+            cellIndices = ListPool<Vector3>.Get();
         }
 
         /// <summary>
@@ -42,12 +39,12 @@ namespace NonebNi.Terrain
         public void Clear()
         {
             _hexMesh.Clear();
-            _vertices.Clear();
-            _cellWeights.Clear();
-            _cellIndices.Clear();
-            _uvs.Clear();
-            _uv2s.Clear();
-            _triangles.Clear();
+            vertices.Clear();
+            cellWeights.Clear();
+            cellIndices.Clear();
+            uvs.Clear();
+            uv2s.Clear();
+            triangles.Clear();
         }
 
         /// <summary>
@@ -55,15 +52,15 @@ namespace NonebNi.Terrain
         /// </summary>
         public Mesh Apply()
         {
-            _hexMesh.SetVertices(_vertices);
+            _hexMesh.SetVertices(vertices);
 
-            _hexMesh.SetColors(_cellWeights);
-            _hexMesh.SetUVs(2, _cellIndices);
+            _hexMesh.SetColors(cellWeights);
+            _hexMesh.SetUVs(2, cellIndices);
 
-            _hexMesh.SetUVs(0, _uvs);
-            _hexMesh.SetUVs(1, _uv2s);
+            _hexMesh.SetUVs(0, uvs);
+            _hexMesh.SetUVs(1, uv2s);
 
-            _hexMesh.SetTriangles(_triangles, 0);
+            _hexMesh.SetTriangles(triangles, 0);
             _hexMesh.RecalculateNormals();
 
             return _hexMesh;
@@ -77,14 +74,14 @@ namespace NonebNi.Terrain
         /// <param name="v3">Third vertex position.</param>
         public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            var vertexIndex = _vertices.Count;
+            var vertexIndex = vertices.Count;
             //consider perturbing
-            _vertices.Add(v1);
-            _vertices.Add(v2);
-            _vertices.Add(v3);
-            _triangles.Add(vertexIndex);
-            _triangles.Add(vertexIndex + 1);
-            _triangles.Add(vertexIndex + 2);
+            vertices.Add(v1);
+            vertices.Add(v2);
+            vertices.Add(v3);
+            triangles.Add(vertexIndex);
+            triangles.Add(vertexIndex + 1);
+            triangles.Add(vertexIndex + 2);
         }
 
         /// <summary>
@@ -95,13 +92,13 @@ namespace NonebNi.Terrain
         /// <param name="v3">Third vertex position.</param>
         public void AddTriangleUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            var vertexIndex = _vertices.Count;
-            _vertices.Add(v1);
-            _vertices.Add(v2);
-            _vertices.Add(v3);
-            _triangles.Add(vertexIndex);
-            _triangles.Add(vertexIndex + 1);
-            _triangles.Add(vertexIndex + 2);
+            var vertexIndex = vertices.Count;
+            vertices.Add(v1);
+            vertices.Add(v2);
+            vertices.Add(v3);
+            triangles.Add(vertexIndex);
+            triangles.Add(vertexIndex + 1);
+            triangles.Add(vertexIndex + 2);
         }
 
         /// <summary>
@@ -112,9 +109,9 @@ namespace NonebNi.Terrain
         /// <param name="uv3">Third UV coordinates.</param>
         public void AddTriangleUV(Vector2 uv1, Vector2 uv2, Vector3 uv3)
         {
-            _uvs.Add(uv1);
-            _uvs.Add(uv2);
-            _uvs.Add(uv3);
+            uvs.Add(uv1);
+            uvs.Add(uv2);
+            uvs.Add(uv3);
         }
 
         /// <summary>
@@ -125,9 +122,9 @@ namespace NonebNi.Terrain
         /// <param name="uv3">Third UV2 coordinates.</param>
         public void AddTriangleUV2(Vector2 uv1, Vector2 uv2, Vector3 uv3)
         {
-            _uv2s.Add(uv1);
-            _uv2s.Add(uv2);
-            _uv2s.Add(uv3);
+            uv2s.Add(uv1);
+            uv2s.Add(uv2);
+            uv2s.Add(uv3);
         }
 
         /// <summary>
@@ -144,12 +141,12 @@ namespace NonebNi.Terrain
             Color weights3
         )
         {
-            _cellIndices.Add(indices);
-            _cellIndices.Add(indices);
-            _cellIndices.Add(indices);
-            _cellWeights.Add(weights1);
-            _cellWeights.Add(weights2);
-            _cellWeights.Add(weights3);
+            cellIndices.Add(indices);
+            cellIndices.Add(indices);
+            cellIndices.Add(indices);
+            cellWeights.Add(weights1);
+            cellWeights.Add(weights2);
+            cellWeights.Add(weights3);
         }
 
         /// <summary>
@@ -169,18 +166,18 @@ namespace NonebNi.Terrain
         /// <param name="v4">Fourth vertex position.</param>
         public void AddQuad(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
         {
-            var vertexIndex = _vertices.Count;
+            var vertexIndex = vertices.Count;
             //consider perturbing
-            _vertices.Add(v1);
-            _vertices.Add(v2);
-            _vertices.Add(v3);
-            _vertices.Add(v4);
-            _triangles.Add(vertexIndex);
-            _triangles.Add(vertexIndex + 2);
-            _triangles.Add(vertexIndex + 1);
-            _triangles.Add(vertexIndex + 1);
-            _triangles.Add(vertexIndex + 2);
-            _triangles.Add(vertexIndex + 3);
+            vertices.Add(v1);
+            vertices.Add(v2);
+            vertices.Add(v3);
+            vertices.Add(v4);
+            triangles.Add(vertexIndex);
+            triangles.Add(vertexIndex + 2);
+            triangles.Add(vertexIndex + 1);
+            triangles.Add(vertexIndex + 1);
+            triangles.Add(vertexIndex + 2);
+            triangles.Add(vertexIndex + 3);
         }
 
         /// <summary>
@@ -192,17 +189,17 @@ namespace NonebNi.Terrain
         /// <param name="v4">Fourth vertex position.</param>
         public void AddQuadUnperturbed(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
         {
-            var vertexIndex = _vertices.Count;
-            _vertices.Add(v1);
-            _vertices.Add(v2);
-            _vertices.Add(v3);
-            _vertices.Add(v4);
-            _triangles.Add(vertexIndex);
-            _triangles.Add(vertexIndex + 2);
-            _triangles.Add(vertexIndex + 1);
-            _triangles.Add(vertexIndex + 1);
-            _triangles.Add(vertexIndex + 2);
-            _triangles.Add(vertexIndex + 3);
+            var vertexIndex = vertices.Count;
+            vertices.Add(v1);
+            vertices.Add(v2);
+            vertices.Add(v3);
+            vertices.Add(v4);
+            triangles.Add(vertexIndex);
+            triangles.Add(vertexIndex + 2);
+            triangles.Add(vertexIndex + 1);
+            triangles.Add(vertexIndex + 1);
+            triangles.Add(vertexIndex + 2);
+            triangles.Add(vertexIndex + 3);
         }
 
         /// <summary>
@@ -214,10 +211,10 @@ namespace NonebNi.Terrain
         /// <param name="uv4">Fourth UV coordinates.</param>
         public void AddQuadUV(Vector2 uv1, Vector2 uv2, Vector3 uv3, Vector3 uv4)
         {
-            _uvs.Add(uv1);
-            _uvs.Add(uv2);
-            _uvs.Add(uv3);
-            _uvs.Add(uv4);
+            uvs.Add(uv1);
+            uvs.Add(uv2);
+            uvs.Add(uv3);
+            uvs.Add(uv4);
         }
 
         /// <summary>
@@ -229,10 +226,10 @@ namespace NonebNi.Terrain
         /// <param name="uv4">Fourth UV2 coordinates.</param>
         public void AddQuadUV2(Vector2 uv1, Vector2 uv2, Vector3 uv3, Vector3 uv4)
         {
-            _uv2s.Add(uv1);
-            _uv2s.Add(uv2);
-            _uv2s.Add(uv3);
-            _uv2s.Add(uv4);
+            uv2s.Add(uv1);
+            uv2s.Add(uv2);
+            uv2s.Add(uv3);
+            uv2s.Add(uv4);
         }
 
         /// <summary>
@@ -244,10 +241,10 @@ namespace NonebNi.Terrain
         /// <param name="vMax">Maximum V coordinate.</param>
         public void AddQuadUV(float uMin, float uMax, float vMin, float vMax)
         {
-            _uvs.Add(new Vector2(uMin, vMin));
-            _uvs.Add(new Vector2(uMax, vMin));
-            _uvs.Add(new Vector2(uMin, vMax));
-            _uvs.Add(new Vector2(uMax, vMax));
+            uvs.Add(new Vector2(uMin, vMin));
+            uvs.Add(new Vector2(uMax, vMin));
+            uvs.Add(new Vector2(uMin, vMax));
+            uvs.Add(new Vector2(uMax, vMax));
         }
 
         /// <summary>
@@ -259,10 +256,10 @@ namespace NonebNi.Terrain
         /// <param name="vMax">Maximum V2 coordinate.</param>
         public void AddQuadUV2(float uMin, float uMax, float vMin, float vMax)
         {
-            _uv2s.Add(new Vector2(uMin, vMin));
-            _uv2s.Add(new Vector2(uMax, vMin));
-            _uv2s.Add(new Vector2(uMin, vMax));
-            _uv2s.Add(new Vector2(uMax, vMax));
+            uv2s.Add(new Vector2(uMin, vMin));
+            uv2s.Add(new Vector2(uMax, vMin));
+            uv2s.Add(new Vector2(uMin, vMax));
+            uv2s.Add(new Vector2(uMax, vMax));
         }
 
         /// <summary>
@@ -281,14 +278,14 @@ namespace NonebNi.Terrain
             Color weights4
         )
         {
-            _cellIndices.Add(indices);
-            _cellIndices.Add(indices);
-            _cellIndices.Add(indices);
-            _cellIndices.Add(indices);
-            _cellWeights.Add(weights1);
-            _cellWeights.Add(weights2);
-            _cellWeights.Add(weights3);
-            _cellWeights.Add(weights4);
+            cellIndices.Add(indices);
+            cellIndices.Add(indices);
+            cellIndices.Add(indices);
+            cellIndices.Add(indices);
+            cellWeights.Add(weights1);
+            cellWeights.Add(weights2);
+            cellWeights.Add(weights3);
+            cellWeights.Add(weights4);
         }
 
         /// <summary>

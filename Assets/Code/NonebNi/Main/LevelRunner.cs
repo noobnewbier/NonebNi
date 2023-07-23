@@ -11,7 +11,7 @@ namespace NonebNi.Main
     {
         [Header("UI")] [SerializeField] private Hud hud = null!;
 
-        [SerializeField] private Grid grid = null!;
+        [SerializeField] private Terrain terrain = null!;
         [SerializeField] private UnitDetailStat unitDetailStat = null!;
 
         [Header("Level Data")] [SerializeField]
@@ -35,7 +35,7 @@ namespace NonebNi.Main
                 LevelData,
                 hud,
                 cameraControl,
-                grid,
+                terrain,
                 unitDetailStat,
                 terrainConfig.CreateData(),
                 new TerrainMeshData()

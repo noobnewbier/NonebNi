@@ -19,10 +19,10 @@ namespace NonebNi.Main.Di
     {
         [Instance] private readonly CameraControl _cameraControl;
         [Instance] private readonly CameraConfig _config;
-        [Instance] private readonly Grid _grid;
         [Instance] private readonly Hud _hud;
         [Instance] private readonly LevelData _levelData;
         [Instance] private readonly Camera _targetCamera;
+        [Instance] private readonly Terrain _terrain;
         [Instance] private readonly TerrainConfigData _terrainConfig;
         [Instance] private readonly TerrainMeshData _terrainMeshData;
         [Instance] private readonly UnitDetailStat _unitDetailStat;
@@ -32,7 +32,7 @@ namespace NonebNi.Main.Di
             LevelData levelData,
             Hud hud,
             CameraControl cameraControl,
-            Grid grid,
+            Terrain terrain,
             UnitDetailStat unitDetailStat,
             TerrainConfigData terrainConfig,
             TerrainMeshData terrainMeshData)
@@ -42,7 +42,7 @@ namespace NonebNi.Main.Di
             _levelData = levelData;
             _hud = hud;
             _cameraControl = cameraControl;
-            _grid = grid;
+            _terrain = terrain;
             _unitDetailStat = unitDetailStat;
             _terrainConfig = terrainConfig;
             _terrainMeshData = terrainMeshData;

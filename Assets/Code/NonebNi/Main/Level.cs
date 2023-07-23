@@ -14,13 +14,13 @@ namespace NonebNi.Main
     public class LevelUi : ILevelUi
     {
         private readonly CameraControl _cameraControl;
-        private readonly Grid _grid;
         private readonly Hud _hud;
         private readonly UnitDetailStat _stat;
+        private readonly Terrain _terrain;
 
         public LevelUi(CameraControl cameraControl,
             Hud hud,
-            Grid grid,
+            Terrain terrain,
             UnitDetailStat stat,
             ICameraControllerView cameraControllerView,
             LevelData levelData,
@@ -29,12 +29,12 @@ namespace NonebNi.Main
         {
             _cameraControl = cameraControl;
             _hud = hud;
-            _grid = grid;
+            _terrain = terrain;
             _stat = stat;
 
             _cameraControl.Init(cameraControllerView);
             _hud.Init(levelData, playerAgent);
-            _grid.Init(meshCreator);
+            _terrain.Init(meshCreator);
             _stat.Init();
         }
 

@@ -27,8 +27,7 @@ namespace NonebNi.Terrain
         private readonly Color _weights3 = Color.blue;
 
         public TerrainMeshCreator(
-            TerrainMeshData
-                terrain, //TODO: terrain feels like a param atm, creator can then be a stupid creator without hogging a data
+            TerrainMeshData terrain,
             ICoordinateAndPositionService coordinateAndPositionService,
             IReadOnlyMap map)
         {
