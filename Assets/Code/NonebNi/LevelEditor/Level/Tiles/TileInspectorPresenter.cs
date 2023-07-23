@@ -1,7 +1,8 @@
 ﻿using NonebNi.Core.Coordinates;
+using NonebNi.Terrain;
 using UnityEngine;
 
-namespace NonebNi.LevelEditor.Level.Inspector
+namespace NonebNi.LevelEditor.Level.Tiles
 {
     public class TileInspectorPresenter
     {
@@ -9,7 +10,8 @@ namespace NonebNi.LevelEditor.Level.Inspector
         private readonly NonebEditorModel _nonebEditorModel;
         private readonly TileInspectorView _view;
 
-        public TileInspectorPresenter(TileInspectorView view,
+        public TileInspectorPresenter(
+            TileInspectorView view,
             ICoordinateAndPositionService coordinateAndPositionService,
             NonebEditorModel nonebEditorModel)
         {

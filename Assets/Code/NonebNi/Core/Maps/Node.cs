@@ -8,10 +8,10 @@ using UnityEngine;
 namespace NonebNi.Core.Maps
 {
     /// <summary>
-    /// The internal storage of <see cref="Map" />
-    /// A <see cref="Node" /> MUST have a <see cref="TileData" />, and may contains some <see cref="EntityData" />
-    /// Assumption:
-    /// For any type of <see cref="EntityData" />, a node can only hold at most 1 of it.
+    ///     The internal storage of <see cref="Map" />
+    ///     A <see cref="Node" /> MUST have a <see cref="TileData" />, and may contains some <see cref="EntityData" />
+    ///     Assumption:
+    ///     For any type of <see cref="EntityData" />, a node can only hold at most 1 of it.
     /// </summary>
     [Serializable] //Unity doesn't support polymorphism + Serialization, we need to hand craft it
     public partial class Node

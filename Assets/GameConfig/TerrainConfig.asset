@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 568ab4cfcf834dd41b3e439b406b6386, type: 3}
-  m_Name: WorldConfig
+  m_Script: {fileID: 11500000, guid: dbbefea797c74eebb9f49ea68c688c2d, type: 3}
+  m_Name: TerrainConfig
   m_EditorClassIdentifier: 
   innerRadius: 1
   mapStartingPosition: {x: 0, y: 0, z: 0}

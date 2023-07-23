@@ -1,25 +1,20 @@
-﻿using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
+﻿using NonebNi.Terrain;
 using UnityEngine;
 
 namespace NonebNi.Ui.Grids
 {
     public class GridView : MonoBehaviour
     {
-        [SerializeField] private TileView tileViewPrefab = null!;
+        [SerializeField] private MeshFilter meshFilter = null!;
+        [SerializeField] private MeshCollider meshCollider = null!;
 
-        public void Init(ICoordinateAndPositionService coordinateAndPositionService,
-            IReadOnlyMap map,
-            WorldConfigData worldConfigData)
+
+        public void Init(ITerrainMeshCreator terrainMeshCreator)
         {
-            foreach (var coordinate in map.GetAllCoordinates())
-            {
-                var pos = coordinateAndPositionService.FindPosition(coordinate);
+            var mesh = terrainMeshCreator.Triangulate();
 
-                var tile = Instantiate(tileViewPrefab, transform);
-                tile.Init(pos, worldConfigData);
-            }
+            meshFilter.mesh = mesh;
+            meshCollider.sharedMesh = mesh;
         }
     }
 }

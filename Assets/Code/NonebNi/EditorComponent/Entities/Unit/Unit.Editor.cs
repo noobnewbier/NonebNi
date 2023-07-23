@@ -6,8 +6,6 @@ namespace NonebNi.EditorComponent.Entities.Unit
     {
         [CustomEditor(typeof(Unit))]
         [CanEditMultipleObjects]
-        public class UnitEditor : EntityEditor
-        {
-        }
+        public class UnitEditor : EntityEditor { }
     }
 }

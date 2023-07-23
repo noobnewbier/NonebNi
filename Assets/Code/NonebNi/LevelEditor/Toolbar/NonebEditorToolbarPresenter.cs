@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using NonebNi.LevelEditor.Level.Data;
+using NonebNi.LevelEditor.Level;
 using NonebNi.LevelEditor.Level.Settings;
 using UnityEngine.SceneManagement;
 
@@ -45,10 +45,7 @@ namespace NonebNi.LevelEditor.Toolbar
                 return false;
             }
 
-            if (_settingsWindowCache == null)
-            {
-                _settingsWindowCache = _model.LevelEditor.CreateSettingsWindow();
-            }
+            if (_settingsWindowCache == null) _settingsWindowCache = _model.LevelEditor.CreateSettingsWindow();
 
             settingsWindow = _settingsWindowCache;
             return settingsWindow != null;

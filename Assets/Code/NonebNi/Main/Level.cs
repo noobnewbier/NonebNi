@@ -1,7 +1,6 @@
 ﻿using NonebNi.Core.Agents;
-using NonebNi.Core.Coordinates;
 using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
+using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using NonebNi.Ui.Statistics.Unit;
 
@@ -15,29 +14,28 @@ namespace NonebNi.Main
     public class LevelUi : ILevelUi
     {
         private readonly CameraControl _cameraControl;
-        private readonly Grid _grid;
         private readonly Hud _hud;
         private readonly UnitDetailStat _stat;
+        private readonly Terrain _terrain;
 
-        public LevelUi(CameraControl cameraControl,
+        public LevelUi(
+            CameraControl cameraControl,
             Hud hud,
-            Grid grid,
+            Terrain terrain,
             UnitDetailStat stat,
             ICameraControllerView cameraControllerView,
             LevelData levelData,
             IPlayerAgent playerAgent,
-            ICoordinateAndPositionService coordinateAndPositionService,
-            IReadOnlyMap map,
-            WorldConfigData worldConfig)
+            ITerrainMeshCreator meshCreator)
         {
             _cameraControl = cameraControl;
             _hud = hud;
-            _grid = grid;
+            _terrain = terrain;
             _stat = stat;
 
             _cameraControl.Init(cameraControllerView);
             _hud.Init(levelData, playerAgent);
-            _grid.Init(coordinateAndPositionService, map, worldConfig);
+            _terrain.Init(meshCreator);
             _stat.Init();
         }
 

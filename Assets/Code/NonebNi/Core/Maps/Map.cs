@@ -45,7 +45,6 @@ namespace NonebNi.Core.Maps
     /// <summary>
     ///     Storing weight of tiles and units positions.
     ///     We need a way to validate the Map, so if for some reason(merging, user being an idiot) Map is not valid,
-    ///
     ///     we try our best to recover
     /// </summary>
     [Serializable]
@@ -57,7 +56,6 @@ namespace NonebNi.Core.Maps
         /// <summary>
         ///     The data is stored in the <see cref="StorageCoordinate" />, which is just the x,z index in a jagged array,
         ///     which we further flatten the array into a single row for efficiency.
-        /// 
         ///     While they should be accessed from the public API through the axial coordinate(<seealso cref="Coordinate" />),
         ///     we will convert them internally for both storage and accessing.
         /// </summary>
@@ -241,10 +239,7 @@ namespace NonebNi.Core.Maps
 
         public MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData
         {
-            if (!TryGet<T>(startCoord, out var target))
-            {
-                return MoveResult.ErrorNoTargetInStartPos;
-            }
+            if (!TryGet<T>(startCoord, out var target)) return MoveResult.ErrorNoTargetInStartPos;
 
             return Move(target, targetCoord);
         }

@@ -35,37 +35,38 @@ namespace NonebNi.LevelEditor.Level.Error
         public IEnumerable<ErrorEntry> CheckForErrors()
         {
             var allEntities = _scene.GetRootGameObjects()
-                                    .SelectMany(g => g.GetComponentsInChildren<EditorEntity>())
-                                    .ToArray();
+                .SelectMany(g => g.GetComponentsInChildren<EditorEntity>())
+                .ToArray();
 
             return CheckForErrors(allEntities);
         }
 
-        private IEnumerable<ErrorEntry> CheckForOverlappingEntities(IEnumerable<Unit> units,
-                                                                    IEnumerable<TileModifier> tileModifiers)
+        private IEnumerable<ErrorEntry> CheckForOverlappingEntities(
+            IEnumerable<Unit> units,
+            IEnumerable<TileModifier> tileModifiers)
         {
             var allEntities = _scene.GetRootGameObjects()
-                                    .SelectMany(g => g.GetComponentsInChildren<EditorEntity>())
-                                    .ToArray();
+                .SelectMany(g => g.GetComponentsInChildren<EditorEntity>())
+                .ToArray();
 
             //todo: in theory we could have cached the coordinates to avoid unnecessary calculation, but we don't really need this for now
             IEnumerable<ErrorEntry> FindOverlappingEntitiesOfType<T>(IEnumerable<T> enumerable) where T : EditorEntity
             {
                 var allEntityOfTypeAndCoordinates = allEntities.OfType<T>()
-                                                               .Select(
-                                                                   u => (u,
-                                                                       _editorEntityPositioningService
-                                                                           .FindOverlappedCoordinates(u)
-                                                                           .ToArray())
-                                                               )
-                                                               .ToArray();
+                    .Select(
+                        u => (u,
+                            _editorEntityPositioningService
+                                .FindOverlappedCoordinates(u)
+                                .ToArray())
+                    )
+                    .ToArray();
                 var entityToCheckAndCoordinates = enumerable
-                                                  .Select(
-                                                      u => (u,
-                                                          _editorEntityPositioningService.FindOverlappedCoordinates(u)
-                                                              .ToArray())
-                                                  )
-                                                  .ToArray();
+                    .Select(
+                        u => (u,
+                            _editorEntityPositioningService.FindOverlappedCoordinates(u)
+                                .ToArray())
+                    )
+                    .ToArray();
                 foreach (var (entity, coordinates) in entityToCheckAndCoordinates)
                 foreach (var (e, cs) in allEntityOfTypeAndCoordinates)
                 {

@@ -5,9 +5,9 @@ using UnityEngine;
 namespace NonebNi.Core.Coordinates
 {
     /// <summary>
-    /// Using Cube Coordinate(which is just axial coordinate) : https://www.redblobgames.com/grids/hexagons/#map-storage
-    /// 1. AxialCoordinate refers to cube coordinate(in game logic)
-    /// 2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
+    ///     Using Cube Coordinate(which is just axial coordinate) : https://www.redblobgames.com/grids/hexagons/#map-storage
+    ///     1. AxialCoordinate refers to cube coordinate(in game logic)
+    ///     2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
     /// </summary>
     [Serializable]
     public struct Coordinate : IEquatable<Coordinate>
@@ -29,12 +29,12 @@ namespace NonebNi.Core.Coordinates
 
         public Coordinate[] Neighbours => new[]
         {
-            this + HexDirection.MinusX,
-            this + HexDirection.PlusX,
-            this + HexDirection.MinusXMinusZ,
-            this + HexDirection.MinusZ,
-            this + HexDirection.PlusZ,
-            this + HexDirection.PlusXPlusZ
+            this + HexDirection.West,
+            this + HexDirection.NorthWest,
+            this + HexDirection.NorthEast,
+            this + HexDirection.East,
+            this + HexDirection.SouthEast,
+            this + HexDirection.SouthWest
         };
 
         public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
@@ -45,7 +45,7 @@ namespace NonebNi.Core.Coordinates
         {
             unchecked
             {
-                return (X * 397) ^ Z;
+                return X * 397 ^ Z;
             }
         }
 

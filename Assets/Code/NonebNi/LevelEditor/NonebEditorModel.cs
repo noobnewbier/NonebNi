@@ -1,6 +1,6 @@
 ﻿using System;
 using NonebNi.LevelEditor.Level.Error;
-using NonebNi.LevelEditor.Level.Inspector;
+using NonebNi.LevelEditor.Level.Tiles;
 using UnityEditor;
 
 namespace NonebNi.LevelEditor
@@ -19,7 +19,7 @@ namespace NonebNi.LevelEditor
         }
 
         /// <summary>
-        /// "HelperWindows" include both <see cref="TileInspectorView" /> and <see cref="ErrorOverviewView" />
+        ///     "HelperWindows" include both <see cref="TileInspectorView" /> and <see cref="ErrorOverviewView" />
         /// </summary>
         public bool IsHelperWindowsVisible
         {

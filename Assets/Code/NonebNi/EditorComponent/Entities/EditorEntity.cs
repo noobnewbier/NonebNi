@@ -10,13 +10,14 @@ using UnityUtils.SerializableGuid;
 namespace NonebNi.EditorComponent.Entities
 {
     /// <summary>
-    /// An <see cref="EditorEntity" /> is something that can be placed on the board within SceneView.
-    /// This is necessary wrapper of <see cref="EntityData" /> to avoid the internal data being filled with
-    /// <see cref="MonoBehaviour" />. This component is used to build the scene and will be stripped on build/play.
-    /// An editorEntity must at least be within one tile, it can potentially spans through multiple tile.
-    /// Which tiles an <see cref="EditorEntity" /> is at/spanning through depends on the underlying bounding box.
-    /// We find out what an editorEntity is by the other component it is holding(and create the level of the game by finding out all
-    /// entities if the map).
+    ///     An <see cref="EditorEntity" /> is something that can be placed on the board within SceneView.
+    ///     This is necessary wrapper of <see cref="EntityData" /> to avoid the internal data being filled with
+    ///     <see cref="MonoBehaviour" />. This component is used to build the scene and will be stripped on build/play.
+    ///     An editorEntity must at least be within one tile, it can potentially spans through multiple tile.
+    ///     Which tiles an <see cref="EditorEntity" /> is at/spanning through depends on the underlying bounding box.
+    ///     We find out what an editorEntity is by the other component it is holding(and create the level of the game by finding out
+    ///     all
+    ///     entities if the map).
     /// </summary>
     [ExecuteInEditMode]
     public abstract class EditorEntity : MonoBehaviour
@@ -26,8 +27,8 @@ namespace NonebNi.EditorComponent.Entities
         [SerializeField] private Entity? entity;
 
         /// <summary>
-        /// We expect this is only called when the editorEntity is <see cref="IsCorrectSetUp" />,
-        /// in which case the underlying bounding collider is not null
+        ///     We expect this is only called when the editorEntity is <see cref="IsCorrectSetUp" />,
+        ///     in which case the underlying bounding collider is not null
         /// </summary>
         public Collider BoundingCollider => boundingCollider!;
 

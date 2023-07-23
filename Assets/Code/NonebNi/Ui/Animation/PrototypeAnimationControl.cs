@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace NonebNi.Ui.Animation
 {
-    public class PrototypeAnimationControl : 
-        MonoBehaviour, 
+    public class PrototypeAnimationControl :
+        MonoBehaviour,
         IPlayAnimation<DieAnimSequence>,
         IPlayAnimation<TeleportAnimSequence>,
         IPlayAnimation<MoveAnimSequence>
@@ -36,18 +36,6 @@ namespace NonebNi.Ui.Animation
             return StartCoroutine(Coroutine());
         }
 
-        public Coroutine Play(TeleportAnimSequence sequence)
-        {
-            IEnumerator Coroutine()
-            {
-                transform.position = sequence.TargetTilePosition;
-
-                yield break;
-            }
-
-            return StartCoroutine(Coroutine());
-        }
-
         public Coroutine Play(MoveAnimSequence sequence)
         {
             IEnumerator Coroutine()
@@ -58,6 +46,18 @@ namespace NonebNi.Ui.Animation
                     transform.position = Vector3.MoveTowards(transform.position, sequence.TargetPos, 1f);
                     yield return null;
                 }
+            }
+
+            return StartCoroutine(Coroutine());
+        }
+
+        public Coroutine Play(TeleportAnimSequence sequence)
+        {
+            IEnumerator Coroutine()
+            {
+                transform.position = sequence.TargetTilePosition;
+
+                yield break;
             }
 
             return StartCoroutine(Coroutine());

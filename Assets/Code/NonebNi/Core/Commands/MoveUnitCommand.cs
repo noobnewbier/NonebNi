@@ -5,9 +5,9 @@ namespace NonebNi.Core.Commands
 {
     public class MoveUnitCommand : ICommand
     {
-        public readonly UnitData MovedUnit;
         public readonly Coordinate EndCoord;
-        
+        public readonly UnitData MovedUnit;
+
         public MoveUnitCommand(UnitData movedUnit, Coordinate endCoord)
         {
             MovedUnit = movedUnit;

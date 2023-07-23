@@ -10,8 +10,6 @@ namespace NonebNi.LevelEditor.Level.Error
         private readonly ErrorChecker _errorChecker;
         private readonly NonebEditorModel _nonebEditorModel;
         private readonly ErrorOverviewView _view;
-        public bool IsDrawing => _nonebEditorModel.IsHelperWindowsVisible;
-        public IEnumerable<ErrorEntry> ErrorEntries => _errorChecker.CheckForErrors();
 
         public ErrorOverviewPresenter(ErrorOverviewView view, ErrorChecker errorChecker, NonebEditorModel nonebEditorModel)
         {
@@ -19,6 +17,9 @@ namespace NonebNi.LevelEditor.Level.Error
             _errorChecker = errorChecker;
             _nonebEditorModel = nonebEditorModel;
         }
+
+        public bool IsDrawing => _nonebEditorModel.IsHelperWindowsVisible;
+        public IEnumerable<ErrorEntry> ErrorEntries => _errorChecker.CheckForErrors();
 
         public void OnClickErrorNavigationButton(EditorEntity errorEditorEntity)
         {

@@ -8,6 +8,13 @@ namespace NonebNi.Ui.Common
         private readonly int _layer;
         private readonly string _targetState;
 
+        public WaitForAnimatorState(Animator animator, int layer, string targetState)
+        {
+            _animator = animator;
+            _layer = layer;
+            _targetState = targetState;
+        }
+
         public override bool keepWaiting
         {
             get
@@ -17,13 +24,6 @@ namespace NonebNi.Ui.Common
 
                 return currentState.normalizedTime >= 1;
             }
-        }
-
-        public WaitForAnimatorState(Animator animator, int layer, string targetState)
-        {
-            _animator = animator;
-            _layer = layer;
-            _targetState = targetState;
         }
     }
 }

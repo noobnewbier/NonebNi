@@ -1,14 +1,14 @@
-﻿using NonebNi.Core.Level;
-using NonebNi.Core.Tiles;
+﻿using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using NonebNi.EditorComponent.Entities;
-using NonebNi.LevelEditor.Level.Data;
+using NonebNi.LevelEditor.Level.Maps;
+using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 using UnityUtils.Factories;
 
-namespace NonebNi.LevelEditor.Level.Inspector
+namespace NonebNi.LevelEditor.Level.Tiles
 {
     public class TileInspectorView
     {
@@ -26,14 +26,15 @@ namespace NonebNi.LevelEditor.Level.Inspector
 
         private Plane _gridPlane;
 
-        public TileInspectorView(IFactory<TileInspectorView, TileInspectorPresenter> presenterFactory,
-            WorldConfigData worldConfigData,
+        public TileInspectorView(
+            IFactory<TileInspectorView, TileInspectorPresenter> presenterFactory,
+            TerrainConfigData terrainConfigData,
             IEditorMap map)
         {
             _map = map;
             _presenter = presenterFactory.Create(this);
 
-            _gridPlane = new Plane(Vector3.up, worldConfigData.MapStartingPosition);
+            _gridPlane = new Plane(Vector3.up, terrainConfigData.MapStartingPosition);
         }
 
         public void OnSceneDraw(Vector2 startingPosition)

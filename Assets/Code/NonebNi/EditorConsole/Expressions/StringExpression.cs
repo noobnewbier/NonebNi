@@ -5,7 +5,7 @@ namespace NonebNi.EditorConsole.Expressions
 {
     public class StringExpression : Expression
     {
-        public static readonly Regex Pattern = new Regex(@"[a-zA-Z]+");
+        public static readonly Regex Pattern = new(@"[a-zA-Z]+");
 
         public StringExpression(string value) : base(value)
         {

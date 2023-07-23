@@ -39,10 +39,11 @@ namespace NonebNi.Ui.Statistics.Unit
             return StartCoroutine(Coroutine());
         }
 
-        public void Init(Transform skillPanelRoot,
-                         Image image,
-                         HealthBarView healthBarView,
-                         SkillView skillViewPrefab)
+        public void Init(
+            Transform skillPanelRoot,
+            Image image,
+            HealthBarView healthBarView,
+            SkillView skillViewPrefab)
         {
             _skillPanelRoot = skillPanelRoot;
             _image = image;

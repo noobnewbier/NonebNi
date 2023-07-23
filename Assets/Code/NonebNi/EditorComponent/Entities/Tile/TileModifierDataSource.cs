@@ -1,9 +1,8 @@
 ﻿using System;
 using NonebNi.Core.Tiles;
-using NonebNi.EditorComponent.Entities;
 using UnityEngine;
 
-namespace NonebNi.LevelEditor.Level.Data
+namespace NonebNi.EditorComponent.Entities.Tile
 {
     [CreateAssetMenu(menuName = "Data/TileModifier", fileName = "TileModifierData")]
     public class TileModifierDataSource : EditorEntityDataSource<EditorEntityData<TileModifierData>>

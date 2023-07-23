@@ -129,7 +129,19 @@ MonoBehaviour:
     - tileData:
         weight: 1
         name: 
-      serializedUnitDatas: []
+      serializedUnitDatas:
+      - serializedGuid: 02e86fd465fe8244ab6689e836e8394a
+        entityData:
+          name: Noob
+          serializableGuid:
+            serializedGuid: 02e86fd465fe8244ab6689e836e8394a
+          <FactionId>k__BackingField: Player
+          maxHealth: 100
+          health: 100
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          skillDatas: []
+          speed: 0
+          initiative: 0
     - tileData:
         weight: 1
         name: 

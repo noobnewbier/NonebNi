@@ -4,7 +4,8 @@ using UnityUtils;
 namespace NonebNi.Core.Level
 {
     /// <summary>
-    /// The backing data for a <see cref="Level" /> - using ScriptableObject for fancy inspector, might move to JSON in the future for better modding support? 
+    ///     The backing data for a <see cref="Level" /> - using ScriptableObject for fancy inspector, might move to JSON in the
+    ///     future for better modding support?
     /// </summary>
     public class LevelDataSource : ScriptableObject
     {

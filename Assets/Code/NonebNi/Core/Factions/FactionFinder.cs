@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace NonebNi.Core.Entities
+namespace NonebNi.Core.Factions
 {
     public interface IFactionFinder
     {
-        bool TryFindById(string id, [NotNullWhen(returnValue: true)] out Faction? faction);
+        bool TryFindById(string id, [NotNullWhen(true)] out Faction? faction);
     }
 
     public class FactionFinder : IFactionFinder
@@ -17,7 +17,7 @@ namespace NonebNi.Core.Entities
             _factions = factions;
         }
 
-        public bool TryFindById(string id, [NotNullWhen(returnValue: true)] out Faction? faction)
+        public bool TryFindById(string id, [NotNullWhen(true)] out Faction? faction)
         {
             faction = _factions.FirstOrDefault(f => f.Id == id);
 

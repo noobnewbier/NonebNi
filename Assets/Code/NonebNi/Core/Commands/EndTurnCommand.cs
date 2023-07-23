@@ -1,7 +1,4 @@
 ﻿namespace NonebNi.Core.Commands
 {
-    public class EndTurnCommand : ICommand
-    {
-        
-    }
+    public class EndTurnCommand : ICommand { }
 }

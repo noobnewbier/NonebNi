@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using NonebNi.Core.Coordinates;
 using NonebNi.Core.Sequences;
+using NonebNi.Terrain;
 using NonebNi.Ui.Animation;
 using NonebNi.Ui.Animation.Sequence;
 using NonebNi.Ui.Entities;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
-using NonebNi.Core.Units;
 
 namespace NonebNi.Core.Commands.Handlers
 {
@@ -18,10 +17,7 @@ namespace NonebNi.Core.Commands.Handlers
         {
             var result = _map.Move(unitCommand.MovedUnit, unitCommand.EndCoord);
 
-            if (result == MoveResult.Success)
-            {
-                yield return new MoveSequence(unitCommand.MovedUnit, unitCommand.EndCoord);
-            }
+            if (result == MoveResult.Success) yield return new MoveSequence(unitCommand.MovedUnit, unitCommand.EndCoord);
         }
     }
 }

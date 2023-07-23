@@ -2,7 +2,6 @@
 using NonebNi.EditorComponent.Entities;
 using NonebNi.EditorComponent.Entities.Tile;
 using NonebNi.EditorComponent.Entities.Unit;
-using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Error;
 using NonebNi.LevelEditor.Level.Maps;
 using UnityEditor;
@@ -10,21 +9,22 @@ using UnityEditor;
 namespace NonebNi.LevelEditor.Level.Entities
 {
     /// <summary>
-    /// Monitor the placement of <see cref="EditorEntity" /> within the active scene, and change the <see cref="EditorMap" />
-    /// accordingly
-    /// todo: register to undo callback
-    /// todo: deal with overlapping(error log etc)
-    /// todo: deal with deletion
+    ///     Monitor the placement of <see cref="EditorEntity" /> within the active scene, and change the <see cref="EditorMap" />
+    ///     accordingly
+    ///     todo: register to undo callback
+    ///     todo: deal with overlapping(error log etc)
+    ///     todo: deal with deletion
     /// </summary>
     public class EntitiesPlacer
     {
+        private readonly EditorEntitySyncService _editorEntitySyncService;
         private readonly ErrorChecker _errorChecker;
-        private readonly MapSyncService _mapSyncService;
 
-        public EntitiesPlacer(MapSyncService entityService,
+        public EntitiesPlacer(
+            EditorEntitySyncService entityService,
             ErrorChecker errorChecker)
         {
-            _mapSyncService = entityService;
+            _editorEntitySyncService = entityService;
             _errorChecker = errorChecker;
         }
 
@@ -57,12 +57,12 @@ namespace NonebNi.LevelEditor.Level.Entities
 
         private void UpdateTiles(TileModifier tileModifier)
         {
-            _mapSyncService.SyncTileModifier(tileModifier);
+            _editorEntitySyncService.SyncTileModifier(tileModifier);
         }
 
         private void UpdateUnit(Unit unit)
         {
-            _mapSyncService.SyncUnit(unit);
+            _editorEntitySyncService.SyncUnit(unit);
         }
     }
 }

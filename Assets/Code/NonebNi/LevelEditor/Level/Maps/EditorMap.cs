@@ -8,7 +8,7 @@ using NonebNi.Core.Tiles;
 using NonebNi.EditorComponent.Entities;
 using UnityEngine;
 
-namespace NonebNi.LevelEditor.Level.Data
+namespace NonebNi.LevelEditor.Level.Maps
 {
     public interface IEditorMap
     {

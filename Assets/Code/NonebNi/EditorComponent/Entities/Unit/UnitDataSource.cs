@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using NonebNi.Core.Units;
-using NonebNi.EditorComponent.Entities;
+using NonebNi.EditorComponent.Entities.Skills;
 using UnityEngine;
 using UnityUtils.Constants;
 
-namespace NonebNi.LevelEditor.Level.Data
+namespace NonebNi.EditorComponent.Entities.Unit
 {
     [CreateAssetMenu(fileName = nameof(UnitDataSource), menuName = MenuName.Data + nameof(UnitDataSource))]
     public class UnitDataSource : EditorEntityDataSource<EditorEntityData<UnitData>>

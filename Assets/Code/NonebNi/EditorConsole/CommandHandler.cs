@@ -3,7 +3,7 @@ using System.Text;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
-using NonebNi.Core.Decision;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
@@ -23,7 +23,8 @@ namespace NonebNi.EditorConsole
         private readonly ISequencePlayer _sequencePlayer;
         private readonly IUnitTurnOrderer _turnOrderer;
 
-        public CommandHandler(ICommandEvaluationService commandEvaluationService,
+        public CommandHandler(
+            ICommandEvaluationService commandEvaluationService,
             IReadOnlyMap readOnlyMap,
             ISequencePlayer sequencePlayer,
             ICommandsDataRepository commandsDataRepository,
@@ -58,8 +59,12 @@ namespace NonebNi.EditorConsole
 
                 case MoveConsoleCommand moveConsoleCommand:
                 {
-                    _agentsService.OverrideDecision(new MoveDecision(_turnOrderer.CurrentUnit,
-                        moveConsoleCommand.TargetPos));
+                    _agentsService.OverrideDecision(
+                        new MoveDecision(
+                            _turnOrderer.CurrentUnit,
+                            moveConsoleCommand.TargetPos
+                        )
+                    );
                     break;
                 }
 
@@ -94,7 +99,8 @@ namespace NonebNi.EditorConsole
                                 $@"---
 Command description:
     {commandData.Description}
-");
+"
+                            );
                             outputBuffer.AppendLine();
                         }
                     }
@@ -107,7 +113,8 @@ Command description:
                             $@"---
 Command description:
     {commandData.Description}
-");
+"
+                        );
                         foreach (var constructorInfo in commandData.CommandType.GetConstructors())
                         {
                             var parameters = constructorInfo.GetParameters();

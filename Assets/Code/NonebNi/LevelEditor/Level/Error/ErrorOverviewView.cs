@@ -89,7 +89,7 @@ namespace NonebNi.LevelEditor.Level.Error
                             style =
                             {
                                 color = NonebGUIStyle.HintTextColor
-                            },
+                            }
                         };
 
                         helpWindow.Add(title);
@@ -109,15 +109,11 @@ namespace NonebNi.LevelEditor.Level.Error
 
                 //add new entry if none exist
                 foreach (var entity in errorSources.Except(existingErrorEntries.Select(e => e.ErrorSource)))
-                {
                     errorEntryContainer.Add(new ErrorEntryView(entity, _presenter));
-                }
 
                 //remove existing ones if they are no longer applicable
                 foreach (var entry in existingErrorEntries.Where(entry => !errorSources.Contains(entry.ErrorSource)))
-                {
                     entry.RemoveFromHierarchy();
-                }
 
                 errorEntryContainer.Q<Label>(noErrorLabel).style.display = errors.Any() ?
                     DisplayStyle.None :
@@ -187,10 +183,7 @@ namespace NonebNi.LevelEditor.Level.Error
 
             public void Dispose()
             {
-                if (_disposed)
-                {
-                    return;
-                }
+                if (_disposed) return;
 
                 Handles.EndGUI();
             }

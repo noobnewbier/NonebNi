@@ -1,23 +1,36 @@
-﻿using NonebNi.Core.Coordinates;
+﻿using System.Collections.Generic;
+using NonebNi.Core.Coordinates;
 
 namespace NonebNi.Core.Maps
 {
     public class HexDirection
     {
-        public static readonly HexDirection PlusX = new HexDirection(new Coordinate(1, 0));
-        public static readonly HexDirection MinusX = new HexDirection(new Coordinate(-1, 0));
-        public static readonly HexDirection PlusZ = new HexDirection(new Coordinate(0, 1));
-        public static readonly HexDirection MinusZ = new HexDirection(new Coordinate(0, -1));
-        public static readonly HexDirection PlusXPlusZ = new HexDirection(new Coordinate(1, 1));
-        public static readonly HexDirection MinusXMinusZ = new HexDirection(new Coordinate(-1, -1));
-
-        private Coordinate Direction { get; }
+        public static readonly HexDirection East = new(new Coordinate(1, 0));
+        public static readonly HexDirection West = new(new Coordinate(-1, 0));
+        public static readonly HexDirection NorthEast = new(new Coordinate(0, 1));
+        public static readonly HexDirection SouthWest = new(new Coordinate(0, -1));
+        public static readonly HexDirection SouthEast = new(new Coordinate(1, -1));
+        public static readonly HexDirection NorthWest = new(new Coordinate(-1, 1));
 
         private HexDirection(Coordinate direction)
         {
             Direction = direction;
         }
 
+        private Coordinate Direction { get; }
+
+        public static IEnumerable<HexDirection> All { get; } = new[]
+        {
+            East,
+            West,
+            NorthEast,
+            SouthWest,
+            SouthEast,
+            NorthWest
+        };
+
         public static Coordinate operator +(Coordinate a, HexDirection d) => a + d.Direction;
+
+        public static Coordinate operator -(Coordinate a, HexDirection d) => a - d.Direction;
     }
 }

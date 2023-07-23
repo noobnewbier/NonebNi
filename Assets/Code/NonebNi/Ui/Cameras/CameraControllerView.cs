@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using NonebNi.Core.Level;
+using NonebNi.Terrain;
 using UnityEngine;
 using UnityUtils;
 using UnityUtils.Factories;
@@ -9,8 +9,8 @@ namespace NonebNi.Ui.Cameras
     public interface ICameraControllerView
     {
         /// <summary>
-        /// Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
-        /// Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
+        ///     Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
+        ///     Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
         /// </summary>
         (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace();
 
@@ -25,20 +25,22 @@ namespace NonebNi.Ui.Cameras
         private readonly Camera _camera;
         private readonly CameraConfig _config;
         private readonly ICameraControllerPresenter _controllerPresenter;
-        private readonly WorldConfigData _worldConfigData;
+        private readonly TerrainConfigData _terrainConfigData;
 
         private float _accumulatedZoomingDecelerationValue;
         private float _accumulatedZoomingValue;
         private float _currentZoomingDirection;
 
-        public CameraControllerView(CameraConfig config,
-                                    Camera controlledCamera,
-                                    WorldConfigData worldConfigData,
-                                    IFactory<ICameraControllerView, ICameraControllerPresenter> presenterFactory)
+        public CameraControllerView(
+            CameraConfig config,
+            Camera controlledCamera,
+            TerrainConfigData terrainConfigData,
+            IFactory<ICameraControllerView, ICameraControllerPresenter> presenterFactory
+        )
         {
             _config = config;
             _camera = controlledCamera;
-            _worldConfigData = worldConfigData;
+            _terrainConfigData = terrainConfigData;
             _controllerPresenter = presenterFactory.Create(this);
         }
 
@@ -121,7 +123,9 @@ namespace NonebNi.Ui.Cameras
             var zoomInput = Input.GetAxis("Mouse ScrollWheel");
             var inputStrength = Mathf.Abs(zoomInput);
             if (!FloatUtil.NearlyEqual(zoomInput, 0f))
-                _currentZoomingDirection = Mathf.Sign(zoomInput) * (_config.IsInvertedWheel ? -1f : 1f);
+                _currentZoomingDirection = Mathf.Sign(zoomInput) * (_config.IsInvertedWheel ?
+                    -1f :
+                    1f);
 
             if (!FloatUtil.NearlyEqual(zoomInput, 0f))
             {
@@ -158,14 +162,14 @@ namespace NonebNi.Ui.Cameras
         #region Camera Bounds
 
         /// <summary>
-        /// Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
-        /// Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
+        ///     Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
+        ///     Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
         /// </summary>
         public (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace()
         {
             var cameraFrustumCorners = GetCameraFrustumCorners();
             var cameraPosition = GetCameraPosition();
-            var targetYPosition = _worldConfigData.MapStartingPosition.y;
+            var targetYPosition = _terrainConfigData.MapStartingPosition.y;
             var intersectionCorners = new Vector3[cameraFrustumCorners.Length];
 
             for (var i = 0; i < cameraFrustumCorners.Length; i++)

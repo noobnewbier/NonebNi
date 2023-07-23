@@ -1,6 +1,5 @@
-﻿using NonebNi.Core.Coordinates;
-using NonebNi.Core.Level;
-using NonebNi.Core.Maps;
+﻿using NonebNi.Core.Maps;
+using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using StrongInject;
 using UnityEngine;
@@ -11,8 +10,9 @@ namespace NonebNi.Main.Di
     public class CameraControlViewModule
     {
         [Factory]
-        public static ICameraControllerView CreateCameraControllerView(IReadOnlyMap map,
-            WorldConfigData worldConfig,
+        public static ICameraControllerView CreateCameraControllerView(
+            IReadOnlyMap map,
+            TerrainConfigData terrainConfig,
             ICoordinateAndPositionService coordinateAndPositionService,
             CameraConfig cameraConfig,
             Camera camera)
@@ -21,7 +21,7 @@ namespace NonebNi.Main.Di
                 v => new CameraControllerPresenter(
                     cameraConfig,
                     map,
-                    worldConfig,
+                    terrainConfig,
                     coordinateAndPositionService,
                     v
                 )
@@ -30,7 +30,7 @@ namespace NonebNi.Main.Di
             return new CameraControllerView(
                 cameraConfig,
                 camera,
-                worldConfig,
+                terrainConfig,
                 presenterFactory
             );
         }

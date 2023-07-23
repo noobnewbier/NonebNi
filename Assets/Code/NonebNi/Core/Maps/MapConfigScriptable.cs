@@ -7,7 +7,7 @@ namespace NonebNi.Core.Maps
     [CreateAssetMenu(fileName = nameof(MapConfigScriptable), menuName = MenuName.Data + nameof(MapConfigScriptable))]
     public class MapConfigScriptable : ScriptableObject
     {
-        private static readonly Lazy<MapConfigScriptable> LazyEmpty = new Lazy<MapConfigScriptable>(() => Create(0, 0));
+        private static readonly Lazy<MapConfigScriptable> LazyEmpty = new(() => Create(0, 0));
 
         [Range(1, 100)] [SerializeField] private int xSize;
         [Range(1, 100)] [SerializeField] private int zSize;
@@ -26,7 +26,7 @@ namespace NonebNi.Core.Maps
             return instance;
         }
 
-        public MapConfigData CreateData() => new MapConfigData(xSize, zSize);
+        public MapConfigData CreateData() => new(xSize, zSize);
 
         public int GetMap2DArrayWidth()
         {

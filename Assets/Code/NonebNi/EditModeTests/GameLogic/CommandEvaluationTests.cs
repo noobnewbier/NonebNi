@@ -23,9 +23,7 @@ namespace NonebNi.EditModeTests.GameLogic
                 var evaluationService = new DamageCommandHandler(mockMap.Object);
 
                 using var enumerator = evaluationService.Evaluate(command).GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                }
+                while (enumerator.MoveNext()) { }
 
                 mockMap.Verify(m => m.Remove(deadUnit), Times.Once);
             }
@@ -54,9 +52,7 @@ namespace NonebNi.EditModeTests.GameLogic
                 var evaluationService = new DamageCommandHandler(mockMap.Object);
 
                 using var enumerator = evaluationService.Evaluate(command).GetEnumerator();
-                while (enumerator.MoveNext())
-                {
-                }
+                while (enumerator.MoveNext()) { }
 
                 mockMap.Verify(m => m.Remove(livingUnit), Times.Never);
             }

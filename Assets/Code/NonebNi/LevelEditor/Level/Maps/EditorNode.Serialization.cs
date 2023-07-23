@@ -5,7 +5,7 @@ using NonebNi.Core.Units;
 using NonebNi.EditorComponent.Entities;
 using UnityEngine;
 
-namespace NonebNi.LevelEditor.Level.Data
+namespace NonebNi.LevelEditor.Level.Maps
 {
     public partial class EditorNode : ISerializationCallbackReceiver
     {

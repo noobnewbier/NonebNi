@@ -4,22 +4,23 @@ using NonebNi.Core.Units;
 using NonebNi.EditorComponent.Entities;
 using NonebNi.EditorComponent.Entities.Tile;
 using NonebNi.EditorComponent.Entities.Unit;
-using NonebNi.LevelEditor.Level.Data;
 using NonebNi.LevelEditor.Level.Entities;
 using UnityEngine.SceneManagement;
 
 namespace NonebNi.LevelEditor.Level.Maps
 {
     /// <summary>
-    ///     Synchronizing the <see cref="EditorMap" /> with the given <see cref="Scene" />
+    ///     Synchronizing the <see cref="EditorMap" /> with the given <see cref="EditorEntity" /> in the <see cref="_scene" />
+    ///     Doesn't work with node's weight, that's dealt with in <see cref="Terrains.TerrainEditingService" />
     /// </summary>
-    public class MapSyncService
+    public class EditorEntitySyncService
     {
         private readonly EditorEntityPositioningService _editorEntityPositioningService;
         private readonly IEditorMap _editorMap;
         private Scene _scene;
 
-        public MapSyncService(EditorEntityPositioningService editorEntityPositioningService,
+        public EditorEntitySyncService(
+            EditorEntityPositioningService editorEntityPositioningService,
             Scene scene,
             IEditorMap editorMap)
         {

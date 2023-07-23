@@ -1,5 +1,5 @@
 ﻿using System;
-using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using UnityEngine;
 
@@ -9,14 +9,12 @@ namespace NonebNi.Core.Level
     public class LevelData
     {
         [SerializeField] private string levelName;
-        [SerializeField] private WorldConfigData worldConfig;
         [SerializeField] private Faction[] factions;
 
         [SerializeField] private Map map;
 
-        public LevelData(WorldConfigData worldConfig, Map map, string levelName, Faction[] factions)
+        public LevelData(Map map, string levelName, Faction[] factions)
         {
-            this.worldConfig = worldConfig;
             this.map = map;
             this.levelName = levelName;
             this.factions = factions;
@@ -26,7 +24,6 @@ namespace NonebNi.Core.Level
 
         public string LevelName => levelName;
 
-        public WorldConfigData WorldConfig => worldConfig;
 
         public Map Map => map;
     }

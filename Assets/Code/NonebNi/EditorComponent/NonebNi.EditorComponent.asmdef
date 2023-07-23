@@ -2,10 +2,10 @@
   "name": "NonebNi.EditorComponent",
   "rootNamespace": "",
   "references": [
-      "GUID:8c9f0f875c743b643bbea480a5e687c3",
-      "GUID:893a62e173c68f6478bfef27032343b1",
-      "GUID:acf43146c4364d2419bdbdeac67deb96",
-      "GUID:22f72075764e7f3429d2e98109cc90bc"
+    "GUID:8c9f0f875c743b643bbea480a5e687c3",
+    "GUID:893a62e173c68f6478bfef27032343b1",
+    "GUID:acf43146c4364d2419bdbdeac67deb96",
+    "GUID:22f72075764e7f3429d2e98109cc90bc"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

@@ -8,7 +8,7 @@ namespace NonebNi.CustomInspector.AttributeDrawers
 {
     internal class AnimatorInfoCache
     {
-        private static readonly Dictionary<int, AnimatorInfoCache> Cache = new Dictionary<int, AnimatorInfoCache>();
+        private static readonly Dictionary<int, AnimatorInfoCache> Cache = new();
         private readonly string[][] _layeredStates;
         private readonly string[] _layerNames;
         private readonly Dictionary<AnimatorControllerParameterType, string[]> _parameters;
@@ -43,8 +43,8 @@ namespace NonebNi.CustomInspector.AttributeDrawers
                 {
                     var allLayer = controller.layers;
                     return allLayer.Select(t => t.stateMachine.states)
-                                   .Select(states => states.Select(s => s.state.name).ToArray())
-                                   .ToArray();
+                        .Select(states => states.Select(s => s.state.name).ToArray())
+                        .ToArray();
                 }
 
                 return Array.Empty<string[]>();
@@ -53,7 +53,9 @@ namespace NonebNi.CustomInspector.AttributeDrawers
             string[] FindLayers()
             {
                 var controller = GetAnimatorController(animatorController);
-                return controller != null ? controller.layers.Select(l => l.name).ToArray() : Array.Empty<string>();
+                return controller != null ?
+                    controller.layers.Select(l => l.name).ToArray() :
+                    Array.Empty<string>();
             }
         }
 
@@ -80,7 +82,9 @@ namespace NonebNi.CustomInspector.AttributeDrawers
         internal string[] GetStates(int layerIndex)
         {
             var isReturnAllLayers = layerIndex == -1;
-            return isReturnAllLayers ? _layeredStates.SelectMany(i => i).ToArray() : _layeredStates[layerIndex];
+            return isReturnAllLayers ?
+                _layeredStates.SelectMany(i => i).ToArray() :
+                _layeredStates[layerIndex];
         }
 
         internal string[] GetLayers() => _layerNames;

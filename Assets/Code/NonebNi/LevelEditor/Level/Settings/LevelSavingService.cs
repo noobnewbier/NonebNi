@@ -1,6 +1,4 @@
-﻿using NonebNi.LevelEditor.Level.Data;
-
-namespace NonebNi.LevelEditor.Level.Settings
+﻿namespace NonebNi.LevelEditor.Level.Settings
 {
     public class LevelSavingService
     {

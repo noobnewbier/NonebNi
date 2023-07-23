@@ -1,5 +1,5 @@
-﻿using NonebNi.LevelEditor.Level.Data;
-using NonebNi.LevelEditor.Level.Maps;
+﻿using NonebNi.LevelEditor.Level.Maps;
+using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -9,8 +9,8 @@ namespace NonebNi.LevelEditor.Level.Settings
     public class LevelEditorSettingsWindow : EditorWindow
     {
         private LevelEditorModel _dataModel = null!;
+        private EditorEntitySyncService _editorEntitySyncService = null!;
         private LevelSavingService _levelSavingService = null!;
-        private MapSyncService _mapSyncService = null!;
 
         private void OnGUI()
         {
@@ -36,11 +36,11 @@ namespace NonebNi.LevelEditor.Level.Settings
             levelDataSource.WorldConfig = EditorGUILayout.ObjectField(
                 nameof(levelDataSource.WorldConfig),
                 levelDataSource.WorldConfig,
-                typeof(WorldConfigSource),
+                typeof(TerrainConfigSource),
                 false
-            ) as WorldConfigSource;
+            ) as TerrainConfigSource;
 
-            if (GUILayout.Button("Refresh")) _mapSyncService.Sync();
+            if (GUILayout.Button("Refresh")) _editorEntitySyncService.Sync();
             if (GUILayout.Button("Save")) _levelSavingService.Save();
 
 
@@ -48,13 +48,14 @@ namespace NonebNi.LevelEditor.Level.Settings
                 Close();
         }
 
-        public static LevelEditorSettingsWindow Init(LevelEditorModel editorModel,
-            MapSyncService mapSyncService,
+        public static LevelEditorSettingsWindow Init(
+            LevelEditorModel editorModel,
+            EditorEntitySyncService editorEntitySyncService,
             LevelSavingService levelSavingService)
         {
             var toReturn = CreateInstance<LevelEditorSettingsWindow>();
             toReturn._dataModel = editorModel;
-            toReturn._mapSyncService = mapSyncService;
+            toReturn._editorEntitySyncService = editorEntitySyncService;
             toReturn._levelSavingService = levelSavingService;
 
             return toReturn;

@@ -1,9 +1,9 @@
 ﻿using System;
 using NonebNi.LevelEditor.Level.Entities;
 using NonebNi.LevelEditor.Level.Error;
-using NonebNi.LevelEditor.Level.Inspector;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.LevelEditor.Level.Settings;
+using NonebNi.LevelEditor.Level.Tiles;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,22 +11,23 @@ namespace NonebNi.LevelEditor.Level
 {
     public class LevelEditor : IDisposable
     {
+        private readonly EditorEntitySyncService _editorEntitySyncService;
         private readonly LevelEditorModel _editorModel;
         private readonly EntitiesPlacer _entitiesPlacer;
         private readonly ErrorOverviewView _errorOverviewView;
         private readonly GridView _gridView;
         private readonly LevelDataSyncer _levelDataSyncer;
         private readonly LevelSavingService _levelSavingService;
-        private readonly MapSyncService _mapSyncService;
         private readonly TileInspectorView _tileInspectorView;
 
-        public LevelEditor(GridView gridView,
+        public LevelEditor(
+            GridView gridView,
             TileInspectorView tileInspectorView,
             ErrorOverviewView errorOverviewView,
             EntitiesPlacer entitiesPlacer,
             LevelDataSyncer levelDataSyncer,
             LevelEditorModel editorModel,
-            MapSyncService mapSyncService,
+            EditorEntitySyncService editorEntitySyncService,
             LevelSavingService levelSavingService)
         {
             _gridView = gridView;
@@ -35,7 +36,7 @@ namespace NonebNi.LevelEditor.Level
             _entitiesPlacer = entitiesPlacer;
             _levelDataSyncer = levelDataSyncer;
             _editorModel = editorModel;
-            _mapSyncService = mapSyncService;
+            _editorEntitySyncService = editorEntitySyncService;
             _levelSavingService = levelSavingService;
 
             SceneView.duringSceneGui += OnSceneGUI;
@@ -65,7 +66,7 @@ namespace NonebNi.LevelEditor.Level
         public LevelEditorSettingsWindow CreateSettingsWindow() =>
             LevelEditorSettingsWindow.Init(
                 _editorModel,
-                _mapSyncService,
+                _editorEntitySyncService,
                 _levelSavingService
             );
     }
