@@ -4,15 +4,10 @@ using UnityEngine;
 namespace NonebNi.Core.Factions
 {
     [Serializable]
-    public class Faction
+    public record Faction(string Id, bool IsPlayerControlled, params string[] Allies)
     {
-        public Faction(string id, params string[] alliesId)
-        {
-            Id = id;
-            AlliesId = alliesId;
-        }
-
-        [field: SerializeField] public string Id { get; private set; }
-        [field: SerializeField] public string[] AlliesId { get; private set; }
+        [field: SerializeField] public string Id { get; private set; } = string.Empty;
+        [field: SerializeField] public bool IsPlayerControlled { get; private set; }
+        [field: SerializeField] public string[] Allies { get; private set; } = Array.Empty<string>();
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
-using NonebNi.Core.Entities;
-using NonebNi.Core.Factions;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Common;
+using NonebNi.LevelEditor.Level.Factions;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.Terrain;
 using UnityEditor;
@@ -16,7 +15,10 @@ namespace NonebNi.LevelEditor.Level
     /// <summary>
     ///     Created this as we anticipate the need for custom BGMs and stuffs in the future
     /// </summary>
-    [CreateAssetMenu(fileName = nameof(EditorLevelDataSource), menuName = MenuName.Data + nameof(EditorLevelDataSource))]
+    [CreateAssetMenu(
+        fileName = nameof(EditorLevelDataSource),
+        menuName = MenuName.Data + nameof(EditorLevelDataSource)
+    )]
     public class EditorLevelDataSource : ScriptableObject
     {
         [SerializeField] private LevelDataSource? dataSource;
@@ -35,7 +37,7 @@ namespace NonebNi.LevelEditor.Level
 
         //TODO: somehow fit in meshes info here.
         [SerializeField] private string levelName = string.Empty;
-        [SerializeField] private Faction[] factions = FactionsData.AllFactions.ToArray();
+        [SerializeField] private EditorFactionsDataSource factionsDataSource = null!;
 
         public string LevelName => levelName;
 
@@ -57,7 +59,12 @@ namespace NonebNi.LevelEditor.Level
 
         public EditorLevelData? CreateData() =>
             IsValid ?
-                new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName, factions) :
+                new EditorLevelData(
+                    worldConfigScriptable!.CreateData(),
+                    editorMap,
+                    levelName,
+                    factionsDataSource.Factions
+                ) :
                 null;
 
 
@@ -85,8 +92,7 @@ namespace NonebNi.LevelEditor.Level
             }
 
             dataSource.WriteData(editorLevelData.ToLevelData());
-
-            factions = editorLevelData.Factions;
+            factionsDataSource.WriteData(editorLevelData.Factions);
 
             EditorUtility.SetDirty(dataSource);
             EditorUtility.SetDirty(this);

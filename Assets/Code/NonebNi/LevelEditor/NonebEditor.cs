@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.EditorComponent;
 using NonebNi.LevelEditor.Common.Events;
 using NonebNi.LevelEditor.Di;
 using NonebNi.LevelEditor.Level;
@@ -62,11 +63,21 @@ namespace NonebNi.LevelEditor
         {
             _levelEditor?.Dispose();
             _levelEditor = null;
-            var dataSource = EditorLevelDataSource.FindLevelDataSourceForActiveScene();
-            if (dataSource == null || !dataSource.IsValid) return;
 
-            _levelEditor = new LevelEditorContainer(dataSource, SceneManager.GetActiveScene(), _editorModel).Resolve();
+            var dataSource = EditorLevelDataSource.FindLevelDataSourceForActiveScene();
+            if (dataSource == null) return;
+
+            var editorLevelData = dataSource.CreateData();
+            if (editorLevelData == null) return;
+
+            _levelEditor = new LevelEditorContainer(
+                dataSource,
+                SceneManager.GetActiveScene(),
+                _editorModel,
+                editorLevelData
+            ).Resolve();
             _editorModel.LevelEditor = _levelEditor.Value;
+            EditorComponentSceneData.Provide(editorLevelData.Factions);
         }
 
         private void TryInitLevelEditorAfterOneFrame()
