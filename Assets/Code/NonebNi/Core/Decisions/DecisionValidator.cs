@@ -1,4 +1,5 @@
-﻿using NonebNi.Core.Commands;
+﻿using NonebNi.Core.Actions;
+using NonebNi.Core.Commands;
 using NonebNi.Core.Maps;
 
 namespace NonebNi.Core.Decisions
@@ -22,7 +23,7 @@ namespace NonebNi.Core.Decisions
         {
             public const string UnknownId = "unknown";
 
-            private Error(string id, string description)
+            public Error(string id, string description)
             {
                 Id = id;
                 Description = description;
@@ -38,22 +39,38 @@ namespace NonebNi.Core.Decisions
     public class DecisionValidator : IDecisionValidator
     {
         private readonly IReadOnlyMap _map; //TODO: PathFinding
+        private readonly ITargetValidityChecker _targetValidityChecker;
 
-        public DecisionValidator(IReadOnlyMap map)
+        public DecisionValidator(IReadOnlyMap map, ITargetValidityChecker targetValidityChecker)
         {
             _map = map;
+            _targetValidityChecker = targetValidityChecker;
         }
 
         public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision? decision)
         {
-            return decision switch
+            switch (decision)
             {
-                EndTurnDecision => (null, new EndTurnCommand()),
-                MoveDecision md => (null, new MoveUnitCommand(md.MovedUnit, md.EndCoord)), //TODO: validate
+                case EndTurnDecision:
+                    return (null, new EndTurnCommand());
+                case ActionDecision ad:
+                    if (!_targetValidityChecker.IsPassingTargetRestrictionCheck(
+                            ad.Action.TargetRestriction,
+                            ad.ActorEntity,
+                            ad.TargetCoord
+                        ))
+                    {
+                        return (
+                            new IDecisionValidator.Error(
+                                "invalid-target",
+                                $"action {ad.Action} cannot be targeted at {ad.TargetCoord}"
+                            ), new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoord)); //TODO: validate    
+                    }
 
-                null => (IDecisionValidator.Error.Unknown, NullCommand.Instance),
-                _ => (IDecisionValidator.Error.Unknown, NullCommand.Instance)
-            };
+                    return (null, new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoord));
+                default:
+                    return (IDecisionValidator.Error.Unknown, NullCommand.Instance);
+            }
         }
     }
 }
