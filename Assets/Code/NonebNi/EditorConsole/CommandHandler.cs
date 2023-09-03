@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using Cysharp.Threading.Tasks;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
@@ -16,6 +17,7 @@ namespace NonebNi.EditorConsole
 {
     public class CommandHandler
     {
+        private readonly IActionRepository _actionRepository;
         private readonly IAgentsService _agentsService;
         private readonly ICommandEvaluationService _commandEvaluationService;
         private readonly ICommandsDataRepository _commandsDataRepository;
@@ -29,7 +31,8 @@ namespace NonebNi.EditorConsole
             ISequencePlayer sequencePlayer,
             ICommandsDataRepository commandsDataRepository,
             IAgentsService agentsService,
-            IUnitTurnOrderer turnOrderer)
+            IUnitTurnOrderer turnOrderer,
+            IActionRepository actionRepository)
         {
             _commandEvaluationService = commandEvaluationService;
             _readOnlyMap = readOnlyMap;
@@ -37,12 +40,15 @@ namespace NonebNi.EditorConsole
             _commandsDataRepository = commandsDataRepository;
             _agentsService = agentsService;
             _turnOrderer = turnOrderer;
+            _actionRepository = actionRepository;
         }
 
         public void Handle(IConsoleCommand command, StringBuilder outputBuffer)
         {
             switch (command)
             {
+                #region Command Evaluation
+
                 case TeleportConsoleCommand teleportCommand:
                 {
                     if (_readOnlyMap.TryGet<UnitData>(teleportCommand.StartPos, out var unit))
@@ -58,15 +64,42 @@ namespace NonebNi.EditorConsole
                 }
 
                 case MoveConsoleCommand moveConsoleCommand:
-                {
                     _agentsService.OverrideDecision(
-                        new MoveDecision(
+                        new ActionDecision(
+                            ActionDatas.MoveAction,
                             _turnOrderer.CurrentUnit,
                             moveConsoleCommand.TargetPos
                         )
                     );
                     break;
+
+                case ActionConsoleCommand actionConsoleCommand:
+                {
+                    var action = _actionRepository.GetAction(actionConsoleCommand.ActionId);
+                    if (action == null)
+                    {
+                        outputBuffer.AppendLine(
+                            $"Unable to find action with matching action ID: {actionConsoleCommand.ActionId}"
+                        );
+                        break;
+                    }
+
+                    UnitData? unit;
+                    if (!actionConsoleCommand.ActorCoord.HasValue)
+                    {
+                        unit = _turnOrderer.CurrentUnit;
+                    }
+                    else if (!_readOnlyMap.TryGet(actionConsoleCommand.ActorCoord.Value, out unit))
+                    {
+                        break;
+                    }
+
+                    _ = EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoord));
+
+                    break;
                 }
+
+                #endregion
 
                 case EndTurnDecisionCommand:
                     _agentsService.OverrideDecision(EndTurnDecision.Instance);
