@@ -28,6 +28,18 @@ namespace NonebNi.Core.Coordinates
 
         public int Y => -X - Z;
 
+        public Coordinate[] Neighbours => new[]
+        {
+            this + HexDirection.West,
+            this + HexDirection.NorthWest,
+            this + HexDirection.NorthEast,
+            this + HexDirection.East,
+            this + HexDirection.SouthEast,
+            this + HexDirection.SouthWest
+        };
+
+        public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
+
         public Coordinate RotateRight()
         {
             return new Coordinate(-Y, -x);
@@ -58,6 +70,7 @@ namespace NonebNi.Core.Coordinates
 
         public static Coordinate operator +(Coordinate a, Coordinate b) => new(a.X + b.X, a.Z + b.Z);
         public static Coordinate operator -(Coordinate a, Coordinate b) => new(a.X - b.X, a.Z - b.Z);
+        public static Coordinate operator *(Coordinate a, int i) => new(a.X * i, a.Z * i);
 
         public static bool operator ==(Coordinate a, Coordinate b) => a.Equals(b);
 
