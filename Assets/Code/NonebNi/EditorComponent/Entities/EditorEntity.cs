@@ -60,7 +60,8 @@ namespace NonebNi.EditorComponent.Entities
             {
                 var currentPrefabStage = PrefabStageUtility.GetCurrentPrefabStage();
                 var isPrefabAsset = PrefabUtility.IsPartOfPrefabAsset(this);
-                var isEditingPrefab = currentPrefabStage != null && currentPrefabStage == StageUtility.GetStage(gameObject);
+                var isEditingPrefab = currentPrefabStage != null &&
+                                      currentPrefabStage == StageUtility.GetStage(gameObject);
                 if (isEditingPrefab || isPrefabAsset)
                 {
                     if (serializableGuid.Value != Guid.Empty)
