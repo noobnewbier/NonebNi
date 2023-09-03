@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Maps;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace NonebNi.Core.Coordinates
     ///     2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
     /// </summary>
     [Serializable]
-    public struct Coordinate : IEquatable<Coordinate>
+    public struct Coordinate : IActionTarget, IEquatable<Coordinate>
     {
         [SerializeField] private int x;
         [SerializeField] private int z;
@@ -27,19 +28,23 @@ namespace NonebNi.Core.Coordinates
 
         public int Y => -X - Z;
 
-        public Coordinate[] Neighbours => new[]
+        public Coordinate RotateRight()
         {
-            this + HexDirection.West,
-            this + HexDirection.NorthWest,
-            this + HexDirection.NorthEast,
-            this + HexDirection.East,
-            this + HexDirection.SouthEast,
-            this + HexDirection.SouthWest
-        };
+            return new Coordinate(-Y, -x);
+        }
 
-        public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
+        public Coordinate RotateLeft()
+        {
+            return new Coordinate(-z, -Y);
+        }
 
-        public override bool Equals(object obj) => obj is Coordinate other && Equals(other);
+        public Coordinate Normalized()
+        {
+            var normalizedCoordInVec = Vector3.Normalize(new Vector3(x, Y, z));
+            return new Coordinate(Mathf.RoundToInt(normalizedCoordInVec.x), Mathf.RoundToInt(normalizedCoordInVec.z));
+        }
+
+        public override bool Equals(object? obj) => obj is Coordinate other && Equals(other);
 
         public override int GetHashCode()
         {
