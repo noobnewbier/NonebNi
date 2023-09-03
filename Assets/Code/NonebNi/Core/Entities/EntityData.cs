@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Tiles;
 using UnityEngine;
 using UnityUtils.SerializableGuid;
@@ -17,11 +18,12 @@ namespace NonebNi.Core.Entities
     ///     SAUCE makes more sense(as that way we don't need reload for a better workflow?
     /// </summary>
     [Serializable]
-    public abstract class EntityData
+    public abstract class EntityData : IActionTarget
     {
         [SerializeField] private string name;
         [SerializeField] private SerializableGuid serializableGuid;
 
+        [field: SerializeField] public string FactionId { get; private set; }
 
         protected EntityData(string name, Guid serializableGuid, string factionId)
         {
@@ -30,9 +32,9 @@ namespace NonebNi.Core.Entities
             FactionId = factionId;
         }
 
-        [field: SerializeField] public string FactionId { get; private set; }
-
         public SerializableGuid Guid => serializableGuid;
         public string Name => name;
+
+        public override string ToString() => Name;
     }
 }
