@@ -19,7 +19,9 @@ namespace NonebNi.Ui.Sequences
 
         private readonly IEntityRepository _entityRepository;
 
-        public SequencePlayer(IEntityRepository entityRepository, ICoordinateAndPositionService coordinateAndPositionService)
+        public SequencePlayer(
+            IEntityRepository entityRepository,
+            ICoordinateAndPositionService coordinateAndPositionService)
         {
             _entityRepository = entityRepository;
             _coordinateAndPositionService = coordinateAndPositionService;
@@ -62,12 +64,26 @@ namespace NonebNi.Ui.Sequences
 
                         case MoveSequence moveSequence:
                         {
-                            var entity = _entityRepository.GetEntity(moveSequence.MovedUnit.Guid);
+                            var entity = _entityRepository.GetEntity(moveSequence.MovedEntity.Guid);
                             if (entity != null)
                                 yield return entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
                                     .Play(
                                         new MoveAnimSequence(
-                                            _coordinateAndPositionService.FindPosition(moveSequence.UnitCommandTargetCoord)
+                                            _coordinateAndPositionService.FindPosition(moveSequence.TargetCoord)
+                                        )
+                                    );
+
+                            break;
+                        }
+
+                        case KnockBackSequence knockBackSequence:
+                        {
+                            var entity = _entityRepository.GetEntity(knockBackSequence.MovedUnit.Guid);
+                            if (entity != null)
+                                yield return entity.GetAnimationControl<IPlayAnimation<KnockBackAnimSequence>>()
+                                    .Play(
+                                        new KnockBackAnimSequence(
+                                            _coordinateAndPositionService.FindPosition(knockBackSequence.TargetCoord)
                                         )
                                     );
 
