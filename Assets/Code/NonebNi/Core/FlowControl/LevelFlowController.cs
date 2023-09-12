@@ -74,6 +74,9 @@ namespace NonebNi.Core.FlowControl
                 UnitTurnOrderer.ToNextUnit();
                 Debug.Log("[Level] Finished Evaluation");
             }
+
+            // Expected, this should just run forever, until we have a exit/win/lose condition
+            // ReSharper disable once FunctionNeverReturns
         }
     }
 }
