@@ -28,8 +28,7 @@ namespace NonebNi.Core.Maps
     {
         Success,
         ErrorTargetOccupied,
-        ErrorMoverNotInMap,
-        ErrorNoTargetInStartPos,
+        ErrorNoEntityToBeMoved,
         NoEffect
     }
 
@@ -40,6 +39,7 @@ namespace NonebNi.Core.Maps
         MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData;
         bool Remove<T>(T entityData) where T : EntityData;
         MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData;
+        Coordinate Find<T>(T entityData) where T : EntityData;
     }
 
     /// <summary>
@@ -129,7 +129,8 @@ namespace NonebNi.Core.Maps
             try
             {
                 var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-                tileData = nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData;
+                tileData = nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)]
+                    .TileData;
                 return true;
             }
             catch (IndexOutOfRangeException)
@@ -206,6 +207,16 @@ namespace NonebNi.Core.Maps
             return false;
         }
 
+        public Coordinate Find<T>(T entityData) where T : EntityData
+        {
+            if (!TryFind(entityData, out Coordinate coordinate))
+            {
+                throw new InvalidOperationException($"{entityData.Name} does not exist on the map!");
+            }
+
+            return coordinate;
+        }
+
         private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
         {
             try
@@ -231,7 +242,7 @@ namespace NonebNi.Core.Maps
                     MoveResult.NoEffect : //Move to current pos does nothing 
                     MoveResult.ErrorTargetOccupied;
 
-            if (!Remove(entity)) return MoveResult.ErrorMoverNotInMap;
+            if (!Remove(entity)) return MoveResult.ErrorNoEntityToBeMoved;
 
             Set(targetCoord, entity);
             return MoveResult.Success;
@@ -239,7 +250,7 @@ namespace NonebNi.Core.Maps
 
         public MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData
         {
-            if (!TryGet<T>(startCoord, out var target)) return MoveResult.ErrorNoTargetInStartPos;
+            if (!TryGet<T>(startCoord, out var target)) return MoveResult.ErrorNoEntityToBeMoved;
 
             return Move(target, targetCoord);
         }

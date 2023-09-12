@@ -3,15 +3,15 @@ using NonebNi.Core.Entities;
 
 namespace NonebNi.Core.Sequences
 {
-    public class MoveSequence : ISequence
+    public class KnockBackSequence : ISequence
     {
-        public readonly EntityData MovedEntity;
+        public readonly EntityData MovedUnit;
         public readonly Coordinate TargetCoord;
 
-        public MoveSequence(EntityData movedEntity, Coordinate targetCoord)
+        public KnockBackSequence(EntityData movedUnit, Coordinate targetCoord)
         {
+            MovedUnit = movedUnit;
             TargetCoord = targetCoord;
-            MovedEntity = movedEntity;
         }
     }
 }
