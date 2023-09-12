@@ -4,6 +4,7 @@ using UnityEngine;
 namespace NonebNi.Core.Units.Skills
 {
     [Serializable]
+    [Obsolete("Replaced by action")]
     public class SkillData
     {
         [SerializeField] private string name;

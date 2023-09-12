@@ -11,8 +11,8 @@ namespace NonebNi.EditModeTests.GameLogic
     {
         private const string TestFactionId = "TestFaction";
 
-        public static readonly TileData Road = new("Road", 1);
-        public static readonly TileData Wall = new("Wall", TileData.ObstacleWeight);
+        public static readonly TileData Road = new("Road", 1, false);
+        public static readonly TileData Wall = new("Wall", TileData.ObstacleWeight, true);
 
         public static UnitData CreateDeadUnit() =>
             new(

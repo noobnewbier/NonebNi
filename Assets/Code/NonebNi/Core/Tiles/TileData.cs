@@ -9,21 +9,26 @@ namespace NonebNi.Core.Tiles
     [Serializable]
     public struct TileData
     {
-        public const int ObstacleWeight = 999999;
-        public static readonly TileData Default = new("Default", 1);
+        public const int ObstacleWeight = 9999;
+        public static readonly TileData Default = new("Default", 1, false);
 
         [SerializeField] private int weight;
         [SerializeField] private string name;
+        [field: SerializeField] public bool IsWall { get; private set; }
 
-        public TileData(string name, int weight)
+        public TileData(string name, int weight, bool isWall)
         {
             this.name = name;
             this.weight = weight;
+            IsWall = isWall;
         }
 
         public string Name => name;
 
-        public int Weight => weight;
+        public int Weight =>
+            IsWall ?
+                ObstacleWeight :
+                weight;
 
         public void CopyValueFrom(TileData tileData)
         {
