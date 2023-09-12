@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Decisions;
+using NonebNi.Core.Factions;
 
 namespace NonebNi.Core.Agents
 {
@@ -9,13 +10,13 @@ namespace NonebNi.Core.Agents
     /// </summary>
     public class DummyAgent : IAgent
     {
-        public DummyAgent(string factionId)
+        public DummyAgent(Faction faction)
         {
-            FactionId = factionId;
+            Faction = faction;
         }
 
-        public string FactionId { get; }
+        public Faction Faction { get; }
 
-        public UniTask<IDecision?> GetDecision(CancellationToken ct) => new UniTask<IDecision?>(new EndTurnDecision());
+        public UniTask<IDecision?> GetDecision(CancellationToken ct) => new(new EndTurnDecision());
     }
 }

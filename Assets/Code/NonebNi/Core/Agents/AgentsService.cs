@@ -23,7 +23,7 @@ namespace NonebNi.Core.Agents
 
         public AgentsService(IReadOnlyList<IAgent> agents)
         {
-            if (agents.GroupBy(a => a.FactionId).Any(g => g.Count() > 1))
+            if (agents.GroupBy(a => a.Faction).Any(g => g.Count() > 1))
                 Debug.LogError("More than one agent shares the same faction id - this is invalid");
 
             _agents = agents;
@@ -35,7 +35,7 @@ namespace NonebNi.Core.Agents
             _getDecisionCts = new CancellationTokenSource();
             _overridingDecision = null;
 
-            var agent = _agents.FirstOrDefault(a => a.FactionId == factionId);
+            var agent = _agents.FirstOrDefault(a => a.Faction.Id == factionId);
             if (agent == null) return null;
 
             var ct = _getDecisionCts.Token;

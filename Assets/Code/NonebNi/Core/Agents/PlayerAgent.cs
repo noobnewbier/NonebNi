@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Decisions;
+using NonebNi.Core.Factions;
 
 namespace NonebNi.Core.Agents
 {
@@ -16,12 +17,12 @@ namespace NonebNi.Core.Agents
     {
         private IDecision? _decision;
 
-        public PlayerAgent(string factionId)
+        public PlayerAgent(Faction faction)
         {
-            FactionId = factionId;
+            Faction = faction;
         }
 
-        public string FactionId { get; }
+        public Faction Faction { get; }
 
         public async UniTask<IDecision?> GetDecision(CancellationToken ct)
         {
