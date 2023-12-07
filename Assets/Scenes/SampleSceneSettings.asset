@@ -21,10 +21,12 @@ MonoBehaviour:
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas:
       - serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
         entityData:
@@ -41,94 +43,117 @@ MonoBehaviour:
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas:
       - serializedGuid: 02e86fd465fe8244ab6689e836e8394a
         entityData:
@@ -145,313 +170,378 @@ MonoBehaviour:
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
+        <IsWall>k__BackingField: 0
       serializedUnitDatas: []
-  worldConfigScriptable: {fileID: 11400000, guid: 5aff3723d83826146b1e0d681e761d21, type: 2}
+  terrainConfigScriptable: {fileID: 11400000, guid: 5aff3723d83826146b1e0d681e761d21, type: 2}
   levelName: NoobScene
-  factions:
-  - <Id>k__BackingField: Player
-    <AlliesId>k__BackingField:
-    - AllyNpc
-  - <Id>k__BackingField: AllyNpc
-    <AlliesId>k__BackingField:
-    - Player
-  - <Id>k__BackingField: EnemyNpc
-    <AlliesId>k__BackingField: []
-  - <Id>k__BackingField: Neutral
-    <AlliesId>k__BackingField: []
+  factionsDataSource: {fileID: 11400000, guid: 61366a918dde4dc429b054a9febf26b3, type: 2}
