@@ -34,7 +34,9 @@ namespace NonebNi.LevelEditor.Level
 
         [SerializeField] private EditorMap editorMap = new(10, 10);
 
-        [SerializeField] private TerrainConfigSource? worldConfigScriptable;
+        //TODO: this should really be synced with LevelRunner.terrainConfig - I don't know what happened with this mess :), atm these two might not be synced and there's no mechanism to make sure they are either.
+        [FormerlySerializedAs("worldConfigScriptable")] [SerializeField]
+        private TerrainConfigSource? terrainConfigScriptable;
 
         //TODO: somehow fit in meshes info here.
         [SerializeField] private string levelName = string.Empty;

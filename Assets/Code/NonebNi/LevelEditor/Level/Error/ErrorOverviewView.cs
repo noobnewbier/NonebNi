@@ -10,7 +10,7 @@ using UnityUtils.Factories;
 
 namespace NonebNi.LevelEditor.Level.Error
 {
-    public class ErrorOverviewView
+    public class ErrorOverviewView : IDisposable
     {
         private const float RectWidth = 100;
 
@@ -26,9 +26,25 @@ namespace NonebNi.LevelEditor.Level.Error
             _presenter = presenterFactory.Create(this);
         }
 
+        public void Dispose()
+        {
+            foreach (var container in _sceneViewAndErrorsContainer.Values)
+            {
+                container.RemoveFromHierarchy();
+            }
+        }
+
         public void OnSceneDraw(Vector2 startingPosition, SceneView sceneView)
         {
-            if (!_presenter.IsDrawing) return;
+            if (!_presenter.IsDrawing)
+            {
+                if (_sceneViewAndErrorsContainer.TryGetValue(sceneView, out var errorEntryContainer))
+                {
+                    errorEntryContainer.style.display = DisplayStyle.None;
+                }
+
+                return;
+            }
 
             var errors = _presenter.ErrorEntries.ToArray();
 
@@ -118,6 +134,7 @@ namespace NonebNi.LevelEditor.Level.Error
                 errorEntryContainer.Q<Label>(noErrorLabel).style.display = errors.Any() ?
                     DisplayStyle.None :
                     DisplayStyle.Flex;
+                errorEntryContainer.style.display = DisplayStyle.Flex;
             }
 
             void DrawErrorDescriptionInSceneView()
@@ -126,7 +143,8 @@ namespace NonebNi.LevelEditor.Level.Error
                 var selectedAnyErrorSource =
                     Selection.gameObjects.Intersect(drawnErrors.Select(e => e.ErrorSource.gameObject)).Any();
                 if (selectedAnyErrorSource)
-                    drawnErrors = drawnErrors.Where(e => Selection.gameObjects.Contains(e.ErrorSource.gameObject)).ToArray();
+                    drawnErrors = drawnErrors.Where(e => Selection.gameObjects.Contains(e.ErrorSource.gameObject))
+                        .ToArray();
 
                 foreach (var errorGroup in drawnErrors.GroupBy(e => e.ErrorSource))
                 {
