@@ -45,5 +45,7 @@ namespace NonebNi.EditorComponent.Entities
         }
 
         public override EntityData ToEntityData() => entityData;
+
+        public T ToTypedEntityData() => entityData;
     }
 }

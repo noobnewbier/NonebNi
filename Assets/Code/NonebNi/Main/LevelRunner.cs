@@ -25,10 +25,13 @@ namespace NonebNi.Main
         private ILevelUi _levelUi = null!;
         public LevelData? LevelData { get; private set; }
         public ILevelFlowController? LevelFlowController { get; private set; }
+        public TerrainConfigData? TerrainConfig { get; private set; }
 
         private void Awake()
         {
             LevelData = levelDataSource.GetData();
+            TerrainConfig = terrainConfig.CreateData();
+
             var levelContainer = new LevelContainer(
                 cameraControl.Config,
                 cameraControl.TargetCamera,
@@ -37,7 +40,7 @@ namespace NonebNi.Main
                 cameraControl,
                 terrain,
                 unitDetailStat,
-                terrainConfig.CreateData(),
+                TerrainConfig,
                 new TerrainMeshData()
             );
             LevelFlowController = levelContainer.Resolve<ILevelFlowController>().Value;

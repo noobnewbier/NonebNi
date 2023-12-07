@@ -33,9 +33,9 @@ namespace NonebNi.LevelEditor.Level.Settings
             //todo:
             GUILayout.Label("NOT IMPL: MapDimensions Changes", NonebGUIStyle.Error);
 
-            levelDataSource.WorldConfig = EditorGUILayout.ObjectField(
-                nameof(levelDataSource.WorldConfig),
-                levelDataSource.WorldConfig,
+            levelDataSource.TerrainConfig = EditorGUILayout.ObjectField(
+                nameof(levelDataSource.TerrainConfig),
+                levelDataSource.TerrainConfig,
                 typeof(TerrainConfigSource),
                 false
             ) as TerrainConfigSource;

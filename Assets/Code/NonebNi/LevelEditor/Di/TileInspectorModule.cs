@@ -1,4 +1,4 @@
-﻿using NonebNi.LevelEditor.Level.Maps;
+﻿using NonebNi.Core.Maps;
 using NonebNi.LevelEditor.Level.Tiles;
 using NonebNi.Terrain;
 using StrongInject;
@@ -10,7 +10,7 @@ namespace NonebNi.LevelEditor.Di
     {
         [Factory]
         public static TileInspectorView ProvideTileInspectorView(
-            IEditorMap map,
+            IReadOnlyMap map,
             NonebEditorModel nonebEditorModel,
             ICoordinateAndPositionService coordinateAndPositionService,
             TerrainConfigData terrainConfig)

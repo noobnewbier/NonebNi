@@ -8,6 +8,7 @@ using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityUtils.Constants;
 
 namespace NonebNi.LevelEditor.Level
@@ -45,14 +46,14 @@ namespace NonebNi.LevelEditor.Level
             scene.name :
             null;
 
-        public bool IsValid => worldConfigScriptable != null && scene != null;
+        public bool IsValid => terrainConfigScriptable != null && scene != null;
 
-        public TerrainConfigSource? WorldConfig
+        public TerrainConfigSource? TerrainConfig
         {
-            get => worldConfigScriptable;
+            get => terrainConfigScriptable;
             set
             {
-                worldConfigScriptable = value;
+                terrainConfigScriptable = value;
                 EditorUtility.SetDirty(this);
             }
         }
@@ -60,7 +61,7 @@ namespace NonebNi.LevelEditor.Level
         public EditorLevelData? CreateData() =>
             IsValid ?
                 new EditorLevelData(
-                    worldConfigScriptable!.CreateData(),
+                    terrainConfigScriptable!.CreateData(),
                     editorMap,
                     levelName,
                     factionsDataSource.Factions
@@ -71,14 +72,14 @@ namespace NonebNi.LevelEditor.Level
         public void CopyFromData(EditorLevelData editorLevelData)
         {
             editorMap = editorLevelData.Map;
-            if (worldConfigScriptable != null)
+            if (terrainConfigScriptable != null)
             {
-                worldConfigScriptable.CopyFromData(editorLevelData.TerrainConfig);
+                terrainConfigScriptable.CopyFromData(editorLevelData.TerrainConfig);
             }
             else
             {
-                worldConfigScriptable = TerrainConfigSource.Create(editorLevelData.TerrainConfig);
-                AssetDatabase.CreateAsset(worldConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
+                terrainConfigScriptable = TerrainConfigSource.Create(editorLevelData.TerrainConfig);
+                AssetDatabase.CreateAsset(terrainConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
             }
 
             if (dataSource == null)

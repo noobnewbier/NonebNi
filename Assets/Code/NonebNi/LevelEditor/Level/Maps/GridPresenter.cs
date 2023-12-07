@@ -1,19 +1,20 @@
-﻿namespace NonebNi.LevelEditor.Level.Maps
+﻿using NonebNi.Core.Maps;
+
+namespace NonebNi.LevelEditor.Level.Maps
 {
     public class GridPresenter
     {
         private readonly GridView _gridView;
-        private readonly LevelEditorModel _levelEditorModel;
         private readonly NonebEditorModel _nonebEditorModel;
 
-        public GridPresenter(GridView gridView, LevelEditorModel levelEditorModel, NonebEditorModel nonebEditorModel)
+        public GridPresenter(GridView gridView, NonebEditorModel nonebEditorModel, IReadOnlyMap map)
         {
             _gridView = gridView;
-            _levelEditorModel = levelEditorModel;
             _nonebEditorModel = nonebEditorModel;
+            Map = map;
         }
 
         public bool IsDrawingGrid => _nonebEditorModel.IsGridVisible;
-        public IEditorMap Map => _levelEditorModel.EditorMap;
+        public IReadOnlyMap Map { get; }
     }
 }
