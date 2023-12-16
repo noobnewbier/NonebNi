@@ -5,6 +5,7 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
+using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
@@ -52,14 +53,22 @@ namespace NonebNi.EditorConsole
                 case TeleportConsoleCommand teleportCommand:
                 {
                     if (_readOnlyMap.TryGet<UnitData>(teleportCommand.StartPos, out var unit))
-                        _ = EvaluateSequence(new TeleportCommand(unit, teleportCommand.TargetPos));
+                        _ = EvaluateSequence(
+                            new ActionCommand(teleportCommand.GetAction(), unit, teleportCommand.TargetPos)
+                        );
                     break;
                 }
 
                 case DamageConsoleCommand damageConsoleCommand:
                 {
-                    if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out var unit))
-                        _ = EvaluateSequence(new DamageCommand(damageConsoleCommand.Damage, unit));
+                    if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out _))
+                        _ = EvaluateSequence(
+                            new ActionCommand(
+                                damageConsoleCommand.GetAction(),
+                                SystemEntity.Instance,
+                                damageConsoleCommand.Coordinate
+                            )
+                        );
                     break;
                 }
 

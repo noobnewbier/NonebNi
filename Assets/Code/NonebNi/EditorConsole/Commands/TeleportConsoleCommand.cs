@@ -1,4 +1,6 @@
 ﻿using JetBrains.Annotations;
+using NonebNi.Core.Actions;
+using NonebNi.Core.Actions.Effects;
 using NonebNi.Core.Coordinates;
 using NonebNi.EditorConsole.Commands.Attributes;
 
@@ -9,7 +11,7 @@ namespace NonebNi.EditorConsole.Commands
         "teleport target to coordinate, regardless if there's a path between the start and target position"
     )]
     [UsedImplicitly]
-    public class TeleportConsoleCommand : IConsoleCommand
+    public class TeleportConsoleCommand : IConsoleActionCommand
     {
         public readonly Coordinate StartPos;
         public readonly Coordinate TargetPos;
@@ -22,6 +24,19 @@ namespace NonebNi.EditorConsole.Commands
         {
             StartPos = startPos;
             TargetPos = targetPos;
+        }
+
+        public NonebAction GetAction()
+        {
+            return new NonebAction(
+                "debug-teleport",
+                10000,
+                TargetRestriction.NonOccupied,
+                TargetArea.Single,
+                "none",
+                0,
+                new Effect[] { new MoveEffect() }
+            );
         }
     }
 }

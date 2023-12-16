@@ -15,18 +15,12 @@ namespace NonebNi.Core.FlowControl
     public class CommandEvaluationService : ICommandEvaluationService, ICommandHandler<ComboCommand>
     {
         private readonly ICommandHandler<ActionCommand> _actionCommandHandler;
-        private readonly ICommandHandler<DamageCommand> _damageCommandHandler;
         private readonly ICommandHandler<EndTurnCommand> _endTurnCommandHandler;
-        private readonly ICommandHandler<TeleportCommand> _teleportCommandHandler;
 
         public CommandEvaluationService(
-            ICommandHandler<DamageCommand> damageCommandHandler,
-            ICommandHandler<TeleportCommand> teleportCommandHandler,
             ICommandHandler<EndTurnCommand> endTurnCommandHandler,
             ICommandHandler<ActionCommand> actionCommandHandler)
         {
-            _damageCommandHandler = damageCommandHandler;
-            _teleportCommandHandler = teleportCommandHandler;
             _endTurnCommandHandler = endTurnCommandHandler;
             _actionCommandHandler = actionCommandHandler;
         }
@@ -35,8 +29,6 @@ namespace NonebNi.Core.FlowControl
         {
             return command switch
             {
-                DamageCommand damageCommand => _damageCommandHandler.Evaluate(damageCommand),
-                TeleportCommand teleportCommand => _teleportCommandHandler.Evaluate(teleportCommand),
                 EndTurnCommand endTurnCommand => _endTurnCommandHandler.Evaluate(endTurnCommand),
                 ActionCommand actionCommand => _actionCommandHandler.Evaluate(actionCommand),
 

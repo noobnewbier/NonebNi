@@ -5,7 +5,7 @@ using UnityEngine;
 namespace NonebNi.Core.Actions
 {
     [Serializable]
-    public class Action
+    public class NonebAction
     {
         [field: SerializeField] public string Id { get; private set; }
         [field: SerializeField] public int Range { get; private set; }
@@ -14,7 +14,7 @@ namespace NonebNi.Core.Actions
         [field: SerializeField] public string RangeModifierId { get; private set; }
         [field: SerializeField] public int FatigueCost { get; private set; }
 
-        public Action(
+        public NonebAction(
             string id,
             int range,
             TargetRestriction targetRestriction,

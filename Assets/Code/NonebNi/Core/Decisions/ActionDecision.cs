@@ -6,11 +6,11 @@ namespace NonebNi.Core.Decisions
 {
     public class ActionDecision : IDecision
     {
-        public readonly Action Action;
+        public readonly NonebAction Action;
         public readonly EntityData ActorEntity;
         public readonly Coordinate TargetCoord;
 
-        public ActionDecision(Action action, EntityData actorEntity, Coordinate targetCoord)
+        public ActionDecision(NonebAction action, EntityData actorEntity, Coordinate targetCoord)
         {
             Action = action;
             ActorEntity = actorEntity;

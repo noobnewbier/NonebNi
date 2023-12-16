@@ -6,6 +6,7 @@ using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
+using Unity.Logging;
 
 namespace NonebNi.Core.Commands.Handlers
 {
@@ -63,7 +64,17 @@ namespace NonebNi.Core.Commands.Handlers
                     yield return targetCoord;
                     break;
                 case TargetArea.Fan:
-                    if (_map.TryFind(actor, out Coordinate actorCoord)) yield break;
+                    if (actor.IsSystem)
+                    {
+                        Log.Error($"{TargetArea.Fan} is not supported for System Entity");
+                        yield break;
+                    }
+
+                    if (_map.TryFind(actor, out Coordinate actorCoord))
+                    {
+                        Log.Error("Actor is not found on the map. We can't figure out the direction of the fan!");
+                        yield break;
+                    }
 
                     var relativeCoord = targetCoord - actorCoord;
                     yield return targetCoord;

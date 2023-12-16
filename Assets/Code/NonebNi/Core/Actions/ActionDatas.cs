@@ -5,7 +5,7 @@ namespace NonebNi.Core.Actions
     //TODO: this is temporary before we figure out how do we store action/effects, most likely through SO w/ potential to transition to Json 
     public static class ActionDatas
     {
-        public static readonly Action MoveAction = new Action(
+        public static readonly NonebAction MoveAction = new(
             "move",
             1,
             TargetRestriction.NonOccupied,
@@ -15,10 +15,10 @@ namespace NonebNi.Core.Actions
             new Effect[] { new MoveEffect() }
         );
 
-        public static Action[] Actions = new[]
+        public static NonebAction[] Actions =
         {
             MoveAction,
-            new Action(
+            new(
                 "bash",
                 1,
                 TargetRestriction.Enemy,

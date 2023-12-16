@@ -1,4 +1,6 @@
 ﻿using JetBrains.Annotations;
+using NonebNi.Core.Actions;
+using NonebNi.Core.Actions.Effects;
 using NonebNi.Core.Coordinates;
 using NonebNi.EditorConsole.Commands.Attributes;
 
@@ -6,7 +8,7 @@ namespace NonebNi.EditorConsole.Commands
 {
     [Command("damage", "inflicts set amount of damage to unit on coordinate")]
     [UsedImplicitly]
-    public class DamageConsoleCommand : IConsoleCommand
+    public class DamageConsoleCommand : IConsoleActionCommand
     {
         public readonly Coordinate Coordinate;
         public readonly int Damage;
@@ -19,6 +21,19 @@ namespace NonebNi.EditorConsole.Commands
         {
             Coordinate = coordinate;
             Damage = damage;
+        }
+
+        public NonebAction GetAction()
+        {
+            return new NonebAction(
+                "debug-damage",
+                10000,
+                TargetRestriction.None,
+                TargetArea.Single,
+                "none",
+                0,
+                new Effect[] { new DamageEffect(Damage) }
+            );
         }
     }
 }
