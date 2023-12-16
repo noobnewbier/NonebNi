@@ -11,7 +11,8 @@ namespace NonebNi.Ui.Animation
         IPlayAnimation<DieAnimSequence>,
         IPlayAnimation<TeleportAnimSequence>,
         IPlayAnimation<MoveAnimSequence>,
-        IPlayAnimation<KnockBackAnimSequence>
+        IPlayAnimation<KnockBackAnimSequence>,
+        IPlayAnimation<DamageAnimSequence>
     {
         [SerializeField] private Animator animator = null!;
 
@@ -23,6 +24,34 @@ namespace NonebNi.Ui.Animation
 
         [AnimatorLayer(nameof(animator))] [SerializeField]
         private int finishAnimLayerIndex;
+
+        public Coroutine Play(DamageAnimSequence sequence)
+        {
+            IEnumerator Coroutine()
+            {
+                //just a quick jump for now, we can improve this later:
+                var originalPos = transform.position;
+                var peakPos = originalPos + Vector3.up;
+
+                while (transform.position.y < peakPos.y)
+                {
+                    var newPos = Vector3.MoveTowards(transform.position, peakPos, 0.1f * Time.deltaTime);
+                    transform.position = newPos;
+
+                    yield return null;
+                }
+
+                while (transform.position.y > originalPos.y)
+                {
+                    var newPos = Vector3.MoveTowards(transform.position, originalPos, 0.1f * Time.deltaTime);
+                    transform.position = newPos;
+
+                    yield return null;
+                }
+            }
+
+            return StartCoroutine(Coroutine());
+        }
 
         [ContextMenu("Die")]
         public Coroutine Play(DieAnimSequence sequence)
