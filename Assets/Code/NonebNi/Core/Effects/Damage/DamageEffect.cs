@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using NonebNi.Core.Units;
 
-namespace NonebNi.Core.Actions.Effects
+namespace NonebNi.Core.Effects
 {
     //TODO: implement all those effecto
     public class DamageEffect : Effect
@@ -13,9 +14,9 @@ namespace NonebNi.Core.Actions.Effects
         //TODO: probs need to take in multiplier + some consts instead? Need to do this asap otherwise code had to work on assumption(which they kind of have to anyway)
         //https://www.notion.so/Action-System-eda1779accf74f97906f1cf9047f9506?pvs=4
         //We can probs do this by creating a Damage class to formulate different type of damage (magic damage scale with magic, constant damage just go, etc)
-        private readonly int _damage;
+        private readonly Damage _damage;
 
-        public DamageEffect(int damage)
+        public DamageEffect(Damage damage)
         {
             _damage = damage;
         }
@@ -29,7 +30,8 @@ namespace NonebNi.Core.Actions.Effects
             {
                 if (target is not UnitData damageReceiver) continue;
 
-                damageReceiver.Health -= _damage;
+                var damageAmount = _damage.CalculateDamage(damageReceiver);
+                damageReceiver.Health -= damageAmount;
 
                 if (damageReceiver.Health <= 0)
                 {
@@ -42,7 +44,7 @@ namespace NonebNi.Core.Actions.Effects
                 }
                 else
                 {
-                    yield return new DamageSequence(actionCaster, damageReceiver, _damage);
+                    yield return new DamageSequence(actionCaster, damageReceiver, damageAmount);
                 }
             }
         }
