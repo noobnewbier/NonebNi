@@ -89,6 +89,18 @@ namespace NonebNi.Ui.Sequences
 
                             break;
                         }
+
+                        case DamageSequence damageSequence:
+                        {
+                            var entity = _entityRepository.GetEntity(damageSequence.DamageReceiver.Guid);
+                            if (entity != null)
+                                yield return entity.GetAnimationControl<IPlayAnimation<DamageAnimSequence>>()
+                                    .Play(
+                                        new DamageAnimSequence()
+                                    );
+
+                            break;
+                        }
                     }
             }
 
