@@ -1,4 +1,4 @@
-﻿using NonebNi.Core.Actions.Effects;
+﻿using NonebNi.Core.Effects;
 
 namespace NonebNi.Core.Actions
 {

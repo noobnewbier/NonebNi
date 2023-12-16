@@ -1,6 +1,6 @@
 ﻿using System;
 using Moq;
-using NonebNi.Core.Actions.Effects;
+using NonebNi.Core.Effects;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NUnit.Framework;

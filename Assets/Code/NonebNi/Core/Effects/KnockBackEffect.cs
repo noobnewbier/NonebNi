@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
@@ -8,7 +9,7 @@ using NonebNi.Core.Units;
 using Unity.Logging;
 using UnityEngine;
 
-namespace NonebNi.Core.Actions.Effects
+namespace NonebNi.Core.Effects
 {
     [Serializable]
     public class KnockBackEffect : Effect

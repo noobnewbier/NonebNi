@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 
-namespace NonebNi.Core.Actions.Effects
+namespace NonebNi.Core.Effects
 {
     [Serializable]
     public abstract class Effect

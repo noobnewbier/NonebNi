@@ -1,5 +1,5 @@
 ﻿using System;
-using NonebNi.Core.Actions.Effects;
+using NonebNi.Core.Effects;
 using UnityEngine;
 
 namespace NonebNi.Core.Actions

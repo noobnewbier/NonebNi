@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using NonebNi.Core.Actions;
-using NonebNi.Core.Actions.Effects;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Effects;
 using NonebNi.EditorConsole.Commands.Attributes;
 
 namespace NonebNi.EditorConsole.Commands
