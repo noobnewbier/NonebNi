@@ -18,6 +18,12 @@ namespace NonebNi.Core.Actions.Effects
             IEnumerable<IActionTarget> targets)
         {
             var targetParam = targets.FirstOrDefault();
+            if (targetParam == null)
+            {
+                Log.Error("Move effect without any target makes no sense!");
+                yield break;
+            }
+
             if (targetParam is not Coordinate targetCoord)
             {
                 Log.Info(
