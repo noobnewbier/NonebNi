@@ -36,7 +36,7 @@ namespace NonebNi.Core.Maps
     public interface IMap : IReadOnlyMap
     {
         void Set(Coordinate axialCoordinate, TileData tileData);
-        MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData;
+        MoveResult Move(EntityData entity, Coordinate targetCoord);
         void Put(Coordinate axialCoordinate, EntityData value);
         bool Remove<T>(T entityData) where T : EntityData;
         MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData;
@@ -243,16 +243,15 @@ namespace NonebNi.Core.Maps
             node.Put(value);
         }
 
-        public MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData
+        public MoveResult Move(EntityData entity, Coordinate targetCoord)
         {
-            if (TryGet<T>(targetCoord, out var targetPosEntity))
-                return entity == targetPosEntity ?
-                    MoveResult.NoEffect : //Move to current pos does nothing 
-                    MoveResult.ErrorTargetOccupied;
+            if (!TryFind(entity, out Coordinate currentCoord)) return MoveResult.ErrorEntityIsNotOnBoard;
+            if (currentCoord == targetCoord) return MoveResult.NoEffect;
+            if (IsOccupied(targetCoord)) return MoveResult.ErrorTargetOccupied;
 
-            if (!Remove(entity)) return MoveResult.ErrorNoEntityToBeMoved;
+            Remove(entity);
+            Put(targetCoord, entity);
 
-            Set(targetCoord, entity);
             return MoveResult.Success;
         }
 
