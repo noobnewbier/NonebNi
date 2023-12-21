@@ -29,7 +29,9 @@ namespace NonebNi.Core.Pathfinding
             var isOnMap = _map.TryFind(unit, out Coordinate unitPos);
             if (!isOnMap)
             {
-                Debug.LogWarning("Trying to find a path from a unit that doesn't exist on the map - something went wrong?");
+                Debug.LogWarning(
+                    "Trying to find a path from a unit that doesn't exist on the map - something went wrong?"
+                );
                 return (false, Enumerable.Empty<Coordinate>());
             }
 
@@ -50,8 +52,8 @@ namespace NonebNi.Core.Pathfinding
              *  2. Early exit when we reached a max distance(e.g. unit's max moving distance)
              *
              * But for now we should be good.
-             * 
-             * ref: https://en.wikipedia.org/wiki/A*_search_algorithm 
+             *
+             * ref: https://en.wikipedia.org/wiki/A*_search_algorithm
              */
 
             //No path exists if the goal coordinate is already occupied.
@@ -104,7 +106,7 @@ namespace NonebNi.Core.Pathfinding
                     gScore[neighbour] = tentativeGScore;
                     fScore[neighbour] = tentativeGScore + Heuristic(neighbour, goal);
 
-                    if (!openSet.Contains(neighbour)) openSet.Add(neighbour);
+                    openSet.Add(neighbour);
                 }
             }
 

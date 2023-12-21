@@ -223,9 +223,7 @@ namespace NonebNi.Core.Maps
         public Coordinate Find(EntityData entityData)
         {
             if (!TryFind(entityData, out Coordinate coordinate))
-            {
                 throw new InvalidOperationException($"{entityData.Name} does not exist on the map!");
-            }
 
             return coordinate;
         }
