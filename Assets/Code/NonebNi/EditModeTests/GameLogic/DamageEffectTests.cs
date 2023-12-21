@@ -19,10 +19,9 @@ namespace NonebNi.EditModeTests.GameLogic
             var deadUnit = TestData.CreateDeadUnit();
             mockMap.Setup(m => m.Remove(deadUnit)).Returns(true);
 
-            using var enumerator = _damageEffect
+            _damageEffect
                 .Evaluate(mockMap.Object, SystemEntity.Instance, new[] { deadUnit })
-                .GetEnumerator();
-            while (enumerator.MoveNext()) { }
+                .EvaluateEnumerable();
 
             mockMap.Verify(m => m.Remove(deadUnit), Times.Once);
         }
@@ -48,10 +47,9 @@ namespace NonebNi.EditModeTests.GameLogic
             var mockMap = new Mock<IMap>();
             var livingUnit = TestData.CreateLivingUnit();
 
-            using var enumerator = _damageEffect
+            _damageEffect
                 .Evaluate(mockMap.Object, SystemEntity.Instance, new[] { livingUnit })
-                .GetEnumerator();
-            while (enumerator.MoveNext()) { }
+                .EvaluateEnumerable();
 
             mockMap.Verify(m => m.Remove(livingUnit), Times.Never);
         }
