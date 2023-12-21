@@ -72,7 +72,7 @@ namespace NonebNi.Core.Effects
                         yield return new KnockBackSequence(targetUnit, finalCoord);
                         break;
 
-                    case MoveResult.ErrorNoEntityToBeMoved:
+                    case MoveResult.ErrorEntityIsNotOnBoard:
                         Log.Error($"[Effect] Target({targetUnit}) does not exist in the map!");
                         break;
 

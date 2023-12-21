@@ -29,7 +29,7 @@ namespace NonebNi.Core.Maps
     {
         Success,
         ErrorTargetOccupied,
-        ErrorNoEntityToBeMoved,
+        ErrorEntityIsNotOnBoard,
         NoEffect
     }
 
@@ -257,7 +257,7 @@ namespace NonebNi.Core.Maps
 
         public MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData
         {
-            if (!TryGet<T>(startCoord, out var target)) return MoveResult.ErrorNoEntityToBeMoved;
+            if (!TryGet<T>(startCoord, out var target)) return MoveResult.ErrorEntityIsNotOnBoard;
 
             return Move(target, targetCoord);
         }
