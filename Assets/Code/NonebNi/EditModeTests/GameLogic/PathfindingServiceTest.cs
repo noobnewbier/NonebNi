@@ -45,7 +45,6 @@ namespace NonebNi.EditModeTests.GameLogic
         [Test]
         public void FindPath_MultiplePathExist_ReturnShorterPath()
         {
-            //TODO: failing test! https://www.notion.so/Test-FindPath_MultiplePathExist_ReturnShorterPath-is-Failing-84aef681a5574e718f054abd12c175a1?pvs=4
             SetUpMap(
                 new[,]
                 {
@@ -63,7 +62,14 @@ namespace NonebNi.EditModeTests.GameLogic
             Assert.IsTrue(result.isPathExist);
             Assert.That(
                 result.path,
-                Is.EquivalentTo(new[] { new StorageCoordinate(1, 1).ToAxial(), new StorageCoordinate(2, 2).ToAxial() })
+                Is.EquivalentTo(
+                    new[]
+                    {
+                        new StorageCoordinate(0, 1).ToAxial(),
+                        new StorageCoordinate(1, 1).ToAxial(),
+                        new StorageCoordinate(2, 2).ToAxial()
+                    }
+                )
             );
         }
 
