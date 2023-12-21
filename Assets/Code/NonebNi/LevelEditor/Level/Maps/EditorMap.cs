@@ -124,6 +124,13 @@ namespace NonebNi.LevelEditor.Level.Maps
                     yield return unitData.ToTypedEntityData();
         }
 
+        public bool IsOccupied(Coordinate axialCoordinate)
+        {
+            var node = GetNodeFromCoordinate(axialCoordinate);
+
+            return node.CurrentOccupier != null;
+        }
+
         bool IReadOnlyMap.TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out TileData? tileData)
         {
             var result = TryGet(axialCoordinate, out var data);
@@ -243,8 +250,10 @@ namespace NonebNi.LevelEditor.Level.Maps
 
         public void Set<T>(Coordinate axialCoordinate, T? value) where T : EditorEntityData
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            nodes[GetIndexFromStorageCoordinate(storageCoordinate)].Set(value);
+            var node = GetNodeFromCoordinate(axialCoordinate);
+
+            node.RemoveAll<T>();
+            if (value != null) node.Put(value);
         }
 
         public bool Remove(EditorEntityData entityData)

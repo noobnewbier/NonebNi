@@ -11,5 +11,7 @@ namespace NonebNi.Core.Entities
             serializableGuid,
             factionId
         ) { }
+
+        public override bool IsTileOccupier => false;
     }
 }

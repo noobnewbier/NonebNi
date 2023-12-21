@@ -13,15 +13,23 @@ namespace NonebNi.Core.Tiles
     [Serializable]
     public class TileModifierData : EntityData
     {
-        public TileModifierData(string name, Guid serializableGuid, string factionId, TileData tileData) : base(
+        [field: SerializeField] public TileData TileData { get; private set; }
+
+        public TileModifierData(
+            string name,
+            Guid serializableGuid,
+            string factionId,
+            TileData tileData,
+            bool isTileOccupier) : base(
             name,
             serializableGuid,
             factionId
         )
         {
             TileData = tileData;
+            IsTileOccupier = isTileOccupier;
         }
 
-        [field: SerializeField] public TileData TileData { get; private set; }
+        public override bool IsTileOccupier { get; }
     }
 }

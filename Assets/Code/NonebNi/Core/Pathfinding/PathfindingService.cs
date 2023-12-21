@@ -54,6 +54,9 @@ namespace NonebNi.Core.Pathfinding
              * ref: https://en.wikipedia.org/wiki/A*_search_algorithm 
              */
 
+            //No path exists if the goal coordinate is already occupied.
+            if (_map.IsOccupied(goal)) return (false, Enumerable.Empty<Coordinate>());
+
             var openSet = new HashSet<Coordinate>
             {
                 start

@@ -61,6 +61,8 @@ namespace NonebNi.Core.Units
             set => health = Mathf.Clamp(value, 0, maxHealth);
         }
 
+        public override bool IsTileOccupier => true;
+
         public UnitData WithSpeed(int newSpeed)
         {
             var newData = new UnitData(this)

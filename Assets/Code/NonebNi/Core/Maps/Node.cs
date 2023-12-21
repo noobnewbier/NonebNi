@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
+using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Maps
 {
     /// <summary>
-    ///     The internal storage of <see cref="Map" />
-    ///     A <see cref="Node" /> MUST have a <see cref="TileData" />, and may contains some <see cref="EntityData" />
-    ///     Assumption:
-    ///     For any type of <see cref="EntityData" />, a node can only hold at most 1 of it.
+    /// The internal storage of <see cref="Map" />
+    /// A <see cref="Node" /> MUST have a <see cref="TileData" />, and may contains some <see cref="EntityData" />
+    ///
+    /// Assumption:
+    /// 1. For any type of <see cref="EntityData" />, a node can hold any amount of it.
+    /// 2. At any node, at most 1 <see cref="EntityData"/> can be occupying it(i.e. <see cref="EntityData.IsTileOccupier"/>)
     /// </summary>
     [Serializable] //Unity doesn't support polymorphism + Serialization, we need to hand craft it
     public class Node
@@ -42,19 +45,29 @@ namespace NonebNi.Core.Maps
             }
         }
 
+        public EntityData? CurrentOccupier => entityDatas.FirstOrDefault(e => e.IsTileOccupier);
+
         public T? Get<T>() where T : EntityData => entityDatas.OfType<T>().FirstOrDefault();
         public bool Has<T>(T entityData) where T : EntityData => entityDatas.Contains(entityData);
         public bool Remove(EntityData entityData) => entityDatas.Remove(entityData);
 
-        public void Set<T>(T? entityData) where T : EntityData
+        public void Put(EntityData entityData)
         {
-            if (typeof(T) == typeof(EntityData))
-                Debug.LogWarning(
-                    $"I am fairly certain you don't want to nuke everything in the {nameof(entityDatas)}, future me are you sure this is what you want?"
-                );
+            if (entityDatas.Contains(entityData)) return;
 
-            entityDatas.RemoveAll(e => e is T);
-            if (entityData != null) entityDatas.Add(entityData);
+            if (entityData.IsTileOccupier)
+            {
+                var existingTileOccupier = CurrentOccupier;
+                if (existingTileOccupier != null)
+                {
+                    Log.Error(
+                        $"Attempting to add {entityData.Name} into this node when another occupier already exist - this is invalid, operation ignored"
+                    );
+                    return;
+                }
+            }
+
+            entityDatas.Add(entityData);
         }
     }
 }

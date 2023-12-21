@@ -4,6 +4,7 @@ using System.Linq;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.EditorComponent.Entities;
+using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.LevelEditor.Level.Maps
@@ -23,21 +24,37 @@ namespace NonebNi.LevelEditor.Level.Maps
 
         public TileData TileData => tileData;
 
+        public EditorEntityData? CurrentOccupier => _entityDatas.FirstOrDefault(e => e.ToEntityData().IsTileOccupier);
+
         public T? Get<T>() where T : EditorEntityData => _entityDatas.OfType<T>().FirstOrDefault();
         public bool Has(EditorEntityData entityData) => _entityDatas.Any(e => e.Guid == entityData.Guid);
 
-        public void Set<T>(T? entityData) where T : EditorEntityData
+        public void Put(EditorEntityData entityData)
         {
-            if (typeof(T) == typeof(EditorEntityData))
-                Debug.LogWarning(
-                    $"I am fairly certain you don't want to nuke everything in the {nameof(_entityDatas)}, future me are you sure this is what you want?"
-                );
+            var data = entityData.ToEntityData();
+            if (_entityDatas.Contains(entityData)) return;
 
-            _entityDatas.RemoveAll(e => e is T);
-            if (entityData != null) _entityDatas.Add(entityData);
+            if (data.IsTileOccupier)
+            {
+                var existingTileOccupier = CurrentOccupier;
+                if (existingTileOccupier != null)
+                {
+                    Log.Error(
+                        $"Attempting to add {data.Name} into this node when another occupier already exist - this is invalid, operation ignored"
+                    );
+                    return;
+                }
+            }
+
+            _entityDatas.Add(entityData);
         }
 
         public bool Remove(EditorEntityData entityData) => _entityDatas.Remove(entityData);
+
+        public bool RemoveAll<T>() where T : EditorEntityData
+        {
+            return _entityDatas.RemoveAll(e => e is T) > 0;
+        }
 
         public Node ToNode()
         {

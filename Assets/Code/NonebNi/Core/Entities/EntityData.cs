@@ -13,9 +13,6 @@ namespace NonebNi.Core.Entities
     /// 2. An Entity Data CAN exist on more than one node, this is useful for <see cref="TileModifierData" />
     /// where a single obstacle might span over multiple tiles.
     ///
-    /// The only exception to the above rules are the "system" entity(<see cref="SystemEntity"/>),
-    /// which is used for console commands.
-    /// 
     /// Todo:
     /// Rename this to Entity? Not sure about the data suffix here.
     /// add in SAUCE so the change of one data reflects on all level(or just all units in the same scene)
@@ -36,6 +33,8 @@ namespace NonebNi.Core.Entities
             this.serializableGuid = new SerializableGuid(serializableGuid);
             FactionId = factionId;
         }
+
+        public abstract bool IsTileOccupier { get; }
 
         public SerializableGuid Guid => serializableGuid;
         public string Name => name;

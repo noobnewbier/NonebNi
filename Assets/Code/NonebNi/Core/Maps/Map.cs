@@ -12,6 +12,7 @@ namespace NonebNi.Core.Maps
 {
     public interface IReadOnlyMap
     {
+        bool IsOccupied(Coordinate axialCoordinate);
         bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out TileData? tileData);
         TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
@@ -35,8 +36,8 @@ namespace NonebNi.Core.Maps
     public interface IMap : IReadOnlyMap
     {
         void Set(Coordinate axialCoordinate, TileData tileData);
-        void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData;
         MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData;
+        void Put(Coordinate axialCoordinate, EntityData value);
         bool Remove<T>(T entityData) where T : EntityData;
         MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData;
         Coordinate Find(EntityData entityData);
@@ -158,6 +159,13 @@ namespace NonebNi.Core.Maps
 
         #region Entity
 
+        public bool IsOccupied(Coordinate axialCoordinate)
+        {
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+
+            return node.CurrentOccupier != null;
+        }
+
         public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
@@ -229,10 +237,10 @@ namespace NonebNi.Core.Maps
             }
         }
 
-        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
+        public void Put(Coordinate axialCoordinate, EntityData value)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].Set(value);
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            node.Put(value);
         }
 
         public MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData
