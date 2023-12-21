@@ -24,7 +24,7 @@ namespace NonebNi.LevelEditor.Level.Maps
         public TileData TileData => tileData;
 
         public T? Get<T>() where T : EditorEntityData => _entityDatas.OfType<T>().FirstOrDefault();
-        public bool Has<T>(T entityData) where T : EditorEntityData => _entityDatas.Any(e => e.Guid == entityData.Guid);
+        public bool Has(EditorEntityData entityData) => _entityDatas.Any(e => e.Guid == entityData.Guid);
 
         public void Set<T>(T? entityData) where T : EditorEntityData
         {
@@ -36,6 +36,8 @@ namespace NonebNi.LevelEditor.Level.Maps
             _entityDatas.RemoveAll(e => e is T);
             if (entityData != null) _entityDatas.Add(entityData);
         }
+
+        public bool Remove(EditorEntityData entityData) => _entityDatas.Remove(entityData);
 
         public Node ToNode()
         {

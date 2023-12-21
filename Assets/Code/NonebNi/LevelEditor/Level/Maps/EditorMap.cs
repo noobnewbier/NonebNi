@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
@@ -147,7 +148,7 @@ namespace NonebNi.LevelEditor.Level.Maps
 
         bool IReadOnlyMap.Has<T>(Coordinate axialCoordinate) => Has<EditorEntityData<T>>(axialCoordinate);
 
-        bool IReadOnlyMap.TryFind<T>(T entityData, out Coordinate coordinate)
+        bool IReadOnlyMap.TryFind(EntityData entityData, out Coordinate coordinate)
         {
             for (var i = 0; i < nodes.Length; i++)
                 if (nodes[i].ToNode().Has(entityData))
@@ -161,7 +162,7 @@ namespace NonebNi.LevelEditor.Level.Maps
             return false;
         }
 
-        bool IReadOnlyMap.TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates)
+        bool IReadOnlyMap.TryFind(EntityData entityData, out IEnumerable<Coordinate> coordinates)
         {
             var toReturn = new List<Coordinate>();
             for (var i = 0; i < nodes.Length; i++)
@@ -248,11 +249,15 @@ namespace NonebNi.LevelEditor.Level.Maps
 
         public bool Remove(EditorEntityData entityData)
         {
-            if (!TryFind(entityData, out IEnumerable<Coordinate> currentCoords)) return false;
+            var isRemoved = false;
+            foreach (var node in nodes)
+            {
+                if (!node.Remove(entityData)) continue;
 
-            foreach (var c in currentCoords) Set<EditorEntityData<TileModifierData>>(c, null);
+                isRemoved = true;
+            }
 
-            return true;
+            return isRemoved;
         }
 
         #endregion

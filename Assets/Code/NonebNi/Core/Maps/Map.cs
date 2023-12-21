@@ -17,8 +17,8 @@ namespace NonebNi.Core.Maps
         T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData;
         bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
-        bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData;
-        bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EntityData;
+        bool TryFind(EntityData entityData, out Coordinate coordinate);
+        bool TryFind(EntityData entityData, out IEnumerable<Coordinate> coordinates);
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
         IEnumerable<UnitData> GetAllUnits();
@@ -39,7 +39,7 @@ namespace NonebNi.Core.Maps
         MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData;
         bool Remove<T>(T entityData) where T : EntityData;
         MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData;
-        Coordinate Find<T>(T entityData) where T : EntityData;
+        Coordinate Find(EntityData entityData);
     }
 
     /// <summary>
@@ -179,7 +179,7 @@ namespace NonebNi.Core.Maps
             return GetBoardItemWithDefault<T>(storageCoordinate) != null;
         }
 
-        public bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EntityData
+        public bool TryFind(EntityData entityData, out IEnumerable<Coordinate> coordinates)
         {
             var toReturn = new List<Coordinate>();
             for (var i = 0; i < nodes.Length; i++)
@@ -193,7 +193,7 @@ namespace NonebNi.Core.Maps
             return coordinates.Any();
         }
 
-        public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
+        public bool TryFind(EntityData entityData, out Coordinate coordinate)
         {
             for (var i = 0; i < nodes.Length; i++)
                 if (nodes[i].Has(entityData))
@@ -207,7 +207,7 @@ namespace NonebNi.Core.Maps
             return false;
         }
 
-        public Coordinate Find<T>(T entityData) where T : EntityData
+        public Coordinate Find(EntityData entityData)
         {
             if (!TryFind(entityData, out Coordinate coordinate))
             {
@@ -257,14 +257,15 @@ namespace NonebNi.Core.Maps
 
         public bool Remove<T>(T entityData) where T : EntityData
         {
-            if (TryFind(entityData, out Coordinate coord))
+            var isRemoved = false;
+            foreach (var node in nodes)
             {
-                Set<T>(coord, null);
+                if (!node.Remove(entityData)) continue;
 
-                return true;
+                isRemoved = true;
             }
 
-            return false;
+            return isRemoved;
         }
 
         #endregion
