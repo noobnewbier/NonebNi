@@ -90,6 +90,14 @@ namespace NonebNi.Core.Maps
                     yield return unitData;
         }
 
+        private Node GetNodeFromAxialCoordinate(Coordinate coordinate)
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(coordinate);
+            var index = StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width);
+
+            return nodes[index];
+        }
+
         #region Init
 
         /// <summary>
@@ -129,9 +137,9 @@ namespace NonebNi.Core.Maps
 
             try
             {
-                var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-                tileData = nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)]
-                    .TileData;
+                var node = GetNodeFromAxialCoordinate(axialCoordinate);
+                tileData = node.TileData;
+
                 return true;
             }
             catch (IndexOutOfRangeException)
@@ -142,17 +150,14 @@ namespace NonebNi.Core.Maps
 
         public TileData Get(Coordinate axialCoordinate)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-
-            return nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData;
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            return node.TileData;
         }
 
         public void Set(Coordinate axialCoordinate, TileData tileData)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-
-            nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData
-                .CopyValueFrom(tileData);
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            node.TileData.CopyValueFrom(tileData);
         }
 
         #endregion
@@ -168,8 +173,8 @@ namespace NonebNi.Core.Maps
 
         public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            return nodes[storageCoordinate.X + storageCoordinate.Z * width].Get<T>();
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            return node.Get<T>();
         }
 
         public bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData

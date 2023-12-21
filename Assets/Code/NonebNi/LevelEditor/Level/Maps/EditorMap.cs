@@ -88,8 +88,8 @@ namespace NonebNi.LevelEditor.Level.Maps
 
             try
             {
-                var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-                tileData = nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData;
+                var node = GetNodeFromCoordinate(axialCoordinate);
+                tileData = node.TileData;
                 return true;
             }
             catch (IndexOutOfRangeException)
@@ -100,16 +100,16 @@ namespace NonebNi.LevelEditor.Level.Maps
 
         public TileData Get(Coordinate axialCoordinate)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+            var node = GetNodeFromCoordinate(axialCoordinate);
 
-            return nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData;
+            return node.TileData;
         }
 
         public void Set(Coordinate axialCoordinate, TileData tileData)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
+            var node = GetNodeFromCoordinate(axialCoordinate);
 
-            nodes[GetIndexFromStorageCoordinate(storageCoordinate)].TileData.CopyValueFrom(tileData);
+            node.TileData.CopyValueFrom(tileData);
         }
 
         #endregion
@@ -291,6 +291,14 @@ namespace NonebNi.LevelEditor.Level.Maps
             var storageCoord = StorageCoordinate.FromAxial(coordinate);
 
             return storageCoord.X < width && storageCoord.Z < height && storageCoord.X >= 0 && storageCoord.Z >= 0;
+        }
+
+        private EditorNode GetNodeFromCoordinate(Coordinate coordinate)
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(coordinate);
+            var index = GetIndexFromStorageCoordinate(storageCoordinate);
+
+            return nodes[index];
         }
 
         private int GetIndexFromStorageCoordinate(StorageCoordinate storageCoordinate) =>
