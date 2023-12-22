@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
-using NonebNi.Core.Units;
 using Unity.Logging;
-using UnityEngine;
 
 namespace NonebNi.Core.Effects
 {
     [Serializable]
     public class KnockBackEffect : Effect
     {
-        private readonly int _range;
+        private readonly int _distance;
 
-        public KnockBackEffect(int range)
+        public KnockBackEffect(int distance)
         {
-            _range = range;
+            _distance = distance;
         }
 
         protected override IEnumerable<ISequence> OnEvaluate(
@@ -34,52 +33,69 @@ namespace NonebNi.Core.Effects
 
             foreach (var target in targets)
             {
-                var targetUnit = target as UnitData;
-                var maybeTargetOriginCoord = target as Coordinate?;
-                if (targetUnit == null && maybeTargetOriginCoord.HasValue)
-                    if (!map.TryGet(maybeTargetOriginCoord.Value, out targetUnit))
-                    {
-                        Log.Error($"[Effect] Cannot find unit in given coordinate({nameof(target)})!", target);
-                        continue;
-                    }
-
-                if (!maybeTargetOriginCoord.HasValue && targetUnit != null)
-                {
-                    if (!map.TryFind(targetUnit, out Coordinate foundTargetOriginCoord))
-                    {
-                        Debug.LogError($"[Effect] Target({targetUnit}) does not exist in the map!");
-                        continue;
-                    }
-
-                    maybeTargetOriginCoord = foundTargetOriginCoord;
-                }
-
-                if (targetUnit == null || !maybeTargetOriginCoord.HasValue)
+                if (target is not EntityData targetEntity)
                 {
                     Log.Error($"[Effect] Unexpected target type({target.GetType()}), cannot resolve given parameter!");
                     continue;
                 }
 
+                if (!map.TryFind(targetEntity, out IEnumerable<Coordinate> targetCoords))
+                {
+                    Log.Error($"[Effect] Target({targetEntity}) does not exist in the map!");
+                    continue;
+                }
 
-                var knockBackDirection = (maybeTargetOriginCoord.Value - casterCoord).Normalized();
-                var finalCoord = maybeTargetOriginCoord.Value + knockBackDirection * _range;
-                var moveResult = map.Move(targetUnit, finalCoord);
+                targetCoords = targetCoords.ToArray();
+                if (targetCoords.Count() > 1)
+                {
+                    Log.Error(
+                        $"[Effect] Target({targetEntity}) spans across more than one tile! This is not supported at the moment"
+                    );
+                    continue;
+                }
+
+                var targetOriginCoord = targetCoords.First();
+                var knockBackDirection = (targetOriginCoord - casterCoord).Normalized();
+                var finalCoord = GetCoordinateAfterKnockBack(map, targetOriginCoord, knockBackDirection);
+                var moveResult = map.Move(targetEntity, finalCoord);
                 switch (moveResult)
                 {
                     case MoveResult.Success:
                     case MoveResult.NoEffect:
                     case MoveResult.ErrorTargetOccupied:
-                        yield return new KnockBackSequence(targetUnit, finalCoord);
+                        yield return new KnockBackSequence(targetEntity, finalCoord);
                         break;
 
                     case MoveResult.ErrorEntityIsNotOnBoard:
-                        Log.Error($"[Effect] Target({targetUnit}) does not exist in the map!");
+                        Log.Error($"[Effect] Target({targetEntity}) does not exist in the map!");
                         break;
 
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
+        }
+
+        private Coordinate GetCoordinateAfterKnockBack(
+            IReadOnlyMap map,
+            Coordinate targetOriginCoord,
+            Coordinate knockBackDirection)
+        {
+            var finalCoord = targetOriginCoord;
+
+            //Find the furthest, non occupied coordinate. Any obstruction within knock back path blocks the knock back.
+            for (var i = 1; i < _distance + 1; i++)
+            {
+                var coordInKnockBackPath = targetOriginCoord + knockBackDirection * i;
+                if (!map.IsCoordinateWithinMap(coordInKnockBackPath)) break;
+
+                if (map.IsOccupied(coordInKnockBackPath)) break;
+
+                finalCoord = coordInKnockBackPath;
+            }
+
+            //If every coordinate along the way is occupied - stay in its place.
+            return finalCoord;
         }
     }
 }
