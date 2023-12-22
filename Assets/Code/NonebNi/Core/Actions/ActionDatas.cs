@@ -15,18 +15,20 @@ namespace NonebNi.Core.Actions
             new Effect[] { new MoveEffect() }
         );
 
+        public static readonly NonebAction BashAction = new(
+            "bash",
+            1,
+            TargetRestriction.Enemy,
+            TargetArea.Single,
+            "idk just another place holder",
+            1,
+            new Effect[] { new KnockBackEffect(1) }
+        );
+
         public static NonebAction[] Actions =
         {
             MoveAction,
-            new(
-                "bash",
-                1,
-                TargetRestriction.Enemy,
-                TargetArea.Single,
-                "idk just another place holder",
-                1,
-                new Effect[] { new KnockBackEffect(1) }
-            )
+            BashAction
         };
     }
 }
