@@ -133,7 +133,7 @@ namespace NonebNi.LevelEditor.Level.Maps
 
         bool IReadOnlyMap.TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out TileData? tileData)
         {
-            var result = TryGet(axialCoordinate, out var data);
+            var result = TryGet(axialCoordinate, out TileData data);
             tileData = data;
 
             return result;
@@ -151,6 +151,19 @@ namespace NonebNi.LevelEditor.Level.Maps
             t = data?.ToTypedEntityData();
 
             return result;
+        }
+
+        public bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out IEnumerable<EntityData>? datas)
+        {
+            if (!IsCoordinateWithinMap(axialCoordinate))
+            {
+                datas = default;
+                return false;
+            }
+
+            var node = GetNodeFromCoordinate(axialCoordinate);
+            datas = node.AllEntities.Select(e => e.ToEntityData());
+            return false;
         }
 
         bool IReadOnlyMap.Has<T>(Coordinate axialCoordinate) => Has<EditorEntityData<T>>(axialCoordinate);

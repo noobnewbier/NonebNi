@@ -83,7 +83,7 @@ namespace NonebNi.LevelEditor.Level.Tiles
 
                 GUILayout.Label(coord.ToString());
 
-                if (_map.TryGet(coord, out var tile)) GUILayout.Label($"Weight: {tile.Value.Weight}");
+                if (_map.TryGet(coord, out TileData? tile)) GUILayout.Label($"Weight: {tile.Value.Weight}");
                 else GUILayout.Label("TILE IS NOT VALID", NonebGUIStyle.Error);
 
                 if (_map.TryGet<TileModifierData>(coord, out var tileModifier))

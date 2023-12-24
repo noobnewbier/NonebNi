@@ -47,6 +47,7 @@ namespace NonebNi.Core.Maps
 
         public EntityData? CurrentOccupier => entityDatas.FirstOrDefault(e => e.IsTileOccupier);
 
+        public IReadOnlyList<EntityData> AllEntities => entityDatas;
         public T? Get<T>() where T : EntityData => entityDatas.OfType<T>().FirstOrDefault();
         public bool Has<T>(T entityData) where T : EntityData => entityDatas.Contains(entityData);
         public bool Remove(EntityData entityData) => entityDatas.Remove(entityData);

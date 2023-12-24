@@ -23,7 +23,7 @@ namespace NonebNi.LevelEditor.Level.Maps
         }
 
         public TileData TileData => tileData;
-
+        public IReadOnlyList<EditorEntityData> AllEntities => _entityDatas;
         public EditorEntityData? CurrentOccupier => _entityDatas.FirstOrDefault(e => e.ToEntityData().IsTileOccupier);
 
         public T? Get<T>() where T : EditorEntityData => _entityDatas.OfType<T>().FirstOrDefault();

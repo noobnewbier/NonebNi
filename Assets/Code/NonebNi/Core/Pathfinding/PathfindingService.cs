@@ -95,7 +95,7 @@ namespace NonebNi.Core.Pathfinding
 
                 foreach (var neighbour in current.Neighbours)
                 {
-                    if (!_map.TryGet(neighbour, out var neighbourTileData))
+                    if (!_map.TryGet(neighbour, out TileData? neighbourTileData))
                         //Doesn't exist in the map
                         continue;
 

@@ -17,6 +17,7 @@ namespace NonebNi.Core.Maps
         TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData;
+        bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out IEnumerable<EntityData>? datas);
         bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryFind(EntityData entityData, out Coordinate coordinate);
         bool TryFind(EntityData entityData, out IEnumerable<Coordinate> coordinates);
@@ -92,10 +93,24 @@ namespace NonebNi.Core.Maps
 
         private Node GetNodeFromAxialCoordinate(Coordinate coordinate)
         {
+            if (!TryGetNodeFromAxialCoordinate(coordinate, out var node))
+                throw new ArgumentOutOfRangeException(nameof(coordinate), "is out of range!");
+
+            return node;
+        }
+
+        private bool TryGetNodeFromAxialCoordinate(Coordinate coordinate, [NotNullWhen(true)] out Node? output)
+        {
             var storageCoordinate = StorageCoordinate.FromAxial(coordinate);
             var index = StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width);
+            if (index >= 0 && index < nodes.Length)
+            {
+                output = nodes[index];
+                return true;
+            }
 
-            return nodes[index];
+            output = default;
+            return false;
         }
 
         #region Init
@@ -183,6 +198,18 @@ namespace NonebNi.Core.Maps
             t = GetBoardItemWithDefault<T>(storageCoordinate);
 
             return t != null;
+        }
+
+        public bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out IEnumerable<EntityData>? datas)
+        {
+            if (TryGetNodeFromAxialCoordinate(axialCoordinate, out var node))
+            {
+                datas = node.AllEntities;
+                return true;
+            }
+
+            datas = default;
+            return false;
         }
 
         public bool Has<T>(Coordinate axialCoordinate) where T : EntityData
