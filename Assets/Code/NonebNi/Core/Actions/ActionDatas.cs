@@ -47,12 +47,39 @@ namespace NonebNi.Core.Actions
             }
         );
 
+        public static readonly NonebAction Strike = new(
+            "strike",
+            1,
+            TargetRestriction.Enemy,
+            TargetArea.Single,
+            1,
+            new Effect[]
+            {
+                new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Strength))
+            }
+        );
+
+        public static readonly NonebAction Swing = new(
+            "swing",
+            1,
+            TargetRestriction.Enemy,
+            TargetArea.Fan,
+            1,
+            new Effect[]
+            {
+                new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Strength)),
+                new KnockBackEffect(1)
+            }
+        );
+
         public static NonebAction[] Actions =
         {
             Move,
             Bash,
             Shoot,
-            PowerShot
+            PowerShot,
+            Strike,
+            Swing
         };
     }
 }
