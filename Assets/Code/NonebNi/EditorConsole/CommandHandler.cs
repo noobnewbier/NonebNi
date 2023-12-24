@@ -75,7 +75,7 @@ namespace NonebNi.EditorConsole
                 case MoveConsoleCommand moveConsoleCommand:
                     _agentsService.OverrideDecision(
                         new ActionDecision(
-                            ActionDatas.MoveAction,
+                            ActionDatas.Move,
                             _turnOrderer.CurrentUnit,
                             moveConsoleCommand.TargetPos
                         )

@@ -5,6 +5,8 @@ namespace NonebNi.Core.Actions
     //TODO: this is temporary before we figure out how do we store action/effects, most likely through SO w/ potential to transition to Json 
     public static class ActionDatas
     {
+        private static readonly Range weaponBasedRange = new WeaponBasedRange();
+
         public static readonly NonebAction Move = new(
             "move",
             1,
@@ -23,10 +25,34 @@ namespace NonebNi.Core.Actions
             new Effect[] { new KnockBackEffect(1) }
         );
 
+        public static readonly NonebAction Shoot = new(
+            "shoot",
+            weaponBasedRange,
+            TargetRestriction.Enemy,
+            TargetArea.Single,
+            1,
+            new Effect[] { new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)) }
+        );
+
+        public static readonly NonebAction PowerShot = new(
+            "power-shot",
+            weaponBasedRange,
+            TargetRestriction.Enemy | TargetRestriction.ClearPath,
+            TargetArea.Single,
+            1,
+            new Effect[]
+            {
+                new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)),
+                new KnockBackEffect(1)
+            }
+        );
+
         public static NonebAction[] Actions =
         {
             Move,
-            Bash
+            Bash,
+            Shoot,
+            PowerShot
         };
     }
 }
