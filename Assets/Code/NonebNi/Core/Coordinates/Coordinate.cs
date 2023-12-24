@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Maps;
+using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Coordinates
@@ -54,6 +56,46 @@ namespace NonebNi.Core.Coordinates
         {
             var normalizedCoordInVec = Vector3.Normalize(new Vector3(x, Y, z));
             return new Coordinate(Mathf.RoundToInt(normalizedCoordInVec.x), Mathf.RoundToInt(normalizedCoordInVec.z));
+        }
+
+        public bool IsOnSameLineWith(Coordinate coordinate) =>
+            X == coordinate.X || Y == coordinate.Y || Z == coordinate.Z;
+
+        public IEnumerable<Coordinate> GetCoordinatesBetween(Coordinate coordinate)
+        {
+            if (!IsOnSameLineWith(coordinate))
+            {
+                Log.Error("This method only support coordinates on a straight line at the moment!");
+                yield break;
+            }
+
+            if (Z == coordinate.Z)
+            {
+                var minX = Math.Min(X, coordinate.X);
+                var maxX = Math.Max(X, coordinate.X);
+                for (var xInBetween = minX + 1; xInBetween < maxX; xInBetween++)
+                    yield return new Coordinate(xInBetween, Z);
+            }
+            else if (Z == coordinate.Z)
+            {
+                var minZ = Math.Min(Z, coordinate.Z);
+                var maxZ = Math.Max(Z, coordinate.Z);
+                for (var zInBetween = minZ + 1; zInBetween < maxZ; zInBetween++)
+                    yield return new Coordinate(X, zInBetween);
+            }
+            else if (Y == coordinate.Y)
+            {
+                var minZ = Math.Min(Z, coordinate.Z);
+                var maxZ = Math.Max(Z, coordinate.Z);
+                var maxX = Math.Max(X, coordinate.X);
+                for (var i = 1; i < maxZ - minZ; i++)
+                {
+                    var xInBetween = maxX - i;
+                    var zInBetween = minZ + i;
+
+                    yield return new Coordinate(xInBetween, zInBetween);
+                }
+            }
         }
 
         public override bool Equals(object? obj) => obj is Coordinate other && Equals(other);
