@@ -35,7 +35,7 @@ namespace NonebNi.Ui.Animation
 
                 while (transform.position.y < peakPos.y)
                 {
-                    var newPos = Vector3.MoveTowards(transform.position, peakPos, 0.1f * Time.deltaTime);
+                    var newPos = Vector3.MoveTowards(transform.position, peakPos, 2f * Time.deltaTime);
                     transform.position = newPos;
 
                     yield return null;
@@ -43,7 +43,7 @@ namespace NonebNi.Ui.Animation
 
                 while (transform.position.y > originalPos.y)
                 {
-                    var newPos = Vector3.MoveTowards(transform.position, originalPos, 0.1f * Time.deltaTime);
+                    var newPos = Vector3.MoveTowards(transform.position, originalPos, 2f * Time.deltaTime);
                     transform.position = newPos;
 
                     yield return null;
@@ -53,7 +53,6 @@ namespace NonebNi.Ui.Animation
             return StartCoroutine(Coroutine());
         }
 
-        [ContextMenu("Die")]
         public Coroutine Play(DieAnimSequence sequence)
         {
             IEnumerator Coroutine()
