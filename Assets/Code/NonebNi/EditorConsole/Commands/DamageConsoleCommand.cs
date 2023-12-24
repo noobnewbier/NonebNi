@@ -30,7 +30,6 @@ namespace NonebNi.EditorConsole.Commands
                 10000,
                 TargetRestriction.None,
                 TargetArea.Single,
-                "none",
                 0,
                 new Effect[] { new DamageEffect(_damage) }
             );

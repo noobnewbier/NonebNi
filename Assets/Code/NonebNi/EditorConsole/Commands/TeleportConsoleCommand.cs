@@ -33,7 +33,6 @@ namespace NonebNi.EditorConsole.Commands
                 10000,
                 TargetRestriction.NonOccupied,
                 TargetArea.Single,
-                "none",
                 0,
                 new Effect[] { new MoveEffect() }
             );
