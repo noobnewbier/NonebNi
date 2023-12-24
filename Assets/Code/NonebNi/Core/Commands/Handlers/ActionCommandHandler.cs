@@ -7,6 +7,7 @@ using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using Unity.Logging;
+using UnityUtils;
 
 namespace NonebNi.Core.Commands.Handlers
 {
@@ -44,13 +45,8 @@ namespace NonebNi.Core.Commands.Handlers
             TargetRestriction restriction)
         {
             foreach (var coord in GetTargetedCoordinates(actor, targetCoord, targetArea))
-            {
-                var affectedEntity = GetAffectedEntity(actor, targetCoord, restriction);
-                if (affectedEntity == null)
-                    yield return coord;
-                else
-                    yield return affectedEntity;
-            }
+            foreach (var target in GetValidTargetsInCoordinate(actor, coord, restriction))
+                yield return target;
         }
 
         private IEnumerable<Coordinate> GetTargetedCoordinates(
@@ -93,16 +89,47 @@ namespace NonebNi.Core.Commands.Handlers
             }
         }
 
-        private EntityData? GetAffectedEntity(
+        private IEnumerable<IActionTarget> GetValidTargetsInCoordinate(
             EntityData caster,
             Coordinate targetCoord,
-            TargetRestriction targetRestriction)
+            TargetRestriction targetRestrictionFlags)
         {
-            if (!_map.TryGet(targetCoord, out EntityData? target)) return null;
-            if (!_targetValidityChecker.IsPassingTargetRestrictionCheck(targetRestriction, caster, targetCoord))
-                return null;
+            foreach (var target in GetAllTargets())
+            {
+                if (FailedAnyTargetRestrictionCheck(target)) continue;
 
-            return target;
+                yield return target;
+            }
+
+            yield break;
+
+            IEnumerable<IActionTarget> GetAllTargets()
+            {
+                if (_map.TryGet(targetCoord, out IEnumerable<EntityData>? entities))
+                {
+                    //Stuffs move around when effect is evaluated, this leads to changes in the entities
+                    //so we make a copy so we aren't modifying the enumeration in a foreach loop
+                    var targetsCopy = entities.ToArray();
+                    foreach (var entity in targetsCopy)
+                        yield return entity;
+                }
+
+                yield return targetCoord;
+            }
+
+            bool FailedAnyTargetRestrictionCheck(IActionTarget target)
+            {
+                return targetRestrictionFlags.GetFlags().Any(f => FailedTargetRestrictionCheck(f, target));
+            }
+
+            bool FailedTargetRestrictionCheck(TargetRestriction restriction, IActionTarget target)
+            {
+                return !_targetValidityChecker.IsPassingTargetRestrictionCheck(
+                    restriction,
+                    caster,
+                    target
+                );
+            }
         }
     }
 }

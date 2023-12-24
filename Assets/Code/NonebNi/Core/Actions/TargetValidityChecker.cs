@@ -27,12 +27,23 @@ namespace NonebNi.Core.Actions
         public bool IsPassingTargetRestrictionCheck(
             TargetRestriction restriction,
             EntityData caster,
-            Coordinate targetCoord)
+            IActionTarget target)
         {
-            if (!_map.IsCoordinateWithinMap(targetCoord))
+            var targetCoord = target switch
             {
-                return false;
-            }
+                Coordinate targetAsCoord => targetAsCoord,
+                EntityData entityData when _map.TryFind(entityData, out Coordinate coordinate) => coordinate,
+
+                _ => throw new ArgumentOutOfRangeException(
+                    nameof(target),
+                    target,
+                    "Unexpected Target! Is target even on the board, or did you implement new type but didn't add it here?"
+                )
+            };
+
+            if (!_map.IsCoordinateWithinMap(targetCoord)) return false;
+
+            if (!_map.TryFind(caster, out Coordinate casterCoord)) return false;
 
             switch (restriction)
             {
@@ -40,21 +51,19 @@ namespace NonebNi.Core.Actions
                     return true;
                 case TargetRestriction.Friendly:
                 {
-                    var targetUnit = _map.Get<UnitData>(targetCoord);
-                    if (targetUnit == null) return false;
+                    if (target is not UnitData targetUnit) return false;
 
                     return caster.FactionId == targetUnit.FactionId;
                 }
                 case TargetRestriction.Enemy:
                 {
-                    var targetUnit = _map.Get<UnitData>(targetCoord);
-                    if (targetUnit == null) return false;
+                    if (target is not UnitData targetUnit) return false;
 
                     return caster.FactionId != targetUnit.FactionId;
                 }
                 case TargetRestriction.NonOccupied:
                 {
-                    return !_map.Has<EntityData>(targetCoord);
+                    return !_map.IsOccupied(targetCoord);
                 }
                 case TargetRestriction.ClearPath:
                     throw new NotImplementedException("need line algo");
@@ -63,9 +72,7 @@ namespace NonebNi.Core.Actions
                     throw new NotImplementedException("back defined by another ally..?");
                     break;
                 case TargetRestriction.Self:
-                    if (_map.TryFind(caster, out Coordinate casterCoord)) return casterCoord == targetCoord;
-
-                    return false;
+                    return ReferenceEquals(caster, target);
                 case TargetRestriction.Obstacle:
                 {
                     var tileModifier = _map.Get<TileModifierData>(targetCoord);
