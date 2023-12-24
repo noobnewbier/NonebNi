@@ -23,7 +23,6 @@ namespace NonebNi.Core.Units
 
         [Range(0, 100)] [SerializeField] private int initiative;
 
-
         public UnitData(
             Guid guid,
             string name,
@@ -33,6 +32,10 @@ namespace NonebNi.Core.Units
             Sprite icon,
             SkillData[] skillDatas,
             int initiative,
+            int speed,
+            int focus,
+            int strength,
+            int armor,
             int weaponRange) : base(name, guid, factionId)
         {
             this.maxHealth = maxHealth;
@@ -41,6 +44,9 @@ namespace NonebNi.Core.Units
             this.skillDatas = skillDatas;
             this.initiative = initiative;
             this.speed = speed;
+            Focus = focus;
+            Strength = strength;
+            Armor = armor;
             WeaponRange = weaponRange;
         }
 
@@ -53,6 +59,10 @@ namespace NonebNi.Core.Units
             unitData.icon,
             unitData.skillDatas,
             unitData.initiative,
+            unitData.speed,
+            unitData.Focus,
+            unitData.Strength,
+            unitData.Armor,
             unitData.WeaponRange
         ) { }
 
