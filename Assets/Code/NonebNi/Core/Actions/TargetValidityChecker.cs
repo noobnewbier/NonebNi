@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
@@ -12,7 +13,7 @@ namespace NonebNi.Core.Actions
         bool IsPassingTargetRestrictionCheck(
             TargetRestriction restriction,
             EntityData caster,
-            Coordinate targetCoord);
+            IActionTarget target);
     }
 
     public class TargetValidityChecker : ITargetValidityChecker
@@ -66,8 +67,13 @@ namespace NonebNi.Core.Actions
                     return !_map.IsOccupied(targetCoord);
                 }
                 case TargetRestriction.ClearPath:
-                    throw new NotImplementedException("need line algo");
-                    break;
+                {
+                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return false;
+
+                    if (casterCoord.GetCoordinatesBetween(targetCoord).Any(_map.IsOccupied)) return false;
+
+                    return true;
+                }
                 case TargetRestriction.Back:
                     throw new NotImplementedException("back defined by another ally..?");
                     break;
