@@ -33,7 +33,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 0,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         public static UnitData CreateLivingUnit() =>
@@ -46,7 +50,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 0,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         public static UnitData CreateHighPriorityUnit() =>
@@ -59,7 +67,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 1,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         public static UnitData CreateLowPriorityUnit() =>
@@ -72,7 +84,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 0,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         private static Sprite GetDefaultSprite() =>

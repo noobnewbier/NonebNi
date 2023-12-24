@@ -11,6 +11,6 @@ namespace NonebNi.Core.Effects
             _amount = amount;
         }
 
-        public override int CalculateDamage(EntityData _) => _amount;
+        public override int CalculateDamage(EntityData actionCaster, EntityData _) => _amount;
     }
 }
