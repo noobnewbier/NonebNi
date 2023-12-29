@@ -13,6 +13,7 @@ namespace NonebNi.Core.Tiles
     [Serializable]
     public class TileModifierData : EntityData
     {
+        [field: SerializeField] private bool isTileOccupier;
         [field: SerializeField] public TileData TileData { get; private set; }
 
         public TileModifierData(
@@ -27,9 +28,9 @@ namespace NonebNi.Core.Tiles
         )
         {
             TileData = tileData;
-            IsTileOccupier = isTileOccupier;
+            this.isTileOccupier = isTileOccupier;
         }
 
-        public override bool IsTileOccupier { get; }
+        public override bool IsTileOccupier => isTileOccupier;
     }
 }
