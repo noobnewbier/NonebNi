@@ -81,14 +81,23 @@ namespace NonebNi.Core.Decisions
             //targeted coordinates length must match restrictions length - otherwise we couldn't construct a valid command.
             if (targetCoords.Length != restrictions.Length) return false;
 
+            //So do the range's length!
+            var ranges = action.Ranges;
+            if (targetCoords.Length != ranges.Length) return false;
+
             //if actor is not on the map -> wtf are you doing.
             var actor = ad.ActorEntity;
             if (!_map.TryFind(actor, out Coordinate actorCoord)) return false;
 
             //if any of the target coords is out of range -> this is invalid.
-            var range = action.Range.CalculateRange(actor);
-            var distToTargets = targetCoords.Select(c => actorCoord.DistanceTo(c));
-            if (distToTargets.Any(d => d > range)) return false;
+            var rangeLimitations = ranges.Select(r => r.CalculateRange(actor)).ToArray();
+            for (var i = 0; i < rangeLimitations.Length; i++)
+            {
+                var targetCoord = targetCoords[i];
+                var rangeLimit = rangeLimitations[i];
+                var distanceToTarget = actorCoord.DistanceTo(targetCoord);
+                if (distanceToTarget > rangeLimit) return false;
+            }
 
             //every targeted coordinate must have at least one valid target - otherwise it is an invalid command(can't target a coordinate without a target!).
             for (var i = 0; i < targetCoords.Length; i++)
