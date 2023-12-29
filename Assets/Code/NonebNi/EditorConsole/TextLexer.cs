@@ -38,7 +38,7 @@ namespace NonebNi.EditorConsole
                     var intExpressions = Lex(coordinateToSpaceSeparatedInts).Cast<IntParameter>().ToArray();
 
                     yield return new CoordinateParameter(
-                        new Coordinate(intExpressions[0].IntValue, intExpressions[2].IntValue),
+                        new Coordinate(intExpressions[0].IntValue, intExpressions[1].IntValue),
                         coordinateMatch.Value
                     );
                 }
