@@ -13,6 +13,9 @@ namespace NonebNi.Core.Actions
         Back = 1 << 4,
         Self = 1 << 5,
         Obstacle = 1 << 6,
-        FirstTileToTargetDirectionIsEmpty = 1 << 7
+        FirstTileToTargetDirectionIsEmpty = 1 << 7,
+        TargetCoordPlusDirectionToTargetIsEmpty = 1 << 8,
+        Occupied = 1 << 9,
+        IsCoordinate = 1 << 10
     }
 }

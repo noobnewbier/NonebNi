@@ -120,6 +120,19 @@ namespace NonebNi.Core.Actions
             new MoveEntityEffect()
         );
 
+        public static readonly NonebAction Vault = new(
+            "vault",
+            1,
+            new[]
+            {
+                TargetRestriction.Occupied | TargetRestriction.TargetCoordPlusDirectionToTargetIsEmpty |
+                TargetRestriction.IsCoordinate
+            },
+            TargetArea.Single,
+            1,
+            new MoveOverEffect()
+        );
+
         public static NonebAction[] Actions =
         {
             Move,
@@ -131,7 +144,8 @@ namespace NonebNi.Core.Actions
             Slash,
             TacticalAdvance,
             Lure,
-            Grapple
+            Grapple,
+            Vault
         };
     }
 }

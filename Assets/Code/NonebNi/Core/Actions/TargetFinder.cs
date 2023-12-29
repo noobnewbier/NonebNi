@@ -211,6 +211,23 @@ namespace NonebNi.Core.Actions
 
                     return !_map.IsOccupied(firstTileToTargetDirection);
                 }
+                case TargetRestriction.TargetCoordPlusDirectionToTargetIsEmpty:
+                {
+                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return false;
+
+                    var direction = (targetCoord - casterCoord).Normalized();
+                    var targetCoordPlusDirection = targetCoord + direction;
+
+                    return !_map.IsOccupied(targetCoordPlusDirection);
+                }
+                case TargetRestriction.Occupied:
+                {
+                    return _map.IsOccupied(targetCoord);
+                }
+                case TargetRestriction.IsCoordinate:
+                {
+                    return target is Coordinate;
+                }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(restriction), restriction, null);
             }
