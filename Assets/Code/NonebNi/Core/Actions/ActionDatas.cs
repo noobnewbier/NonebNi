@@ -101,6 +101,7 @@ namespace NonebNi.Core.Actions
             PowerShot,
             Strike,
             Swing,
+            Slash,
             TacticalAdvance
         };
     }
