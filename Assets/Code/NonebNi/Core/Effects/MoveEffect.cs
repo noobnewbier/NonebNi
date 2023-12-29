@@ -27,7 +27,7 @@ namespace NonebNi.Core.Effects
 
             if (targetParam is not Coordinate targetCoord)
             {
-                Log.Info(
+                Log.Error(
                     "{targetParam} is not a Coordinate - MoveEffect must takes one coordinate as parameter!",
                     targetParam
                 );
