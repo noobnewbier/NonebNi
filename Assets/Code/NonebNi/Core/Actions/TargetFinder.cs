@@ -202,6 +202,15 @@ namespace NonebNi.Core.Actions
                     var tileModifier = _map.Get<TileModifierData>(targetCoord);
                     return tileModifier is { TileData: { IsWall: true } };
                 }
+                case TargetRestriction.FirstTileToTargetDirectionIsEmpty:
+                {
+                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return false;
+
+                    var direction = (targetCoord - casterCoord).Normalized();
+                    var firstTileToTargetDirection = casterCoord + direction;
+
+                    return !_map.IsOccupied(firstTileToTargetDirection);
+                }
                 default:
                     throw new ArgumentOutOfRangeException(nameof(restriction), restriction, null);
             }

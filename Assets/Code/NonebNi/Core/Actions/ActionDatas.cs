@@ -93,6 +93,19 @@ namespace NonebNi.Core.Actions
             new Effect[] { new MoveEntityEffect() }
         );
 
+        public static readonly NonebAction Lure = new(
+            "lure",
+            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            new[]
+            {
+                TargetRestriction.Enemy | TargetRestriction.ClearPath |
+                TargetRestriction.FirstTileToTargetDirectionIsEmpty
+            },
+            TargetArea.Single,
+            1,
+            new Effect[] { new PullEntityEffect() }
+        );
+
         public static NonebAction[] Actions =
         {
             Move,
@@ -102,7 +115,8 @@ namespace NonebNi.Core.Actions
             Strike,
             Swing,
             Slash,
-            TacticalAdvance
+            TacticalAdvance,
+            Lure
         };
     }
 }

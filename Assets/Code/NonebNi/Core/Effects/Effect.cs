@@ -17,6 +17,7 @@ namespace NonebNi.Core.Effects
             IEnumerable<IActionTarget> targets) =>
             OnEvaluate(map, actionCaster, targets);
 
+        //TODO: we can actually make all these typed parameter - at the risk of runtime exception(which we can catch)...
         protected abstract IEnumerable<ISequence> OnEvaluate(
             IMap map,
             EntityData actionCaster,
