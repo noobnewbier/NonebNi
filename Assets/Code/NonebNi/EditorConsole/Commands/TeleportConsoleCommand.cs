@@ -31,7 +31,7 @@ namespace NonebNi.EditorConsole.Commands
             return new NonebAction(
                 "debug-teleport",
                 10000,
-                TargetRestriction.NonOccupied,
+                new[] { TargetRestriction.NonOccupied },
                 TargetArea.Single,
                 0,
                 new Effect[] { new MoveEffect() }

@@ -28,7 +28,7 @@ namespace NonebNi.EditorConsole.Commands
             return new NonebAction(
                 "debug-damage",
                 10000,
-                TargetRestriction.None,
+                new[] { TargetRestriction.None },
                 TargetArea.Single,
                 0,
                 new Effect[] { new DamageEffect(_damage) }

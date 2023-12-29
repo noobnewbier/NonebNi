@@ -103,7 +103,7 @@ namespace NonebNi.EditorConsole
                         break;
                     }
 
-                    _ = EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoord));
+                    _ = EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoords));
 
                     break;
                 }

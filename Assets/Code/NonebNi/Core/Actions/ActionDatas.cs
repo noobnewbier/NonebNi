@@ -9,8 +9,8 @@ namespace NonebNi.Core.Actions
 
         public static readonly NonebAction Move = new(
             "move",
-            1,
-            TargetRestriction.NonOccupied,
+            new StatBasedRange(1f, StatBasedRange.StatType.Speed),
+            new[] { TargetRestriction.NonOccupied },
             TargetArea.Single,
             0,
             new Effect[] { new MoveEffect() }
@@ -19,7 +19,7 @@ namespace NonebNi.Core.Actions
         public static readonly NonebAction Bash = new(
             "bash",
             1,
-            TargetRestriction.Enemy,
+            new[] { TargetRestriction.Enemy },
             TargetArea.Single,
             1,
             new Effect[] { new KnockBackEffect(1) }
@@ -28,7 +28,7 @@ namespace NonebNi.Core.Actions
         public static readonly NonebAction Shoot = new(
             "shoot",
             weaponBasedRange,
-            TargetRestriction.Enemy,
+            new[] { TargetRestriction.Enemy },
             TargetArea.Single,
             1,
             new Effect[] { new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)) }
@@ -37,7 +37,7 @@ namespace NonebNi.Core.Actions
         public static readonly NonebAction PowerShot = new(
             "power-shot",
             weaponBasedRange,
-            TargetRestriction.Enemy | TargetRestriction.ClearPath,
+            new[] { TargetRestriction.Enemy | TargetRestriction.ClearPath },
             TargetArea.Single,
             1,
             new Effect[]
@@ -50,7 +50,7 @@ namespace NonebNi.Core.Actions
         public static readonly NonebAction Strike = new(
             "strike",
             1,
-            TargetRestriction.Enemy,
+            new[] { TargetRestriction.Enemy },
             TargetArea.Single,
             1,
             new Effect[]
@@ -62,7 +62,7 @@ namespace NonebNi.Core.Actions
         public static readonly NonebAction Swing = new(
             "swing",
             1,
-            TargetRestriction.Enemy,
+            new[] { TargetRestriction.Enemy },
             TargetArea.Fan,
             1,
             new Effect[]
@@ -72,6 +72,27 @@ namespace NonebNi.Core.Actions
             }
         );
 
+        public static readonly NonebAction Slash = new(
+            "slash",
+            1,
+            new[] { TargetRestriction.Enemy },
+            TargetArea.Single,
+            1,
+            new Effect[]
+            {
+                new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
+            }
+        );
+
+        public static readonly NonebAction TacticalAdvance = new(
+            "tactical-advance",
+            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            new[] { TargetRestriction.Friendly, TargetRestriction.NonOccupied },
+            TargetArea.Single,
+            1,
+            new Effect[] { new MoveEntityEffect() }
+        );
+
         public static NonebAction[] Actions =
         {
             Move,
@@ -79,7 +100,8 @@ namespace NonebNi.Core.Actions
             Shoot,
             PowerShot,
             Strike,
-            Swing
+            Swing,
+            TacticalAdvance
         };
     }
 }

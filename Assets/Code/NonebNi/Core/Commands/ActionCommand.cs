@@ -1,4 +1,5 @@
-﻿using NonebNi.Core.Actions;
+﻿using System.Collections.Generic;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 
@@ -14,13 +15,13 @@ namespace NonebNi.Core.Commands
         /// </summary>
         public readonly EntityData ActorEntity;
 
-        public readonly Coordinate TargetCoord;
+        public readonly IReadOnlyList<Coordinate> TargetCoords;
 
-        public ActionCommand(NonebAction action, EntityData actorEntity, Coordinate targetCoord)
+        public ActionCommand(NonebAction action, EntityData actorEntity, params Coordinate[] targetCoords)
         {
             Action = action;
             ActorEntity = actorEntity;
-            TargetCoord = targetCoord;
+            TargetCoords = targetCoords;
         }
     }
 }

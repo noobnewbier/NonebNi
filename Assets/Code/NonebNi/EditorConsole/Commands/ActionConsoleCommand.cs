@@ -10,7 +10,7 @@ namespace NonebNi.EditorConsole.Commands
     {
         public readonly string ActionId;
         public readonly Coordinate? ActorCoord;
-        public readonly Coordinate TargetCoord;
+        public readonly Coordinate[] TargetCoords;
 
         public ActionConsoleCommand(
             [CommandParam("the ID of the casted action")]
@@ -19,7 +19,18 @@ namespace NonebNi.EditorConsole.Commands
             Coordinate targetCoord)
         {
             ActorCoord = null;
-            TargetCoord = targetCoord;
+            TargetCoords = new[] { targetCoord };
+            ActionId = actionId;
+        }
+
+        public ActionConsoleCommand(
+            [CommandParam("the ID of the casted action")]
+            string actionId,
+            [CommandParam("coordinate of the target")]
+            params Coordinate[] targetCoords)
+        {
+            ActorCoord = null;
+            TargetCoords = targetCoords;
             ActionId = actionId;
         }
 
@@ -29,10 +40,10 @@ namespace NonebNi.EditorConsole.Commands
             [CommandParam("coordinate of the actor, if left empty, we will use the current unit to perform the action")]
             Coordinate actorCoord,
             [CommandParam("coordinate of the target")]
-            Coordinate targetCoord)
+            params Coordinate[] targetCoords)
         {
             ActorCoord = actorCoord;
-            TargetCoord = targetCoord;
+            TargetCoords = targetCoords;
             ActionId = actionId;
         }
     }

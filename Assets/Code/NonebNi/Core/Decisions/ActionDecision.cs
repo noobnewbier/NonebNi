@@ -8,13 +8,13 @@ namespace NonebNi.Core.Decisions
     {
         public readonly NonebAction Action;
         public readonly EntityData ActorEntity;
-        public readonly Coordinate TargetCoord;
+        public readonly Coordinate[] TargetCoords;
 
-        public ActionDecision(NonebAction action, EntityData actorEntity, Coordinate targetCoord)
+        public ActionDecision(NonebAction action, EntityData actorEntity, params Coordinate[] targetCoords)
         {
             Action = action;
             ActorEntity = actorEntity;
-            TargetCoord = targetCoord;
+            TargetCoords = targetCoords;
         }
     }
 }

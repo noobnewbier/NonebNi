@@ -9,6 +9,6 @@ namespace NonebNi.Main.Di
     [Register(typeof(EndTurnCommandHandler), typeof(ICommandHandler<EndTurnCommand>))]
     [Register(typeof(ActionCommandHandler), typeof(ICommandHandler<ActionCommand>))]
     [Register(typeof(CommandEvaluationService), typeof(ICommandEvaluationService))]
-    [Register(typeof(TargetValidityChecker), typeof(ITargetValidityChecker))]
+    [Register(typeof(TargetFinder), typeof(ITargetFinder))]
     public class CommandEvaluationModule { }
 }
