@@ -19,7 +19,7 @@ namespace NonebNi.Core.Actions
             TargetRestriction[] targetRestrictions,
             TargetArea targetArea,
             int fatigueCost,
-            Effect[] effects)
+            params Effect[] effects)
         {
             Id = id;
             Ranges = new[] { range };
