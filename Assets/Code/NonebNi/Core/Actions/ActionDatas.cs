@@ -107,6 +107,19 @@ namespace NonebNi.Core.Actions
             new MoveOverEffect()
         );
 
+        public static readonly NonebAction Grapple = new(
+            "grapple",
+            new Range[] { 2, 1 },
+            new[]
+            {
+                TargetRestriction.Enemy,
+                TargetRestriction.NonOccupied
+            },
+            TargetArea.Single,
+            1,
+            new MoveEntityEffect()
+        );
+
         public static NonebAction[] Actions =
         {
             Move,
@@ -117,7 +130,8 @@ namespace NonebNi.Core.Actions
             Swing,
             Slash,
             TacticalAdvance,
-            Lure
+            Lure,
+            Grapple
         };
     }
 }
