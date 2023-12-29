@@ -90,7 +90,10 @@ namespace NonebNi.LevelEditor.Level.Tiles
                     GUILayout.Label($"TileModifier:\n{tileModifier.Name}");
 
                 if (_map.TryGet<UnitData>(coord, out var unit))
+                {
                     GUILayout.Label($"Unit: {unit.Name}");
+                    GUILayout.Label($"Faction: {unit.FactionId}");
+                }
             }
 
 
