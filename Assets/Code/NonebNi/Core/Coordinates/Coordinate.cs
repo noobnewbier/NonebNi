@@ -58,6 +58,25 @@ namespace NonebNi.Core.Coordinates
             return new Coordinate(Mathf.RoundToInt(normalizedCoordInVec.x), Mathf.RoundToInt(normalizedCoordInVec.z));
         }
 
+        public int DistanceTo(Coordinate coordinate)
+        {
+            //Ref: https://www.redblobgames.com/grids/hexagons/#distances
+            var subtractedCoordinate = new Coordinate(
+                X - coordinate.X,
+                Z - coordinate.Z
+            );
+
+            var distance =
+                (
+                    Mathf.Abs(subtractedCoordinate.X) +
+                    Mathf.Abs(subtractedCoordinate.Y) +
+                    Mathf.Abs(subtractedCoordinate.Z)
+                ) /
+                2f;
+
+            return (int)distance;
+        }
+
         public bool IsOnSameLineWith(Coordinate coordinate) =>
             X == coordinate.X || Y == coordinate.Y || Z == coordinate.Z;
 
