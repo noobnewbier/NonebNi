@@ -4,7 +4,7 @@ using NonebNi.EditorConsole.Commands.Attributes;
 
 namespace NonebNi.EditorConsole.Commands
 {
-    [Command("action", "cast an action from the actor to the target tile")]
+    [Command("action", "cast an action from the actor to the target tile, bypassing decision validation")]
     [UsedImplicitly]
     public class ActionConsoleCommand : IConsoleCommand
     {

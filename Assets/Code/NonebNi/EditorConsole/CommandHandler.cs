@@ -110,6 +110,28 @@ namespace NonebNi.EditorConsole
 
                 #endregion
 
+                case DecideConsoleCommand decideConsoleCommand:
+                {
+                    var actionId = decideConsoleCommand.ActionId;
+                    var action = _actionRepository.GetAction(actionId);
+                    if (action == null)
+                    {
+                        outputBuffer.AppendLine(
+                            $"Unable to find action with matching action ID: {actionId}"
+                        );
+                        break;
+                    }
+
+                    _agentsService.OverrideDecision(
+                        new ActionDecision(
+                            action,
+                            _turnOrderer.CurrentUnit,
+                            decideConsoleCommand.TargetCoords
+                        )
+                    );
+                    break;
+                }
+
                 case EndTurnDecisionCommand:
                     _agentsService.OverrideDecision(EndTurnDecision.Instance);
                     break;
