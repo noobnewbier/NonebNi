@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NonebNi.Core.Sequences;
 using NonebNi.Terrain;
 using NonebNi.Ui.Animation;
@@ -34,77 +35,88 @@ namespace NonebNi.Ui.Sequences
 
         public IEnumerator Play(IEnumerable<ISequence> sequences)
         {
-            IEnumerator PlaySequences()
+            foreach (var sequence in sequences) yield return Play(sequence);
+        }
+
+        private Coroutine Play(ISequence sequence)
+        {
+            IEnumerator PlaySequence()
             {
-                foreach (var sequence in sequences)
-                    switch (sequence)
+                switch (sequence)
+                {
+                    case AggregateSequence aggregateSequence:
                     {
-                        case DieSequence dieSequence:
-                        {
-                            var entity = _entityRepository.GetEntity(dieSequence.DeadUnit.Guid);
-                            if (entity != null)
-                                yield return entity.GetAnimationControl<IPlayAnimation<DieAnimSequence>>()
-                                    .Play(new DieAnimSequence());
+                        var routines = aggregateSequence.Sequences.Select(Play).ToArray();
+                        foreach (var routine in routines) yield return routine;
+                        break;
+                    }
 
-                            break;
-                        }
+                    case DieSequence dieSequence:
+                    {
+                        var entity = _entityRepository.GetEntity(dieSequence.DeadUnit.Guid);
+                        if (entity != null)
+                            yield return entity.GetAnimationControl<IPlayAnimation<DieAnimSequence>>()
+                                .Play(new DieAnimSequence());
 
-                        case TeleportSequence teleportSequence:
-                        {
-                            var entity = _entityRepository.GetEntity(teleportSequence.Unit.Guid);
-                            if (entity != null)
-                                yield return entity.GetAnimationControl<IPlayAnimation<TeleportAnimSequence>>().Play(
-                                    new TeleportAnimSequence(
-                                        _coordinateAndPositionService.FindPosition(teleportSequence.TargetPos)
+                        break;
+                    }
+
+                    case TeleportSequence teleportSequence:
+                    {
+                        var entity = _entityRepository.GetEntity(teleportSequence.Unit.Guid);
+                        if (entity != null)
+                            yield return entity.GetAnimationControl<IPlayAnimation<TeleportAnimSequence>>().Play(
+                                new TeleportAnimSequence(
+                                    _coordinateAndPositionService.FindPosition(teleportSequence.TargetPos)
+                                )
+                            );
+
+                        break;
+                    }
+
+                    case MoveSequence moveSequence:
+                    {
+                        var entity = _entityRepository.GetEntity(moveSequence.MovedEntity.Guid);
+                        if (entity != null)
+                            yield return entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
+                                .Play(
+                                    new MoveAnimSequence(
+                                        _coordinateAndPositionService.FindPosition(moveSequence.TargetCoord)
                                     )
                                 );
 
-                            break;
-                        }
-
-                        case MoveSequence moveSequence:
-                        {
-                            var entity = _entityRepository.GetEntity(moveSequence.MovedEntity.Guid);
-                            if (entity != null)
-                                yield return entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
-                                    .Play(
-                                        new MoveAnimSequence(
-                                            _coordinateAndPositionService.FindPosition(moveSequence.TargetCoord)
-                                        )
-                                    );
-
-                            break;
-                        }
-
-                        case KnockBackSequence knockBackSequence:
-                        {
-                            var entity = _entityRepository.GetEntity(knockBackSequence.MovedUnit.Guid);
-                            if (entity != null)
-                                yield return entity.GetAnimationControl<IPlayAnimation<KnockBackAnimSequence>>()
-                                    .Play(
-                                        new KnockBackAnimSequence(
-                                            _coordinateAndPositionService.FindPosition(knockBackSequence.TargetCoord)
-                                        )
-                                    );
-
-                            break;
-                        }
-
-                        case DamageSequence damageSequence:
-                        {
-                            var entity = _entityRepository.GetEntity(damageSequence.DamageReceiver.Guid);
-                            if (entity != null)
-                                yield return entity.GetAnimationControl<IPlayAnimation<DamageAnimSequence>>()
-                                    .Play(
-                                        new DamageAnimSequence()
-                                    );
-
-                            break;
-                        }
+                        break;
                     }
+
+                    case KnockBackSequence knockBackSequence:
+                    {
+                        var entity = _entityRepository.GetEntity(knockBackSequence.MovedUnit.Guid);
+                        if (entity != null)
+                            yield return entity.GetAnimationControl<IPlayAnimation<KnockBackAnimSequence>>()
+                                .Play(
+                                    new KnockBackAnimSequence(
+                                        _coordinateAndPositionService.FindPosition(knockBackSequence.TargetCoord)
+                                    )
+                                );
+
+                        break;
+                    }
+
+                    case DamageSequence damageSequence:
+                    {
+                        var entity = _entityRepository.GetEntity(damageSequence.DamageReceiver.Guid);
+                        if (entity != null)
+                            yield return entity.GetAnimationControl<IPlayAnimation<DamageAnimSequence>>()
+                                .Play(
+                                    new DamageAnimSequence()
+                                );
+
+                        break;
+                    }
+                }
             }
 
-            yield return _coroutineRunner.StartCoroutine(PlaySequences());
+            return _coroutineRunner.StartCoroutine(PlaySequence());
         }
 
         /// <summary>

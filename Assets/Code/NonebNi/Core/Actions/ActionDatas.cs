@@ -118,17 +118,13 @@ namespace NonebNi.Core.Actions
             new MoveEntityEffect()
         );
 
-        public static readonly NonebAction Vault = new(
-            "vault",
+        public static readonly NonebAction Rotate = new(
+            "rotate",
             1,
-            new[]
-            {
-                TargetRestriction.Occupied | TargetRestriction.TargetCoordPlusDirectionToTargetIsEmpty |
-                TargetRestriction.IsCoordinate
-            },
-            TargetArea.Single,
+            Friendly | NotSelf,
+            Single,
             1,
-            new MoveOverEffect()
+            new SwapPositionEffect()
         );
 
         public static NonebAction[] Actions =
@@ -143,7 +139,8 @@ namespace NonebNi.Core.Actions
             TacticalAdvance,
             Lure,
             Grapple,
-            Vault
+            Vault,
+            Rotate
         };
     }
 }

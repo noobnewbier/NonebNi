@@ -16,6 +16,7 @@ namespace NonebNi.Core.Actions
         FirstTileToTargetDirectionIsEmpty = 1 << 7,
         TargetCoordPlusDirectionToTargetIsEmpty = 1 << 8,
         Occupied = 1 << 9,
-        IsCoordinate = 1 << 10
+        IsCoordinate = 1 << 10,
+        NotSelf = 1 << 11
     }
 }

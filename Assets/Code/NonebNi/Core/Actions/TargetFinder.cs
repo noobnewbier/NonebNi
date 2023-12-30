@@ -228,6 +228,11 @@ namespace NonebNi.Core.Actions
                 {
                     return target is Coordinate;
                 }
+                case TargetRestriction.NotSelf:
+                {
+                    return !ReferenceEquals(target, caster);
+                }
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(restriction), restriction, null);
             }
