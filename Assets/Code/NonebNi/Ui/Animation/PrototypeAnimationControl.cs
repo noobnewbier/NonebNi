@@ -87,7 +87,7 @@ namespace NonebNi.Ui.Animation
                 const float epsilon = 0.01f;
                 while (Vector3.Distance(transform.position, sequence.TargetPos) > epsilon)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, sequence.TargetPos, 1f);
+                    transform.position = Vector3.MoveTowards(transform.position, sequence.TargetPos, 0.25f);
                     yield return null;
                 }
             }
