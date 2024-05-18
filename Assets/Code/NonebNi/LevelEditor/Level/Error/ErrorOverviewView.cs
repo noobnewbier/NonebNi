@@ -10,6 +10,20 @@ using UnityUtils.Factories;
 
 namespace NonebNi.LevelEditor.Level.Error
 {
+    /*
+     * TODO:
+     * this is a most likely, a futile attempt to let future self know where the fuck did he ended up in the past, and how did it happen in the first place
+     * I tried to look at your commit history and staging area, and I THINK what happened is that:
+     * 1. you were implementing some sort of action system - fair enough
+     * 2. somehow, in the middle of implementation, you get very demoralized and stopped working for a while
+     * 3. when you are back, you decide to add a pixelated camera and some animation/art to test stuffs, and an attempt to make yourself a bit happy as progress is a bit more visual
+     * 4. you got lazy, and rest for quite a long bit again,
+     * 5. and then you are back, and started cursing the world why you are not a consistent person at all.
+     *
+     * speaking, of which, I think you also tried to make some bugs fixing with ErrorOverviewView, I think it's the one where it's not killing itself properly when it should,
+     * but I can't recall how, why, if, and what the fuck is it actually fixing, so future me I must apologize.
+     */
+
     public class ErrorOverviewView : IDisposable
     {
         private const float RectWidth = 100;
@@ -17,9 +31,11 @@ namespace NonebNi.LevelEditor.Level.Error
         private static readonly Vector2 TitleRect = new(RectWidth, 20);
         private static readonly Vector2 ContentRect = new(RectWidth, 100);
         private static readonly Vector2 WindowSize = new(RectWidth, TitleRect.y + ContentRect.y);
+        private readonly List<VisualElement> _helperWindowContainer = new();
 
         private readonly ErrorOverviewPresenter _presenter;
         private readonly Dictionary<SceneView, VisualElement> _sceneViewAndErrorsContainer = new();
+
 
         public ErrorOverviewView(IFactory<ErrorOverviewView, ErrorOverviewPresenter> presenterFactory)
         {
@@ -32,6 +48,8 @@ namespace NonebNi.LevelEditor.Level.Error
             {
                 container.RemoveFromHierarchy();
             }
+
+            foreach (var container in _helperWindowContainer) container.RemoveFromHierarchy();
         }
 
         public void OnSceneDraw(Vector2 startingPosition, SceneView sceneView)
@@ -79,6 +97,7 @@ namespace NonebNi.LevelEditor.Level.Error
                                 left = startingPosition.x
                             }
                         };
+                        _helperWindowContainer.Add(helpWindow);
 
                         var title = new Label
                         {
