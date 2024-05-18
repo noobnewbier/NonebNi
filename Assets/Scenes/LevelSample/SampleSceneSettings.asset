@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -38,7 +38,11 @@ MonoBehaviour:
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           skillDatas: []
-          speed: 0
+          speed: 5
+          <Focus>k__BackingField: 5
+          <Strength>k__BackingField: 5
+          <Armor>k__BackingField: 5
+          <WeaponRange>k__BackingField: 5
           initiative: 0
     - tileData:
         weight: 1
@@ -144,7 +148,23 @@ MonoBehaviour:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
+      serializedUnitDatas:
+      - serializedGuid: d50fe9838d14714098ef47d68574658a
+        entityData:
+          name: Noob
+          serializableGuid:
+            serializedGuid: d50fe9838d14714098ef47d68574658a
+          <FactionId>k__BackingField: Player
+          maxHealth: 100
+          health: 100
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          skillDatas: []
+          speed: 5
+          <Focus>k__BackingField: 5
+          <Strength>k__BackingField: 5
+          <Armor>k__BackingField: 5
+          <WeaponRange>k__BackingField: 5
+          initiative: 0
     - tileData:
         weight: 1
         name: 
@@ -165,7 +185,11 @@ MonoBehaviour:
           health: 100
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           skillDatas: []
-          speed: 0
+          speed: 5
+          <Focus>k__BackingField: 5
+          <Strength>k__BackingField: 5
+          <Armor>k__BackingField: 5
+          <WeaponRange>k__BackingField: 5
           initiative: 0
     - tileData:
         weight: 1

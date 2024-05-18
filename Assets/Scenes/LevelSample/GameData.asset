@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -38,13 +38,13 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 5847225004128731144
+        - rid: 5847225487145828476
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 5847225004128731145
+        - rid: 5847225487145828477
       - tileData:
           weight: 1
           name: 
@@ -75,53 +75,6 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 5847225004128731146
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 5847225004128731146
       - tileData:
           weight: 1
           name: 
@@ -162,7 +115,55 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 5847225004128731147
+        - rid: 5847225487145828478
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 5847225487145828478
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 5847225487145828479
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 5847225487145828480
       - tileData:
           weight: 1
           name: 
@@ -541,18 +542,19 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 5847225004128731144
+    - rid: 5847225487145828476
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name: Wall
         serializableGuid:
           serializedGuid: 8fc5a259496ddb4e9e05bfefc6699deb
         <FactionId>k__BackingField: Neutral
+        isTileOccupier: 1
         <TileData>k__BackingField:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 5847225004128731145
+    - rid: 5847225487145828477
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name: Noob
@@ -563,20 +565,42 @@ MonoBehaviour:
         health: 100
         icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
         skillDatas: []
-        speed: 0
+        speed: 5
+        <Focus>k__BackingField: 5
+        <Strength>k__BackingField: 5
+        <Armor>k__BackingField: 5
+        <WeaponRange>k__BackingField: 5
         initiative: 0
-    - rid: 5847225004128731146
+    - rid: 5847225487145828478
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name: Wall
         serializableGuid:
           serializedGuid: 6e61187812dfc141918c2bdbddeeabc3
         <FactionId>k__BackingField: Neutral
+        isTileOccupier: 1
         <TileData>k__BackingField:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 5847225004128731147
+    - rid: 5847225487145828479
+      type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
+      data:
+        name: Noob
+        serializableGuid:
+          serializedGuid: d50fe9838d14714098ef47d68574658a
+        <FactionId>k__BackingField: Player
+        maxHealth: 100
+        health: 100
+        icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+        skillDatas: []
+        speed: 5
+        <Focus>k__BackingField: 5
+        <Strength>k__BackingField: 5
+        <Armor>k__BackingField: 5
+        <WeaponRange>k__BackingField: 5
+        initiative: 0
+    - rid: 5847225487145828480
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name: Noob
@@ -587,5 +611,9 @@ MonoBehaviour:
         health: 100
         icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
         skillDatas: []
-        speed: 0
+        speed: 5
+        <Focus>k__BackingField: 5
+        <Strength>k__BackingField: 5
+        <Armor>k__BackingField: 5
+        <WeaponRange>k__BackingField: 5
         initiative: 0
