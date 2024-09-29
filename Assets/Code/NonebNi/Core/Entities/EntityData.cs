@@ -2,7 +2,7 @@
 using NonebNi.Core.Actions;
 using NonebNi.Core.Tiles;
 using UnityEngine;
-using UnityUtils.SerializableGuid;
+using UnityUtils.Serialization;
 
 namespace NonebNi.Core.Entities
 {

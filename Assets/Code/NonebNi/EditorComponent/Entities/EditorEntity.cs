@@ -5,7 +5,7 @@ using NonebNi.Ui.Entities;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityUtils.SerializableGuid;
+using UnityUtils.Serialization;
 
 namespace NonebNi.EditorComponent.Entities
 {

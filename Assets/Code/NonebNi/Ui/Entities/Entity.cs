@@ -1,6 +1,6 @@
 ﻿using NonebNi.Ui.Animation;
 using UnityEngine;
-using UnityUtils.SerializableGuid;
+using UnityUtils.Serialization;
 
 namespace NonebNi.Ui.Entities
 {
