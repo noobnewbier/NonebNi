@@ -12,7 +12,7 @@ namespace NonebNi.Ui.Animation
         IPlayAnimation<TeleportAnimSequence>,
         IPlayAnimation<MoveAnimSequence>,
         IPlayAnimation<KnockBackAnimSequence>,
-        IPlayAnimation<DamageAnimSequence>
+        IPlayAnimation<ReceivedDamageAnimSequence>
     {
         [SerializeField] private Animator animator = null!;
 
@@ -24,34 +24,6 @@ namespace NonebNi.Ui.Animation
 
         [AnimatorLayer(nameof(animator))] [SerializeField]
         private int finishAnimLayerIndex;
-
-        public Coroutine Play(DamageAnimSequence sequence)
-        {
-            IEnumerator Coroutine()
-            {
-                //just a quick jump for now, we can improve this later:
-                var originalPos = transform.position;
-                var peakPos = originalPos + Vector3.up;
-
-                while (transform.position.y < peakPos.y)
-                {
-                    var newPos = Vector3.MoveTowards(transform.position, peakPos, 2f * Time.deltaTime);
-                    transform.position = newPos;
-
-                    yield return null;
-                }
-
-                while (transform.position.y > originalPos.y)
-                {
-                    var newPos = Vector3.MoveTowards(transform.position, originalPos, 2f * Time.deltaTime);
-                    transform.position = newPos;
-
-                    yield return null;
-                }
-            }
-
-            return StartCoroutine(Coroutine());
-        }
 
         public Coroutine Play(DieAnimSequence sequence)
         {
@@ -88,6 +60,34 @@ namespace NonebNi.Ui.Animation
                 while (Vector3.Distance(transform.position, sequence.TargetPos) > epsilon)
                 {
                     transform.position = Vector3.MoveTowards(transform.position, sequence.TargetPos, 0.25f);
+                    yield return null;
+                }
+            }
+
+            return StartCoroutine(Coroutine());
+        }
+
+        public Coroutine Play(ReceivedDamageAnimSequence sequence)
+        {
+            IEnumerator Coroutine()
+            {
+                //just a quick jump for now, we can improve this later:
+                var originalPos = transform.position;
+                var peakPos = originalPos + Vector3.up;
+
+                while (transform.position.y < peakPos.y)
+                {
+                    var newPos = Vector3.MoveTowards(transform.position, peakPos, 2f * Time.deltaTime);
+                    transform.position = newPos;
+
+                    yield return null;
+                }
+
+                while (transform.position.y > originalPos.y)
+                {
+                    var newPos = Vector3.MoveTowards(transform.position, originalPos, 2f * Time.deltaTime);
+                    transform.position = newPos;
+
                     yield return null;
                 }
             }
