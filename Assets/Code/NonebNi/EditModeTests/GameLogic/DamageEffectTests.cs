@@ -10,7 +10,7 @@ namespace NonebNi.EditModeTests.GameLogic
     [TestFixture]
     public class DamageEffectTests
     {
-        private readonly DamageEffect _damageEffect = new(0);
+        private readonly DamageEffect _damageEffect = new("none", 0);
 
         [Test]
         public void Evaluate_TargetHasNoHealth_UnitsAreRemovedFromMap()

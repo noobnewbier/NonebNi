@@ -7,13 +7,15 @@ namespace NonebNi.Core.Sequences
     {
         private readonly EntityData _actionCaster;
         private readonly int _damage;
+        public readonly string AnimId;
         public readonly UnitData DamageReceiver;
 
-        public DamageSequence(EntityData actionCaster, UnitData damageReceiver, int damage)
+        public DamageSequence(EntityData actionCaster, UnitData damageReceiver, int damage, string animId)
         {
             _actionCaster = actionCaster;
             DamageReceiver = damageReceiver;
             _damage = damage;
+            AnimId = animId;
         }
     }
 }

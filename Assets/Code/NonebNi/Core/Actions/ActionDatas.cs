@@ -33,7 +33,7 @@ namespace NonebNi.Core.Actions
             Enemy,
             Single,
             1,
-            new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
+            new DamageEffect("shoot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
         );
 
         public static readonly NonebAction PowerShot = new(
@@ -42,7 +42,7 @@ namespace NonebNi.Core.Actions
             Enemy | ClearPath,
             Single,
             1,
-            new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)),
+            new DamageEffect("power-shot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)),
             new KnockBackEffect(1)
         );
 
@@ -52,7 +52,7 @@ namespace NonebNi.Core.Actions
             Enemy,
             Single,
             1,
-            new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Strength))
+            new DamageEffect("strike", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength))
         );
 
         public static readonly NonebAction Swing = new(
@@ -61,7 +61,7 @@ namespace NonebNi.Core.Actions
             Enemy,
             Fan,
             1,
-            new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Strength)),
+            new DamageEffect("swing", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength)),
             new KnockBackEffect(1)
         );
 
@@ -71,7 +71,7 @@ namespace NonebNi.Core.Actions
             Enemy,
             Single,
             1,
-            new DamageEffect(new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
+            new DamageEffect("slash", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
         );
 
         public static readonly NonebAction TacticalAdvance = new(

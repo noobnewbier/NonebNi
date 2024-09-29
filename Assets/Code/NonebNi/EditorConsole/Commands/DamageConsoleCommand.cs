@@ -31,7 +31,7 @@ namespace NonebNi.EditorConsole.Commands
                 new[] { TargetRestriction.None },
                 TargetArea.Single,
                 0,
-                new Effect[] { new DamageEffect(_damage) }
+                new DamageEffect("slash", _damage)
             );
         }
     }
