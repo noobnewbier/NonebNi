@@ -17,7 +17,8 @@ namespace NonebNi.CustomInspector.AttributeDrawers
             var typedAttribute = (AnimatorParameterAttribute)attribute;
             RefreshCache();
 
-            var animator =
+            var animator = typedAttribute.UseRootObjectField ?
+                property.serializedObject.FindProperty(typedAttribute.AnimatorName).objectReferenceValue as Animator :
                 NonebEditorUtils.FindPropertyObjectReferenceInSameDepth<Animator>(property, typedAttribute.AnimatorName);
             var animatorRuntimeAnimatorController = animator != null ?
                 animator.runtimeAnimatorController :
