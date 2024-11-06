@@ -1,10 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 namespace NonebNi.Core.Sequences
 {
     public interface ISequencePlayer
     {
-        IEnumerator Play(IEnumerable<ISequence> sequences);
+        UniTask Play(IEnumerable<ISequence> sequences);
     }
 }

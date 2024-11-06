@@ -68,7 +68,7 @@ namespace NonebNi.Core.FlowControl
 
                 Debug.Log($"[Level] Evaluate Command: {command.GetType()}");
                 var sequences = EvaluationService.Evaluate(command);
-                await SequencePlayer.Play(sequences).ToUniTask();
+                await SequencePlayer.Play(sequences);
 
                 turnNum++;
                 UnitTurnOrderer.ToNextUnit();

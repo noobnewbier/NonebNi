@@ -212,7 +212,7 @@ Command description:
         {
             var sequences = _commandEvaluationService.Evaluate(command);
 
-            await _sequencePlayer.Play(sequences).ToUniTask();
+            await _sequencePlayer.Play(sequences);
         }
     }
 }

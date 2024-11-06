@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Cysharp.Threading.Tasks;
 using NonebNi.Ui.Animation.Sequence;
 using NonebNi.Ui.Common;
 using NonebNi.Ui.Common.Attributes;
@@ -25,7 +26,7 @@ namespace NonebNi.Ui.Animation
         [AnimatorLayer(nameof(animator))] [SerializeField]
         private int finishAnimLayerIndex;
 
-        public Coroutine Play(DieAnimSequence sequence)
+        public UniTask Play(DieAnimSequence sequence)
         {
             IEnumerator Coroutine()
             {
@@ -34,10 +35,10 @@ namespace NonebNi.Ui.Animation
                 yield return new WaitForAnimatorState(animator, finishAnimLayerIndex, finishAnimState);
             }
 
-            return StartCoroutine(Coroutine());
+            return Coroutine().ToUniTask(this);
         }
 
-        public Coroutine Play(KnockBackAnimSequence sequence)
+        public UniTask Play(KnockBackAnimSequence sequence)
         {
             IEnumerator Coroutine()
             {
@@ -49,10 +50,10 @@ namespace NonebNi.Ui.Animation
                 }
             }
 
-            return StartCoroutine(Coroutine());
+            return Coroutine().ToUniTask(this);
         }
 
-        public Coroutine Play(MoveAnimSequence sequence)
+        public UniTask Play(MoveAnimSequence sequence)
         {
             IEnumerator Coroutine()
             {
@@ -64,10 +65,10 @@ namespace NonebNi.Ui.Animation
                 }
             }
 
-            return StartCoroutine(Coroutine());
+            return Coroutine().ToUniTask(this);
         }
 
-        public Coroutine Play(ReceivedDamageAnimSequence sequence)
+        public UniTask Play(ReceivedDamageAnimSequence sequence)
         {
             IEnumerator Coroutine()
             {
@@ -92,10 +93,10 @@ namespace NonebNi.Ui.Animation
                 }
             }
 
-            return StartCoroutine(Coroutine());
+            return Coroutine().ToUniTask(this);
         }
 
-        public Coroutine Play(TeleportAnimSequence sequence)
+        public UniTask Play(TeleportAnimSequence sequence)
         {
             IEnumerator Coroutine()
             {
@@ -104,7 +105,7 @@ namespace NonebNi.Ui.Animation
                 yield break;
             }
 
-            return StartCoroutine(Coroutine());
+            return Coroutine().ToUniTask(this);
         }
     }
 }
