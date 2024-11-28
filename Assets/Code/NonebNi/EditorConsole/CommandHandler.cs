@@ -44,7 +44,7 @@ namespace NonebNi.EditorConsole
             _actionRepository = actionRepository;
         }
 
-        public void Handle(IConsoleCommand command, StringBuilder outputBuffer)
+        public async UniTask Handle(IConsoleCommand command, StringBuilder outputBuffer)
         {
             switch (command)
             {
@@ -53,7 +53,7 @@ namespace NonebNi.EditorConsole
                 case TeleportConsoleCommand teleportCommand:
                 {
                     if (_readOnlyMap.TryGet<UnitData>(teleportCommand.StartPos, out var unit))
-                        _ = EvaluateSequence(
+                        await EvaluateSequence(
                             new ActionCommand(teleportCommand.GetAction(), unit, teleportCommand.TargetPos)
                         );
                     break;
@@ -62,7 +62,7 @@ namespace NonebNi.EditorConsole
                 case DamageConsoleCommand damageConsoleCommand:
                 {
                     if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out _))
-                        _ = EvaluateSequence(
+                        await EvaluateSequence(
                             new ActionCommand(
                                 damageConsoleCommand.GetAction(),
                                 SystemEntity.Instance,
@@ -103,7 +103,7 @@ namespace NonebNi.EditorConsole
                         break;
                     }
 
-                    _ = EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoords));
+                    await EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoords));
 
                     break;
                 }

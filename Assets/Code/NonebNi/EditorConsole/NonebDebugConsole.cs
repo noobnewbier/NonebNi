@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Cysharp.Threading.Tasks;
 
 namespace NonebNi.EditorConsole
 {
@@ -22,7 +23,7 @@ namespace NonebNi.EditorConsole
             var expressions = _lexer.Lex(input);
             var command = _parser.Parse(expressions);
 
-            _commandHandler.Handle(command, AccumulatedOutput);
+            _commandHandler.Handle(command, AccumulatedOutput).Forget();
         }
     }
 }
