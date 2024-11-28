@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NonebNi.Core.Actions;
-using NonebNi.Core.Entities;
-using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using NonebNi.Core.Units;
 
@@ -23,32 +20,34 @@ namespace NonebNi.Core.Effects
             _damages = damages;
         }
 
-        protected override IEnumerable<ISequence> OnEvaluate(
-            IMap map,
-            EntityData actionCaster,
-            IEnumerable<IActionTarget> targets)
+        public class Evaluator : Evaluator<DamageEffect>
         {
-            foreach (var target in targets)
+            protected override IEnumerable<ISequence> OnEvaluate(
+                DamageEffect effect,
+                EffectContext context)
             {
-                if (target is not UnitData damageReceiver) continue;
-
-                var damageAmount = _damages
-                    .Select(d => d.CalculateDamage(actionCaster, damageReceiver))
-                    .Sum();
-                damageReceiver.Health -= damageAmount;
-
-                if (damageReceiver.Health <= 0)
+                foreach (var target in context.Targets)
                 {
-                    if (!map.Remove(damageReceiver))
-                        throw new InvalidOperationException(
-                            "Shouldn't be able to evaluate command with targets that's ain't even on the map"
-                        );
+                    if (target is not UnitData damageReceiver) continue;
 
-                    yield return new DieSequence(damageReceiver);
-                }
-                else
-                {
-                    yield return new DamageSequence(actionCaster, damageReceiver, damageAmount, _animId);
+                    var damageAmount = effect._damages
+                        .Select(d => d.CalculateDamage(context.ActionCaster, damageReceiver))
+                        .Sum();
+                    damageReceiver.Health -= damageAmount;
+
+                    if (damageReceiver.Health <= 0)
+                    {
+                        if (!context.Map.Remove(damageReceiver))
+                            throw new InvalidOperationException(
+                                "Shouldn't be able to evaluate command with targets that's ain't even on the map"
+                            );
+
+                        yield return new DieSequence(damageReceiver);
+                    }
+                    else
+                    {
+                        yield return new DamageSequence(context.ActionCaster, damageReceiver, damageAmount, effect._animId);
+                    }
                 }
             }
         }

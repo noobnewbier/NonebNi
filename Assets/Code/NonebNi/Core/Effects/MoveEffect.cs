@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
-using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Sequences;
 using Unity.Logging;
 
@@ -13,30 +12,48 @@ namespace NonebNi.Core.Effects
     [Serializable]
     public class MoveEffect : Effect
     {
-        protected override IEnumerable<ISequence> OnEvaluate(
-            IMap map,
-            EntityData actionCaster,
-            IEnumerable<IActionTarget> targets)
+        public class Evaluator : Evaluator<MoveEffect>
         {
-            var targetParam = targets.FirstOrDefault();
-            if (targetParam == null)
+            private readonly IPathfindingService _pathfindingService;
+
+            public Evaluator(IPathfindingService pathfindingService)
             {
-                Log.Error("Move effect without any target makes no sense!");
-                yield break;
+                _pathfindingService = pathfindingService;
             }
 
-            if (targetParam is not Coordinate targetCoord)
+            protected override IEnumerable<ISequence> OnEvaluate(
+                MoveEffect effect,
+                EffectContext context)
             {
-                Log.Error(
-                    "{targetParam} is not a Coordinate - MoveEffect must takes one coordinate as parameter!",
-                    targetParam
-                );
-                yield break;
+                var targetParam = context.Targets.FirstOrDefault();
+                if (targetParam == null)
+                {
+                    Log.Error("Move effect without any target makes no sense!");
+                    yield break;
+                }
+
+                if (targetParam is not Coordinate targetCoord)
+                {
+                    Log.Error(
+                        "{targetParam} is not a Coordinate - MoveEffect must takes one coordinate as parameter!",
+                        targetParam
+                    );
+                    yield break;
+                }
+
+                var (isPathExist, path) = _pathfindingService.FindPath(context.ActionCaster, targetCoord);
+                if (!isPathExist)
+                {
+                    Log.Error("No path exist! Is it really an error... Should UI be able to catch this before entering here? And if there's an error we need to bubble it no");
+                    yield break;
+                }
+
+                var result = context.Map.Move(context.ActionCaster, targetCoord);
+
+                //TODO: access to path finding service.
+
+                if (result == MoveResult.Success) yield return new MoveSequence(context.ActionCaster, targetCoord);
             }
-
-            var result = map.Move(actionCaster, targetCoord);
-
-            if (result == MoveResult.Success) yield return new MoveSequence(actionCaster, targetCoord);
         }
     }
 }
