@@ -157,7 +157,7 @@ namespace NonebNi.Core.Maps
 
                 return true;
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return false;
             }
