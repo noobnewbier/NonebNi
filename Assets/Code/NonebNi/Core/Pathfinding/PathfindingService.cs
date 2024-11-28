@@ -26,7 +26,7 @@ namespace NonebNi.Core.Pathfinding
             _map = map;
         }
 
-        public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal)
+        public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(EntityData entity, Coordinate goal)
         {
             var isOnMap = _map.TryFind(entity, out Coordinate entityPos);
             if (!isOnMap)
