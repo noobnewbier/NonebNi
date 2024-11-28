@@ -1,4 +1,5 @@
-﻿using NonebNi.Core.FlowControl;
+﻿using Cysharp.Threading.Tasks;
+using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Main.Di;
 using NonebNi.Terrain;
@@ -14,8 +15,7 @@ namespace NonebNi.Main
         [SerializeField] private Terrain terrain = null!;
         [SerializeField] private UnitDetailStat unitDetailStat = null!;
 
-        [Header("Level Data")] [SerializeField]
-        private LevelDataSource levelDataSource = null!;
+        [Header("Level Data"), SerializeField]  private LevelDataSource levelDataSource = null!;
 
         [Header("Terrain")] [SerializeField] private TerrainConfigSource terrainConfig = null!;
 
@@ -46,7 +46,7 @@ namespace NonebNi.Main
             LevelFlowController = levelContainer.Resolve<ILevelFlowController>().Value;
             _levelUi = levelContainer.Resolve<ILevelUi>().Value;
 
-            LevelFlowController.Run();
+            LevelFlowController.Run().Forget();
             _levelUi.Run();
         }
     }
