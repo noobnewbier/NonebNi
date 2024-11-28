@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
@@ -11,6 +12,7 @@ namespace NonebNi.Core.Pathfinding
 {
     public interface IPathfindingService
     {
+        (bool isPathExist, IEnumerable<Coordinate> path) FindPath(EntityData entity, Coordinate goal);
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal);
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal);
     }
@@ -26,19 +28,28 @@ namespace NonebNi.Core.Pathfinding
 
         public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal)
         {
-            var isOnMap = _map.TryFind(unit, out Coordinate unitPos);
+            var isOnMap = _map.TryFind(entity, out Coordinate entityPos);
             if (!isOnMap)
             {
                 Debug.LogWarning(
-                    "Trying to find a path from a unit that doesn't exist on the map - something went wrong?"
+                    "Trying to find a path from an entity that doesn't exist on the map - something went wrong?"
                 );
                 return (false, Enumerable.Empty<Coordinate>());
             }
 
-            var (isPathExist, path) = FindPath(unitPos, goal);
+            var (isPathExist, path) = FindPath(entityPos, goal);
             var pathAsArray = path as Coordinate[] ?? path.ToArray();
 
-            if (!isPathExist || pathAsArray.Length > unit.Speed) return (false, Enumerable.Empty<Coordinate>());
+            return (isPathExist, pathAsArray);
+        }
+
+        public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal)
+        {
+            var (isPathExist, path) = FindPath(unit as EntityData, goal);
+            if (!isPathExist) return (false, Enumerable.Empty<Coordinate>());
+
+            var pathAsArray = path as Coordinate[] ?? path.ToArray();
+            if (pathAsArray.Length > unit.Speed) return (false, Enumerable.Empty<Coordinate>());
 
             return (isPathExist, pathAsArray);
         }
