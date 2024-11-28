@@ -6,6 +6,7 @@ using StrongInject;
 
 namespace NonebNi.Main.Di
 {
+    [RegisterModule(typeof(EffectEvaluatorsModule))]
     [Register(typeof(EndTurnCommandHandler), typeof(ICommandHandler<EndTurnCommand>))]
     [Register(typeof(ActionCommandHandler), typeof(ICommandHandler<ActionCommand>))]
     [Register(typeof(CommandEvaluationService), typeof(ICommandEvaluationService))]
