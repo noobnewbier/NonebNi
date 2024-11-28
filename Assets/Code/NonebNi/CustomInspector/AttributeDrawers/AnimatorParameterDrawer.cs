@@ -10,57 +10,25 @@ namespace NonebNi.CustomInspector.AttributeDrawers
     internal class AnimatorParameterDrawer : PropertyDrawer
     {
         private static SerializedObject? _lastSerializedObject;
+        private AnyTypeAnimatorParameterPicker? _parameterPicker;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
             var typedAttribute = (AnimatorParameterAttribute)attribute;
             RefreshCache();
 
-            Animator? animator;
-            if (typedAttribute.UseRootObjectField)
+            using (var scope = new EditorGUI.PropertyScope(position, label, property))
             {
-                if (string.IsNullOrEmpty(typedAttribute.AnimatorName))
-                    animator = property.serializedObject.FindPropertyOfTypeAtRoot<Animator>();
+                var (animator, controller) = GetAnimatorAndController(property, typedAttribute.AnimatorName, typedAttribute.UseRootObjectField);
+                if (animator == null || controller == null)
+                    GUI.Label(position, $"{property.name} : Referenced animator is null", NonebGUIStyle.Error);
+                else if (typedAttribute.ParameterType.HasValue)
+                    DrawSimpleDrawer(position, property, scope.content, typedAttribute.ParameterType.Value, controller);
                 else
-                    animator = property.serializedObject.FindProperty(typedAttribute.AnimatorName).objectReferenceValue as Animator;
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(typedAttribute.AnimatorName))
-                {
-                    animator = null;
-                    Log.Error(
-                        "We cannot find animator automatically when you are not referencing the root type, you must define animator name before I decide to implement this."
-                    );
-                }
-                else
-                {
-                    animator = NonebEditorUtils.FindPropertyObjectReferenceInSameDepth<Animator>(property, typedAttribute.AnimatorName);
-                }
+                    DrawAdvancedDrawer(position, property, label, controller);
             }
 
-            var animatorRuntimeAnimatorController = animator != null ?
-                animator.runtimeAnimatorController :
-                null;
-            if (animator == null || animatorRuntimeAnimatorController == null)
-            {
-                GUI.Label(position, $"{property.name} : Referenced animator is null", NonebGUIStyle.Error);
-            }
-            else
-            {
-                var paramTable = AnimatorInfoCache.GetParamTable(animatorRuntimeAnimatorController);
-                var parameters = paramTable.GetParameters(typedAttribute.ParameterType);
-                NonebEditorGUI.ShowStringPopup(
-                    position,
-                    property,
-                    $"{label.text} ({typedAttribute.ParameterType})",
-                    parameters
-                );
-            }
-
-            EditorGUI.EndProperty();
+            return;
 
             void RefreshCache()
             {
@@ -70,6 +38,68 @@ namespace NonebNi.CustomInspector.AttributeDrawers
                     AnimatorInfoCache.ClearData();
                 }
             }
+        }
+
+        private static (Animator? animator, RuntimeAnimatorController? controller) GetAnimatorAndController(
+            SerializedProperty property,
+            string animatorName,
+            bool useRootObjectField)
+        {
+            Animator? animator;
+            if (useRootObjectField)
+            {
+                if (string.IsNullOrEmpty(animatorName))
+                    animator = property.serializedObject.FindPropertyOfTypeAtRoot<Animator>();
+                else
+                    animator = property.serializedObject.FindProperty(animatorName).objectReferenceValue as Animator;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(animatorName))
+                {
+                    animator = null;
+                    Log.Error(
+                        "We cannot find animator automatically when you are not referencing the root type, you must define animator name before I decide to implement this."
+                    );
+                }
+                else
+                {
+                    animator = NonebEditorUtils.FindPropertyObjectReferenceInSameDepth<Animator>(property, animatorName);
+                }
+            }
+
+            var controller = animator != null ?
+                animator.runtimeAnimatorController :
+                null;
+
+            return (animator, controller);
+        }
+
+        private void DrawAdvancedDrawer(
+            Rect position,
+            SerializedProperty property,
+            GUIContent label,
+            RuntimeAnimatorController controller)
+        {
+            _parameterPicker ??= new AnyTypeAnimatorParameterPicker(controller, label);
+            _parameterPicker.Draw(position, property);
+        }
+
+        private static void DrawSimpleDrawer(
+            Rect position,
+            SerializedProperty property,
+            GUIContent label,
+            AnimatorControllerParameterType parameterType,
+            RuntimeAnimatorController animatorController)
+        {
+            var paramTable = AnimatorInfoCache.GetParamTable(animatorController);
+            var parameters = paramTable.GetParameters(parameterType);
+            NonebEditorGUI.ShowStringPopup(
+                position,
+                property,
+                $"{label.text} ({parameterType})",
+                parameters
+            );
         }
     }
 }
