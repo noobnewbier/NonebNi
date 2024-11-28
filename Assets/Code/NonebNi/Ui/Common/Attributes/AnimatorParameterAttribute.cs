@@ -4,21 +4,33 @@ namespace NonebNi.Ui.Common.Attributes
 {
     public class AnimatorParameterAttribute : PropertyAttribute
     {
-        public readonly string AnimatorName = string.Empty;
-        public readonly AnimatorControllerParameterType ParameterType;
+        public readonly string AnimatorName;
+        public readonly AnimatorControllerParameterType? ParameterType;
         public readonly bool UseRootObjectField;
 
-        public AnimatorParameterAttribute(AnimatorControllerParameterType type, bool useRootObjectField = true)
+        public AnimatorParameterAttribute(bool useRootObjectField = true) : this(
+            string.Empty,
+            null,
+            useRootObjectField
+        ) { }
+
+        public AnimatorParameterAttribute(AnimatorControllerParameterType type, bool useRootObjectField = true) : this(
+            string.Empty,
+            type,
+            useRootObjectField
+        ) { }
+
+        public AnimatorParameterAttribute(string animatorName, AnimatorControllerParameterType type, bool useRootObjectField = false)
         {
             ParameterType = type;
             UseRootObjectField = useRootObjectField;
+            AnimatorName = animatorName;
         }
 
-        public AnimatorParameterAttribute(string animatorName, AnimatorControllerParameterType type, bool useRootObjectField = false) : this(
-            type,
-            useRootObjectField
-        )
+        private AnimatorParameterAttribute(string animatorName, AnimatorControllerParameterType? type, bool useRootObjectField = false)
         {
+            ParameterType = type;
+            UseRootObjectField = useRootObjectField;
             AnimatorName = animatorName;
         }
     }
