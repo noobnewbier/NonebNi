@@ -1,6 +1,8 @@
 <Project>
 	<PropertyGroup>
 		<Nullable>enable</Nullable>
-		<WarningsAsErrors>Nullable</WarningsAsErrors>
+		<!--	TODO: Can't do this as it marks Unity's packages' stuffs as error as well... will find another way-->
+		<!--		Maybe this? https://github.com/mob-sakai/CSharpCompilerSettingsForUnity/blob/7b73d99d06f565e759c830d1974430feee014b86/Editor/CSharpProjectModifier.cs#L33-->
+		<!--		<WarningsAsErrors>Nullable</WarningsAsErrors>-->
 	</PropertyGroup>
 </Project>
