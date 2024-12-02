@@ -12,18 +12,23 @@ namespace NonebNi.CustomInspector.CustomDrawers
         private SerializedProperty? _finishAnimLayerProperty;
         private SerializedProperty? _finishAnimStateProperty;
         private SerializedProperty? _nameProperty;
+
         private AnyTypeAnimatorParameterPicker? _parameterPicker;
+        private SerializedProperty? _targetBoolValueProperty;
+        private SerializedProperty? _targetNumericValueProperty;
         private SerializedProperty? _typeProperty;
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             #region Init
 
-            _parameterPicker ??= CreateNewPicker(property, label);
-            _nameProperty ??= property.NFindPropertyRelative(nameof(AnimationData.Name));
-            _typeProperty ??= property.NFindPropertyRelative("type");
-            _finishAnimStateProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimState));
-            _finishAnimLayerProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimLayerIndex));
+            _parameterPicker ??= CreateNewPicker(property, label)!;
+            _nameProperty ??= property.NFindPropertyRelative(nameof(AnimationData.Name))!;
+            _typeProperty ??= property.NFindPropertyRelative("type")!;
+            _finishAnimStateProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimState))!;
+            _finishAnimLayerProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimLayerIndex))!;
+            _targetBoolValueProperty ??= property.NFindPropertyRelative(nameof(AnimationData.TargetBoolValue))!;
+            _targetNumericValueProperty ??= property.NFindPropertyRelative(nameof(AnimationData.TargetNumericValue))!;
 
             #endregion
 
@@ -38,38 +43,73 @@ namespace NonebNi.CustomInspector.CustomDrawers
             }
             else
             {
-                var foldoutRect = position;
-                foldoutRect.height = EditorGUIUtility.singleLineHeight;
-                foldoutRect.width = EditorGUIUtility.labelWidth;
-                property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, GUIContent.none);
-
                 var pickerRect = position;
-                pickerRect.x += NonebEditorUtils.FoldoutIconWidth;
+                var isWithinFoldout = property.IsArrayElement();
+                if (isWithinFoldout)
+                {
+                    property.isExpanded = true;
+                }
+                else
+                {
+                    var foldoutRect = position;
+                    foldoutRect.height = EditorGUIUtility.singleLineHeight;
+                    foldoutRect.width = EditorGUIUtility.labelWidth;
+                    property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, GUIContent.none);
+
+                    pickerRect = NonebEditorUtils.ShiftRect(pickerRect, NonebEditorUtils.FoldoutIconWidth);
+                }
+
                 _parameterPicker.Draw(pickerRect, _nameProperty, _typeProperty);
             }
 
-            var paramType = _typeProperty?.GetEnumValueFromProperty<AnimatorControllerParameterType>();
-            var haveStateTransition = paramType is AnimatorControllerParameterType.Bool or AnimatorControllerParameterType.Trigger;
 
             if (property.isExpanded)
+            {
                 using (new EditorGUI.IndentLevelScope())
-                using (new EditorGUI.DisabledScope(!haveStateTransition))
                 {
                     position = EditorGUI.IndentedRect(position);
+                    var paramType = _typeProperty?.GetEnumValueFromProperty<AnimatorControllerParameterType>();
 
-                    position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                    EditorGUI.PropertyField(position, _finishAnimLayerProperty);
+                    var haveStateTransition = paramType is AnimatorControllerParameterType.Bool or AnimatorControllerParameterType.Trigger; //TODO: this feels like a mis-design
+                    using (new EditorGUI.DisabledScope(!haveStateTransition))
+                    {
+                        position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                        EditorGUI.PropertyField(position, _finishAnimLayerProperty, true);
 
-                    position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                    EditorGUI.PropertyField(position, _finishAnimStateProperty);
+                        position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                        EditorGUI.PropertyField(position, _finishAnimStateProperty, true);
+                    }
+
+                    var isBoolType = paramType is AnimatorControllerParameterType.Bool;
+                    using (new EditorGUI.DisabledScope(!isBoolType))
+                    {
+                        position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                        EditorGUI.PropertyField(position, _targetBoolValueProperty, true);
+                    }
+
+                    var isNumericType = paramType is AnimatorControllerParameterType.Int or AnimatorControllerParameterType.Float;
+                    using (new EditorGUI.DisabledScope(!isNumericType))
+                    {
+                        position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                        if (paramType is AnimatorControllerParameterType.Int)
+                            using (var check = new EditorGUI.ChangeCheckScope())
+                            {
+                                _targetNumericValueProperty.floatValue = EditorGUI.IntField(position, (int)_targetNumericValueProperty.floatValue);
+
+                                if (check.changed) _targetNumericValueProperty.serializedObject.ApplyModifiedProperties();
+                            }
+                        else
+                            EditorGUI.PropertyField(position, _targetNumericValueProperty, true);
+                    }
                 }
+            }
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if (!property.isExpanded) return EditorGUIUtility.singleLineHeight;
 
-            return EditorGUIUtility.singleLineHeight * 3 + EditorGUIUtility.standardVerticalSpacing * 2;
+            return EditorGUIUtility.singleLineHeight * 5 + EditorGUIUtility.standardVerticalSpacing * 4;
         }
 
         private static AnyTypeAnimatorParameterPicker? CreateNewPicker(SerializedProperty property, GUIContent label)
