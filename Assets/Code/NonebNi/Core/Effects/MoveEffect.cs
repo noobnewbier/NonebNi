@@ -52,7 +52,7 @@ namespace NonebNi.Core.Effects
 
                 //TODO: access to path finding service.
 
-                if (result == MoveResult.Success) yield return new MoveSequence(context.ActionCaster, targetCoord);
+                if (result == MoveResult.Success) yield return new MoveSequence(context.ActionCaster, path);
             }
         }
     }

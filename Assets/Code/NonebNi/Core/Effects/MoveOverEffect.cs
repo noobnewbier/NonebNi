@@ -44,7 +44,8 @@ namespace NonebNi.Core.Effects
                     yield break;
                 }
 
-                yield return new MoveSequence(context.ActionCaster, actorGoalCoord);
+                //TODO: we need a proper pathing? with this one, but for now this suffice
+                yield return new MoveSequence(context.ActionCaster, new[] { actorCoord, actorGoalCoord });
             }
         }
     }

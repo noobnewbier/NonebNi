@@ -71,7 +71,7 @@ namespace NonebNi.Ui.Sequences
                             await entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
                                 .Play(
                                     new MoveAnimSequence(
-                                        _coordinateAndPositionService.FindPosition(moveSequence.TargetCoord)
+                                        moveSequence.TargetCoords.Select(c => _coordinateAndPositionService.FindPosition(c))
                                     )
                                 );
 
