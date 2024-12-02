@@ -1,14 +1,15 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace NonebNi.Ui.Animation.Sequence
 {
     public class MoveAnimSequence : IAnimSequence
     {
-        public readonly Vector3 TargetPos;
+        public readonly IEnumerable<Vector3> TargetPositions;
 
-        public MoveAnimSequence(Vector3 targetPos)
+        public MoveAnimSequence(IEnumerable<Vector3> targetPositions)
         {
-            TargetPos = targetPos;
+            TargetPositions = targetPositions;
         }
     }
 }

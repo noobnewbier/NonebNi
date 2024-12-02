@@ -1,4 +1,6 @@
-﻿namespace NonebNi.Ui.Animation.Sequence
+﻿using NonebNi.Ui.Entities;
+
+namespace NonebNi.Ui.Animation.Sequence
 {
-    public record ApplyDamageAnimSequence(string AnimId) : IAnimSequence;
+    public record ApplyDamageAnimSequence(string AnimId, Entity? DamageReceiver = null) : IAnimSequence;
 }
