@@ -32,15 +32,12 @@ namespace NonebNi.Ui.Animation
         [field: SerializeField, AnimatorParameter] public string Name { get; private set; } = null!;
         [field: SerializeField] private AnimatorControllerParameterType type;
 
-
-        // These are available for trigger and bool 
+        // These values are only used when they makes sense 
         [field: SerializeField, AnimatorState(nameof(FinishAnimLayerIndex))] public string FinishAnimState { get; private set; } = null!;
         [field: SerializeField, AnimatorLayer] public int FinishAnimLayerIndex { get; private set; }
+        [field: SerializeField] public float TargetNumericValue { get; private set; }
+        [field: SerializeField] public bool TargetBoolValue { get; private set; }
 
-        /*
-         * Floats doesn't have any special param now...
-         * we might want to add values that it can flip between in the future
-         */
 
         public AnimatorControllerParameterType? GetParameterType()
         {
