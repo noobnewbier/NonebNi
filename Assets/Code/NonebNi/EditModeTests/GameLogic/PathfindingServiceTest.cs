@@ -62,7 +62,7 @@ namespace NonebNi.EditModeTests.GameLogic
             Assert.IsTrue(result.isPathExist);
             Assert.That(
                 result.path,
-                Is.EquivalentTo(
+                Is.EqualTo(
                     new[]
                     {
                         new StorageCoordinate(0, 1).ToAxial(),
@@ -91,7 +91,7 @@ namespace NonebNi.EditModeTests.GameLogic
             Assert.IsTrue(result.isPathExist);
             Assert.That(
                 result.path,
-                Is.EquivalentTo(new[] { new StorageCoordinate(1, 0).ToAxial(), new StorageCoordinate(2, 0).ToAxial() })
+                Is.EqualTo(new[] { new StorageCoordinate(1, 0).ToAxial(), new StorageCoordinate(2, 0).ToAxial() })
             );
         }
 

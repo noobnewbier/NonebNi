@@ -101,7 +101,7 @@ namespace NonebNi.Core.Pathfinding
                         } while (cameFrom.ContainsKey(current));
                     }
 
-                    return (true, ReconstructPath());
+                    return (true, ReconstructPath().Reverse());
                 }
 
                 foreach (var neighbour in current.Neighbours)
