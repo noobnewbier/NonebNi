@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using NonebNi.Ui.Animation.Sequence;
 using NonebNi.Ui.Common;
@@ -17,16 +18,13 @@ namespace NonebNi.Ui.Animation
     {
         [SerializeField] private Animator animator = null!;
 
-        [AnimatorParameter(nameof(animator), AnimatorControllerParameterType.Trigger)] [SerializeField]
-        private string triggerName = null!;
+        [AnimatorParameter(nameof(animator), AnimatorControllerParameterType.Trigger), SerializeField]  private string triggerName = null!;
 
-        [AnimatorState(nameof(animator), nameof(finishAnimLayerIndex))] [SerializeField]
-        private string finishAnimState = null!;
+        [AnimatorState(nameof(animator), nameof(finishAnimLayerIndex)), SerializeField]  private string finishAnimState = null!;
 
-        [AnimatorLayer(nameof(animator))] [SerializeField]
-        private int finishAnimLayerIndex;
+        [AnimatorLayer(nameof(animator)), SerializeField]  private int finishAnimLayerIndex;
 
-        public UniTask Play(DieAnimSequence sequence)
+        public UniTask Play(DieAnimSequence sequence, CancellationToken ct = default)
         {
             IEnumerator Coroutine()
             {
@@ -38,7 +36,7 @@ namespace NonebNi.Ui.Animation
             return Coroutine().ToUniTask(this);
         }
 
-        public UniTask Play(KnockBackAnimSequence sequence)
+        public UniTask Play(KnockBackAnimSequence sequence, CancellationToken ct = default)
         {
             IEnumerator Coroutine()
             {
@@ -53,22 +51,25 @@ namespace NonebNi.Ui.Animation
             return Coroutine().ToUniTask(this);
         }
 
-        public UniTask Play(MoveAnimSequence sequence)
+        public UniTask Play(MoveAnimSequence sequence, CancellationToken ct = default)
         {
             IEnumerator Coroutine()
             {
                 const float epsilon = 0.01f;
-                while (Vector3.Distance(transform.position, sequence.TargetPos) > epsilon)
+                foreach (var pos in sequence.TargetPositions)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, sequence.TargetPos, 0.25f);
-                    yield return null;
+                    while (Vector3.Distance(transform.position, pos) > epsilon)
+                    {
+                        transform.position = Vector3.MoveTowards(transform.position, pos, 0.25f);
+                        yield return null;
+                    }
                 }
             }
 
             return Coroutine().ToUniTask(this);
         }
 
-        public UniTask Play(ReceivedDamageAnimSequence sequence)
+        public UniTask Play(ReceivedDamageAnimSequence sequence, CancellationToken ct = default)
         {
             IEnumerator Coroutine()
             {
@@ -96,7 +97,7 @@ namespace NonebNi.Ui.Animation
             return Coroutine().ToUniTask(this);
         }
 
-        public UniTask Play(TeleportAnimSequence sequence)
+        public UniTask Play(TeleportAnimSequence sequence, CancellationToken ct = default)
         {
             IEnumerator Coroutine()
             {
