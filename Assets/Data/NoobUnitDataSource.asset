@@ -17,3 +17,9 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   skillDataSource: []
+  initiative: 0
+  speed: 5
+  focus: 5
+  strength: 5
+  armor: 5
+  weaponRange: 5

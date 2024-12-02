@@ -16,3 +16,4 @@ MonoBehaviour:
   entityName: Wall
   modifierName: Wall
   tileDataSource: {fileID: 11400000, guid: 1feb6957bd030a844b8445d6c3748325, type: 2}
+  isTileOccupier: 1

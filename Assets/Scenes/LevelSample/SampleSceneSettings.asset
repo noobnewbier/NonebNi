@@ -1,4 +1,4 @@
-﻿%YAML 1.1
+%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
@@ -149,11 +149,11 @@ MonoBehaviour:
         name: 
         <IsWall>k__BackingField: 0
       serializedUnitDatas:
-      - serializedGuid: d50fe9838d14714098ef47d68574658a
+      - serializedGuid: 65aba40ecdb36647bce8aa10aa4fec55
         entityData:
           name: Noob
           serializableGuid:
-            serializedGuid: d50fe9838d14714098ef47d68574658a
+            serializedGuid: 65aba40ecdb36647bce8aa10aa4fec55
           <FactionId>k__BackingField: Player
           maxHealth: 100
           health: 100
@@ -174,23 +174,7 @@ MonoBehaviour:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas:
-      - serializedGuid: 02e86fd465fe8244ab6689e836e8394a
-        entityData:
-          name: Noob
-          serializableGuid:
-            serializedGuid: 02e86fd465fe8244ab6689e836e8394a
-          <FactionId>k__BackingField: Player
-          maxHealth: 100
-          health: 100
-          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-          skillDatas: []
-          speed: 5
-          <Focus>k__BackingField: 5
-          <Strength>k__BackingField: 5
-          <Armor>k__BackingField: 5
-          <WeaponRange>k__BackingField: 5
-          initiative: 0
+      serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
