@@ -9,6 +9,7 @@ namespace NonebNi.Ui.Animation.Common
     public class MovementAnimationControl : MonoBehaviour
     {
         [SerializeField] private Animator animator = null!;
+        [SerializeField] private Transform movedTransform = null!;
 
         [SerializeField] private AnimationData startMovementData = null!;
         [SerializeField] private AnimationData stopMovementData = null!;
@@ -23,7 +24,6 @@ namespace NonebNi.Ui.Animation.Common
 
         public async UniTask WalkTo(IEnumerable<Vector3> waypoints, CancellationToken ct = default)
         {
-            var selfTransform = transform;
             waypoints = waypoints.ToArray();
 
             animator.PlayAnimation(startMovementData).Forget();
@@ -31,14 +31,14 @@ namespace NonebNi.Ui.Animation.Common
             foreach (var position in waypoints) await WalkToPos(position);
 
             animator.PlayAnimation(stopMovementData).Forget();
-            selfTransform.position = waypoints.Last();
+            movedTransform.position = waypoints.Last();
 
             return;
 
             async UniTask WalkToPos(Vector3 position)
             {
-                selfTransform.LookAt(position);
-                var dist = Vector3.Distance(selfTransform.position, position);
+                movedTransform.LookAt(position);
+                var dist = Vector3.Distance(movedTransform.position, position);
                 var walkDuration = dist / speed;
 
                 var timer = 0f;
