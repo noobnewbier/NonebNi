@@ -29,8 +29,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2333311086805992305}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4727501560946482979
@@ -46,49 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundObject: {fileID: 0}
-  control: {fileID: 2689678602007433714}
---- !u!1001 &1857196334804226421
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 6753324835078113041}
-    m_Modifications:
-    - target: {fileID: 544078489341639581, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
-      propertyPath: m_Name
-      value: ManequinMeleeFighterModel
-      objectReference: {fileID: 0}
-    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
---- !u!4 &2333311086805992305 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
-  m_PrefabInstance: {fileID: 1857196334804226421}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2689678602007433714 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4365604639491915911, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
-  m_PrefabInstance: {fileID: 1857196334804226421}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f207980948f48e385fba745084cd425, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  control: {fileID: 0}

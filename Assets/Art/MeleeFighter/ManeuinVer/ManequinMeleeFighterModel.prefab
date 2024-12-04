@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4154430091258270212}
   - component: {fileID: 8740585497341505462}
+  - component: {fileID: 7199634248152253125}
+  - component: {fileID: 3582874310603041912}
+  - component: {fileID: 8087889736840038546}
   m_Layer: 0
   m_Name: ManequinMeleeFighterModel
   m_TagString: Untagged
@@ -56,6 +59,66 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.83, z: 0}
+--- !u!114 &7199634248152253125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544078489341639581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f207980948f48e385fba745084cd425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2906725131000100080}
+  movedTransform: {fileID: 4154430091258270212}
+  startMovementData:
+    <Name>k__BackingField: isWalking
+    type: 4
+    <FinishAnimState>k__BackingField: G_Walk
+    <FinishAnimLayerIndex>k__BackingField: 0
+    <TargetNumericValue>k__BackingField: 0
+    <TargetBoolValue>k__BackingField: 1
+  stopMovementData:
+    <Name>k__BackingField: isWalking
+    type: 4
+    <FinishAnimState>k__BackingField: G_Idle
+    <FinishAnimLayerIndex>k__BackingField: 0
+    <TargetNumericValue>k__BackingField: 0
+    <TargetBoolValue>k__BackingField: 0
+  speed: 1.6
+--- !u!114 &3582874310603041912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544078489341639581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f7c8bd0c2d04e3db60210b6ad7adc60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8087889736840038546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544078489341639581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf705aed48554c28a7dc648b9a113421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2906725131000100080}
+  meleeWeaponAnimControl: {fileID: 3582874310603041912}
+  movementControl: {fileID: 7199634248152253125}
+  animaTable:
+    animIdAndData:
+      validKvPairs: []
+      invalidKvPairs: []
 --- !u!1001 &2992328025166221929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2690,20 +2753,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7511211721638145399, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6425382292193690560}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2906725131000100080}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8351268748030198165}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4421031300498667023}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3856198705691406029}
   m_SourcePrefab: {fileID: 100100000, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
 --- !u!1 &2686269282114318136 stripped
 GameObject:
@@ -2731,66 +2788,55 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8351268748030198165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2686269282114318136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f207980948f48e385fba745084cd425, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2906725131000100080}
-  startMovementData:
-    <Name>k__BackingField: isWalking
-    type: 4
-    <FinishAnimState>k__BackingField: G_Walk
-    <FinishAnimLayerIndex>k__BackingField: 0
-    <TargetNumericValue>k__BackingField: 0
-    <TargetBoolValue>k__BackingField: 1
-  stopMovementData:
-    <Name>k__BackingField: isWalking
-    type: 4
-    <FinishAnimState>k__BackingField: G_Idle
-    <FinishAnimLayerIndex>k__BackingField: 0
-    <TargetNumericValue>k__BackingField: 0
-    <TargetBoolValue>k__BackingField: 0
-  speed: 1.6
---- !u!114 &4421031300498667023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2686269282114318136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f7c8bd0c2d04e3db60210b6ad7adc60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3856198705691406029
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2686269282114318136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf705aed48554c28a7dc648b9a113421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2906725131000100080}
-  meleeWeaponAnimControl: {fileID: 4421031300498667023}
-  movementControl: {fileID: 8351268748030198165}
-  animIdAndData:
-    validKvPairs: []
-    invalidKvPairs: []
 --- !u!4 &3318127086958802306 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
   m_PrefabInstance: {fileID: 2992328025166221929}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4736605107259932446 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7511211721638145399, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
+  m_PrefabInstance: {fileID: 2992328025166221929}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6818786680174486571
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4736605107259932446}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_Name
+      value: exported-sword
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+--- !u!4 &6425382292193690560 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+  m_PrefabInstance: {fileID: 6818786680174486571}
   m_PrefabAsset: {fileID: 0}
