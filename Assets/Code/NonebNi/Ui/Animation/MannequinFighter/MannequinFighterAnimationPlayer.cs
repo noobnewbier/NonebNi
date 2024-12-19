@@ -22,7 +22,7 @@ namespace NonebNi.Ui.Animation.MannequinFighter
         [SerializeField] private Animator animator = null!;
         [SerializeField] private PrototypeMeleeWeaponAnimationControl meleeWeaponAnimControl = null!;
         [SerializeField] private MovementAnimationControl movementControl = null!;
-        [SerializeField] private AnimationDataTable animaTable = new();
+        [SerializeField] private AnimationDataTable animTable = new();
 
         public UniTask Play(DieAnimSequence sequence, CancellationToken ct = default) => throw new NotImplementedException();
 
@@ -40,21 +40,22 @@ namespace NonebNi.Ui.Animation.MannequinFighter
         [ContextMenu(nameof(Play))]
         public async UniTask Play(ApplyDamageAnimSequence sequence)
         {
-            //TODO: should probably work with ct 
             var animTask = PlayAnimation(sequence.AnimId);
             var waitForHitTask = sequence.DamageReceiver == null ?
                 UniTask.CompletedTask :
                 meleeWeaponAnimControl.WaitTillHitEntity(sequence.DamageReceiver);
+            var timeoutTask = UniTask.WaitForSeconds(10);
 
             await UniTask.WhenAny(
                 animTask,
-                waitForHitTask
+                waitForHitTask,
+                timeoutTask
             );
         }
 
         private async UniTask PlayAnimation(string animId)
         {
-            var data = animaTable.FindAnim(animId);
+            var data = animTable.FindAnim(animId);
             if (data == null)
             {
                 Log.Error($@"Cannot find animation with Id ""{animId}""");
