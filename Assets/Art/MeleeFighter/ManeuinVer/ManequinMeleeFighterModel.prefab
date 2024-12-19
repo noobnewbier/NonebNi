@@ -115,10 +115,72 @@ MonoBehaviour:
   animator: {fileID: 2906725131000100080}
   meleeWeaponAnimControl: {fileID: 3582874310603041912}
   movementControl: {fileID: 7199634248152253125}
-  animaTable:
+  animTable:
     animIdAndData:
-      validKvPairs: []
+      validKvPairs:
+      - <Key>k__BackingField: strike
+        <Value>k__BackingField:
+          <Name>k__BackingField: strike
+          type: 9
+          <FinishAnimState>k__BackingField: G_Idle
+          <FinishAnimLayerIndex>k__BackingField: 0
+          <TargetNumericValue>k__BackingField: 0
+          <TargetBoolValue>k__BackingField: 0
       invalidKvPairs: []
+--- !u!1001 &2371369227610811401
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4736605107259932446}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+      propertyPath: m_Name
+      value: exported-sword
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+--- !u!4 &2837956896599935970 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
+  m_PrefabInstance: {fileID: 2371369227610811401}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2992328025166221929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2756,7 +2818,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7511211721638145399, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6425382292193690560}
+      addedObject: {fileID: 2837956896599935970}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
       insertIndex: -1
@@ -2780,7 +2842,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 6cc17a376e6b2ba41b5e030c1e90b9fa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2797,46 +2859,4 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7511211721638145399, guid: 010fc99ffe5bf6b4e99e33efb4ede5ca, type: 3}
   m_PrefabInstance: {fileID: 2992328025166221929}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &6818786680174486571
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4736605107259932446}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
-      propertyPath: m_Name
-      value: exported-sword
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
---- !u!4 &6425382292193690560 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fd690c57bcd984f45a8fddf0c536f4ff, type: 3}
-  m_PrefabInstance: {fileID: 6818786680174486571}
   m_PrefabAsset: {fileID: 0}

@@ -441,6 +441,58 @@ ReflectionProbe:
   m_UseOcclusionCulling: 1
   m_Importance: 1
   m_CustomBakedTexture: {fileID: 0}
+--- !u!1001 &955736003
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 544078489341639581, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: m_Name
+      value: ManequinMeleeFighterModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4154430091258270212, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+--- !u!114 &955736004 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+  m_PrefabInstance: {fileID: 955736003}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf705aed48554c28a7dc648b9a113421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1043237002
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,6 +914,17 @@ LightProbeGroup:
   - {x: 7.1518564, y: 2.7763042, z: -11.2319765}
   - {x: 8.993203, y: 2.3566551, z: -8.796325}
   m_Dering: 1
+--- !u!114 &1652633919 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7199634248152253125, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+  m_PrefabInstance: {fileID: 955736003}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f207980948f48e385fba745084cd425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1687258581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,6 +1110,11 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+--- !u!1 &1726150114 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8345070700331616361, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
+  m_PrefabInstance: {fileID: 613346788}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1971203432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,6 +1192,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: ManequinMotionCheck
       objectReference: {fileID: 0}
+    - target: {fileID: 4727501560946482979, guid: b83cf28290099ec429f7253b3d85d70b, type: 3}
+      propertyPath: control
+      value: 
+      objectReference: {fileID: 1652633919}
+    - target: {fileID: 4727501560946482979, guid: b83cf28290099ec429f7253b3d85d70b, type: 3}
+      propertyPath: animPlayer
+      value: 
+      objectReference: {fileID: 955736004}
+    - target: {fileID: 4727501560946482979, guid: b83cf28290099ec429f7253b3d85d70b, type: 3}
+      propertyPath: groundObject
+      value: 
+      objectReference: {fileID: 1726150114}
     - target: {fileID: 6753324835078113041, guid: b83cf28290099ec429f7253b3d85d70b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
@@ -1149,3 +1229,4 @@ SceneRoots:
   - {fileID: 1253028495}
   - {fileID: 613346788}
   - {fileID: 1488648398325639254}
+  - {fileID: 955736003}
