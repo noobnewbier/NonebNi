@@ -10,6 +10,7 @@ namespace NonebNi.Core.Commands.Handlers
 {
     public class ActionCommandHandler : ICommandHandler<ActionCommand>
     {
+        private readonly IReadOnlyCollection<IEffectEvaluator> _evaluators;
         private readonly IMap _map;
         private readonly ITargetFinder _targetFinder;
 
