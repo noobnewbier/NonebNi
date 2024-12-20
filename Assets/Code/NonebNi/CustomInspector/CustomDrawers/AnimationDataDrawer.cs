@@ -11,6 +11,7 @@ namespace NonebNi.CustomInspector.CustomDrawers
     {
         private SerializedProperty? _finishAnimLayerProperty;
         private SerializedProperty? _finishAnimStateProperty;
+        private SerializedProperty? _isRootMotionProperty;
         private SerializedProperty? _nameProperty;
 
         private AnyTypeAnimatorParameterPicker? _parameterPicker;
@@ -24,6 +25,7 @@ namespace NonebNi.CustomInspector.CustomDrawers
 
             _parameterPicker ??= CreateNewPicker(property, label)!;
             _nameProperty ??= property.NFindPropertyRelative(nameof(AnimationData.Name))!;
+            _isRootMotionProperty ??= property.NFindPropertyRelative(nameof(AnimationData.IsRootMotion))!;
             _typeProperty ??= property.NFindPropertyRelative("type")!;
             _finishAnimStateProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimState))!;
             _finishAnimLayerProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimLayerIndex))!;
@@ -68,8 +70,11 @@ namespace NonebNi.CustomInspector.CustomDrawers
                 using (new EditorGUI.IndentLevelScope())
                 {
                     position = EditorGUI.IndentedRect(position);
-                    var paramType = _typeProperty?.GetEnumValueFromProperty<AnimatorControllerParameterType>();
 
+                    position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                    EditorGUI.PropertyField(position, _isRootMotionProperty, true);
+
+                    var paramType = _typeProperty?.GetEnumValueFromProperty<AnimatorControllerParameterType>();
                     var haveStateTransition = paramType is AnimatorControllerParameterType.Bool or AnimatorControllerParameterType.Trigger; //TODO: this feels like a mis-design
                     using (new EditorGUI.DisabledScope(!haveStateTransition))
                     {
@@ -109,7 +114,7 @@ namespace NonebNi.CustomInspector.CustomDrawers
         {
             if (!property.isExpanded) return EditorGUIUtility.singleLineHeight;
 
-            return EditorGUIUtility.singleLineHeight * 5 + EditorGUIUtility.standardVerticalSpacing * 4;
+            return EditorGUIUtility.singleLineHeight * 6 + EditorGUIUtility.standardVerticalSpacing * 5;
         }
 
         private static AnyTypeAnimatorParameterPicker? CreateNewPicker(SerializedProperty property, GUIContent label)

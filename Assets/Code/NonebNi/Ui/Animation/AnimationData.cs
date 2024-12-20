@@ -31,6 +31,8 @@ namespace NonebNi.Ui.Animation
         // universally available
         [field: SerializeField, AnimatorParameter] public string Name { get; private set; } = null!;
         [field: SerializeField] private AnimatorControllerParameterType type;
+        [field: SerializeField] public bool IsRootMotion { get; private set; }
+
 
         // These values are only used when they makes sense 
         [field: SerializeField, AnimatorState(nameof(FinishAnimLayerIndex))] public string FinishAnimState { get; private set; } = null!;

@@ -10,6 +10,9 @@ namespace NonebNi.Ui
     {
         public static async UniTask PlayAnimation(this Animator animator, AnimationData data)
         {
+            var wasApplyingRootMotion = animator.applyRootMotion;
+            animator.applyRootMotion = data.IsRootMotion;
+
             switch (data.GetParameterType())
             {
                 case AnimatorControllerParameterType.Float:
@@ -30,6 +33,8 @@ namespace NonebNi.Ui
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            animator.applyRootMotion = wasApplyingRootMotion;
         }
     }
 }
