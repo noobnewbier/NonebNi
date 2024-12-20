@@ -477,6 +477,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: animTable.animIdAndData.validKvPairs.Array.data[0].<Value>k__BackingField.<IsRootMotion>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

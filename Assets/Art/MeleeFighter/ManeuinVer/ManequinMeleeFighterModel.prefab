@@ -76,6 +76,7 @@ MonoBehaviour:
   startMovementData:
     <Name>k__BackingField: isWalking
     type: 4
+    <IsRootMotion>k__BackingField: 0
     <FinishAnimState>k__BackingField: G_Walk
     <FinishAnimLayerIndex>k__BackingField: 0
     <TargetNumericValue>k__BackingField: 0
@@ -83,6 +84,7 @@ MonoBehaviour:
   stopMovementData:
     <Name>k__BackingField: isWalking
     type: 4
+    <IsRootMotion>k__BackingField: 0
     <FinishAnimState>k__BackingField: G_Idle
     <FinishAnimLayerIndex>k__BackingField: 0
     <TargetNumericValue>k__BackingField: 0
@@ -122,6 +124,7 @@ MonoBehaviour:
         <Value>k__BackingField:
           <Name>k__BackingField: strike
           type: 9
+          <IsRootMotion>k__BackingField: 0
           <FinishAnimState>k__BackingField: G_Idle
           <FinishAnimLayerIndex>k__BackingField: 0
           <TargetNumericValue>k__BackingField: 0
@@ -2842,7 +2845,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 6cc17a376e6b2ba41b5e030c1e90b9fa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
