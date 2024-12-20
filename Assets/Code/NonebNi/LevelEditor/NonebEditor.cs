@@ -37,6 +37,10 @@ namespace NonebNi.LevelEditor
 
         ~NonebEditor()
         {
+            //TODO: this is executing outside of main thread,
+            //and during the cleanup process some methods are working with method that is only allowed in main thread
+            //Probs need to do sth about it, somehow the console aren't even showing the relevant error log so you can't see it without debugger attached.
+
             CleanUp();
         }
 

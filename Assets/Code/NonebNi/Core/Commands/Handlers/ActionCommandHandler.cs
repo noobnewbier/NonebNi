@@ -10,6 +10,7 @@ namespace NonebNi.Core.Commands.Handlers
 {
     public class ActionCommandHandler : ICommandHandler<ActionCommand>
     {
+        //TODO: maybe a list for priority..? but priority should be baked within the class no?
         private readonly IReadOnlyCollection<IEffectEvaluator> _evaluators;
         private readonly IMap _map;
         private readonly ITargetFinder _targetFinder;
@@ -21,6 +22,7 @@ namespace NonebNi.Core.Commands.Handlers
             _evaluators = evaluators;
         }
 
+        //TODO: we need some sort of EffectEvaluator, that would allow us to separate data and manipulating them
         public IEnumerable<ISequence> Evaluate(ActionCommand command)
         {
             return command.Action.Effects.SelectMany(

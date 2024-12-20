@@ -4,9 +4,25 @@ using static NonebNi.Core.Actions.TargetRestriction;
 
 namespace NonebNi.Core.Actions
 {
-    //TODO: this is temporary before we figure out how do we store action/effects, most likely through SO w/ potential to transition to Json 
+    /*
+     * TODO:
+     * Future self - sort out the animation, find a way to test it, and move on.
+     * The animation doesn't need to look great, you need a proof of concept now,
+     * try to find a way such that the "being hit animation" and the "hit people animation" is playing in tandem, then it's good enough.
+     *
+     * ## Current Goal
+     * Fit following animation into both tank and fighter:
+     * 1. strike
+     * 2. receive damage
+     * 3. move
+     */
+
+
+    //TODO: this is temporary before we figure out how do we store action/effects, most likely through SO w/ potential to transition to Json
+    //TODO: there's no way we can collect all(mod included) dependencies at compile, as some of them don't even exist, we will need to collect them via some form of reflection...? 
     public static class ActionDatas
     {
+        //TODO: remember - "likely" all actions, including the ones from the base game should go into the mods. i don't really want to make exceptions for stuffs like moving(base-gameplay)/debugging(utilities tool)...
         private static readonly Range WeaponBasedRange = new WeaponBasedRange();
 
         public static readonly NonebAction Move = new(

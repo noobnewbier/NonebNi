@@ -26,6 +26,7 @@ namespace NonebNi.Core.Pathfinding
             _map = map;
         }
 
+        //TODO: context system.... context is like container holding contextual data..., in test phase we populate it with mocks?
         public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(EntityData entity, Coordinate goal)
         {
             var isOnMap = _map.TryFind(entity, out Coordinate entityPos);
