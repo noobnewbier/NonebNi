@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NonebNi.Terrain;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityUtils;
 using UnityUtils.Factories;
 
@@ -62,7 +63,7 @@ namespace NonebNi.Ui.Cameras
         private void Panning() //consider adding panning with middle mouse button
         {
             var panningStrength = GetPanningStrength();
-            if (FloatUtil.NearlyEqual(panningStrength, 0f)) return;
+            if (panningStrength.NearlyEqual(0f)) return;
 
             var mousePosition = Input.mousePosition;
 
@@ -112,7 +113,7 @@ namespace NonebNi.Ui.Cameras
         private void Zooming()
         {
             var zoomingStrength = GetZoomingStrength();
-            if (FloatUtil.NearlyEqual(zoomingStrength, 0f)) return;
+            if (zoomingStrength.NearlyEqual(0f)) return;
 
             _controllerPresenter.OnZooming(zoomingStrength, Time.deltaTime);
         }
@@ -120,21 +121,23 @@ namespace NonebNi.Ui.Cameras
 
         private float GetZoomingStrength()
         {
-            var zoomInput = Input.GetAxis("Mouse ScrollWheel");
+            //TODO: was using old input system - when the time comes we need our own input wrapper.
+            var zoomInput = Mouse.current.scroll.ReadValue().normalized.y;
+
             var inputStrength = Mathf.Abs(zoomInput);
-            if (!FloatUtil.NearlyEqual(zoomInput, 0f))
+            if (!zoomInput.NearlyEqual(0f))
                 _currentZoomingDirection = Mathf.Sign(zoomInput) * (_config.IsInvertedWheel ?
                     -1f :
                     1f);
 
-            if (!FloatUtil.NearlyEqual(zoomInput, 0f))
+            if (!zoomInput.NearlyEqual(0f))
             {
                 //accelerating
                 _accumulatedZoomingDecelerationValue = 0;
                 _accumulatedZoomingValue += inputStrength;
                 _accumulatedZoomingValue = Mathf.Clamp01(_accumulatedZoomingValue);
             }
-            else if (!FloatUtil.NearlyEqual(_accumulatedZoomingValue, 0f))
+            else if (!_accumulatedZoomingValue.NearlyEqual(0f))
             {
                 //decelerating
 

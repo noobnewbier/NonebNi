@@ -1,7 +1,6 @@
-﻿using NonebNi.Core.Tiles;
+﻿using NonebNi.Core.Maps;
+using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
-using NonebNi.EditorComponent.Entities;
-using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace NonebNi.LevelEditor.Level.Tiles
 
         private static readonly int WindowID = nameof(TileInspectorView).GetHashCode();
 
-        private readonly IEditorMap _map;
+        private readonly IReadOnlyMap _map;
 
         private readonly TileInspectorPresenter _presenter;
 
@@ -29,7 +28,7 @@ namespace NonebNi.LevelEditor.Level.Tiles
         public TileInspectorView(
             IFactory<TileInspectorView, TileInspectorPresenter> presenterFactory,
             TerrainConfigData terrainConfigData,
-            IEditorMap map)
+            IReadOnlyMap map)
         {
             _map = map;
             _presenter = presenterFactory.Create(this);
@@ -84,14 +83,17 @@ namespace NonebNi.LevelEditor.Level.Tiles
 
                 GUILayout.Label(coord.ToString());
 
-                if (_map.TryGet(coord, out var tile)) GUILayout.Label($"Weight: {tile.Weight}");
+                if (_map.TryGet(coord, out TileData? tile)) GUILayout.Label($"Weight: {tile.Value.Weight}");
                 else GUILayout.Label("TILE IS NOT VALID", NonebGUIStyle.Error);
 
-                if (_map.TryGet<EditorEntityData<TileModifierData>>(coord, out var tileModifier))
-                    GUILayout.Label($"TileModifier:\n{tileModifier.ToEntityData().Name}");
+                if (_map.TryGet<TileModifierData>(coord, out var tileModifier))
+                    GUILayout.Label($"TileModifier:\n{tileModifier.Name}");
 
-                if (_map.TryGet<EditorEntityData<UnitData>>(coord, out var unit))
-                    GUILayout.Label($"Unit: {unit.ToEntityData().Name}");
+                if (_map.TryGet<UnitData>(coord, out var unit))
+                {
+                    GUILayout.Label($"Unit: {unit.Name}");
+                    GUILayout.Label($"Faction: {unit.FactionId}");
+                }
             }
 
 

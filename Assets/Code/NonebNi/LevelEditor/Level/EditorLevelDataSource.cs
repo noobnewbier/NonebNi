@@ -1,14 +1,14 @@
 ﻿using System.IO;
 using System.Linq;
-using NonebNi.Core.Entities;
-using NonebNi.Core.Factions;
 using NonebNi.Core.Level;
 using NonebNi.LevelEditor.Common;
+using NonebNi.LevelEditor.Level.Factions;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityUtils.Constants;
 
 namespace NonebNi.LevelEditor.Level
@@ -16,7 +16,10 @@ namespace NonebNi.LevelEditor.Level
     /// <summary>
     ///     Created this as we anticipate the need for custom BGMs and stuffs in the future
     /// </summary>
-    [CreateAssetMenu(fileName = nameof(EditorLevelDataSource), menuName = MenuName.Data + nameof(EditorLevelDataSource))]
+    [CreateAssetMenu(
+        fileName = nameof(EditorLevelDataSource),
+        menuName = MenuName.Data + nameof(EditorLevelDataSource)
+    )]
     public class EditorLevelDataSource : ScriptableObject
     {
         [SerializeField] private LevelDataSource? dataSource;
@@ -31,11 +34,13 @@ namespace NonebNi.LevelEditor.Level
 
         [SerializeField] private EditorMap editorMap = new(10, 10);
 
-        [SerializeField] private TerrainConfigSource? worldConfigScriptable;
+        //TODO: this should really be synced with LevelRunner.terrainConfig - I don't know what happened with this mess :), atm these two might not be synced and there's no mechanism to make sure they are either.
+        [FormerlySerializedAs("worldConfigScriptable")] [SerializeField]
+        private TerrainConfigSource? terrainConfigScriptable;
 
         //TODO: somehow fit in meshes info here.
         [SerializeField] private string levelName = string.Empty;
-        [SerializeField] private Faction[] factions = FactionsData.AllFactions.ToArray();
+        [SerializeField] private EditorFactionsDataSource factionsDataSource = null!;
 
         public string LevelName => levelName;
 
@@ -43,35 +48,40 @@ namespace NonebNi.LevelEditor.Level
             scene.name :
             null;
 
-        public bool IsValid => worldConfigScriptable != null && scene != null;
+        public bool IsValid => terrainConfigScriptable != null && scene != null;
 
-        public TerrainConfigSource? WorldConfig
+        public TerrainConfigSource? TerrainConfig
         {
-            get => worldConfigScriptable;
+            get => terrainConfigScriptable;
             set
             {
-                worldConfigScriptable = value;
+                terrainConfigScriptable = value;
                 EditorUtility.SetDirty(this);
             }
         }
 
         public EditorLevelData? CreateData() =>
             IsValid ?
-                new EditorLevelData(worldConfigScriptable!.CreateData(), editorMap, levelName, factions) :
+                new EditorLevelData(
+                    terrainConfigScriptable!.CreateData(),
+                    editorMap,
+                    levelName,
+                    factionsDataSource.Factions
+                ) :
                 null;
 
 
         public void CopyFromData(EditorLevelData editorLevelData)
         {
             editorMap = editorLevelData.Map;
-            if (worldConfigScriptable != null)
+            if (terrainConfigScriptable != null)
             {
-                worldConfigScriptable.CopyFromData(editorLevelData.TerrainConfig);
+                terrainConfigScriptable.CopyFromData(editorLevelData.TerrainConfig);
             }
             else
             {
-                worldConfigScriptable = TerrainConfigSource.Create(editorLevelData.TerrainConfig);
-                AssetDatabase.CreateAsset(worldConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
+                terrainConfigScriptable = TerrainConfigSource.Create(editorLevelData.TerrainConfig);
+                AssetDatabase.CreateAsset(terrainConfigScriptable, $"{NonebEditorPaths.GameConfig}Settings.asset");
             }
 
             if (dataSource == null)
@@ -85,8 +95,7 @@ namespace NonebNi.LevelEditor.Level
             }
 
             dataSource.WriteData(editorLevelData.ToLevelData());
-
-            factions = editorLevelData.Factions;
+            factionsDataSource.WriteData(editorLevelData.Factions);
 
             EditorUtility.SetDirty(dataSource);
             EditorUtility.SetDirty(this);

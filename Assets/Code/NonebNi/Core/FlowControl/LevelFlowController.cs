@@ -53,7 +53,7 @@ namespace NonebNi.Core.FlowControl
                 Debug.Log($"[Level] Turn {turnNum}, {currentUnit.Name}'s turn");
 
                 // ReSharper disable RedundantAssignment - Can't declare value tuple without assigning
-                var (err, command) = (default(IDecisionValidator.Error), NullCommand.Instance);
+                (IDecisionValidator.Error? err, var command) = (default, NullCommand.Instance);
                 // ReSharper restore RedundantAssignment
                 do
                 {
@@ -68,12 +68,15 @@ namespace NonebNi.Core.FlowControl
 
                 Debug.Log($"[Level] Evaluate Command: {command.GetType()}");
                 var sequences = EvaluationService.Evaluate(command);
-                await SequencePlayer.Play(sequences).ToUniTask();
+                await SequencePlayer.Play(sequences);
 
                 turnNum++;
                 UnitTurnOrderer.ToNextUnit();
                 Debug.Log("[Level] Finished Evaluation");
             }
+
+            // Expected, this should just run forever, until we have a exit/win/lose condition
+            // ReSharper disable once FunctionNeverReturns
         }
     }
 }

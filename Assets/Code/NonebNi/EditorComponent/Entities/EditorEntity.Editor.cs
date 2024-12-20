@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using NonebNi.Core.Factions;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -23,7 +22,7 @@ namespace NonebNi.EditorComponent.Entities
                 _entityDataSourceProp = serializedObject.FindProperty(nameof(entityDataSource));
                 _factionIdField = new AutoCompleteField(
                     serializedObject.FindProperty(nameof(factionId)),
-                    () => FactionsData.AllFactions.Select(f => f.Id)
+                    () => EditorComponentSceneData.AvailableFactions.Select(f => f.Id)
                 );
             }
 
@@ -62,7 +61,8 @@ namespace NonebNi.EditorComponent.Entities
                         }
                         else
                         {
-                            if (entity.entityDataSource == null) GUILayout.Label("Missing Data Source", NonebGUIStyle.Error);
+                            if (entity.entityDataSource == null)
+                                GUILayout.Label("Missing Data Source", NonebGUIStyle.Error);
 
                             if (entity.boundingCollider == null)
                                 GUILayout.Label("Missing Bounding Collider", NonebGUIStyle.Error);

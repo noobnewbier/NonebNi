@@ -12,13 +12,15 @@ namespace NonebNi.Core.Maps
 {
     public interface IReadOnlyMap
     {
+        bool IsOccupied(Coordinate axialCoordinate);
         bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out TileData? tileData);
         TileData Get(Coordinate axialCoordinate);
         T? Get<T>(Coordinate axialCoordinate) where T : EntityData;
         bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData;
+        bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out IEnumerable<EntityData>? datas);
         bool Has<T>(Coordinate axialCoordinate) where T : EntityData;
-        bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData;
-        bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EntityData;
+        bool TryFind(EntityData entityData, out Coordinate coordinate);
+        bool TryFind(EntityData entityData, out IEnumerable<Coordinate> coordinates);
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
         IEnumerable<UnitData> GetAllUnits();
@@ -28,18 +30,18 @@ namespace NonebNi.Core.Maps
     {
         Success,
         ErrorTargetOccupied,
-        ErrorMoverNotInMap,
-        ErrorNoTargetInStartPos,
+        ErrorEntityIsNotOnBoard,
         NoEffect
     }
 
     public interface IMap : IReadOnlyMap
     {
         void Set(Coordinate axialCoordinate, TileData tileData);
-        void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData;
-        MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData;
+        MoveResult Move(EntityData entity, Coordinate targetCoord);
+        void Put(Coordinate axialCoordinate, EntityData value);
         bool Remove<T>(T entityData) where T : EntityData;
         MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData;
+        Coordinate Find(EntityData entityData);
     }
 
     /// <summary>
@@ -89,6 +91,28 @@ namespace NonebNi.Core.Maps
                     yield return unitData;
         }
 
+        private Node GetNodeFromAxialCoordinate(Coordinate coordinate)
+        {
+            if (!TryGetNodeFromAxialCoordinate(coordinate, out var node))
+                throw new ArgumentOutOfRangeException(nameof(coordinate), "is out of range!");
+
+            return node;
+        }
+
+        private bool TryGetNodeFromAxialCoordinate(Coordinate coordinate, [NotNullWhen(true)] out Node? output)
+        {
+            var storageCoordinate = StorageCoordinate.FromAxial(coordinate);
+            var index = StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width);
+            if (index >= 0 && index < nodes.Length)
+            {
+                output = nodes[index];
+                return true;
+            }
+
+            output = default;
+            return false;
+        }
+
         #region Init
 
         /// <summary>
@@ -128,11 +152,12 @@ namespace NonebNi.Core.Maps
 
             try
             {
-                var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-                tileData = nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData;
+                var node = GetNodeFromAxialCoordinate(axialCoordinate);
+                tileData = node.TileData;
+
                 return true;
             }
-            catch (IndexOutOfRangeException)
+            catch (ArgumentOutOfRangeException)
             {
                 return false;
             }
@@ -140,27 +165,31 @@ namespace NonebNi.Core.Maps
 
         public TileData Get(Coordinate axialCoordinate)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-
-            return nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData;
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            return node.TileData;
         }
 
         public void Set(Coordinate axialCoordinate, TileData tileData)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-
-            nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].TileData
-                .CopyValueFrom(tileData);
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            node.TileData.CopyValueFrom(tileData);
         }
 
         #endregion
 
         #region Entity
 
+        public bool IsOccupied(Coordinate axialCoordinate)
+        {
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+
+            return node.CurrentOccupier != null;
+        }
+
         public T? Get<T>(Coordinate axialCoordinate) where T : EntityData
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            return nodes[storageCoordinate.X + storageCoordinate.Z * width].Get<T>();
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            return node.Get<T>();
         }
 
         public bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData
@@ -171,6 +200,18 @@ namespace NonebNi.Core.Maps
             return t != null;
         }
 
+        public bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out IEnumerable<EntityData>? datas)
+        {
+            if (TryGetNodeFromAxialCoordinate(axialCoordinate, out var node))
+            {
+                datas = node.AllEntities;
+                return true;
+            }
+
+            datas = default;
+            return false;
+        }
+
         public bool Has<T>(Coordinate axialCoordinate) where T : EntityData
         {
             var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
@@ -178,7 +219,7 @@ namespace NonebNi.Core.Maps
             return GetBoardItemWithDefault<T>(storageCoordinate) != null;
         }
 
-        public bool TryFind<T>(T entityData, out IEnumerable<Coordinate> coordinates) where T : EntityData
+        public bool TryFind(EntityData entityData, out IEnumerable<Coordinate> coordinates)
         {
             var toReturn = new List<Coordinate>();
             for (var i = 0; i < nodes.Length; i++)
@@ -192,7 +233,7 @@ namespace NonebNi.Core.Maps
             return coordinates.Any();
         }
 
-        public bool TryFind<T>(T entityData, out Coordinate coordinate) where T : EntityData
+        public bool TryFind(EntityData entityData, out Coordinate coordinate)
         {
             for (var i = 0; i < nodes.Length; i++)
                 if (nodes[i].Has(entityData))
@@ -204,6 +245,14 @@ namespace NonebNi.Core.Maps
 
             coordinate = default;
             return false;
+        }
+
+        public Coordinate Find(EntityData entityData)
+        {
+            if (!TryFind(entityData, out Coordinate coordinate))
+                throw new InvalidOperationException($"{entityData.Name} does not exist on the map!");
+
+            return coordinate;
         }
 
         private T? GetBoardItemWithDefault<T>(StorageCoordinate storageCoordinate) where T : EntityData
@@ -218,42 +267,42 @@ namespace NonebNi.Core.Maps
             }
         }
 
-        public void Set<T>(Coordinate axialCoordinate, T? value) where T : EntityData
+        public void Put(Coordinate axialCoordinate, EntityData value)
         {
-            var storageCoordinate = StorageCoordinate.FromAxial(axialCoordinate);
-            nodes[StorageCoordinate.Get1DArrayIndexFromStorageCoordinate(storageCoordinate, width)].Set(value);
+            var node = GetNodeFromAxialCoordinate(axialCoordinate);
+            node.Put(value);
         }
 
-        public MoveResult Move<T>(T entity, Coordinate targetCoord) where T : EntityData
+        public MoveResult Move(EntityData entity, Coordinate targetCoord)
         {
-            if (TryGet<T>(targetCoord, out var targetPosEntity))
-                return entity == targetPosEntity ?
-                    MoveResult.NoEffect : //Move to current pos does nothing 
-                    MoveResult.ErrorTargetOccupied;
+            if (!TryFind(entity, out Coordinate currentCoord)) return MoveResult.ErrorEntityIsNotOnBoard;
+            if (currentCoord == targetCoord) return MoveResult.NoEffect;
+            if (IsOccupied(targetCoord)) return MoveResult.ErrorTargetOccupied;
 
-            if (!Remove(entity)) return MoveResult.ErrorMoverNotInMap;
+            Remove(entity);
+            Put(targetCoord, entity);
 
-            Set(targetCoord, entity);
             return MoveResult.Success;
         }
 
         public MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData
         {
-            if (!TryGet<T>(startCoord, out var target)) return MoveResult.ErrorNoTargetInStartPos;
+            if (!TryGet<T>(startCoord, out var target)) return MoveResult.ErrorEntityIsNotOnBoard;
 
             return Move(target, targetCoord);
         }
 
         public bool Remove<T>(T entityData) where T : EntityData
         {
-            if (TryFind(entityData, out Coordinate coord))
+            var isRemoved = false;
+            foreach (var node in nodes)
             {
-                Set<T>(coord, null);
+                if (!node.Remove(entityData)) continue;
 
-                return true;
+                isRemoved = true;
             }
 
-            return false;
+            return isRemoved;
         }
 
         #endregion

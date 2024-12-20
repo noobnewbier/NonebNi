@@ -1,6 +1,6 @@
 ﻿using NonebNi.Ui.Animation;
 using UnityEngine;
-using UnityUtils.SerializableGuid;
+using UnityUtils.Serialization;
 
 namespace NonebNi.Ui.Entities
 {
@@ -9,6 +9,6 @@ namespace NonebNi.Ui.Entities
     {
         public SerializableGuid guid;
 
-        public T GetAnimationControl<T>() where T : IPlayAnimation => GetComponent<T>();
+        public T GetAnimationControl<T>() where T : IPlayAnimation => GetComponentInChildren<T>();
     }
 }

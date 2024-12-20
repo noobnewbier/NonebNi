@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using NonebNi.Core.Tiles;
 using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine.Rendering;
@@ -37,7 +38,7 @@ namespace NonebNi.LevelEditor.Level.Maps
             var coordinates = _presenter.Map.GetAllCoordinates();
 
             foreach (var coordinate in coordinates)
-                if (_presenter.Map.TryGet(coordinate, out _))
+                if (_presenter.Map.TryGet(coordinate, out TileData? _))
                 {
                     var corners = _coordinateAndPositionService.FindCorners(coordinate).ToList();
                     Handles.DrawLine(corners[0], corners[5]);

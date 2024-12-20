@@ -47,15 +47,18 @@ namespace NonebNi.LevelEditor.Level
             SceneView.duringSceneGui -= OnSceneGUI;
 
             _levelDataSyncer.Dispose();
+            _errorOverviewView.Dispose();
         }
 
         private void OnSceneGUI(SceneView view)
         {
             _gridView.OnSceneDraw();
 
-            const float paddingFromBottom = 20; //Magic value, no idea why the hack it's off by 20 constantly
             var sceneViewSize = SceneView.lastActiveSceneView.position.size;
-            var position = new Vector2(0, sceneViewSize.y - TileInspectorView.WindowSize.y - paddingFromBottom);
+            var position = new Vector2(
+                0,
+                sceneViewSize.y - TileInspectorView.WindowSize.y - SceneViewConstants.PaddingFromBottom
+            );
 
             _tileInspectorView.OnSceneDraw(position);
             _errorOverviewView.OnSceneDraw(position + Vector2.right * TileInspectorView.WindowSize.x, view);

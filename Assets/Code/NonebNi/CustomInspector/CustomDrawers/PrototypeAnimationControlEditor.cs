@@ -19,6 +19,7 @@ namespace NonebNi.CustomInspector.CustomDrawers
             {
                 var typedTarget = (PrototypeAnimationControl)target;
                 if (GUILayout.Button(nameof(DieSequence))) typedTarget.Play(new DieAnimSequence());
+                if (GUILayout.Button(nameof(DamageSequence))) typedTarget.Play(new ReceivedDamageAnimSequence());
             }
         }
     }

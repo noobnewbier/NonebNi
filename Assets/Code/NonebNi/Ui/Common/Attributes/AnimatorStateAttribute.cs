@@ -6,11 +6,15 @@ namespace NonebNi.Ui.Common.Attributes
     {
         public readonly string AnimatorName;
         public readonly string? TargetLayerName;
+        public readonly bool UseRootObjectField;
 
-        public AnimatorStateAttribute(string animatorName, string? targetLayerName = null)
+        public AnimatorStateAttribute(string? targetLayerName = null) : this(string.Empty, targetLayerName, true) { }
+
+        public AnimatorStateAttribute(string animatorName, string? targetLayerName = null, bool useRootObjectField = false)
         {
-            AnimatorName = animatorName;
             TargetLayerName = targetLayerName;
+            UseRootObjectField = useRootObjectField;
+            AnimatorName = animatorName;
         }
     }
 }

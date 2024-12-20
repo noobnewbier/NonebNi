@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Maps;
+using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Coordinates
@@ -10,7 +13,7 @@ namespace NonebNi.Core.Coordinates
     ///     2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
     /// </summary>
     [Serializable]
-    public struct Coordinate : IEquatable<Coordinate>
+    public struct Coordinate : IActionTarget, IEquatable<Coordinate>
     {
         [SerializeField] private int x;
         [SerializeField] private int z;
@@ -39,7 +42,82 @@ namespace NonebNi.Core.Coordinates
 
         public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
 
-        public override bool Equals(object obj) => obj is Coordinate other && Equals(other);
+        public Coordinate RotateRight()
+        {
+            return new Coordinate(-Y, -x);
+        }
+
+        public Coordinate RotateLeft()
+        {
+            return new Coordinate(-z, -Y);
+        }
+
+        public Coordinate Normalized()
+        {
+            var normalizedCoordInVec = Vector3.Normalize(new Vector3(x, Y, z));
+            return new Coordinate(Mathf.RoundToInt(normalizedCoordInVec.x), Mathf.RoundToInt(normalizedCoordInVec.z));
+        }
+
+        public int DistanceTo(Coordinate coordinate)
+        {
+            //Ref: https://www.redblobgames.com/grids/hexagons/#distances
+            var subtractedCoordinate = new Coordinate(
+                X - coordinate.X,
+                Z - coordinate.Z
+            );
+
+            var distance =
+                (
+                    Mathf.Abs(subtractedCoordinate.X) +
+                    Mathf.Abs(subtractedCoordinate.Y) +
+                    Mathf.Abs(subtractedCoordinate.Z)
+                ) /
+                2f;
+
+            return (int)distance;
+        }
+
+        public bool IsOnSameLineWith(Coordinate coordinate) =>
+            X == coordinate.X || Y == coordinate.Y || Z == coordinate.Z;
+
+        public IEnumerable<Coordinate> GetCoordinatesBetween(Coordinate coordinate)
+        {
+            if (!IsOnSameLineWith(coordinate))
+            {
+                Log.Error("This method only support coordinates on a straight line at the moment!");
+                yield break;
+            }
+
+            if (Z == coordinate.Z)
+            {
+                var minX = Math.Min(X, coordinate.X);
+                var maxX = Math.Max(X, coordinate.X);
+                for (var xInBetween = minX + 1; xInBetween < maxX; xInBetween++)
+                    yield return new Coordinate(xInBetween, Z);
+            }
+            else if (Z == coordinate.Z)
+            {
+                var minZ = Math.Min(Z, coordinate.Z);
+                var maxZ = Math.Max(Z, coordinate.Z);
+                for (var zInBetween = minZ + 1; zInBetween < maxZ; zInBetween++)
+                    yield return new Coordinate(X, zInBetween);
+            }
+            else if (Y == coordinate.Y)
+            {
+                var minZ = Math.Min(Z, coordinate.Z);
+                var maxZ = Math.Max(Z, coordinate.Z);
+                var maxX = Math.Max(X, coordinate.X);
+                for (var i = 1; i < maxZ - minZ; i++)
+                {
+                    var xInBetween = maxX - i;
+                    var zInBetween = minZ + i;
+
+                    yield return new Coordinate(xInBetween, zInBetween);
+                }
+            }
+        }
+
+        public override bool Equals(object? obj) => obj is Coordinate other && Equals(other);
 
         public override int GetHashCode()
         {
@@ -53,6 +131,7 @@ namespace NonebNi.Core.Coordinates
 
         public static Coordinate operator +(Coordinate a, Coordinate b) => new(a.X + b.X, a.Z + b.Z);
         public static Coordinate operator -(Coordinate a, Coordinate b) => new(a.X - b.X, a.Z - b.Z);
+        public static Coordinate operator *(Coordinate a, int i) => new(a.X * i, a.Z * i);
 
         public static bool operator ==(Coordinate a, Coordinate b) => a.Equals(b);
 

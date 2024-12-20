@@ -56,7 +56,11 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
                     new SkillData("NoobSkill2", 2, _testSprite)
                 },
                 0,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
             _detailStat = Object.FindObjectOfType<Ui.Statistics.Unit.UnitDetailStat>();

@@ -15,7 +15,10 @@ namespace NonebNi.EditorComponent.Entities.Unit
         [SerializeField] private SkillDataSource[] skillDataSource = Array.Empty<SkillDataSource>();
         [Range(0, 100)] [SerializeField] private int initiative;
         [SerializeField] private int speed;
-
+        [SerializeField] private int focus;
+        [SerializeField] private int strength;
+        [SerializeField] private int armor;
+        [SerializeField] private int weaponRange;
 
         public override EditorEntityData<UnitData> CreateData(Guid guid, string factionId) =>
             new(
@@ -29,7 +32,11 @@ namespace NonebNi.EditorComponent.Entities.Unit
                     icon,
                     skillDataSource.Select(s => s.CreateData()).ToArray(),
                     initiative,
-                    speed
+                    speed,
+                    focus,
+                    strength,
+                    armor,
+                    weaponRange
                 )
             );
     }

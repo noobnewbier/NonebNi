@@ -9,8 +9,9 @@ namespace NonebNi.EditorComponent.Entities.Tile
     {
         [SerializeField] private string modifierName = null!;
         [SerializeField] private TileDataSource tileDataSource = null!;
+        [SerializeField] private bool isTileOccupier;
 
         public override EditorEntityData<TileModifierData> CreateData(Guid guid, string factionId) =>
-            new(guid, new TileModifierData(modifierName, guid, factionId, tileDataSource.TileData));
+            new(guid, new TileModifierData(modifierName, guid, factionId, tileDataSource.TileData, isTileOccupier));
     }
 }

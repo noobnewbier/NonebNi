@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Text;
 using Cysharp.Threading.Tasks;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
+using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
@@ -16,6 +18,7 @@ namespace NonebNi.EditorConsole
 {
     public class CommandHandler
     {
+        private readonly IActionRepository _actionRepository;
         private readonly IAgentsService _agentsService;
         private readonly ICommandEvaluationService _commandEvaluationService;
         private readonly ICommandsDataRepository _commandsDataRepository;
@@ -29,7 +32,8 @@ namespace NonebNi.EditorConsole
             ISequencePlayer sequencePlayer,
             ICommandsDataRepository commandsDataRepository,
             IAgentsService agentsService,
-            IUnitTurnOrderer turnOrderer)
+            IUnitTurnOrderer turnOrderer,
+            IActionRepository actionRepository)
         {
             _commandEvaluationService = commandEvaluationService;
             _readOnlyMap = readOnlyMap;
@@ -37,32 +41,92 @@ namespace NonebNi.EditorConsole
             _commandsDataRepository = commandsDataRepository;
             _agentsService = agentsService;
             _turnOrderer = turnOrderer;
+            _actionRepository = actionRepository;
         }
 
-        public void Handle(IConsoleCommand command, StringBuilder outputBuffer)
+        public async UniTask Handle(IConsoleCommand command, StringBuilder outputBuffer)
         {
             switch (command)
             {
+                #region Command Evaluation
+
                 case TeleportConsoleCommand teleportCommand:
                 {
                     if (_readOnlyMap.TryGet<UnitData>(teleportCommand.StartPos, out var unit))
-                        _ = EvaluateSequence(new TeleportCommand(unit, teleportCommand.TargetPos));
+                        await EvaluateSequence(
+                            new ActionCommand(teleportCommand.GetAction(), unit, teleportCommand.TargetPos)
+                        );
                     break;
                 }
 
                 case DamageConsoleCommand damageConsoleCommand:
                 {
-                    if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out var unit))
-                        _ = EvaluateSequence(new DamageCommand(damageConsoleCommand.Damage, unit));
+                    if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out _))
+                        await EvaluateSequence(
+                            new ActionCommand(
+                                damageConsoleCommand.GetAction(),
+                                SystemEntity.Instance,
+                                damageConsoleCommand.Coordinate
+                            )
+                        );
                     break;
                 }
 
                 case MoveConsoleCommand moveConsoleCommand:
-                {
                     _agentsService.OverrideDecision(
-                        new MoveDecision(
+                        new ActionDecision(
+                            ActionDatas.Move,
                             _turnOrderer.CurrentUnit,
                             moveConsoleCommand.TargetPos
+                        )
+                    );
+                    break;
+
+                case ActionConsoleCommand actionConsoleCommand:
+                {
+                    var action = _actionRepository.GetAction(actionConsoleCommand.ActionId);
+                    if (action == null)
+                    {
+                        outputBuffer.AppendLine(
+                            $"Unable to find action with matching action ID: {actionConsoleCommand.ActionId}"
+                        );
+                        break;
+                    }
+
+                    UnitData? unit;
+                    if (!actionConsoleCommand.ActorCoord.HasValue)
+                    {
+                        unit = _turnOrderer.CurrentUnit;
+                    }
+                    else if (!_readOnlyMap.TryGet(actionConsoleCommand.ActorCoord.Value, out unit))
+                    {
+                        break;
+                    }
+
+                    await EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoords));
+
+                    break;
+                }
+
+                #endregion
+
+                case DecideConsoleCommand decideConsoleCommand:
+                {
+                    var actionId = decideConsoleCommand.ActionId;
+                    var action = _actionRepository.GetAction(actionId);
+                    if (action == null)
+                    {
+                        outputBuffer.AppendLine(
+                            $"Unable to find action with matching action ID: {actionId}"
+                        );
+                        break;
+                    }
+
+                    _agentsService.OverrideDecision(
+                        new ActionDecision(
+                            action,
+                            _turnOrderer.CurrentUnit,
+                            decideConsoleCommand.TargetCoords
                         )
                     );
                     break;
@@ -148,7 +212,7 @@ Command description:
         {
             var sequences = _commandEvaluationService.Evaluate(command);
 
-            await _sequencePlayer.Play(sequences).ToUniTask();
+            await _sequencePlayer.Play(sequences);
         }
     }
 }

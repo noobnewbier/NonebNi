@@ -13,8 +13,15 @@ namespace NonebNi.Core.Units
         [SerializeField] private Sprite icon;
         [SerializeField] private SkillData[] skillDatas;
         [SerializeField] private int speed;
-        [Range(0, 100)] [SerializeField] private int initiative;
+        [field: SerializeField] public int Focus { get; private set; }
+        [field: SerializeField] public int Strength { get; private set; }
+        [field: SerializeField] public int Armor { get; private set; }
 
+        //TODO: flesh out equipment design: https://www.notion.so/Equipment-02619835e80f4791b7702df4813cce24?pvs=4
+        [field: SerializeField] public int WeaponRange { get; private set; }
+
+
+        [Range(0, 100)] [SerializeField] private int initiative;
 
         public UnitData(
             Guid guid,
@@ -25,7 +32,11 @@ namespace NonebNi.Core.Units
             Sprite icon,
             SkillData[] skillDatas,
             int initiative,
-            int speed) : base(name, guid, factionId)
+            int speed,
+            int focus,
+            int strength,
+            int armor,
+            int weaponRange) : base(name, guid, factionId)
         {
             this.maxHealth = maxHealth;
             this.health = health;
@@ -33,6 +44,10 @@ namespace NonebNi.Core.Units
             this.skillDatas = skillDatas;
             this.initiative = initiative;
             this.speed = speed;
+            Focus = focus;
+            Strength = strength;
+            Armor = armor;
+            WeaponRange = weaponRange;
         }
 
         public UnitData(UnitData unitData) : this(
@@ -44,7 +59,11 @@ namespace NonebNi.Core.Units
             unitData.icon,
             unitData.skillDatas,
             unitData.initiative,
-            unitData.speed
+            unitData.speed,
+            unitData.Focus,
+            unitData.Strength,
+            unitData.Armor,
+            unitData.WeaponRange
         ) { }
 
         public int Speed => speed;
@@ -60,6 +79,8 @@ namespace NonebNi.Core.Units
             get => health;
             set => health = Mathf.Clamp(value, 0, maxHealth);
         }
+
+        public override bool IsTileOccupier => true;
 
         public UnitData WithSpeed(int newSpeed)
         {

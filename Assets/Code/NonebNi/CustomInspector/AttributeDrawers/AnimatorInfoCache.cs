@@ -79,6 +79,16 @@ namespace NonebNi.CustomInspector.AttributeDrawers
 
         internal string[] GetParameters(AnimatorControllerParameterType type) => _parameters[type];
 
+        internal AnimatorControllerParameterType? FindParameterTypeByName(string targetParamName)
+        {
+            foreach (var (type, paramNames) in _parameters)
+            foreach (var paramName in paramNames)
+                if (paramName == targetParamName)
+                    return type;
+
+            return null;
+        }
+
         internal string[] GetStates(int layerIndex)
         {
             var isReturnAllLayers = layerIndex == -1;

@@ -1,4 +1,4 @@
-﻿using NonebNi.LevelEditor.Level;
+﻿using NonebNi.Core.Maps;
 using NonebNi.LevelEditor.Level.Maps;
 using NonebNi.Terrain;
 using StrongInject;
@@ -10,12 +10,12 @@ namespace NonebNi.LevelEditor.Di
     {
         [Factory]
         public static GridView ProvideGridView(
-            LevelEditorModel levelEditorModel,
             NonebEditorModel nonebEditorModel,
-            ICoordinateAndPositionService coordinateAndPositionService)
+            ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map)
         {
             var presenterFactory = Factory.Create<GridView, GridPresenter>(
-                view => new GridPresenter(view, levelEditorModel, nonebEditorModel)
+                view => new GridPresenter(view, nonebEditorModel, map)
             );
 
             return new GridView(presenterFactory, coordinateAndPositionService);

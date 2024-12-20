@@ -29,7 +29,11 @@ namespace NonebNi.LevelEditor.Di
         [Instance] private readonly NonebEditorModel _nonebEditorModel;
         [Instance] private readonly Scene _scene;
 
-        public LevelEditorContainer(EditorLevelDataSource levelDataSource, Scene scene, NonebEditorModel nonebEditorModel)
+        public LevelEditorContainer(
+            EditorLevelDataSource levelDataSource,
+            Scene scene,
+            NonebEditorModel nonebEditorModel,
+            EditorLevelData editorLevelData)
         {
             if (!levelDataSource.IsValid)
                 throw new ArgumentException(
@@ -37,9 +41,9 @@ namespace NonebNi.LevelEditor.Di
                 );
 
             _levelDataSource = levelDataSource;
-            _editorLevelData = _levelDataSource.CreateData()!;
             _scene = scene;
             _nonebEditorModel = nonebEditorModel;
+            _editorLevelData = editorLevelData;
         }
 
         [Instance(Options.AsImplementedInterfacesAndBaseClasses)]

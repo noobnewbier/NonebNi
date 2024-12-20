@@ -1,5 +1,6 @@
-﻿using NonebNi.Ui.Animation.Sequence;
-using UnityEngine;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
+using NonebNi.Ui.Animation.Sequence;
 
 namespace NonebNi.Ui.Animation
 {
@@ -7,6 +8,6 @@ namespace NonebNi.Ui.Animation
 
     public interface IPlayAnimation<in T> : IPlayAnimation where T : IAnimSequence
     {
-        Coroutine Play(T sequence);
+        UniTask Play(T sequence, CancellationToken ct = default);
     }
 }

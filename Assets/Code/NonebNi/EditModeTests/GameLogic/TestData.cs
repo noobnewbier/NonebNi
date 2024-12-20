@@ -11,8 +11,17 @@ namespace NonebNi.EditModeTests.GameLogic
     {
         private const string TestFactionId = "TestFaction";
 
-        public static readonly TileData Road = new("Road", 1);
-        public static readonly TileData Wall = new("Wall", TileData.ObstacleWeight);
+        public static readonly TileData Road = new("Road", 1, false);
+        public static readonly TileData Wall = new("Wall", TileData.ObstacleWeight, true);
+
+        public static TileModifierData CreateWallObject() =>
+            new(
+                "Wall",
+                Guid.NewGuid(),
+                TestFactionId,
+                Wall,
+                true
+            );
 
         public static UnitData CreateDeadUnit() =>
             new(
@@ -24,7 +33,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 0,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         public static UnitData CreateLivingUnit() =>
@@ -37,7 +50,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 0,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         public static UnitData CreateHighPriorityUnit() =>
@@ -50,7 +67,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 1,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         public static UnitData CreateLowPriorityUnit() =>
@@ -63,7 +84,11 @@ namespace NonebNi.EditModeTests.GameLogic
                 GetDefaultSprite(),
                 Array.Empty<SkillData>(),
                 0,
-                5
+                5,
+                0,
+                0,
+                0,
+                0
             );
 
         private static Sprite GetDefaultSprite() =>

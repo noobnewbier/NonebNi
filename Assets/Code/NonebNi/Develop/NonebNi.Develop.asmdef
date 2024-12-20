@@ -1,0 +1,29 @@
+{
+  "name": "NonebNi.Develop",
+  "rootNamespace": "",
+  "references": [
+    "GUID:8c9f0f875c743b643bbea480a5e687c3",
+    "GUID:4b1492eff241cd34d84a6af7377d0e42",
+    "GUID:0ae711f948db9e34e873f3de5ca41309",
+    "GUID:ccf6ba8ff37d4c70b972b206b2747fce",
+    "GUID:893a62e173c68f6478bfef27032343b1",
+    "GUID:f346463ed5d00f040b5da3e48ec437e9",
+    "GUID:acf43146c4364d2419bdbdeac67deb96",
+    "GUID:22f72075764e7f3429d2e98109cc90bc",
+    "GUID:75469ad4d38634e559750d17036d5f7c",
+    "GUID:f51ebe6a0ceec4240a699833d6309b23",
+    "GUID:5c01796d064528144a599661eaab93a6"
+  ],
+  "includePlatforms": [
+    "Editor",
+    "WSA"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

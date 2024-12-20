@@ -1,14 +1,15 @@
-﻿using NonebNi.Core.Commands;
+﻿using NonebNi.Core.Actions;
+using NonebNi.Core.Commands;
 using NonebNi.Core.Commands.Handlers;
 using NonebNi.Core.FlowControl;
 using StrongInject;
 
 namespace NonebNi.Main.Di
 {
-    [Register(typeof(DamageCommandHandler), typeof(ICommandHandler<DamageCommand>))]
-    [Register(typeof(TeleportCommandHandler), typeof(ICommandHandler<TeleportCommand>))]
+    [RegisterModule(typeof(EffectEvaluatorsModule))]
     [Register(typeof(EndTurnCommandHandler), typeof(ICommandHandler<EndTurnCommand>))]
-    [Register(typeof(MoveUnitCommandHandler), typeof(ICommandHandler<MoveUnitCommand>))]
+    [Register(typeof(ActionCommandHandler), typeof(ICommandHandler<ActionCommand>))]
     [Register(typeof(CommandEvaluationService), typeof(ICommandEvaluationService))]
+    [Register(typeof(TargetFinder), typeof(ITargetFinder))]
     public class CommandEvaluationModule { }
 }

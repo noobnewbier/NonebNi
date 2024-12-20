@@ -20,7 +20,7 @@ namespace NonebNi.EditorConsole
             if (!expressionArray.Any()) return new ErrorMessageConsoleCommand("invalid input");
 
             var firstExpression = expressionArray[0];
-            if (!(firstExpression is StringExpression commandName) ||
+            if (firstExpression is not StringExpression commandName ||
                 !_commandsDataRepository.TryGetCommand(commandName.StringValue, out var data))
                 return new ErrorMessageConsoleCommand("invalid input - no recognized command name");
 

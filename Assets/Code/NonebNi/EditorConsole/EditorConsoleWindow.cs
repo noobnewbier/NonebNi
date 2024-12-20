@@ -1,3 +1,4 @@
+using NonebNi.Core.Actions;
 using NonebNi.Main;
 using UnityEditor;
 using UnityEngine;
@@ -43,7 +44,8 @@ namespace NonebNi.EditorConsole
             using (new GUILayout.HorizontalScope())
             {
                 DrawUserTextInput();
-                if (GUILayout.Button("Enter", GUILayout.ExpandWidth(false))) _console.InterpretInput(_currentPlayerInput);
+                if (GUILayout.Button("Enter", GUILayout.ExpandWidth(false)))
+                    _console.InterpretInput(_currentPlayerInput);
             }
 
             NonebEditorGUI.ShowHorizontalLine();
@@ -98,13 +100,15 @@ namespace NonebNi.EditorConsole
             if (levelFlowController == null || levelData == null) return false;
 
             var commandsDataRepository = new CommandsDataRepository();
+            var actionRepository = new ActionRepository(ActionDatas.Actions);
             var commandHandler = new CommandHandler(
                 levelFlowController.EvaluationService,
                 levelData.Map,
                 levelFlowController.SequencePlayer,
                 commandsDataRepository,
                 levelFlowController.AgentsService,
-                levelFlowController.UnitTurnOrderer
+                levelFlowController.UnitTurnOrderer,
+                actionRepository
             );
             var parser = new ExpressionParser(commandsDataRepository);
             var lexer = new TextLexer();

@@ -1,4 +1,5 @@
 ﻿using System;
+using NonebNi.EditorComponent;
 using NonebNi.LevelEditor.Common.Events;
 using NonebNi.LevelEditor.Di;
 using NonebNi.LevelEditor.Level;
@@ -36,6 +37,10 @@ namespace NonebNi.LevelEditor
 
         ~NonebEditor()
         {
+            //TODO: this is executing outside of main thread,
+            //and during the cleanup process some methods are working with method that is only allowed in main thread
+            //Probs need to do sth about it, somehow the console aren't even showing the relevant error log so you can't see it without debugger attached.
+
             CleanUp();
         }
 
@@ -62,11 +67,21 @@ namespace NonebNi.LevelEditor
         {
             _levelEditor?.Dispose();
             _levelEditor = null;
-            var dataSource = EditorLevelDataSource.FindLevelDataSourceForActiveScene();
-            if (dataSource == null || !dataSource.IsValid) return;
 
-            _levelEditor = new LevelEditorContainer(dataSource, SceneManager.GetActiveScene(), _editorModel).Resolve();
+            var dataSource = EditorLevelDataSource.FindLevelDataSourceForActiveScene();
+            if (dataSource == null) return;
+
+            var editorLevelData = dataSource.CreateData();
+            if (editorLevelData == null) return;
+
+            _levelEditor = new LevelEditorContainer(
+                dataSource,
+                SceneManager.GetActiveScene(),
+                _editorModel,
+                editorLevelData
+            ).Resolve();
             _editorModel.LevelEditor = _levelEditor.Value;
+            EditorComponentSceneData.Provide(editorLevelData.Factions);
         }
 
         private void TryInitLevelEditorAfterOneFrame()

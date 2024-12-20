@@ -19,6 +19,17 @@ namespace NonebNi.EditorConsole
 
                     yield return new StringExpression(commandName);
                 }
+                else if (TryMatchFirstArg(ArrayExpression.Pattern, input, out var arrayMatch))
+                {
+                    input = input.Remove(0, arrayMatch.Length);
+                    var arrayContent = arrayMatch.Value[1..^1];
+                    var expressions = Lex(arrayContent).ToArray();
+
+                    yield return new ArrayExpression(
+                        expressions,
+                        arrayMatch.Value
+                    );
+                }
                 else if (TryMatchFirstArg(CoordinateParameter.Pattern, input, out var coordinateMatch))
                 {
                     input = input.Remove(0, coordinateMatch.Length);
@@ -27,7 +38,7 @@ namespace NonebNi.EditorConsole
                     var intExpressions = Lex(coordinateToSpaceSeparatedInts).Cast<IntParameter>().ToArray();
 
                     yield return new CoordinateParameter(
-                        new Coordinate(intExpressions[0].IntValue, intExpressions[2].IntValue),
+                        new Coordinate(intExpressions[0].IntValue, intExpressions[1].IntValue),
                         coordinateMatch.Value
                     );
                 }
