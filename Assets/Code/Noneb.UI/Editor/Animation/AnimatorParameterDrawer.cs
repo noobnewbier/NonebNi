@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.AttributeDrawers
+namespace Noneb.UI.Editor.Animation
 {
     [CustomPropertyDrawer(typeof(AnimatorParameterAttribute))]
     internal class AnimatorParameterDrawer : PropertyDrawer

@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.CustomDrawers
+namespace Noneb.UI.Editor.Animation
 {
     [CustomPropertyDrawer(typeof(AnimationDataTable))]
     public class AnimationDataTableDrawer : PropertyDrawer

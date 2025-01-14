@@ -1,13 +1,14 @@
-﻿using NonebNi.Ui.Common.Attributes;
+﻿using System.Linq;
+using NonebNi.Ui.Common.Attributes;
 using Unity.Logging;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.AttributeDrawers
+namespace Noneb.UI.Editor.Animation
 {
-    [CustomPropertyDrawer(typeof(AnimatorLayerAttribute))]
-    internal class AnimatorLayerDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AnimatorStateAttribute))]
+    internal class AnimatorStateDrawer : PropertyDrawer
     {
         private static SerializedObject? _lastSerializedObject;
 
@@ -15,7 +16,7 @@ namespace NonebNi.CustomInspector.AttributeDrawers
         {
             EditorGUI.BeginProperty(position, label, property);
 
-            var typedAttribute = (AnimatorLayerAttribute)attribute;
+            var typedAttribute = (AnimatorStateAttribute)attribute;
             RefreshCache();
 
             Animator? animator;
@@ -51,15 +52,18 @@ namespace NonebNi.CustomInspector.AttributeDrawers
             else
             {
                 var paramTable = AnimatorInfoCache.GetParamTable(animatorRuntimeAnimatorController);
-                var layers = paramTable.GetLayers();
-                var newIndex = NonebEditorGUI.ShowStringPopup(
+                var targetLayer = typedAttribute.TargetLayerName == null ?
+                    0 :
+                    NonebEditorUtils.FindPropertyIntInSameDepth(property, typedAttribute.TargetLayerName);
+                var states = paramTable.GetStates(targetLayer);
+                NonebEditorGUI.ShowStringPopup(
                     position,
-                    layers[property.intValue],
-                    label.text,
-                    layers
+                    property,
+                    $"{label.text}",
+                    states
                 );
 
-                if (newIndex != property.intValue) property.intValue = newIndex;
+                if (!states.Contains(property.stringValue)) property.stringValue = states.FirstOrDefault() ?? string.Empty;
             }
 
             EditorGUI.EndProperty();

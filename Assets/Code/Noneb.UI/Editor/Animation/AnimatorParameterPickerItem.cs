@@ -1,7 +1,7 @@
 ﻿using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace NonebNi.CustomInspector.AttributeDrawers
+namespace Noneb.UI.Editor.Animation
 {
     public class AnimatorParameterPickerItem : AdvancedDropdownItem
     {

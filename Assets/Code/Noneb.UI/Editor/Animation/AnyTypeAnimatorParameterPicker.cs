@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityUtils;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.AttributeDrawers
+namespace Noneb.UI.Editor.Animation
 {
     /// <summary>
     /// If you are reading this, and know of a better way to do this, please enlighten me as it is gross.

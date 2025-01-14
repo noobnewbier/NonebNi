@@ -1,10 +1,9 @@
-﻿using NonebNi.CustomInspector.AttributeDrawers;
-using NonebNi.Ui.Animation;
+﻿using NonebNi.Ui.Animation;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.CustomDrawers
+namespace Noneb.UI.Editor.Animation
 {
     [CustomPropertyDrawer(typeof(AnimationData))]
     public class AnimationDataDrawer : PropertyDrawer

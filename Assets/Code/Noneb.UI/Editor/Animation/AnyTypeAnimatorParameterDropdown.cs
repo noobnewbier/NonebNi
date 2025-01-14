@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace NonebNi.CustomInspector.AttributeDrawers
+namespace Noneb.UI.Editor.Animation
 {
     /// <summary>
     /// In the future we might want to make a more generalized version of this, for now though this suffice
