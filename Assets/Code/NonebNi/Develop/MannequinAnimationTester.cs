@@ -7,7 +7,6 @@ using NonebNi.Ui.Animation.Sequence;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 namespace NonebNi.Develop
 {
@@ -40,7 +39,7 @@ namespace NonebNi.Develop
         {
             if (!Mouse.current.leftButton.wasReleasedThisFrame) return;
 
-            var (success, pos) = FindInputPos(Mouse.current.position);
+            var (success, pos) = FindInputPos();
             if (!success) return;
 
             _targetPos = pos;
@@ -55,17 +54,12 @@ namespace NonebNi.Develop
             await control.WalkTo(_cts.Token, targetPos);
         }
 
-        private (bool success, Vector3 pos) FindInputPos(Vector2Control mousePos)
+        private (bool success, Vector3 pos) FindInputPos()
         {
-            var cam = Camera.main;
-            if (cam == null) return default;
+            var (success, pos) = TestScriptHelpers.FindMousePosInWorld(groundObject);
+            if (!success) return (false, Vector3.zero);
 
-            var ray = cam.ScreenPointToRay(mousePos.ReadValue());
-            if (!Physics.Raycast(ray, out var hit)) return default;
-
-            if (hit.collider.gameObject != groundObject) return default;
-
-            return (true, new Vector3(hit.point.x, transform.position.y, hit.point.z));
+            return (true, new Vector3(pos.x, transform.position.y, pos.z));
         }
 
         private async UniTask PlayWrathStrikeAnimation()
