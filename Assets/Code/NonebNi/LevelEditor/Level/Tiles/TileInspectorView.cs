@@ -17,13 +17,10 @@ namespace NonebNi.LevelEditor.Level.Tiles
         public static readonly Vector2 WindowSize = new(MinRectWidth, TitleSize.y + ContentSize.y);
 
         private static readonly int WindowID = nameof(TileInspectorView).GetHashCode();
+        private readonly Plane _gridPlane;
 
         private readonly IReadOnlyMap _map;
-
         private readonly TileInspectorPresenter _presenter;
-
-
-        private Plane _gridPlane;
 
         public TileInspectorView(
             IFactory<TileInspectorView, TileInspectorPresenter> presenterFactory,
@@ -32,8 +29,7 @@ namespace NonebNi.LevelEditor.Level.Tiles
         {
             _map = map;
             _presenter = presenterFactory.Create(this);
-
-            _gridPlane = new Plane(Vector3.up, terrainConfigData.MapStartingPosition);
+            _gridPlane = terrainConfigData.GridPlane;
         }
 
         public void OnSceneDraw(Vector2 startingPosition)
