@@ -1,0 +1,23 @@
+{
+  "name": "Noneb.UI.Editor",
+  "rootNamespace": "",
+  "references": [
+    "GUID:acf43146c4364d2419bdbdeac67deb96",
+    "GUID:22f72075764e7f3429d2e98109cc90bc",
+    "GUID:f51ebe6a0ceec4240a699833d6309b23",
+    "GUID:5c01796d064528144a599661eaab93a6",
+    "GUID:fd228c28e14f1a34cbe508676c914dd7",
+    "GUID:2665a8d13d1b3f18800f46e256720795",
+    "GUID:e0cd26848372d4e5c891c569017e11f1",
+    "GUID:e7c48c88b0352a64dbc484f617be32a9"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
