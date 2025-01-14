@@ -1,7 +1,7 @@
 ﻿using System;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
-using NonebNi.Core.Units.Skills;
 using UnityEditor;
 using UnityEngine;
 
@@ -31,7 +31,7 @@ namespace NonebNi.EditModeTests.GameLogic
                 1,
                 0,
                 GetDefaultSprite(),
-                Array.Empty<SkillData>(),
+                Array.Empty<NonebAction>(),
                 0,
                 5,
                 0,
@@ -48,7 +48,7 @@ namespace NonebNi.EditModeTests.GameLogic
                 1,
                 1,
                 GetDefaultSprite(),
-                Array.Empty<SkillData>(),
+                Array.Empty<NonebAction>(),
                 0,
                 5,
                 0,
@@ -65,7 +65,7 @@ namespace NonebNi.EditModeTests.GameLogic
                 1,
                 1,
                 GetDefaultSprite(),
-                Array.Empty<SkillData>(),
+                Array.Empty<NonebAction>(),
                 1,
                 5,
                 0,
@@ -82,7 +82,7 @@ namespace NonebNi.EditModeTests.GameLogic
                 1,
                 1,
                 GetDefaultSprite(),
-                Array.Empty<SkillData>(),
+                Array.Empty<NonebAction>(),
                 0,
                 5,
                 0,

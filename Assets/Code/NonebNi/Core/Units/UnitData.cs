@@ -1,17 +1,19 @@
 ﻿using System;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Entities;
-using NonebNi.Core.Units.Skills;
 using UnityEngine;
 
 namespace NonebNi.Core.Units
 {
     [Serializable]
-    public class UnitData : EntityData
+    public class UnitData : EntityData //TODO: this a record?
     {
         [SerializeField] private int maxHealth;
         [SerializeField] private int health;
+        [SerializeField] private int maxFatigue;
+        [SerializeField] private int fatigue;
         [SerializeField] private Sprite icon;
-        [SerializeField] private SkillData[] skillDatas;
+        [SerializeField] private NonebAction[] actions;
         [SerializeField] private int speed;
         [field: SerializeField] public int Focus { get; private set; }
         [field: SerializeField] public int Strength { get; private set; }
@@ -21,7 +23,7 @@ namespace NonebNi.Core.Units
         [field: SerializeField] public int WeaponRange { get; private set; }
 
 
-        [Range(0, 100)] [SerializeField] private int initiative;
+        [Range(0, 100), SerializeField] private int initiative;
 
         public UnitData(
             Guid guid,
@@ -30,7 +32,7 @@ namespace NonebNi.Core.Units
             int maxHealth,
             int health,
             Sprite icon,
-            SkillData[] skillDatas,
+            NonebAction[] actions,
             int initiative,
             int speed,
             int focus,
@@ -41,7 +43,7 @@ namespace NonebNi.Core.Units
             this.maxHealth = maxHealth;
             this.health = health;
             this.icon = icon;
-            this.skillDatas = skillDatas;
+            this.actions = actions;
             this.initiative = initiative;
             this.speed = speed;
             Focus = focus;
@@ -57,7 +59,7 @@ namespace NonebNi.Core.Units
             unitData.maxHealth,
             unitData.health,
             unitData.icon,
-            unitData.skillDatas,
+            unitData.actions,
             unitData.initiative,
             unitData.speed,
             unitData.Focus,
@@ -70,7 +72,7 @@ namespace NonebNi.Core.Units
 
         public int Initiative => initiative;
 
-        public SkillData[] SkillDatas => skillDatas;
+        public NonebAction[] Actions => actions;
         public Sprite Icon => icon;
         public int MaxHealth => maxHealth;
 
@@ -78,6 +80,14 @@ namespace NonebNi.Core.Units
         {
             get => health;
             set => health = Mathf.Clamp(value, 0, maxHealth);
+        }
+
+        public int MaxFatigue => maxFatigue;
+
+        public int Fatigue
+        {
+            get => fatigue;
+            set => fatigue = Mathf.Clamp(value, 0, maxFatigue);
         }
 
         public override bool IsTileOccupier => true;

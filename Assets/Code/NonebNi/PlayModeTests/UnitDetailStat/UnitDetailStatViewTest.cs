@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using JetBrains.Annotations;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Units;
-using NonebNi.Core.Units.Skills;
 using NonebNi.Ui.Statistics.Skill;
 using NonebNi.Ui.Statistics.Unit;
 using NUnit.Framework;
@@ -52,8 +52,20 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
                 _testSprite,
                 new[]
                 {
-                    new SkillData("NoobSkill1", 1, _testSprite),
-                    new SkillData("NoobSkill2", 2, _testSprite)
+                    new NonebAction(
+                        "NoobSkill1",
+                        1,
+                        TargetRestriction.Enemy,
+                        TargetArea.Single,
+                        1
+                    ),
+                    new NonebAction(
+                        "NoobSkill2",
+                        1,
+                        TargetRestriction.Enemy,
+                        TargetArea.Single,
+                        1
+                    )
                 },
                 0,
                 5,
@@ -80,7 +92,7 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
             );
             Assert.AreEqual(
                 _detailStat.skillPanelRoot.GetComponentsInChildren<SkillView>().Length,
-                _testData.SkillDatas.Length,
+                _testData.Actions.Length,
                 "The number of skill views should match the number of skills the unit has"
             );
         }
