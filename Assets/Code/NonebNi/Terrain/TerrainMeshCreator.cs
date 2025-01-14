@@ -7,6 +7,7 @@ using UnityEngine;
 namespace NonebNi.Terrain
 {
     //TODO: incorporate this to editor :) fml
+    //TODO: I wrote this thing, and I have no idea wtf does this do.
     public interface ITerrainMeshCreator
     {
         /// <summary>

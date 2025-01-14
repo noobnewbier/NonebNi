@@ -13,6 +13,7 @@ namespace NonebNi.Core.FlowControl
         UnitData ToNextUnit();
     }
 
+    //TODO: the current initiative implementation isn't actually what GDD says but this might not be a bad thing, let's think about that later.
     /// <summary>
     ///     Initiative base, all units must have took one turn before others can go again
     /// </summary>
