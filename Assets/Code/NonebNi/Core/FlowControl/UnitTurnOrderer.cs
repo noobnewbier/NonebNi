@@ -9,6 +9,7 @@ namespace NonebNi.Core.FlowControl
     public interface IUnitTurnOrderer
     {
         UnitData CurrentUnit { get; }
+        IEnumerable<UnitData> UnitsInOrder { get; }
         UnitData ToNextUnit();
     }
 
@@ -35,6 +36,8 @@ namespace NonebNi.Core.FlowControl
         }
 
         public UnitData CurrentUnit { get; private set; }
+
+        public IEnumerable<UnitData> UnitsInOrder => _unitInOrder;
 
         public UnitData ToNextUnit()
         {
