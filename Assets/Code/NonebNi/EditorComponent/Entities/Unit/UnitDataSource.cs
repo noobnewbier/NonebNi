@@ -12,7 +12,7 @@ namespace NonebNi.EditorComponent.Entities.Unit
     {
         [SerializeField] private int health;
         [SerializeField] private int maxHealth;
-        [SerializeField] private SkillDataSource[] skillDataSource = Array.Empty<SkillDataSource>();
+        [SerializeField] private NonebActionDataSource[] skillDataSource = Array.Empty<NonebActionDataSource>();
         [Range(0, 100)] [SerializeField] private int initiative;
         [SerializeField] private int speed;
         [SerializeField] private int focus;

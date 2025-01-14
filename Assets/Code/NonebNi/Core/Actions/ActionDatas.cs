@@ -1,4 +1,5 @@
 ﻿using NonebNi.Core.Effects;
+using UnityEngine;
 using static NonebNi.Core.Actions.TargetArea;
 using static NonebNi.Core.Actions.TargetRestriction;
 
@@ -31,6 +32,8 @@ namespace NonebNi.Core.Actions
             NonOccupied,
             Single,
             0,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "move",
             new MoveEffect()
         );
 
@@ -40,6 +43,8 @@ namespace NonebNi.Core.Actions
             Enemy,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "bash",
             new KnockBackEffect(1)
         );
 
@@ -49,6 +54,8 @@ namespace NonebNi.Core.Actions
             Enemy,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "shoot",
             new DamageEffect("shoot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
         );
 
@@ -58,6 +65,8 @@ namespace NonebNi.Core.Actions
             Enemy | ClearPath,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "power-shot",
             new DamageEffect("power-shot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)),
             new KnockBackEffect(1)
         );
@@ -68,6 +77,8 @@ namespace NonebNi.Core.Actions
             Enemy,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "strike",
             new DamageEffect("strike", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength))
         );
 
@@ -77,6 +88,8 @@ namespace NonebNi.Core.Actions
             Enemy,
             Fan,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "swing",
             new DamageEffect("swing", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength)),
             new KnockBackEffect(1)
         );
@@ -87,19 +100,19 @@ namespace NonebNi.Core.Actions
             Enemy,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "slash",
             new DamageEffect("slash", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
         );
 
         public static readonly NonebAction TacticalAdvance = new(
             "tactical-advance",
             new StatBasedRange(1, StatBasedRange.StatType.Focus),
-            new[]
-            {
-                Friendly,
-                NonOccupied
-            },
+            new[] { Friendly, NonOccupied },
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "tactical-advance",
             new MoveEntityEffect()
         );
 
@@ -109,6 +122,8 @@ namespace NonebNi.Core.Actions
             Enemy | ClearPath | FirstTileToTargetDirectionIsEmpty,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "lure",
             new PullEntityEffect()
         );
 
@@ -118,19 +133,19 @@ namespace NonebNi.Core.Actions
             Occupied | TargetCoordPlusDirectionToTargetIsEmpty | IsCoordinate,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "vault",
             new MoveOverEffect()
         );
 
         public static readonly NonebAction Grapple = new(
             "grapple",
             new Range[] { 2, 1 },
-            new[]
-            {
-                Enemy,
-                NonOccupied
-            },
+            new[] { Enemy, NonOccupied },
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "grapple",
             new MoveEntityEffect()
         );
 
@@ -140,6 +155,8 @@ namespace NonebNi.Core.Actions
             Friendly | NotSelf,
             Single,
             1,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            "rotate",
             new SwapPositionEffect()
         );
 
