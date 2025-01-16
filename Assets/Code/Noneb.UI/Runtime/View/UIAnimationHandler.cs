@@ -1,6 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
-using NonebNi.Ui;
-using NonebNi.Ui.Animation;
+using Noneb.UI.Animation;
 using UnityEngine;
 
 namespace Noneb.UI.View

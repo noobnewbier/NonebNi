@@ -1,8 +1,8 @@
 ﻿using System;
-using NonebNi.Ui.Common.Attributes;
+using Noneb.UI.Animation.Attributes;
 using UnityEngine;
 
-namespace NonebNi.Ui.Animation
+namespace Noneb.UI.Animation
 {
     /// <summary>
     /// goal - a generic record that can be used for any animator control that's related to animator parameter

@@ -1,4 +1,4 @@
-﻿using NonebNi.Ui.Animation;
+﻿using Noneb.UI.Animation;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;

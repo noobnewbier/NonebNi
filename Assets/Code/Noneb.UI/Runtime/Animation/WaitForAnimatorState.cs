@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NonebNi.Ui.Common
+namespace Noneb.UI.Animation
 {
     public class WaitForAnimatorState : CustomYieldInstruction
     {

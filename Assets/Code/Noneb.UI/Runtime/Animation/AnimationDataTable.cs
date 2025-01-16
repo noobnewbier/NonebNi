@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityUtils.Serialization;
 
-namespace NonebNi.Ui.Animation
+namespace Noneb.UI.Animation
 {
     /// <summary>
     /// We might want custom drawer later, but for now this suffices.

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using NonebNi.Ui.Common.Attributes;
+using Noneb.UI.Animation.Attributes;
 using Unity.Logging;
 using UnityEditor;
 using UnityEngine;

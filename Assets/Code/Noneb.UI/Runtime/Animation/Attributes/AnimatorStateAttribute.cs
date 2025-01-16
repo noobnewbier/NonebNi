@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace NonebNi.Ui.Common.Attributes
+namespace Noneb.UI.Animation.Attributes
 {
     public class AnimatorStateAttribute : PropertyAttribute
     {

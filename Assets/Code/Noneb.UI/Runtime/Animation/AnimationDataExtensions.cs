@@ -1,10 +1,8 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using NonebNi.Ui.Animation;
-using NonebNi.Ui.Common;
 using UnityEngine;
 
-namespace NonebNi.Ui
+namespace Noneb.UI.Animation
 {
     public static class AnimationDataExtensions
     {
