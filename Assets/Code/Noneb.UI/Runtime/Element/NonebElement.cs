@@ -19,7 +19,7 @@ namespace Noneb.UI.Element
 
         public bool IsElementActive { get; private set; }
 
-        public NonebUIComponent? OwnerView => GetComponentInParent<NonebUIComponent>();
+        public NonebViewBehaviour? OwnerView => GetComponentInParent<NonebViewBehaviour>();
 
         public async UniTask Activate()
         {
@@ -51,7 +51,7 @@ namespace Noneb.UI.Element
             {
                 if (child.GetComponent<NonebElement>() != null) continue;
 
-                foreach (var nestedHandlers in FindComponents(t)) yield return nestedHandlers;
+                foreach (var nestedHandlers in FindComponents(child)) yield return nestedHandlers;
             }
         }
 
@@ -67,8 +67,8 @@ namespace Noneb.UI.Element
 
             if (ownerView.InitState != INonebView.InitializationState.PreInitialize) return (true, createdElement);
 
-            elementPrefab.transform.SetParent(elementHolder.transform);
-            await elementPrefab.Init();
+            createdElement.transform.SetParent(elementHolder.transform);
+            await createdElement.Init();
 
             if (!ownerView.IsViewActive) return (true, createdElement);
 
@@ -87,7 +87,7 @@ namespace Noneb.UI.Element
 
             if (!monoBehaviour.TryGetComponent(out NonebElement nonebElement))
             {
-                Log.Error("You need a NonebElement for this to work mate");
+                Log.Error($"You need a NonebElement for this({monoBehaviour.gameObject.name}) to work mate");
                 return (false, default);
             }
 

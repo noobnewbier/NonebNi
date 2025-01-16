@@ -87,7 +87,7 @@ namespace Noneb.UI.View
                 await currentView.Deactivate();
             }
 
-            if (nextView is NonebUIComponent component)
+            if (nextView is NonebViewBehaviour component)
                 //TODO: code smell
                 component.transform.SetParent(_root.transform);
 

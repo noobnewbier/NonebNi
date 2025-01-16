@@ -18,7 +18,7 @@ namespace Noneb.UI.Tests
                 var stack = new UIStack(stackRoot);
 
                 var dummyViewObject = new GameObject();
-                var view = dummyViewObject.AddComponent<NonebUIComponent>();
+                var view = dummyViewObject.AddComponent<NonebViewBehaviour>();
 
                 var pushTask = stack.Push(view);
                 Assert.That(stack.CurrentView, Is.SameAs(view));
@@ -35,7 +35,7 @@ namespace Noneb.UI.Tests
                 var stack = new UIStack(stackRoot);
 
                 var dummyViewObject = new GameObject();
-                var view = dummyViewObject.AddComponent<NonebUIComponent>();
+                var view = dummyViewObject.AddComponent<NonebViewBehaviour>();
 
                 var pushTask = stack.Push(view);
                 Assert.That(stack.CurrentView, Is.SameAs(view));
@@ -52,7 +52,7 @@ namespace Noneb.UI.Tests
                 var stack = new UIStack(stackRoot);
 
                 var dummyViewObject = new GameObject();
-                var view = dummyViewObject.AddComponent<NonebUIComponent>();
+                var view = dummyViewObject.AddComponent<NonebViewBehaviour>();
                 await stack.Push(view);
 
                 var popTask = stack.Pop();

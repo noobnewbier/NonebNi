@@ -36,7 +36,8 @@ namespace Noneb.UI.View
     /// ---
     /// </summary>
     //TODO: idk what's this missing but it's missing sth.
-    public class NonebUIComponent : MonoBehaviour, INonebView //TODO: maybe view itself is a poco and we need a container for it.
+    //TODO: maybe view itself is a poco and we need a container for it.
+    public class NonebViewBehaviour : MonoBehaviour, INonebView
     {
         public bool IsViewActive { get; private set; }
 
