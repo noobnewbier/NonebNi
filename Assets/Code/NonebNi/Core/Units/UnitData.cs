@@ -25,6 +25,12 @@ namespace NonebNi.Core.Units
 
         [Range(0, 100), SerializeField] private int initiative;
 
+        public UnitData(string name) : base(name, System.Guid.NewGuid(), "debug-faction")
+        {
+            icon = Sprite.Create(Texture2D.redTexture, new Rect(0, 0, 1, 1), Vector2.zero);
+            actions = Array.Empty<NonebAction>();
+        }
+
         public UnitData(
             Guid guid,
             string name,
