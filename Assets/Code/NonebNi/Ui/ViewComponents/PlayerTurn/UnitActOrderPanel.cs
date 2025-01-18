@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
 {
-    public class UnitActOrderPanel : MonoBehaviour
+    public class UnitActOrderPanel : MonoBehaviour, IElementComponent
     {
         [SerializeField] private GameObject panel = null!;
         [SerializeField] private ActOrderWidget widgetPrefab = null!;

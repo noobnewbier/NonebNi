@@ -15,8 +15,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private UnitData? _unitData;
 
-        public bool IsActivated { get; set; }
-
         public UniTask OnInit()
         {
             button.Clicked += OnButtonClicked;

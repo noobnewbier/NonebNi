@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.UI.View;
 using NonebNi.Core.Units;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
@@ -10,10 +11,20 @@ namespace NonebNi.Develop
     public class ActOrderTestScript : MonoBehaviour
     {
         [SerializeField] private UnitActOrderPanel panel = null!;
+        [SerializeField] private NonebViewBehaviour view = null!;
+        [SerializeField] private GameObject stackRoot = null!;
 
         private readonly Lazy<UnitData> _unitA = new(() => new UnitData("A"));
         private readonly Lazy<UnitData> _unitB = new(() => new UnitData("B"));
         private readonly Lazy<UnitData> _unitC = new(() => new UnitData("C"));
+        private UIStack _stack;
+
+        // ReSharper disable once Unity.IncorrectMethodSignature
+        private async UniTaskVoid Start()
+        {
+            _stack = new UIStack(stackRoot);
+            await _stack.Push(view);
+        }
 
         private void OnGUI()
         {
