@@ -19,16 +19,14 @@ namespace Noneb.UI.Element
 
         public bool IsElementActive { get; private set; }
 
-        public NonebViewBehaviour? OwnerView => GetComponentInParent<NonebViewBehaviour>();
+        public NonebViewBehaviour? OwnerView => GetComponentInParent<NonebViewBehaviour>(true);
 
         public async UniTask Activate()
         {
             IsElementActive = true;
 
             var eventComponents = FindComponents(transform).ToList();
-            eventComponents.ForEach(c => c.IsActivated = true);
-
-            var activateEvents = eventComponents.Select(h => h.OnActivate());
+            var activateEvents = eventComponents.Select(c => c.OnActivate());
             await UniTask.WhenAll(activateEvents);
         }
 
@@ -37,7 +35,6 @@ namespace Noneb.UI.Element
             IsElementActive = false;
 
             var eventComponents = FindComponents(transform).ToList();
-            eventComponents.ForEach(c => c.IsActivated = false);
 
             var deactivateEvents = eventComponents.Select(h => h.OnDeactivate());
             await UniTask.WhenAll(deactivateEvents);
@@ -65,14 +62,17 @@ namespace Noneb.UI.Element
                 return (false, createdElement);
             }
 
-            if (ownerView.InitState != INonebView.InitializationState.PreInitialize) return (true, createdElement);
+            if (ownerView.InitState == INonebView.InitializationState.PreInitialize) return (true, createdElement);
+
+            if (ownerView.InitState == INonebView.InitializationState.Initializing) await UniTask.WaitUntil(() => ownerView.InitState == INonebView.InitializationState.Initialized);
 
             createdElement.transform.SetParent(elementHolder.transform);
             await createdElement.Init();
 
             if (!ownerView.IsViewActive) return (true, createdElement);
 
-            await elementPrefab.Activate();
+            //Activate all children - they can be nested
+            foreach (var element in createdElement.GetComponentsInChildren<NonebElement>()) await element.Activate();
 
             return (true, createdElement);
         }

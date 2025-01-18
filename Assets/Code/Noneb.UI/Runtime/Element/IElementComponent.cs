@@ -4,8 +4,6 @@ namespace Noneb.UI.Element
 {
     public interface IElementComponent
     {
-        public bool IsActivated { get; set; }
-
         public UniTask OnInit() => UniTask.CompletedTask;
 
         public UniTask OnActivate() => UniTask.CompletedTask;
