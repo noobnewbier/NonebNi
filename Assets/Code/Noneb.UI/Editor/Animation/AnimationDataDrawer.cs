@@ -118,7 +118,8 @@ namespace Noneb.UI.Editor.Animation
 
         private static AnyTypeAnimatorParameterPicker? CreateNewPicker(SerializedProperty property, GUIContent label)
         {
-            var controller = property.serializedObject.FindPropertyOfTypeAtRoot<Animator>()?.runtimeAnimatorController;
+            var animator = EditorTimeAnimatorFinder.FindForInspector(property, string.Empty, true);
+            var controller = animator?.runtimeAnimatorController;
             if (controller == null) return null;
 
             var newPicker = new AnyTypeAnimatorParameterPicker(controller, label);

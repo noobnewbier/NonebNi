@@ -1,5 +1,4 @@
 ﻿using Noneb.UI.Animation.Attributes;
-using Unity.Logging;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -45,29 +44,7 @@ namespace Noneb.UI.Editor.Animation
             string animatorName,
             bool useRootObjectField)
         {
-            Animator? animator;
-            if (useRootObjectField)
-            {
-                if (string.IsNullOrEmpty(animatorName))
-                    animator = property.serializedObject.FindPropertyOfTypeAtRoot<Animator>();
-                else
-                    animator = property.serializedObject.FindProperty(animatorName).objectReferenceValue as Animator;
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(animatorName))
-                {
-                    animator = null;
-                    Log.Error(
-                        "We cannot find animator automatically when you are not referencing the root type, you must define animator name before I decide to implement this."
-                    );
-                }
-                else
-                {
-                    animator = NonebEditorUtils.FindPropertyObjectReferenceInSameDepth<Animator>(property, animatorName);
-                }
-            }
-
+            var animator = EditorTimeAnimatorFinder.FindForInspector(property, animatorName, useRootObjectField);
             var controller = animator != null ?
                 animator.runtimeAnimatorController :
                 null;
