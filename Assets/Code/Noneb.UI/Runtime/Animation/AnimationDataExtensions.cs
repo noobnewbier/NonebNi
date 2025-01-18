@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Noneb.UI.Animation
 {
     public static class AnimationDataExtensions
     {
-        public static async UniTask PlayAnimation(this Animator animator, AnimationData data)
+        public static async UniTask PlayAnimation(this Animator animator, AnimationData data, CancellationToken ct = default)
         {
             var wasApplyingRootMotion = animator.applyRootMotion;
             animator.applyRootMotion = data.IsRootMotion;
@@ -21,11 +22,11 @@ namespace Noneb.UI.Animation
                     break;
                 case AnimatorControllerParameterType.Bool:
                     animator.SetBool(data.Name, data.TargetBoolValue);
-                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState);
+                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState).WithCancellation(ct);
                     break;
                 case AnimatorControllerParameterType.Trigger:
                     animator.SetTrigger(data.Name);
-                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState);
+                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState).WithCancellation(ct);
                     break;
 
                 default:
