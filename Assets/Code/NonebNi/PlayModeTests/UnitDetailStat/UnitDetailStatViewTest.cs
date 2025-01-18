@@ -45,11 +45,6 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
 
             _testData = new UnitData(
                 Guid.Empty,
-                "Noob",
-                "TestFaction",
-                100,
-                200,
-                _testSprite,
                 new[]
                 {
                     new NonebAction(
@@ -67,8 +62,15 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
                         1
                     )
                 },
+                _testSprite,
+                "Noob",
+                "TestFaction",
+                100,
+                200,
                 0,
                 5,
+                0,
+                0,
                 0,
                 0,
                 0,

@@ -19,24 +19,29 @@ namespace NonebNi.EditorComponent.Entities.Unit
         [SerializeField] private int strength;
         [SerializeField] private int armor;
         [SerializeField] private int weaponRange;
+        [SerializeField] private int fatigue;
+        [SerializeField] private int maxFatigue;
+
 
         public override EditorEntityData<UnitData> CreateData(Guid guid, string factionId) =>
             new(
                 guid,
                 new UnitData(
                     guid,
+                    skillDataSource.Select(s => s.CreateData()).ToArray(),
+                    icon,
                     entityName,
                     factionId,
                     maxHealth,
                     health,
-                    icon,
-                    skillDataSource.Select(s => s.CreateData()).ToArray(),
                     initiative,
                     speed,
                     focus,
                     strength,
                     armor,
-                    weaponRange
+                    weaponRange,
+                    fatigue,
+                    maxFatigue
                 )
             );
     }

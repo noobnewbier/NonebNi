@@ -1,111 +1,196 @@
 ﻿using System;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Entities;
+using NonebNi.Core.Stats;
 using UnityEngine;
 
 namespace NonebNi.Core.Units
 {
     [Serializable]
-    public class UnitData : EntityData //TODO: this a record?
+    public class UnitData : EntityData
     {
-        [SerializeField] private int maxHealth;
-        [SerializeField] private int health;
-        [SerializeField] private int maxFatigue;
-        [SerializeField] private int fatigue;
         [SerializeField] private Sprite icon;
         [SerializeField] private NonebAction[] actions;
-        [SerializeField] private int speed;
-        [field: SerializeField] public int Focus { get; private set; }
-        [field: SerializeField] public int Strength { get; private set; }
-        [field: SerializeField] public int Armor { get; private set; }
+        [field: SerializeField] public StatsCollection Stats { get; private set; } = new();
 
-        //TODO: flesh out equipment design: https://www.notion.so/Equipment-02619835e80f4791b7702df4813cce24?pvs=4
-        [field: SerializeField] public int WeaponRange { get; private set; }
-
-
-        [Range(0, 100), SerializeField] private int initiative;
-
-        public UnitData(string name) : base(name, System.Guid.NewGuid(), "debug-faction")
-        {
-            icon = Sprite.Create(Texture2D.redTexture, new Rect(0, 0, 1, 1), Vector2.zero);
-            actions = Array.Empty<NonebAction>();
-        }
+        public UnitData(string name) : this(
+            System.Guid.NewGuid(),
+            Array.Empty<NonebAction>(),
+            Sprite.Create(Texture2D.redTexture, new Rect(0, 0, 1, 1), Vector2.zero),
+            name,
+            "debug-faction",
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ) { }
 
         public UnitData(
             Guid guid,
+            NonebAction[] actions,
+            Sprite icon,
             string name,
             string factionId,
             int maxHealth,
             int health,
-            Sprite icon,
-            NonebAction[] actions,
             int initiative,
             int speed,
             int focus,
             int strength,
             int armor,
-            int weaponRange) : base(name, guid, factionId)
+            int weaponRange,
+            int fatigue,
+            int maxFatigue) : base(name, guid, factionId)
         {
-            this.maxHealth = maxHealth;
-            this.health = health;
             this.icon = icon;
             this.actions = actions;
-            this.initiative = initiative;
-            this.speed = speed;
-            Focus = focus;
-            Strength = strength;
-            Armor = armor;
-            WeaponRange = weaponRange;
+
+            Stats.CreateStat("health", health, 0, maxHealth);
+            Stats.CreateStat("initiative", initiative, 0, 100);
+            Stats.CreateStat("speed", speed);
+            Stats.CreateStat("focus", focus);
+            Stats.CreateStat("strength", strength);
+            Stats.CreateStat("armor", armor);
+            Stats.CreateStat("weaponRange", weaponRange);
+            Stats.CreateStat("fatigue", fatigue, 0, maxFatigue);
         }
 
         public UnitData(UnitData unitData) : this(
             System.Guid.NewGuid(),
+            unitData.actions,
+            unitData.icon,
             unitData.Name,
             unitData.FactionId,
-            unitData.maxHealth,
-            unitData.health,
-            unitData.icon,
-            unitData.actions,
-            unitData.initiative,
-            unitData.speed,
+            unitData.MaxHealth,
+            unitData.Health,
+            unitData.Initiative,
+            unitData.Speed,
             unitData.Focus,
             unitData.Strength,
             unitData.Armor,
-            unitData.WeaponRange
+            unitData.WeaponRange,
+            unitData.Fatigue,
+            unitData.MaxFatigue
         ) { }
 
-        public int Speed => speed;
+        public int Focus
+        {
+            get
+            {
+                var (_, value) = Stats.GetMaxValue("focus");
 
-        public int Initiative => initiative;
+                return value;
+            }
+            private set => Stats.SetValue("focus", value);
+        }
+
+        public int Strength
+        {
+            get
+            {
+                var (_, value) = Stats.GetMaxValue("strength");
+
+                return value;
+            }
+            private set => Stats.SetValue("strength", value);
+        }
+
+        public int Armor
+        {
+            get
+            {
+                var (_, value) = Stats.GetMaxValue("armor");
+
+                return value;
+            }
+            private set => Stats.SetValue("armor", value);
+        }
+
+        //TODO: flesh out equipment design: https://www.notion.so/Equipment-02619835e80f4791b7702df4813cce24?pvs=4
+        public int WeaponRange
+        {
+            get
+            {
+                var (_, value) = Stats.GetMaxValue("weaponRange");
+
+                return value;
+            }
+            private set => Stats.SetValue("weaponRange", value);
+        }
+
+        public int Speed
+        {
+            get
+            {
+                var (_, value) = Stats.GetValue("speed");
+                return value;
+            }
+            set => _ = Stats.SetValue("speed", value);
+        }
+
+        public int Initiative
+        {
+            get
+            {
+                var (_, value) = Stats.GetValue("initiative");
+                return value;
+            }
+            set => _ = Stats.SetValue("initiative", value);
+        }
 
         public NonebAction[] Actions => actions;
         public Sprite Icon => icon;
-        public int MaxHealth => maxHealth;
+
+        public int MaxHealth
+        {
+            get
+            {
+                var (_, value) = Stats.GetMaxValue("health");
+
+                return value;
+            }
+
+            set => Stats.SetMaxValue("health", value);
+        }
 
         public int Health
         {
-            get => health;
-            set => health = Mathf.Clamp(value, 0, maxHealth);
+            get
+            {
+                var (_, value) = Stats.GetValue("health");
+
+                return value;
+            }
+            set => _ = Stats.SetValue("health", value);
         }
 
-        public int MaxFatigue => maxFatigue;
+        public int MaxFatigue
+        {
+            get
+            {
+                var (_, value) = Stats.GetMaxValue("fatigue");
+
+                return value;
+            }
+        }
 
         public int Fatigue
         {
-            get => fatigue;
-            set => fatigue = Mathf.Clamp(value, 0, maxFatigue);
+            get
+            {
+                var (_, value) = Stats.GetValue("fatigue");
+
+                return value;
+            }
+            set => _ = Stats.SetValue("fatigue", value);
         }
 
         public override bool IsTileOccupier => true;
-
-        public UnitData WithSpeed(int newSpeed)
-        {
-            var newData = new UnitData(this)
-            {
-                speed = newSpeed
-            };
-
-            return newData;
-        }
     }
 }

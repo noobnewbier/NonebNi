@@ -34,7 +34,7 @@ namespace NonebNi.EditModeTests.GameLogic
                 }
             );
 
-            var unit = TestData.CreateLivingUnit().WithSpeed(1);
+            var unit = TestData.CreateSlowUnit();
             var result = _pathfindingService.FindPath(unit, new StorageCoordinate(2, 2).ToAxial());
 
             Assert.IsFalse(result.isPathExist);

@@ -26,69 +26,96 @@ namespace NonebNi.EditModeTests.GameLogic
         public static UnitData CreateDeadUnit() =>
             new(
                 Guid.NewGuid(),
+                Array.Empty<NonebAction>(),
+                GetDefaultSprite(),
                 "DeadUnit",
                 TestFactionId,
                 1,
                 0,
-                GetDefaultSprite(),
-                Array.Empty<NonebAction>(),
                 0,
                 5,
                 0,
                 0,
                 0,
-                0
+                0,
+                0,
+                9
             );
 
         public static UnitData CreateLivingUnit() =>
             new(
                 Guid.NewGuid(),
+                Array.Empty<NonebAction>(),
+                GetDefaultSprite(),
                 "LivingUnit",
                 TestFactionId,
                 1,
                 1,
-                GetDefaultSprite(),
-                Array.Empty<NonebAction>(),
                 0,
                 5,
                 0,
                 0,
                 0,
-                0
+                0,
+                0,
+                9
+            );
+
+        public static UnitData CreateSlowUnit() =>
+            new(
+                Guid.NewGuid(),
+                Array.Empty<NonebAction>(),
+                GetDefaultSprite(),
+                "SlowUnit",
+                TestFactionId,
+                1,
+                1,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                9
             );
 
         public static UnitData CreateHighPriorityUnit() =>
             new(
                 Guid.NewGuid(),
+                Array.Empty<NonebAction>(),
+                GetDefaultSprite(),
                 "HighPriorityUnit",
                 TestFactionId,
                 1,
                 1,
-                GetDefaultSprite(),
-                Array.Empty<NonebAction>(),
                 1,
                 5,
                 0,
                 0,
                 0,
-                0
+                0,
+                0,
+                9
             );
 
         public static UnitData CreateLowPriorityUnit() =>
             new(
                 Guid.NewGuid(),
+                Array.Empty<NonebAction>(),
+                GetDefaultSprite(),
                 "LowPriorityUnit",
                 TestFactionId,
                 1,
                 1,
-                GetDefaultSprite(),
-                Array.Empty<NonebAction>(),
                 0,
                 5,
                 0,
                 0,
                 0,
-                0
+                0,
+                0,
+                9
             );
 
         private static Sprite GetDefaultSprite() =>
