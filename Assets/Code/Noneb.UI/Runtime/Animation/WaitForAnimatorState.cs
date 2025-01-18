@@ -22,7 +22,7 @@ namespace Noneb.UI.Animation
                 var currentState = _animator.GetCurrentAnimatorStateInfo(_layer);
                 if (!currentState.IsName(_targetState)) return true;
 
-                return currentState.normalizedTime >= 1;
+                return currentState.normalizedTime < 1;
             }
         }
     }
