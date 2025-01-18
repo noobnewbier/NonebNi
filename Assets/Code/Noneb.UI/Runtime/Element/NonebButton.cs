@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using Unity.Logging;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,18 +9,13 @@ namespace Noneb.UI.Element
     /// <summary>
     /// TODO: there will be more to do regarding UI state transition/animation but for now this is good enough.
     /// </summary>
-    public class NonebButton : Selectable, IElementComponent
+    public class NonebButton : Selectable, IElementComponent, IPointerClickHandler, ISubmitHandler
     {
-        public bool IsActivated { get; set; }
-        public event Action? Clicked;
-
-        private void Press()
+        protected override void Awake()
         {
-            if (!IsActive() || !IsInteractable())
-                return;
+            base.Awake();
 
-            UISystemProfilerApi.AddMarker("Button.onClick", this);
-            Clicked?.Invoke();
+            if (this.FindOwner() == null) Log.Error($"Cannot find owner of NonebButton in {gameObject.name} - likely unintended");
         }
 
         public virtual void OnPointerClick(PointerEventData eventData)
@@ -34,29 +29,20 @@ namespace Noneb.UI.Element
         public virtual void OnSubmit(BaseEventData eventData)
         {
             Press();
+        }
 
-            // if we get set disabled during the press
-            // don't run the coroutine.
+        public event Action? Clicked;
+
+        private void Press()
+        {
+            DoStateTransition(SelectionState.Pressed, false);
             if (!IsActive() || !IsInteractable())
                 return;
 
-            DoStateTransition(SelectionState.Pressed, false);
-            StartCoroutine(OnFinishSubmit());
+            UISystemProfilerApi.AddMarker("Button.onClick", this);
+            Clicked?.Invoke();
         }
 
-        private IEnumerator OnFinishSubmit()
-        {
-            var fadeTime = colors.fadeDuration;
-            var elapsedTime = 0f;
-
-            while (elapsedTime < fadeTime)
-            {
-                elapsedTime += Time.unscaledDeltaTime;
-                yield return null;
-            }
-
-            DoStateTransition(currentSelectionState, false);
-        }
 
         protected override void DoStateTransition(SelectionState state, bool instant)
         {
@@ -65,11 +51,12 @@ namespace Noneb.UI.Element
 
             if (transition is Transition.ColorTint or Transition.SpriteSwap)
             {
-                base.DoStateTransition(state, instant);
+                Log.Error("I don't want to support that it's rarely useful");
                 return;
             }
 
-            if (!IsActivated)
+            var isActivated = this.FindOwner()?.IsElementActive == true;
+            if (!isActivated)
             {
                 PlayTriggerAnimation(animationTriggers.normalTrigger);
                 return;
