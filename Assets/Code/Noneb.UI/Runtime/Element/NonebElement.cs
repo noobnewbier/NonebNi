@@ -81,7 +81,7 @@ namespace Noneb.UI.Element
         {
             if (elementPrefab is not MonoBehaviour monoBehaviour)
             {
-                Log.Error("I expected all IElementComponent is a MonoBehaviour, I couldn't find a way to express this in code and this might change, but you should at least not do this as if T is not a MonoBehaviour how can I instantiate a prefab");
+                Log.Error($"I expected all IElementComponent is a MonoBehaviour and this({typeof(T).FullName}) is not, I couldn't find a way to express this in code and this might change, but you should at least not do this as if T is not a MonoBehaviour how can I instantiate a prefab");
                 return (false, default);
             }
 
