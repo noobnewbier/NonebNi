@@ -21,8 +21,9 @@ namespace Noneb.UI.Animation
                     animator.SetInteger(data.Name, (int)data.TargetNumericValue);
                     break;
                 case AnimatorControllerParameterType.Bool:
-                    animator.SetBool(data.Name, data.TargetBoolValue);
-                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState).WithCancellation(ct);
+                    if (animator.GetBool(data.Name) != data.TargetBoolValue) animator.SetBool(data.Name, data.TargetBoolValue);
+
+                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState);
                     break;
                 case AnimatorControllerParameterType.Trigger:
                     animator.SetTrigger(data.Name);
