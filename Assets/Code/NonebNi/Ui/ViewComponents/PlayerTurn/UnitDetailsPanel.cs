@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Units;
+using TMPro;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -10,6 +11,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private StatWidget healthWidget = null!;
         [SerializeField] private StatWidget fatigueWidget = null!;
         [SerializeField] private StatWidget initWidget = null!;
+        [SerializeField] private TextMeshProUGUI nameLabel = null!;
 
         public async UniTask Show(UnitData data, CancellationToken ct = default)
         {
@@ -17,6 +19,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             var (_, fatigue) = data.Stats.FindStat("fatigue");
             var (_, initiative) = data.Stats.FindStat("initiative");
 
+            nameLabel.text = data.Name;
             healthWidget.Show(health);
             fatigueWidget.Show(fatigue);
             initWidget.Show(initiative);
