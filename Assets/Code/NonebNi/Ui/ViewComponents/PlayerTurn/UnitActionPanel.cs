@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.UI.Animation;
 using Noneb.UI.Element;
 using NonebNi.Core.Actions;
 using Unity.Logging;
@@ -14,16 +15,23 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private GameObject actionsRoot = null!;
         [SerializeField] private ActionOption actionOptionPrefab = null!;
 
+        [SerializeField] private Animator panelAnimator = null!;
+        [SerializeField] private AnimationData inspectionMode = null!;
+        [SerializeField] private AnimationData controlMode = null!;
+
+
         private NonebAction? _highlightedAction;
+        private bool _isInspectionMode;
 
         public event Action<NonebAction?>? ActionSelected;
 
-        public async UniTask Show(NonebAction[] actions, CancellationToken ct = default)
+        public async UniTask Show(NonebAction[] actions, bool isInspectionMode, CancellationToken ct = default)
         {
+            var tasks = new List<UniTask>();
+
             foreach (var actionButton in actionsRoot.GetComponentsInChildren<ActionOption>()) Destroy(actionButton.gameObject);
 
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            var tasks = new List<UniTask>();
             foreach (var action in actions)
             {
                 var (isSuccess, actionButton) = await NonebElement.CreateElementFromPrefab(actionOptionPrefab, actionsRoot.transform);
@@ -37,12 +45,24 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 tasks.Add(actionButton.Show(action, linkedCts.Token));
             }
 
+            tasks.Add(SetInspectionMode(isInspectionMode, linkedCts.Token));
             var showTasks = UniTask.WhenAll(tasks);
             await showTasks;
         }
 
+        private async UniTask SetInspectionMode(bool isInspectionMode, CancellationToken ct = default)
+        {
+            _isInspectionMode = isInspectionMode;
+            if (_isInspectionMode)
+                await panelAnimator.PlayAnimation(inspectionMode, ct);
+            else
+                await panelAnimator.PlayAnimation(controlMode, ct);
+        }
+
         private void OnActionButtonClicked(NonebAction action)
         {
+            if (_isInspectionMode) return;
+
             ActionSelected?.Invoke(action);
         }
 

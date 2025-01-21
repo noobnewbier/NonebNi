@@ -13,7 +13,6 @@ namespace NonebNi.Develop
         [SerializeField] private UnitActionPanel panel = null!;
         [SerializeField] private GameObject stackRoot = null!;
 
-
         private UIStack _stack = null!;
 
         // ReSharper disable once Unity.IncorrectMethodSignature
@@ -31,10 +30,10 @@ namespace NonebNi.Develop
         private void OnGUI()
         {
             var rect = new Rect(10, 10, 150, 25);
-            if (GUI.Button(rect, "Show ABC")) ShowPattern(ActionDatas.Bash, ActionDatas.Grapple, ActionDatas.Lure).Forget();
+            if (GUI.Button(rect, "Show Control")) ShowPattern(true, ActionDatas.Bash, ActionDatas.Grapple, ActionDatas.Lure).Forget();
             rect.y += 25;
 
-            if (GUI.Button(rect, "Show BCA")) ShowPattern(ActionDatas.Bash, ActionDatas.Lure, ActionDatas.Grapple).Forget();
+            if (GUI.Button(rect, "Show Inspect")) ShowPattern(false, ActionDatas.Bash, ActionDatas.Lure, ActionDatas.Grapple).Forget();
             rect.y += 25;
 
             if (GUI.Button(rect, "Show and Cancel")) ShowAndCancel().Forget();
@@ -53,15 +52,15 @@ namespace NonebNi.Develop
         private async UniTask ShowAndCancel()
         {
             var cts = new CancellationTokenSource();
-            var task = panel.Show(new[] { ActionDatas.Bash, ActionDatas.Grapple, ActionDatas.Lure }, cts.Token);
+            var task = panel.Show(new[] { ActionDatas.Bash, ActionDatas.Grapple, ActionDatas.Lure }, true, cts.Token);
             cts.Cancel();
 
             await task;
         }
 
-        private async UniTask ShowPattern(params NonebAction[] actions)
+        private async UniTask ShowPattern(bool isInspect, params NonebAction[] actions)
         {
-            await panel.Show(actions);
+            await panel.Show(actions, isInspect);
         }
     }
 }
