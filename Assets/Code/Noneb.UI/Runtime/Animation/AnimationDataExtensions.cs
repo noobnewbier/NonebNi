@@ -9,6 +9,8 @@ namespace Noneb.UI.Animation
     {
         public static async UniTask PlayAnimation(this Animator animator, AnimationData data, CancellationToken ct = default)
         {
+            //TODO: future me - honest to god, I don't know if this works :)
+            var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, animator.gameObject.GetCancellationTokenOnDestroy());
             var wasApplyingRootMotion = animator.applyRootMotion;
             animator.applyRootMotion = data.IsRootMotion;
 
@@ -23,11 +25,11 @@ namespace Noneb.UI.Animation
                 case AnimatorControllerParameterType.Bool:
                     if (animator.GetBool(data.Name) != data.TargetBoolValue) animator.SetBool(data.Name, data.TargetBoolValue);
 
-                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState);
+                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState).WithCancellation(linkedCts.Token);
                     break;
                 case AnimatorControllerParameterType.Trigger:
                     animator.SetTrigger(data.Name);
-                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState).WithCancellation(ct);
+                    await new WaitForAnimatorState(animator, data.FinishAnimLayerIndex, data.FinishAnimState).WithCancellation(linkedCts.Token);
                     break;
 
                 default:
