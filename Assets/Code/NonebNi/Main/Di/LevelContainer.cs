@@ -8,12 +8,12 @@ using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using NonebNi.Ui.Statistics.Unit;
 using StrongInject;
-using UnityEngine;
+using Unity.Cinemachine;
 
 namespace NonebNi.Main.Di
 {
     [RegisterModule(typeof(AgentsModule))]
-    [RegisterModule(typeof(CameraControlViewModule))]
+    [RegisterModule(typeof(CameraControllerModule))]
     [RegisterModule(typeof(CoordinateAndPositionServiceModule))]
     [RegisterModule(typeof(LevelFlowControlModule))]
     [Register(typeof(LevelUi), typeof(ILevelUi))]
@@ -21,29 +21,30 @@ namespace NonebNi.Main.Di
     public partial class LevelContainer : IContainer<ILevelUi>, IContainer<ILevelFlowController>
     {
         [Instance] private readonly IAgent[] _agents;
-        [Instance] private readonly CameraControl _cameraControl;
-        [Instance] private readonly CameraConfig _config;
+        [Instance] private readonly CinemachineCamera _camera;
+        [Instance] private readonly CameraRunner _cameraControl;
+        [Instance] private readonly CinemachinePositionComposer _composer;
+        [Instance] private readonly CameraControlSetting _config;
         [Instance] private readonly Hud _hud;
         [Instance] private readonly LevelData _levelData;
-        [Instance] private readonly Camera _targetCamera;
         [Instance] private readonly Terrain _terrain;
         [Instance] private readonly TerrainConfigData _terrainConfig;
         [Instance] private readonly TerrainMeshData _terrainMeshData;
         [Instance] private readonly UnitDetailStat _unitDetailStat;
 
         public LevelContainer(
-            CameraConfig config,
-            Camera targetCamera,
+            CameraControlSetting config,
+            CameraRunner cameraControl,
+            CinemachinePositionComposer composer,
             LevelData levelData,
             Hud hud,
-            CameraControl cameraControl,
+            CinemachineCamera camera,
             Terrain terrain,
             UnitDetailStat unitDetailStat,
             TerrainConfigData terrainConfig,
             TerrainMeshData terrainMeshData)
         {
             _config = config;
-            _targetCamera = targetCamera;
             _levelData = levelData;
             _hud = hud;
             _cameraControl = cameraControl;
@@ -51,6 +52,8 @@ namespace NonebNi.Main.Di
             _unitDetailStat = unitDetailStat;
             _terrainConfig = terrainConfig;
             _terrainMeshData = terrainMeshData;
+            _camera = camera;
+            _composer = composer;
             _agents = _levelData.Factions.Select(
                 f =>
                 {

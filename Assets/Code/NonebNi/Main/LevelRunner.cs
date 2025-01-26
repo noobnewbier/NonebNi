@@ -10,16 +10,19 @@ namespace NonebNi.Main
 {
     public class LevelRunner : MonoBehaviour
     {
-        [Header("UI")] [SerializeField] private Hud hud = null!;
+        [Header("UI"), SerializeField]
+                private Hud hud = null!;
 
         [SerializeField] private Terrain terrain = null!;
         [SerializeField] private UnitDetailStat unitDetailStat = null!;
 
-        [Header("Level Data"), SerializeField]  private LevelDataSource levelDataSource = null!;
+        [Header("Level Data"), SerializeField] private LevelDataSource levelDataSource = null!;
 
-        [Header("Terrain")] [SerializeField] private TerrainConfigSource terrainConfig = null!;
+        [Header("Terrain"), SerializeField]
+                private TerrainConfigSource terrainConfig = null!;
 
-        [Header("Camera")] [SerializeField] private CameraControl cameraControl = null!;
+        [Header("Camera"), SerializeField]
+         private CameraRunner cameraControl = null!;
 
 
         private ILevelUi _levelUi = null!;
@@ -34,10 +37,11 @@ namespace NonebNi.Main
 
             var levelContainer = new LevelContainer(
                 cameraControl.Config,
-                cameraControl.TargetCamera,
+                cameraControl,
+                cameraControl.Composer,
                 LevelData,
                 hud,
-                cameraControl,
+                cameraControl.CinemachineCamera,
                 terrain,
                 unitDetailStat,
                 TerrainConfig,
