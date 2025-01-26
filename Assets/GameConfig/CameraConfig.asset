@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: CameraConfig
   m_EditorClassIdentifier: 
   maxPanningSpeed: 40
-  bufferToClampingEdge: 4.7
-  edgePercentageToPan: 0.85
+  bufferToClampingEdge: 5
+  edgePercentageToPan: 0.95
   smoothFactor: 2
   maxZoomingSpeed: 150
-  minDistanceToMap: 15
+  minDistanceToMap: 10
+  maxDistanceToMap: 15
   decelerationSpeed: 0.75
   isInvertedWheel: 1
