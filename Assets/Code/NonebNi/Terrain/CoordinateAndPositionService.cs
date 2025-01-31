@@ -64,20 +64,12 @@ namespace NonebNi.Terrain
         public CoordinateAndPositionService(TerrainConfigData terrainConfig)
         {
             _terrainConfig = terrainConfig;
-            _tileCornersOffset = new[]
-            {
-                new Vector3(0f, 0f, _terrainConfig.OuterRadius),
-                new Vector3(_terrainConfig.InnerRadius, 0f, 0.5f * _terrainConfig.OuterRadius),
-                new Vector3(_terrainConfig.InnerRadius, 0f, -0.5f * _terrainConfig.OuterRadius),
-                new Vector3(0f, 0f, -_terrainConfig.OuterRadius),
-                new Vector3(-_terrainConfig.InnerRadius, 0f, -0.5f * _terrainConfig.OuterRadius),
-                new Vector3(-_terrainConfig.InnerRadius, 0f, 0.5f * _terrainConfig.OuterRadius)
-            };
+            _tileCornersOffset = HexMaths.FindCorners(_terrainConfig.InnerRadius);
         }
 
-        private float SideDistanceOfHex => _terrainConfig.InnerRadius * 2f;
+        private float SideDistanceOfHex => HexMaths.SideDistanceOfHex(_terrainConfig.InnerRadius);
 
-        private float UpDistanceOfHex => _terrainConfig.OuterRadius * 1.5f;
+        private float UpDistanceOfHex => HexMaths.UpDistanceOfHex(_terrainConfig.InnerRadius);
 
         public IEnumerable<Vector3> FindCorners(Coordinate coordinate)
         {
