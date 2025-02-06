@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using UnityEditor;
 using UnityEngine;
@@ -56,5 +59,24 @@ namespace NonebNi.Develop
 
             Handles.zTest = originalZTest;
         }
+
+        public static UnitData CreateUnit(string unitName) =>
+            new(
+                Guid.NewGuid(),
+                new[] { ActionDatas.Bash, ActionDatas.Lure, ActionDatas.Shoot },
+                AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd"),
+                unitName,
+                "fake-faction",
+                100,
+                40,
+                10,
+                5,
+                10,
+                10,
+                10,
+                3,
+                10,
+                50
+            );
     }
 }
