@@ -31,6 +31,8 @@ namespace NonebNi.Core.Maps
 
         public static Coordinate operator +(Coordinate a, HexDirection d) => a + d.Direction;
 
+        public static Coordinate operator *(HexDirection d, int i) => d.Direction * i;
+
         public static Coordinate operator -(Coordinate a, HexDirection d) => a - d.Direction;
     }
 }
