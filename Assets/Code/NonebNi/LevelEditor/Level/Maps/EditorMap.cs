@@ -303,7 +303,7 @@ namespace NonebNi.LevelEditor.Level.Maps
         {
             var storageCoord = StorageCoordinate.FromAxial(coordinate);
 
-            return storageCoord.X < width && storageCoord.Z < height && storageCoord.X >= 0 && storageCoord.Z >= 0;
+            return storageCoord.X < width && storageCoord.Z < height && storageCoord is { X: >= 0, Z: >= 0 };
         }
 
         private EditorNode GetNodeFromCoordinate(Coordinate coordinate)
