@@ -25,6 +25,7 @@ namespace NonebNi.Ui.Grids
         /// </summary>
         void RemoveRequest(IEnumerable<Coordinate> coords, string? requestId = null);
 
+        void RemoveRequest(params string[] requestIds);
         void RemoveRequest(string requestId);
         void RequestHighlight(Coordinate coord, string requestId, string highlightId);
         void RemoveRequest(Coordinate coord, string? requestId = null);
@@ -71,6 +72,11 @@ namespace NonebNi.Ui.Grids
         {
             var coordinates = coords.ToArray();
             foreach (var coord in coordinates) RemoveRequest(coord, requestId);
+        }
+
+        public void RemoveRequest(params string[] requestIds)
+        {
+            foreach (var id in requestIds) RemoveRequest(id);
         }
 
         public void RemoveRequest(string requestId)
