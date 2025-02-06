@@ -42,15 +42,9 @@ namespace NonebNi.Core.Coordinates
 
         public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
 
-        public Coordinate RotateRight()
-        {
-            return new Coordinate(-Y, -x);
-        }
+        public Coordinate RotateRight() => new(-Y, -x);
 
-        public Coordinate RotateLeft()
-        {
-            return new Coordinate(-z, -Y);
-        }
+        public Coordinate RotateLeft() => new(-z, -Y);
 
         public Coordinate Normalized()
         {
@@ -138,5 +132,13 @@ namespace NonebNi.Core.Coordinates
         public static bool operator !=(Coordinate a, Coordinate b) => !(a == b);
 
         public static Coordinate operator -(Coordinate c) => new(-c.X, -c.Z);
+
+        public void Deconstruct(out int x, out int z)
+        {
+            x = this.x;
+            z = this.z;
+        }
+
+        public static implicit operator Coordinate((int x, int z) tuple) => new(tuple.x, tuple.z);
     }
 }
