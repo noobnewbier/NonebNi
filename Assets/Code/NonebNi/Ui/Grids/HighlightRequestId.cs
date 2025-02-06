@@ -8,5 +8,6 @@
     {
         public const string TileInspection = "tile-inspection";
         public const string TargetSelection = "target-selection";
+        public const string AreaHint = "area-hint";
     }
 }

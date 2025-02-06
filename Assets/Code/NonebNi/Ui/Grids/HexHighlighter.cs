@@ -37,8 +37,9 @@ namespace NonebNi.Ui.Grids
     {
         private static readonly Dictionary<string, int> RequestPriority = new()
         {
-            [HighlightRequestId.TileInspection] = 0,
-            [HighlightRequestId.TargetSelection] = 1
+            [HighlightRequestId.TargetSelection] = 0,
+            [HighlightRequestId.TileInspection] = 1,
+            [HighlightRequestId.AreaHint] = 2
         };
 
         private readonly ICoordinateAndPositionService _coordinateAndPositionService;
