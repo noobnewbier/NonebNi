@@ -7,6 +7,8 @@ namespace Noneb.UI.InputSystems
     {
         Vector3 MousePosition { get; }
 
+        bool LeftClick { get; }
+
         //TODO: can't remember the me 4 years ago why am I having this?
         event NEventHandler<AnyInput> AnyInput;
     }
