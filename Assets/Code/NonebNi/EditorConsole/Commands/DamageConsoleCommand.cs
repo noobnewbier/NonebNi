@@ -14,10 +14,8 @@ namespace NonebNi.EditorConsole.Commands
         public readonly Coordinate Coordinate;
 
         public DamageConsoleCommand(
-            [CommandParam("target coordinate, any unit on coordinate will take the specified damage")]
-            Coordinate coordinate,
-            [CommandParam("amount of damage that will be dealt to unit on the target coordinate")]
-            int damage)
+            [CommandParam("target coordinate, any unit on coordinate will take the specified damage")] Coordinate coordinate,
+            [CommandParam("amount of damage that will be dealt to unit on the target coordinate")] int damage)
         {
             Coordinate = coordinate;
             _damage = damage;
@@ -27,10 +25,10 @@ namespace NonebNi.EditorConsole.Commands
         {
             return new NonebAction(
                 "debug-damage",
-                10000,
-                new[] { TargetRestriction.None },
-                TargetArea.Single,
                 0,
+                10000,
+                TargetArea.Single,
+                TargetRestriction.None,
                 new DamageEffect("slash", _damage)
             );
         }
