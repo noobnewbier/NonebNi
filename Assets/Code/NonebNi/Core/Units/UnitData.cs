@@ -117,7 +117,7 @@ namespace NonebNi.Core.Units
         {
             get
             {
-                var (_, value) = Stats.GetMaxValue("weaponRange");
+                var (_, value) = Stats.GetValue("weaponRange");
 
                 return value;
             }
