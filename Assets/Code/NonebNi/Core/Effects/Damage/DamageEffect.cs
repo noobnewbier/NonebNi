@@ -26,7 +26,7 @@ namespace NonebNi.Core.Effects
                 DamageEffect effect,
                 EffectContext context)
             {
-                foreach (var target in context.Targets)
+                foreach (var target in context.TargetGroups.SelectMany(g => g.Targets))
                 {
                     if (target is not UnitData damageReceiver) continue;
 

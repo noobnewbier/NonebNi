@@ -18,17 +18,17 @@ namespace NonebNi.Core.Effects
                 MoveEntityEffect effect,
                 EffectContext context)
             {
-                var targets = context.Targets.ToArray();
-                if (targets.Count() != 2)
+                var groups = context.TargetGroups.ToArray();
+                if (groups.Count() != 2)
                     Log.Error($"{nameof(MoveEntityEffect)} expects 2 and exactly 2 parameter - something went wrong.");
 
-                if (targets.FirstOrDefault() is not EntityData targetEntity)
+                if (groups.FirstOrDefault()?.AsSingleTarget is not EntityData targetEntity)
                 {
                     Log.Error($"{nameof(MoveEntityEffect)} without an entity to move makes no sense!");
                     yield break;
                 }
 
-                if (targets.ElementAtOrDefault(1) is not Coordinate targetCoord)
+                if (groups.ElementAtOrDefault(1)?.AsSingleTarget is not Coordinate targetCoord)
                 {
                     Log.Error($"{nameof(MoveEntityEffect)} without a coordinate as target position makes no sense!");
                     yield break;
