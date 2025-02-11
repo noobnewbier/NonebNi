@@ -28,13 +28,22 @@ namespace NonebNi.Core.Commands.Handlers
             return command.Action.Effects.SelectMany(
                 e =>
                 {
-                    var targets = _targetFinder.FindTargets(
-                        command.ActorEntity,
-                        command.TargetCoords,
-                        command.Action.TargetArea,
-                        command.Action.TargetRestrictions
-                    );
-                    var context = new EffectContext(_map, command.ActorEntity, targets.ToArray());
+                    var requests = command.Action.TargetRequests;
+                    var targetGroups = new List<EffectTargetGroup>();
+                    for (var i = 0; i < requests.Length; i++)
+                    {
+                        var targetCoord = command.TargetCoords[i];
+                        var targetRequest = requests[i];
+                        var restriction = targetRequest.TargetRestrictionFlags;
+                        var targetArea = targetRequest.TargetArea;
+
+                        var targets = _targetFinder.FindTargets(command.ActorEntity, targetCoord, targetArea, restriction);
+                        var group = new EffectTargetGroup(targets.ToArray());
+
+                        targetGroups.Add(group);
+                    }
+
+                    var context = new EffectContext(_map, command.ActorEntity, targetGroups);
 
                     var (isSuccess, sequences) = Evaluate(e, context);
                     if (!isSuccess) Log.Error($"Cannot find evaluator that can handle ({e.GetType()})");

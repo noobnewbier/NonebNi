@@ -15,15 +15,11 @@ namespace NonebNi.Core.Actions
     {
         IEnumerable<IActionTarget> FindTargets(
             EntityData actor,
-            IReadOnlyList<Coordinate> targetCoords,
-            TargetArea targetArea,
-            TargetRestriction[] targetRestrictions);
-
-        IEnumerable<IActionTarget> FindTargets(
-            EntityData actor,
             Coordinate targetCoord,
             TargetArea targetArea,
-            TargetRestriction restriction);
+            TargetRestriction restrictionFlags);
+
+        IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request);
     }
 
     public class TargetFinder : ITargetFinder
@@ -35,29 +31,219 @@ namespace NonebNi.Core.Actions
             _map = map;
         }
 
-        public IEnumerable<IActionTarget> FindTargets(
-            EntityData actor,
-            IReadOnlyList<Coordinate> targetCoords,
-            TargetArea targetArea,
-            TargetRestriction[] targetRestrictions)
+        public IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request)
         {
-            for (var i = 0; i < targetCoords.Count; i++)
+            if (!_map.TryFind(caster, out Coordinate casterCoord)) yield break;
+
+            var range = request.Range.CalculateRange(caster);
+            var inRangeCoords = GetInRangeCoords(casterCoord, request.TargetRestrictionFlags, range);
+
+            foreach (var coord in inRangeCoords)
             {
-                var targetCoord = targetCoords[i];
-                var restriction = targetRestrictions[i];
-                foreach (var actionTarget in FindTargets(actor, targetCoord, targetArea, restriction))
-                    yield return actionTarget;
+                var restrictions = request.TargetRestrictionFlags.GetFlags();
+                var failedReasons = new List<RestrictionCheckFailedReason>();
+                foreach (var restriction in restrictions)
+                {
+                    var (passedCheck, reason) = CheckTargetRestriction(restriction, caster, coord);
+                    if (passedCheck) continue;
+                    failedReasons.Add(reason!);
+                }
+
+                if (!failedReasons.Any())
+                {
+                    yield return (new RangeStatus.Targetable(), coord);
+                    continue;
+                }
+
+                if (failedReasons.OfType<RestrictionCheckFailedReason.NotOccupied>().Any())
+                {
+                    yield return (new RangeStatus.InRangeButNoTarget(), coord);
+                    continue;
+                }
+
+                if (failedReasons.OfType<RestrictionCheckFailedReason.OutOfRange>().Any())
+                {
+                    yield return (new RangeStatus.OutOfRange(), coord);
+                    continue;
+                }
+
+                yield return (new RangeStatus.NotTargetable(failedReasons), coord);
             }
         }
+
+        private IEnumerable<Coordinate> GetInRangeCoords(Coordinate actorCoord, TargetRestriction restrictionFlag, int range)
+        {
+            if (range <= 0) yield break;
+
+            //Moving on if there's any extra "area limitation" range this is where we want to put it, or at least that's what I am thinking now.
+            if (restrictionFlag.HasFlag(TargetRestriction.ClearPath) || restrictionFlag.HasFlag(TargetRestriction.FirstTileToTargetDirectionIsEmpty))
+                foreach (var dir in HexDirection.All)
+                    for (var i = 0; i < range; i++)
+                    {
+                        var coord = actorCoord + dir * i;
+                        if (_map.IsCoordinateWithinMap(coord)) yield return coord;
+                    }
+            else
+                foreach (var coord in actorCoord.WithinDistance(range))
+                    if (_map.IsCoordinateWithinMap(coord))
+                        yield return coord;
+
+            //If we can target self, at least return ourselves
+            if (restrictionFlag.HasFlag(TargetRestriction.Self)) yield return actorCoord;
+        }
+
+        private (bool passedCheck, RestrictionCheckFailedReason? reason) CheckTargetRestriction(
+            TargetRestriction restriction,
+            EntityData caster,
+            IActionTarget target)
+        {
+            var targetCoord = target switch
+            {
+                Coordinate targetAsCoord => targetAsCoord,
+                EntityData entityData when _map.TryFind(entityData, out Coordinate coordinate) => coordinate,
+
+                _ => throw new ArgumentOutOfRangeException(
+                    nameof(target),
+                    target,
+                    "Unexpected Target! Is target even on the board, or did you implement new type but didn't add it here?"
+                )
+            };
+
+            if (!_map.IsCoordinateWithinMap(targetCoord)) return (false, new RestrictionCheckFailedReason.TargetNotOnMap());
+
+            if (!_map.TryFind(caster, out Coordinate casterCoord)) return (false, new RestrictionCheckFailedReason.CasterNotOnMap());
+
+            switch (restriction)
+            {
+                case TargetRestriction.None:
+                    return (true, null);
+                case TargetRestriction.Friendly:
+                {
+                    if (target is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (caster.FactionId != targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotFriendly());
+
+                    return (true, null);
+                }
+                case TargetRestriction.Enemy:
+                {
+                    if (target is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (caster.FactionId == targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotEnemy());
+                    return (true, null);
+                }
+                case TargetRestriction.NonOccupied:
+                {
+                    if (_map.IsOccupied(targetCoord)) return (false, new RestrictionCheckFailedReason.Occupied());
+
+                    return (true, null);
+                }
+                case TargetRestriction.ClearPath:
+                {
+                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+                    if (casterCoord.GetCoordinatesBetween(targetCoord).Any(_map.IsOccupied)) return (false, new RestrictionCheckFailedReason.NotClearPath());
+
+                    return (true, null);
+                }
+                case TargetRestriction.Back:
+                    throw new NotImplementedException("back defined by another ally..?");
+                    break;
+                case TargetRestriction.Self:
+                    if (!ReferenceEquals(caster, target)) return (false, new RestrictionCheckFailedReason.NotSelf());
+
+                    return (true, null);
+                case TargetRestriction.Obstacle:
+                {
+                    var tileModifier = _map.Get<TileModifierData>(targetCoord);
+                    if (tileModifier is not { TileData: { IsWall: true } }) return (false, new RestrictionCheckFailedReason.NotObstacle());
+
+                    return (true, null);
+                }
+                case TargetRestriction.FirstTileToTargetDirectionIsEmpty:
+                {
+                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+
+                    var direction = (targetCoord - casterCoord).Normalized();
+                    var firstTileToTargetDirection = casterCoord + direction;
+
+                    if (_map.IsOccupied(firstTileToTargetDirection)) return (false, new RestrictionCheckFailedReason.NotClearPath());
+
+                    return (true, null);
+                }
+                case TargetRestriction.TargetCoordPlusDirectionToTargetIsEmpty:
+                {
+                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+
+                    var direction = (targetCoord - casterCoord).Normalized();
+                    var targetCoordPlusDirection = targetCoord + direction;
+
+                    if (_map.IsOccupied(targetCoordPlusDirection)) return (false, new RestrictionCheckFailedReason.NotClearPath());
+
+                    return (true, null);
+                }
+                case TargetRestriction.Occupied:
+                {
+                    if (!_map.IsOccupied(targetCoord)) return (false, new RestrictionCheckFailedReason.NotOccupied());
+                    return (true, null);
+                }
+                case TargetRestriction.IsCoordinate:
+                {
+                    if (target is not Coordinate) return (false, new RestrictionCheckFailedReason.NotCoordinate());
+
+                    return (true, null);
+                }
+                case TargetRestriction.NotSelf:
+                {
+                    if (ReferenceEquals(target, caster)) return (false, new RestrictionCheckFailedReason.NotOthers());
+
+                    return (true, null);
+                }
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(restriction), restriction, null);
+            }
+        }
+
+        public abstract record RestrictionCheckFailedReason
+        {
+            public record UnmatchTargetType : RestrictionCheckFailedReason;
+
+            public record NotFriendly : RestrictionCheckFailedReason;
+
+            public record NotEnemy : RestrictionCheckFailedReason;
+
+            public record Occupied : RestrictionCheckFailedReason;
+
+            public record NotClearPath : RestrictionCheckFailedReason;
+
+            public record NotBack : RestrictionCheckFailedReason;
+
+            public record NotSelf : RestrictionCheckFailedReason;
+
+            public record NotOthers : RestrictionCheckFailedReason;
+
+            public record NotObstacle : RestrictionCheckFailedReason;
+
+            public record NotOccupied : RestrictionCheckFailedReason;
+
+            public record NotCoordinate : RestrictionCheckFailedReason;
+
+            public record OutOfRange : RestrictionCheckFailedReason;
+
+            public record CasterNotOnMap : RestrictionCheckFailedReason;
+
+            public record TargetNotOnMap : RestrictionCheckFailedReason;
+        }
+
+
+        #region Target finding
 
         public IEnumerable<IActionTarget> FindTargets(
             EntityData actor,
             Coordinate targetCoord,
             TargetArea targetArea,
-            TargetRestriction restriction)
+            TargetRestriction restrictionFlags)
         {
             foreach (var coord in GetTargetedCoordinates(actor, targetCoord, targetArea))
-            foreach (var target in GetValidTargetsInCoordinate(actor, coord, restriction))
+            foreach (var target in GetValidTargetsInCoordinate(actor, coord, restrictionFlags))
                 yield return target;
         }
 
@@ -108,7 +294,7 @@ namespace NonebNi.Core.Actions
         {
             foreach (var target in GetAllTargets())
             {
-                if (FailedAnyTargetRestrictionCheck(target)) continue;
+                if (CheckRestrictions(target).Any()) continue;
 
                 yield return target;
             }
@@ -129,113 +315,16 @@ namespace NonebNi.Core.Actions
                 yield return targetCoord;
             }
 
-            bool FailedAnyTargetRestrictionCheck(IActionTarget target)
+            IEnumerable<RestrictionCheckFailedReason> CheckRestrictions(IActionTarget target)
             {
-                return targetRestrictionFlags.GetFlags().Any(f => FailedTargetRestrictionCheck(f, target));
-            }
-
-            bool FailedTargetRestrictionCheck(TargetRestriction restriction, IActionTarget target)
-            {
-                return !IsPassingTargetRestrictionCheck(
-                    restriction,
-                    caster,
-                    target
-                );
+                foreach (var flag in targetRestrictionFlags.GetFlags())
+                {
+                    var (passedCheck, reason) = CheckTargetRestriction(flag, caster, target);
+                    if (!passedCheck) yield return reason!;
+                }
             }
         }
 
-        private bool IsPassingTargetRestrictionCheck(
-            TargetRestriction restriction,
-            EntityData caster,
-            IActionTarget target)
-        {
-            var targetCoord = target switch
-            {
-                Coordinate targetAsCoord => targetAsCoord,
-                EntityData entityData when _map.TryFind(entityData, out Coordinate coordinate) => coordinate,
-
-                _ => throw new ArgumentOutOfRangeException(
-                    nameof(target),
-                    target,
-                    "Unexpected Target! Is target even on the board, or did you implement new type but didn't add it here?"
-                )
-            };
-
-            if (!_map.IsCoordinateWithinMap(targetCoord)) return false;
-
-            if (!_map.TryFind(caster, out Coordinate casterCoord)) return false;
-
-            switch (restriction)
-            {
-                case TargetRestriction.None:
-                    return true;
-                case TargetRestriction.Friendly:
-                {
-                    if (target is not UnitData targetUnit) return false;
-
-                    return caster.FactionId == targetUnit.FactionId;
-                }
-                case TargetRestriction.Enemy:
-                {
-                    if (target is not UnitData targetUnit) return false;
-                    return caster.FactionId != targetUnit.FactionId;
-                }
-                case TargetRestriction.NonOccupied:
-                {
-                    return !_map.IsOccupied(targetCoord);
-                }
-                case TargetRestriction.ClearPath:
-                {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return false;
-
-                    if (casterCoord.GetCoordinatesBetween(targetCoord).Any(_map.IsOccupied)) return false;
-
-                    return true;
-                }
-                case TargetRestriction.Back:
-                    throw new NotImplementedException("back defined by another ally..?");
-                    break;
-                case TargetRestriction.Self:
-                    return ReferenceEquals(caster, target);
-                case TargetRestriction.Obstacle:
-                {
-                    var tileModifier = _map.Get<TileModifierData>(targetCoord);
-                    return tileModifier is { TileData: { IsWall: true } };
-                }
-                case TargetRestriction.FirstTileToTargetDirectionIsEmpty:
-                {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return false;
-
-                    var direction = (targetCoord - casterCoord).Normalized();
-                    var firstTileToTargetDirection = casterCoord + direction;
-
-                    return !_map.IsOccupied(firstTileToTargetDirection);
-                }
-                case TargetRestriction.TargetCoordPlusDirectionToTargetIsEmpty:
-                {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return false;
-
-                    var direction = (targetCoord - casterCoord).Normalized();
-                    var targetCoordPlusDirection = targetCoord + direction;
-
-                    return !_map.IsOccupied(targetCoordPlusDirection);
-                }
-                case TargetRestriction.Occupied:
-                {
-                    return _map.IsOccupied(targetCoord);
-                }
-                case TargetRestriction.IsCoordinate:
-                {
-                    return target is Coordinate;
-                }
-                case TargetRestriction.NotSelf:
-                {
-                    return !ReferenceEquals(target, caster);
-                }
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(restriction), restriction, null);
-            }
-        }
+        #endregion
     }
 }
