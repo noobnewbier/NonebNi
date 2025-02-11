@@ -78,15 +78,14 @@ namespace NonebNi.Core.Coordinates
         /// </summary>
         public IEnumerable<Coordinate> WithinDistance(int distance)
         {
-            var cyStart = Mathf.Max(-distance, -X - distance);
-            var cyEnd = Mathf.Min(distance, -X + distance);
+            var xInRangeStart = -distance;
+            var xInRangeEnd = +distance;
 
-            for (var cx = -distance; cx < +distance; cx++)
-            for (var cy = cyStart; cy < cyEnd; cy++)
+            for (var inRangeX = xInRangeStart; inRangeX <= xInRangeEnd; inRangeX++)
             {
-                var cz = -cx - cy;
-                var c = new Coordinate(cx, cz);
-                yield return this + c;
+                var zInRangeStart = Mathf.Max(-distance, -inRangeX - distance);
+                var zInRangeEnd = Mathf.Min(+distance, -inRangeX + distance);
+                for (var inRangeZ = zInRangeStart; inRangeZ <= zInRangeEnd; inRangeZ++) yield return this + (inRangeX, inRangeZ);
             }
         }
 
