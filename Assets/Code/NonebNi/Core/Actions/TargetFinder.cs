@@ -108,6 +108,13 @@ namespace NonebNi.Core.Actions
                     "Unexpected Target! Is target even on the board, or did you implement new type but didn't add it here?"
                 )
             };
+            var targetEntity = target switch
+            {
+                EntityData targetAsEntity => targetAsEntity,
+                Coordinate targetAsCoord => _map.Get<EntityData>(targetAsCoord),
+
+                _ => null
+            };
 
             if (!_map.IsCoordinateWithinMap(targetCoord)) return (false, new RestrictionCheckFailedReason.TargetNotOnMap());
 
@@ -119,14 +126,14 @@ namespace NonebNi.Core.Actions
                     return (true, null);
                 case TargetRestriction.Friendly:
                 {
-                    if (target is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
                     if (caster.FactionId != targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotFriendly());
 
                     return (true, null);
                 }
                 case TargetRestriction.Enemy:
                 {
-                    if (target is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
                     if (caster.FactionId == targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotEnemy());
                     return (true, null);
                 }
