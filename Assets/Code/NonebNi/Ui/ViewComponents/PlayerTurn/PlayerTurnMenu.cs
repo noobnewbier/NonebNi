@@ -27,6 +27,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private UnitActionPanel actionPanel = null!;
         [SerializeField] private UnitActOrderPanel orderPanel = null!;
         [SerializeField] private UnitDetailsPanel detailsPanel = null!;
+        private ICameraController _cameraController = null!;
+        private CancellationTokenSource? _executeActionFlowCts;
 
         private IPlayerTurnPresenter _presenter = null!;
         private UIStack _stack = null!;

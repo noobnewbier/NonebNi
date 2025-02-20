@@ -17,7 +17,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     public interface IPlayerTurnWorldSpaceInputControl
     {
         Coordinate? FindHoveredCoordinate();
-        UniTask ToTileInspectionMode();
+        void ToTileInspectionMode();
         UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default);
         void UpdateTargetSelection();
     }
@@ -131,27 +131,28 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             return coordinates;
         }
 
-        public async UniTask ToTileInspectionMode()
+        public void ToTileInspectionMode()
         {
-            async UniTask RunUpdateLoopUntilCancelled(CancellationToken ct)
+            async UniTaskVoid Do(CancellationToken ct)
             {
+                _hexHighlighter.ClearAll();
                 while (!ct.IsCancellationRequested)
                 {
-                    _hexHighlighter.RemoveHighlight(TileInspectionHighlightId);
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
 
                     var coord = FindHoveredCoordinate();
-                    if (coord.HasValue) _hexHighlighter.AddHighlight(coord.Value, TileInspectionHighlightId);
+                    if (coord != null) _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, NormalHighlightId);
 
                     await UniTask.NextFrame();
                 }
+
+                _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
             }
 
             _cts?.Cancel();
-            await UniTask.WaitUntil(() => _updateLoopTask?.Task.Status != UniTaskStatus.Pending);
-
             _cts = new CancellationTokenSource();
-            await RunUpdateLoopUntilCancelled(_cts.Token);
-            _hexHighlighter.RemoveHighlight(TileInspectionHighlightId);
+
+            Do(_cts.Token).Forget();
         }
 
         public void UpdateTargetSelection()
