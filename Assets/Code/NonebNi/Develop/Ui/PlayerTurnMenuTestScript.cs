@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using Noneb.UI.View;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Agents;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
+using NonebNi.Core.Maps;
+using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
+using NonebNi.Terrain;
+using NonebNi.Ui.Cameras;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEditor;
 using UnityEngine;
@@ -21,6 +31,7 @@ namespace NonebNi.Develop
         [SerializeField] private PlayerTurnMenu menu = null!;
         [SerializeField] private NonebViewBehaviour view = null!;
         [SerializeField] private GameObject stackRoot = null!;
+        [SerializeField] private TerrainConfigData terrainConfigData = null!;
 
         private readonly Lazy<UnitData> _unitA = new(() => CreateUnit("A"));
         private readonly Lazy<UnitData> _unitB = new(() => CreateUnit("B"));
@@ -29,12 +40,25 @@ namespace NonebNi.Develop
         private UIStack _stack = null!;
 
         // ReSharper disable once Unity.IncorrectMethodSignature
+        [UsedImplicitly]
         private async UniTaskVoid Start()
         {
+            var map = new MockMap(
+                new Dictionary<Coordinate, EntityData>
+                {
+                    [(3, 4)] = _unitA.Value,
+                    [(1, 0)] = _unitB.Value,
+                    [(9, 8)] = _unitB.Value
+                },
+                10,
+                10
+            );
             var orderer = new FakeUniTurnOrderer(_unitA.Value, _unitB.Value, _unitC.Value);
-            var presenter = new PlayerTurnPresenter(menu, orderer);
+            var playerAgent = new PlayerAgent(TestScriptHelpers.CreateFaction("fake-player"));
+            var presenter = new PlayerTurnPresenter(menu, orderer, new CoordinateAndPositionService(terrainConfigData), map, playerAgent);
             _control = new MockInputControl();
-            menu.Inject(presenter, _control);
+            var cameraController = new MockCameraController();
+            menu.Inject(presenter, _control, cameraController);
 
             _stack = new UIStack(stackRoot);
             await _stack.Push(view);
@@ -92,19 +116,95 @@ namespace NonebNi.Develop
             public string mode;
             public Coordinate? FindHoveredCoordinate() => null;
 
-            public UniTask ToTargetSelectionMode(UnitData caster, NonebAction action)
+            public UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default)
             {
                 mode = "target-selection";
-                return UniTask.CompletedTask;
+                return new UniTask<IEnumerable<Coordinate>>(Enumerable.Empty<Coordinate>());
             }
 
-            public UniTask ToTileInspectionMode()
+            public void ToTileInspectionMode()
             {
                 mode = "tile-inspection";
-                return UniTask.CompletedTask;
             }
 
             public void UpdateTargetSelection() { }
+        }
+
+        private class MockCameraController : ICameraController
+        {
+            public void LookAt(Vector3 position) { }
+
+            public void UpdateCamera() { }
+        }
+
+        private class MockMap : IReadOnlyMap
+        {
+            private readonly Dictionary<Coordinate, EntityData> _fakeMap;
+            private readonly Dictionary<EntityData, Coordinate> _fakeReversedMap;
+            private readonly int _height;
+            private readonly int _width;
+
+            public MockMap(Dictionary<Coordinate, EntityData> fakeMap, int height, int width)
+            {
+                _fakeMap = fakeMap;
+                _height = height;
+                _width = width;
+                _fakeReversedMap = new Dictionary<EntityData, Coordinate>();
+                foreach (var (key, value) in fakeMap) _fakeReversedMap[value] = key;
+            }
+
+            public bool IsOccupied(Coordinate axialCoordinate) => true;
+
+            public bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out TileData? tileData)
+            {
+                tileData = TileData.Default;
+                return true;
+            }
+
+            public TileData Get(Coordinate axialCoordinate) => TileData.Default;
+
+            public T? Get<T>(Coordinate axialCoordinate) where T : EntityData => _fakeMap.GetValueOrDefault(axialCoordinate) as T;
+
+            public bool TryGet<T>(Coordinate axialCoordinate, [NotNullWhen(true)] out T? t) where T : EntityData
+            {
+                t = Get<T>(axialCoordinate);
+                return t != null;
+            }
+
+            public bool TryGet(Coordinate axialCoordinate, [NotNullWhen(true)] out IEnumerable<EntityData>? datas)
+            {
+                var t = Get<EntityData>(axialCoordinate);
+                if (t != null)
+                {
+                    datas = new[] { t };
+                    return true;
+                }
+
+                datas = null;
+                return false;
+            }
+
+            public bool Has<T>(Coordinate axialCoordinate) where T : EntityData => Get<T>(axialCoordinate) != null;
+
+            public bool TryFind(EntityData entityData, out Coordinate coordinate) => _fakeReversedMap.TryGetValue(entityData, out coordinate);
+
+            public bool TryFind(EntityData entityData, out IEnumerable<Coordinate> coordinates)
+            {
+                if (_fakeReversedMap.TryGetValue(entityData, out var coordinate))
+                {
+                    coordinates = new[] { coordinate };
+                    return true;
+                }
+
+                coordinates = ArraySegment<Coordinate>.Empty;
+                return false;
+            }
+
+            public IEnumerable<Coordinate> GetAllCoordinates() => _fakeReversedMap.Values;
+
+            public bool IsCoordinateWithinMap(Coordinate coordinate) => coordinate.X < _width && coordinate.Y < _height && coordinate is { X: >= 0, Y: >= 0 };
+
+            public IEnumerable<UnitData> GetAllUnits() => _fakeReversedMap.Keys.OfType<UnitData>();
         }
     }
 }
