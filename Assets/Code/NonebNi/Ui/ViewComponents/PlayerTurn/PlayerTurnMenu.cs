@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Units;
+using NonebNi.Ui.Cameras;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -39,15 +40,16 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public async UniTask SelectAction(NonebAction? action)
         {
-            await UniTask.WhenAll(
-                actionPanel.Highlight(action),
-                RefreshControlMode()
-            );
+            RefreshControlMode();
+            await actionPanel.Highlight(action);
         }
 
         public async UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default)
         {
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
+
+            var targetUnitPos = _presenter.FindUnitPosition(unit);
+            _cameraController.LookAt(targetUnitPos);
             await UniTask.WhenAll(
                 actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token),
                 detailsPanel.Show(unit, linkedCts.Token)
@@ -75,21 +77,35 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             return UniTask.CompletedTask;
         }
 
-        private async UniTask RefreshControlMode()
+        private void RefreshControlMode()
         {
+            _executeActionFlowCts?.Cancel();
             if (_presenter.SelectedAction == null)
                 //TODO: probs more complicated 
-                await _worldSpaceInputControl.ToTileInspectionMode();
+                _worldSpaceInputControl.ToTileInspectionMode();
             else
-                await _worldSpaceInputControl.ToTargetSelectionMode(_presenter.InspectingUnit, _presenter.SelectedAction);
+            {
+                _executeActionFlowCts = new CancellationTokenSource();
+                ExecuteActionFlow(_executeActionFlowCts.Token).Forget();
+            }
+        }
+
+        private async UniTask ExecuteActionFlow(CancellationToken ct = default)
+        {
+            if (_presenter.SelectedAction == null) return;
+
+            var input = await _worldSpaceInputControl.GetInputForAction(_presenter.InspectingUnit, _presenter.SelectedAction, ct);
+            _presenter.MakeDecision(input);
+            //todo: do something with that input mate.
         }
 
         //TODO: work out the inject process with strong ioc.
-        public void Inject(IPlayerTurnPresenter presenter, IPlayerTurnWorldSpaceInputControl worldSpaceInputControl)
+        public void Inject(IPlayerTurnPresenter presenter, IPlayerTurnWorldSpaceInputControl worldSpaceInputControl, ICameraController cameraController)
         {
             _presenter = presenter;
             _stack = new UIStack(subStackRoot);
             _worldSpaceInputControl = worldSpaceInputControl;
+            _cameraController = cameraController;
         }
     }
 }
