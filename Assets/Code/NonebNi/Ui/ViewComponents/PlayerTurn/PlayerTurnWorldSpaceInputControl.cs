@@ -157,12 +157,12 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public void UpdateTargetSelection()
         {
-            _hexHighlighter.RemoveHighlight(TargetSelectionHighlightId);
+            _hexHighlighter.RemoveRequest(HighlightRequestId.TargetSelection);
 
             var coord = FindHoveredCoordinate();
-            if (!coord.HasValue) return;
+            if (coord == null) return;
 
-            _hexHighlighter.AddHighlight(coord.Value, TargetSelectionHighlightId);
+            _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, NormalHighlightId);
         }
     }
 }
