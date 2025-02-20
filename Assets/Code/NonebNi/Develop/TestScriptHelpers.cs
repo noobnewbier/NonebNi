@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Units;
 using NonebNi.Terrain;
@@ -13,6 +15,12 @@ namespace NonebNi.Develop
 {
     public static class TestScriptHelpers
     {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void Init()
+        {
+            Cache.Reset();
+        }
+
         public static (bool success, Vector3 pos) FindMousePosInWorld(GameObject groundObject)
         {
             var mousePos = Mouse.current.position;
@@ -77,5 +85,24 @@ namespace NonebNi.Develop
             10,
             50
         );
+
+        public static Faction CreateFaction(string id) => Cache.GetFaction(id);
+
+        private static class Cache
+        {
+            private static readonly Dictionary<string, Faction> Factions = new();
+
+            public static Faction GetFaction(string id)
+            {
+                if (!Factions.TryGetValue(id, out var faction)) Factions[id] = faction = new Faction(id, false);
+
+                return faction;
+            }
+
+            public static void Reset()
+            {
+                Factions.Clear();
+            }
+        }
     }
 }
