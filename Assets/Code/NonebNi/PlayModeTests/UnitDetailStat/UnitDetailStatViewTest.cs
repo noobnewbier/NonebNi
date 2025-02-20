@@ -47,20 +47,8 @@ namespace NonebNi.PlayModeTests.UnitDetailStat
                 Guid.Empty,
                 new[]
                 {
-                    new NonebAction(
-                        "NoobSkill1",
-                        1,
-                        TargetRestriction.Enemy,
-                        TargetArea.Single,
-                        1
-                    ),
-                    new NonebAction(
-                        "NoobSkill2",
-                        1,
-                        TargetRestriction.Enemy,
-                        TargetArea.Single,
-                        1
-                    )
+                    new NonebAction("NoobSkill1", 1, 1, TargetArea.Single, TargetRestriction.Enemy),
+                    new NonebAction("NoobSkill2", 1, 1, TargetArea.Single, TargetRestriction.Enemy)
                 },
                 _testSprite,
                 "Noob",

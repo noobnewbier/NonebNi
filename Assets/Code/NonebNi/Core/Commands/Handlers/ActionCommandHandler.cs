@@ -22,7 +22,6 @@ namespace NonebNi.Core.Commands.Handlers
             _evaluators = evaluators;
         }
 
-        //TODO: we need some sort of EffectEvaluator, that would allow us to separate data and manipulating them
         public IEnumerable<ISequence> Evaluate(ActionCommand command)
         {
             return command.Action.Effects.SelectMany(

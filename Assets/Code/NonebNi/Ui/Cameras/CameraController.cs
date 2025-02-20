@@ -10,6 +10,7 @@ namespace NonebNi.Ui.Cameras
         void LookAt(Vector3 position);
         void UpdateCamera();
     }
+//TODO:don't know how I fucked it up, but it's fucked
 
     /// <summary>
     /// Note:

@@ -66,6 +66,9 @@ namespace Noneb.UI.Element
             var triggerName = state switch
             {
                 SelectionState.Normal => animationTriggers.normalTrigger,
+
+                //TODO: more sophisticated logic on the press bit, otherwise animation won't look nice
+                //this includes - move away from press, detecting press release so we can get out of the pressed state, yada yada yaddaa
                 SelectionState.Pressed => animationTriggers.pressedTrigger,
 
                 //These two are essentially the same.

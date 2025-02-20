@@ -60,6 +60,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public Coordinate? FindHoveredCoordinate()
         {
+            //TODO: it probably makes sense to put this input code into the input system - but then it's in game ony...
             var point = _inputSystem.MousePosition;
             var ray = _playerViewCamera.ScreenPointToRay(point);
             if (!_gridPlane.Raycast(ray, out var distance)) return null;
@@ -155,6 +156,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Do(_cts.Token).Forget();
         }
 
+        //TODO: what is this for...?
         public void UpdateTargetSelection()
         {
             _hexHighlighter.RemoveRequest(HighlightRequestId.TargetSelection);

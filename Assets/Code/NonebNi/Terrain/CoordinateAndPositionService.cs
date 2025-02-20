@@ -143,6 +143,7 @@ namespace NonebNi.Terrain
             return GetBridge(direction) + coordinatePos;
         }
 
+        //TODO: at some point we will get rid of the bridge? maybe? need to re-read catslikecoding for the 376 times.
         public Vector3 GetBridge(HexDirection direction)
         {
             var firstCorner = _tileCornersOffset[direction.GetVerticesWindingOrderIndex()];
