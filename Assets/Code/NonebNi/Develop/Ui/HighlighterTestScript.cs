@@ -18,7 +18,6 @@ namespace NonebNi.Develop
         private readonly List<Coordinate> _bulkingCoordinates = new();
 
         private HexHighlighter _highlighter = null!;
-        private string _highlightId = "normal";
         private bool _isBulkMode;
 
         private bool _isInitialised;
@@ -26,6 +25,7 @@ namespace NonebNi.Develop
         private IReadOnlyMap _map = null!;
         private string _requestId = "debug";
         private CoordinateAndPositionService _service = null!;
+        private HighlightVariation _variation = HighlightVariation.Normal;
 
         private void Awake()
         {
@@ -60,12 +60,12 @@ namespace NonebNi.Develop
             if (GUI.Button(rect, "Cycle Highlight"))
             {
                 var allConfigs = highlightConfig.GetAll().ToArray();
-                var index = Array.FindIndex(allConfigs, t => t.id == _highlightId);
+                var index = Array.FindIndex(allConfigs, t => t.variation == _variation);
 
                 index++;
                 if (index >= allConfigs.Length) index = 0;
 
-                _highlightId = allConfigs[index].id;
+                _variation = allConfigs[index].variation;
             }
 
             rect.y += 25;
@@ -83,7 +83,13 @@ namespace NonebNi.Develop
             _requestId = GUI.TextField(rect, _requestId);
             rect.y += 25;
 
-            _highlightId = GUI.TextField(rect, _highlightId);
+            if (GUI.Button(rect, _variation.ToString()))
+            {
+                var values = Enum.GetValues(typeof(HighlightVariation)).Cast<HighlightVariation>().ToList();
+                var next = values.ElementAtOrDefault((int)_variation++);
+                _variation = next;
+            }
+
             rect.y += 25;
 
             GUI.Label(rect, "Left Click to Add");
@@ -121,7 +127,7 @@ namespace NonebNi.Develop
             if (_bulkingCoordinates.Any())
             {
                 if (_lastBulkInputIsActive)
-                    _highlighter.RequestHighlight(_bulkingCoordinates, _requestId, _highlightId);
+                    _highlighter.RequestHighlight(_bulkingCoordinates, _requestId, _variation);
                 else
                     _highlighter.RemoveRequest(_bulkingCoordinates, _requestId);
 
@@ -143,7 +149,7 @@ namespace NonebNi.Develop
 
 
             if (isActive)
-                _highlighter.RequestHighlight(coord, _requestId, _highlightId);
+                _highlighter.RequestHighlight(coord, _requestId, _variation);
             else
                 _highlighter.RemoveRequest(coord, _requestId);
         }

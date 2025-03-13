@@ -8,16 +8,16 @@ namespace NonebNi.Ui.Grids
     [Serializable]
     public class HexHighlightConfig
     {
-        [SerializeField] private SerializableDictionary<string, HexHighlight> idAndHighlights = new();
+        [SerializeField] private SerializableDictionary<HighlightVariation, HexHighlight> idAndHighlights = new();
 
-        public HexHighlight? FindHighlightPrefab(string id) =>
+        public HexHighlight? FindHighlightPrefab(HighlightVariation id) =>
             idAndHighlights.TryGetValue(id, out var result) ?
                 result :
                 null;
 
-        public IEnumerable<(string id, HexHighlight highlight)> GetAll()
+        public IEnumerable<(HighlightVariation variation, HexHighlight highlight)> GetAll()
         {
-            foreach (var (key, value) in idAndHighlights) yield return (key, value);
+            foreach (var (variation, value) in idAndHighlights) yield return (variation, value);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace NonebNi.Ui.Grids
         /// <summary>
         /// If same id -> remove existing and recreate
         /// </summary>
-        void RequestHighlight(IEnumerable<Coordinate> coords, string requestId, string highlightId);
+        void RequestHighlight(IEnumerable<Coordinate> coords, string requestId, HighlightVariation variation);
 
         /// <summary>
         /// if id == null -> nuke all highlight on specified coordinate
@@ -27,7 +27,7 @@ namespace NonebNi.Ui.Grids
 
         void RemoveRequest(params string[] requestIds);
         void RemoveRequest(string requestId);
-        void RequestHighlight(Coordinate coord, string requestId, string highlightId);
+        void RequestHighlight(Coordinate coord, string requestId, HighlightVariation variation);
         void RemoveRequest(Coordinate coord, string? requestId = null);
         void ClearAll();
     }
@@ -53,7 +53,7 @@ namespace NonebNi.Ui.Grids
         /// </summary>
         private readonly Dictionary<Coordinate, ResponseRequest> _highlightMappings = new();
 
-        private readonly Dictionary<string, BehaviourPool<HexHighlight>> _highlightPools = new();
+        private readonly Dictionary<HighlightVariation, BehaviourPool<HexHighlight>> _highlightPools = new();
         private readonly TerrainConfigData _terrainConfig;
 
         public HexHighlighter(ICoordinateAndPositionService coordinateAndPositionService, HexHighlightConfig highlightConfig, TerrainConfigData terrainConfig)
@@ -64,9 +64,9 @@ namespace NonebNi.Ui.Grids
         }
 
         //TODO: highlight variation and id.
-        public void RequestHighlight(IEnumerable<Coordinate> coords, string requestId, string highlightId)
+        public void RequestHighlight(IEnumerable<Coordinate> coords, string requestId, HighlightVariation variation)
         {
-            foreach (var coord in coords) RequestHighlight(coord, requestId, highlightId);
+            foreach (var coord in coords) RequestHighlight(coord, requestId, variation);
         }
 
         public void RemoveRequest(IEnumerable<Coordinate> coords, string? requestId = null)
@@ -97,7 +97,7 @@ namespace NonebNi.Ui.Grids
             foreach (var pool in _highlightPools.Values) pool.Dispose();
         }
 
-        public void RequestHighlight(Coordinate coord, string requestId, string highlightId)
+        public void RequestHighlight(Coordinate coord, string requestId, HighlightVariation variation)
         {
             if (!_highlightMappings.TryGetValue(coord, out var responseRequest))
                 _highlightMappings[coord] = responseRequest = new ResponseRequest();
@@ -106,12 +106,12 @@ namespace NonebNi.Ui.Grids
             var request = responseRequest.Requests.FirstOrDefault(r => r.RequestId == requestId);
             if (request == null)
             {
-                var priority = RequestPriority.GetValueOrDefault(highlightId, 0);
+                var priority = RequestPriority.GetValueOrDefault(requestId, 0);
                 request = new HighlightRequest(requestId);
                 responseRequest.Requests.Enqueue(request, priority);
             }
 
-            request.HighlightId = highlightId;
+            request.Variation = variation;
 
             ServeRequest(coord);
         }
@@ -155,12 +155,12 @@ namespace NonebNi.Ui.Grids
                 prevPrefabPool.Release(currentResponse.CurrentHighlight);
             }
 
-            var pool = GetOrCreatePool(currentReq.HighlightId);
+            var pool = GetOrCreatePool(currentReq.Variation);
             var newHighlight = pool.Get();
             newHighlight.transform.position = _coordinateAndPositionService.FindPosition(coordinate);
             newHighlight.Draw(_terrainConfig.InnerRadius);
 
-            responseRequests.Response = new HighlightResponse(currentReq.HighlightId, newHighlight);
+            responseRequests.Response = new HighlightResponse(currentReq.Variation, newHighlight);
         }
 
         private void Cleanup(Coordinate coordinate)
@@ -179,20 +179,20 @@ namespace NonebNi.Ui.Grids
             _highlightMappings.Remove(coordinate);
         }
 
-        private BehaviourPool<HexHighlight> GetOrCreatePool(string highlightId)
+        private BehaviourPool<HexHighlight> GetOrCreatePool(HighlightVariation variation)
         {
-            if (!_highlightPools.TryGetValue(highlightId, out var pool))
+            if (!_highlightPools.TryGetValue(variation, out var pool))
             {
-                var prefab = _highlightConfig.FindHighlightPrefab(highlightId);
+                var prefab = _highlightConfig.FindHighlightPrefab(variation);
                 if (prefab == null)
                 {
-                    Log.Error($"Cannot find {highlightId}, your config messed up");
+                    Log.Error($"Cannot find {variation}, your config messed up");
                     prefab = new GameObject("Error_HexHighlight").AddComponent<HexHighlight>();
                     // setting to inactive - this way at least we can hide the "prefab" from the active scene and the game looks a bit less jarring
                     prefab.gameObject.SetActive(false);
                 }
 
-                _highlightPools[highlightId] = pool = new BehaviourPool<HexHighlight>(prefab);
+                _highlightPools[variation] = pool = new BehaviourPool<HexHighlight>(prefab);
             }
 
             return pool;
@@ -207,7 +207,7 @@ namespace NonebNi.Ui.Grids
         private class HighlightRequest
         {
             public readonly string RequestId;
-            public string HighlightId = string.Empty;
+            public HighlightVariation Variation = HighlightVariation.None;
 
             public HighlightRequest(string requestId)
             {
@@ -215,6 +215,6 @@ namespace NonebNi.Ui.Grids
             }
         }
 
-        private record HighlightResponse(string HighlightId, HexHighlight CurrentHighlight);
+        private record HighlightResponse(HighlightVariation HighlightId, HexHighlight CurrentHighlight);
     }
 }

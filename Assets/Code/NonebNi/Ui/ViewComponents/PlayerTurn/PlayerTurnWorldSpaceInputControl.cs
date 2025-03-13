@@ -24,11 +24,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
     public class PlayerTurnWorldSpaceInputControl : IPlayerTurnWorldSpaceInputControl
     {
-        //TODO: we need a way to make these a bit more reliable, these are jank... at best even frog is doing better.
-        private const string NormalHighlightId = "normal";
-        private const string TargetHighlightId = "target";
-        private const string AreaHintId = "area-hint";
-
         private readonly ICoordinateAndPositionService _coordinateAndPositionService;
         private readonly Plane _gridPlane;
         private readonly IHexHighlighter _hexHighlighter;
@@ -85,13 +80,16 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     if (coord == null) continue;
 
                     // Keep showing the highlight - we are good
-                    _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, TargetHighlightId);
+                    (RangeStatus status, Coordinate _)? matchingRangeStatus = ranges.FirstOrDefault(t => t.coord == coord);
+                    var isValidInput = matchingRangeStatus is { status: RangeStatus.Targetable };
+                    var variation = isValidInput ?
+                        HighlightVariation.ValidInput :
+                        HighlightVariation.InvalidInput;
+                    _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, variation);
 
                     if (!_inputSystem.LeftClick) continue;
 
-
-                    (RangeStatus status, Coordinate _)? matchingRangeStatus = ranges.FirstOrDefault(t => t.coord == coord);
-                    if (matchingRangeStatus is not { status: RangeStatus.Targetable })
+                    if (!isValidInput)
                         //todo: signal invalid input - potentially audio and even a tooltip to explain why shit is wrong
                         continue;
 
@@ -114,7 +112,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
                     var ranges = _targetFinder.FindRange(caster, request).ToArray();
                     _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
-                    _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, AreaHintId);
+                    _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
 
                     var input = await GetUserInputForRequest(ranges, ct);
                     if (input != null) playerInputs.Add(input);
@@ -142,7 +140,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
 
                     var coord = FindHoveredCoordinate();
-                    if (coord != null) _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, NormalHighlightId);
+                    if (coord != null) _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.Normal);
 
                     await UniTask.NextFrame();
                 }
@@ -164,7 +162,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             var coord = FindHoveredCoordinate();
             if (coord == null) return;
 
-            _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, NormalHighlightId);
+            _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, HighlightVariation.Normal);
         }
     }
 }
