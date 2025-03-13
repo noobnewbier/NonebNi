@@ -6,6 +6,7 @@ using Noneb.UI.InputSystems;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
@@ -18,6 +19,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     {
         Coordinate? FindHoveredCoordinate();
         void ToTileInspectionMode();
+        void ToMovementMode(UnitData mover);
         UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default);
         void UpdateTargetSelection();
     }
@@ -25,10 +27,12 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     public class PlayerTurnWorldSpaceInputControl : IPlayerTurnWorldSpaceInputControl
     {
         private readonly ICoordinateAndPositionService _coordinateAndPositionService;
+
         private readonly Plane _gridPlane;
         private readonly IHexHighlighter _hexHighlighter;
         private readonly IInputSystem _inputSystem;
         private readonly Map _map;
+        private readonly IPathfindingService _pathfindingService;
         private readonly Camera _playerViewCamera;
         private readonly ITargetFinder _targetFinder;
 
@@ -42,7 +46,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Camera playerViewCamera,
             Map map,
             IHexHighlighter hexHighlighter,
-            ITargetFinder targetFinder)
+            ITargetFinder targetFinder,
+            IPathfindingService pathfindingService)
         {
             _inputSystem = inputSystem;
             _coordinateAndPositionService = coordinateAndPositionService;
@@ -50,6 +55,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             _map = map;
             _hexHighlighter = hexHighlighter;
             _targetFinder = targetFinder;
+            _pathfindingService = pathfindingService;
             _gridPlane = terrainConfigData.GridPlane;
         }
 
@@ -128,6 +134,43 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             var coordinates = await Do(_cts.Token);
 
             return coordinates;
+        }
+
+        public void ToMovementMode(UnitData mover)
+        {
+            async UniTaskVoid Do(CancellationToken ct)
+            {
+                _hexHighlighter.ClearAll();
+                while (!ct.IsCancellationRequested)
+                {
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
+
+                    var targetCoord = FindHoveredCoordinate();
+                    if (targetCoord != null)
+                    {
+                        var (isPathExist, path) = _pathfindingService.FindPath(mover, targetCoord);
+                        if (isPathExist)
+                        {
+                            var pathWithoutStartAndEnd = path.Except(new[] { _map.Find(mover), targetCoord });
+                            _hexHighlighter.RequestHighlight(pathWithoutStartAndEnd, HighlightRequestId.MovementHint, HighlightVariation.AreaHint);
+                            _hexHighlighter.RequestHighlight(targetCoord, HighlightRequestId.MovementHint, HighlightVariation.Normal);
+                        }
+                        else
+                        {
+                            _hexHighlighter.RequestHighlight(targetCoord, HighlightRequestId.MovementHint, HighlightVariation.InvalidInput);
+                        }
+                    }
+
+                    await UniTask.NextFrame();
+                }
+
+                _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
+            }
+
+            _cts?.Cancel();
+            _cts = new CancellationTokenSource();
+
+            Do(_cts.Token).Forget();
         }
 
         public void ToTileInspectionMode()
