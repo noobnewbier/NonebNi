@@ -17,7 +17,7 @@ MonoBehaviour:
   edgePercentageToPan: 0.95
   smoothFactor: 2
   maxZoomingSpeed: 150
-  minDistanceToMap: 10
+  minDistanceToMap: 3.36
   maxDistanceToMap: 15
   decelerationSpeed: 0.75
   isInvertedWheel: 1

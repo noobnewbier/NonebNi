@@ -90,8 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 6773339124895111140}
-  widgetPrefab: {fileID: 0}
-  nonebElement: {fileID: 0}
+  widgetPrefab: {fileID: 4481702081747497717, guid: 4b89d5ac821ef9547a1815a01b1a831f, type: 3}
 --- !u!1 &3132267929173857358
 GameObject:
   m_ObjectHideFlags: 0
