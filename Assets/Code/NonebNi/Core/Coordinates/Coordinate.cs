@@ -16,6 +16,7 @@ namespace NonebNi.Core.Coordinates
     [Serializable]
     public record Coordinate : IActionTarget
     {
+        public static readonly Coordinate Zero = new(0, 0);
         [SerializeField] private int x;
         [SerializeField] private int z;
 
