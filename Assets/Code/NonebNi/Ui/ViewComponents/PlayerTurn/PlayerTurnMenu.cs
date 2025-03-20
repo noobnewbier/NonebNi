@@ -95,8 +95,12 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         {
             _executeActionFlowCts?.Cancel();
             if (_presenter.SelectedAction == null)
-                //TODO: probs more complicated 
-                _worldSpaceInputControl.ToTileInspectionMode();
+            {
+                if (_presenter.InspectingUnit.Speed > 0)
+                    _worldSpaceInputControl.ToMovementMode(_presenter.InspectingUnit);
+                else
+                    _worldSpaceInputControl.ToTileInspectionMode();
+            }
             else
             {
                 _executeActionFlowCts = new CancellationTokenSource();
