@@ -4,12 +4,15 @@ using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
-using NonebNi.Ui.Statistics.Unit;
+using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
 using UnityUtils;
 
 namespace NonebNi.Main
 {
+    //todo: we need to organize our modules, possibly in a notion diagram, atm it's a fucking mess.
+    //I suspect a-lot of our factories aren't necessary and can be reduced down to a level module/container and an ui module
+    //sort this out and you can use your main sample scene to test gameplay, you are close fucker, you are v.close to something testable, keep the pressure up babe.
     public interface ILevelUi
     {
         void Run();
@@ -19,28 +22,27 @@ namespace NonebNi.Main
     {
         private readonly CameraRunner _cameraControl;
         private readonly Hud _hud;
-        private readonly UnitDetailStat _stat;
         private readonly Terrain _terrain;
 
         public LevelUi(
             CameraRunner cameraControl,
             Hud hud,
             Terrain terrain,
-            UnitDetailStat stat,
-            ICameraController cameraControllerView,
+            ICameraController cameraController,
             LevelData levelData,
             IPlayerAgent playerAgent,
-            ITerrainMeshCreator meshCreator)
+            ITerrainMeshCreator meshCreator,
+            IPlayerTurnPresenter presenter,
+            IPlayerTurnWorldSpaceInputControl worldSpaceInputControl)
         {
             _cameraControl = cameraControl;
             _hud = hud;
             _terrain = terrain;
-            _stat = stat;
 
-            _cameraControl.Init(cameraControllerView);
-            _hud.Init(levelData, playerAgent);
+            _cameraControl.Init(cameraController);
+            //todo: change our DI, it's confusing now.
+            _hud.Init(presenter, worldSpaceInputControl, cameraController);
             _terrain.Init(meshCreator);
-            _stat.Init();
         }
 
         public void Run()

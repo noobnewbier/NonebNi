@@ -7,6 +7,7 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Units;
 using NonebNi.Ui.Cameras;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
 {

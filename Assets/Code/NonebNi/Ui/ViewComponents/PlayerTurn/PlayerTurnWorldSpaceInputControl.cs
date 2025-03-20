@@ -31,7 +31,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         private readonly Plane _gridPlane;
         private readonly IHexHighlighter _hexHighlighter;
         private readonly IInputSystem _inputSystem;
-        private readonly Map _map;
+        private readonly IReadOnlyMap _map;
         private readonly IPathfindingService _pathfindingService;
         private readonly Camera _playerViewCamera;
         private readonly ITargetFinder _targetFinder;
@@ -44,7 +44,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             ICoordinateAndPositionService coordinateAndPositionService,
             TerrainConfigData terrainConfigData,
             Camera playerViewCamera,
-            Map map,
+            IReadOnlyMap map,
             IHexHighlighter hexHighlighter,
             ITargetFinder targetFinder,
             IPathfindingService pathfindingService)

@@ -13,6 +13,10 @@ using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
 {
+    //todo: making player turn works. focus on that.
+    //todo: next step would be sorting out movement
+    //todo: and then we would need a "rest/end turn action" for doing nothing.
+
     public interface IPlayerTurnPresenter
     {
         UnitData InspectingUnit { get; }

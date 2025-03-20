@@ -10,6 +10,8 @@ namespace NonebNi.Main
         [field: SerializeField] public CinemachineCamera CinemachineCamera { get; private set; } = null!;
         [field: SerializeField] public CinemachinePositionComposer Composer { get; private set; } = null!;
 
+        [field: SerializeField] public Camera Camera { get; private set; } = null!;
+
         private ICameraController _controller = null!;
         private bool _isRunning;
 
