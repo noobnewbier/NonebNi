@@ -52,8 +52,10 @@ namespace NonebNi.Core.FlowControl
                 var currentUnit = UnitTurnOrderer.CurrentUnit;
                 Debug.Log($"[Level] Turn {turnNum}, {currentUnit.Name}'s turn");
 
+                currentUnit.RestoreMovement();
+
                 // ReSharper disable RedundantAssignment - Can't declare value tuple without assigning
-                (IDecisionValidator.Error? err, var command) = (default, NullCommand.Instance);
+                (IDecisionValidator.Error? err, var command) = (null, NullCommand.Instance);
                 // ReSharper restore RedundantAssignment
                 do
                 {

@@ -53,7 +53,7 @@ namespace NonebNi.Core.Units
 
             Stats.CreateStat("health", health, 0, maxHealth);
             Stats.CreateStat("initiative", initiative, 0, 100);
-            Stats.CreateStat("speed", speed);
+            Stats.CreateStat("speed", speed, 0, speed);
             Stats.CreateStat("focus", focus);
             Stats.CreateStat("strength", strength);
             Stats.CreateStat("armor", armor);
@@ -192,5 +192,11 @@ namespace NonebNi.Core.Units
         }
 
         public override bool IsTileOccupier => true;
+
+        public void RestoreMovement()
+        {
+            var (_, maxSpeed) = Stats.GetMaxValue("speed");
+            Speed = maxSpeed;
+        }
     }
 }
