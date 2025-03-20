@@ -39,6 +39,16 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         private UIStack _stack = null!;
         private IPlayerTurnWorldSpaceInputControl _worldSpaceInputControl = null!;
 
+        public void Init(IPlayerTurnPresenter presenter, IPlayerTurnWorldSpaceInputControl worldSpaceInputControl, ICameraController cameraController)
+        {
+            _presenter = presenter;
+            _stack = new UIStack(subStackRoot); //todo: may not need stack afterall...?
+            _worldSpaceInputControl = worldSpaceInputControl;
+            _cameraController = cameraController;
+
+            endTurnButton.onClick.AddListener(presenter.EndTurn);
+        }
+
         public event Action<NonebAction?>? ActionSelected;
         public event Action<UnitData?>? UnitSelected;
 
