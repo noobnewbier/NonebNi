@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Unity.Logging;
 using UnityEngine;
 
 namespace Noneb.UI.View
@@ -73,6 +74,23 @@ namespace Noneb.UI.View
         }
 
         public IEnumerable<INonebView> GetViews() => _stack;
+
+        public async UniTask Push(IViewComponent component)
+        {
+            if (component is not MonoBehaviour behaviour)
+            {
+                Log.Error("Unexpected typed - I can't work with non-concept-view component!");
+                return;
+            }
+
+            if (!behaviour.TryGetComponent<INonebView>(out var view))
+            {
+                Log.Error("Behaviour View can't work without a INonebView in the sibling components!");
+                return;
+            }
+
+            await Push(view);
+        }
 
         public async UniTask Push(INonebView nextView)
         {
