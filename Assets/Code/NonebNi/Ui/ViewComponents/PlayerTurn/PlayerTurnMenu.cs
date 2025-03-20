@@ -28,6 +28,10 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private UnitActionPanel actionPanel = null!;
         [SerializeField] private UnitActOrderPanel orderPanel = null!;
         [SerializeField] private UnitDetailsPanel detailsPanel = null!;
+
+        //TODO: at some point this might go somewhere but I am not too fuzzed about a testing UI
+        [SerializeField] private Button endTurnButton = null!;
+
         private ICameraController _cameraController = null!;
         private CancellationTokenSource? _executeActionFlowCts;
 
@@ -95,17 +99,10 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             if (_presenter.SelectedAction == null) return;
 
             var input = await _worldSpaceInputControl.GetInputForAction(_presenter.InspectingUnit, _presenter.SelectedAction, ct);
-            _presenter.MakeDecision(input);
+            _presenter.MakeActionDecision(input);
             //todo: do something with that input mate.
         }
 
         //TODO: work out the inject process with strong ioc.
-        public void Inject(IPlayerTurnPresenter presenter, IPlayerTurnWorldSpaceInputControl worldSpaceInputControl, ICameraController cameraController)
-        {
-            _presenter = presenter;
-            _stack = new UIStack(subStackRoot);
-            _worldSpaceInputControl = worldSpaceInputControl;
-            _cameraController = cameraController;
-        }
     }
 }

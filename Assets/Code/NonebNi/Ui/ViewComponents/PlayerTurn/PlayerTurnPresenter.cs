@@ -19,7 +19,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         NonebAction? SelectedAction { get; }
         UniTask EnterView();
         Vector3 FindUnitPosition(UnitData unit);
-        void MakeDecision(IEnumerable<Coordinate> coordinates);
+        void MakeActionDecision(IEnumerable<Coordinate> coordinates);
+        void EndTurn();
     }
 
     public class PlayerTurnPresenter : IPlayerTurnPresenter
@@ -67,7 +68,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             );
         }
 
-        public void MakeDecision(IEnumerable<Coordinate> coordinates)
+        public void MakeActionDecision(IEnumerable<Coordinate> coordinates)
         {
             if (SelectedAction == null)
             {
@@ -78,6 +79,11 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             var decision = new ActionDecision(SelectedAction, InspectingUnit, coordinates);
             _agent.SetDecision(decision);
             //todo: need to transition into another state menu but we can do that later.
+        }
+
+        public void EndTurn()
+        {
+            _agent.SetDecision(EndTurnDecision.Instance);
         }
 
         public Vector3 FindUnitPosition(UnitData unit)
