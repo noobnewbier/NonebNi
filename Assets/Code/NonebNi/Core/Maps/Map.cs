@@ -24,6 +24,7 @@ namespace NonebNi.Core.Maps
         IEnumerable<Coordinate> GetAllCoordinates();
         bool IsCoordinateWithinMap(Coordinate coordinate);
         IEnumerable<UnitData> GetAllUnits();
+        Coordinate Find(EntityData entityData);
     }
 
     public enum MoveResult
@@ -41,7 +42,6 @@ namespace NonebNi.Core.Maps
         void Put(Coordinate axialCoordinate, EntityData value);
         bool Remove<T>(T entityData) where T : EntityData;
         MoveResult Move<T>(Coordinate startCoord, Coordinate targetCoord) where T : EntityData;
-        Coordinate Find(EntityData entityData);
     }
 
     /// <summary>
