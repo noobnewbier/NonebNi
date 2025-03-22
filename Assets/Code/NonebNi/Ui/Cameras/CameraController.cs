@@ -10,7 +10,7 @@ namespace NonebNi.Ui.Cameras
         void LookAt(Vector3 position);
         void UpdateCamera();
     }
-//TODO:don't know how I fucked it up, but it's fucked
+    //todo: need to write gizmos drawer to aid testing debuging long term...
 
     /// <summary>
     /// Note:
@@ -45,10 +45,10 @@ namespace NonebNi.Ui.Cameras
             set => _camera.Target.TrackingTarget.transform.position = value;
         }
 
-        private float DownBound => Mathf.Sign(_config.UpBound) * _config.Setting.BufferToClampingEdge;
-        private float UpBound => Mathf.Sign(_config.DownBound) * _config.Setting.BufferToClampingEdge;
-        private float RightBound => Mathf.Sign(_config.RightBound) * _config.Setting.BufferToClampingEdge;
-        private float LeftBound => Mathf.Sign(_config.LeftBound) * _config.Setting.BufferToClampingEdge;
+        private float UpBound => _config.UpBound - Mathf.Sign(_config.UpBound) * _config.Setting.BufferToClampingEdge;
+        private float DownBound => _config.DownBound - Mathf.Sign(_config.DownBound) * _config.Setting.BufferToClampingEdge;
+        private float RightBound => _config.RightBound - Mathf.Sign(_config.RightBound) * _config.Setting.BufferToClampingEdge;
+        private float LeftBound => _config.LeftBound - Mathf.Sign(_config.LeftBound) * _config.Setting.BufferToClampingEdge;
 
         public void LookAt(Vector3 position)
         {
