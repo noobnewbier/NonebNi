@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityUtils;
 using UnityUtils.Editor;
 
 namespace NonebNi.CustomInspector
 {
     public class NonebGUIDrawer
     {
+        private readonly Dictionary<string, AutoCompleteField> _autoCompleteFieldsCache = new();
         private readonly Dictionary<string, bool> _foldoutStates = new();
         private readonly Dictionary<SerializedProperty, Dictionary<string, SerializedProperty?>> _nestedPropertyCache = new();
         private readonly Dictionary<string, SerializedProperty?> _propertyCache = new();
+        private readonly Dictionary<string, ReorderableList> _reorderableListCache = new();
         private readonly SerializedObject _serializedObject;
 
         public NonebGUIDrawer(SerializedObject serializedObject)
@@ -29,6 +34,83 @@ namespace NonebNi.CustomInspector
 
             if (string.IsNullOrEmpty(label)) label = property.displayName;
             EditorGUILayout.PropertyField(property, new GUIContent(label));
+        }
+
+        public void DrawAutoCompleteProperty(string propertyPath, Func<IEnumerable<string>> autoCompleteOptionsFactory, string label = "")
+        {
+            var property = GetOrFindProperty(propertyPath);
+            if (property == null)
+            {
+                DrawError($"Cannot find property with name == {propertyPath}");
+                return;
+            }
+
+            var editedType = property.GetTargetType();
+            if (editedType == null)
+            {
+                DrawError($"I have no idea what is a {propertyPath}");
+                return;
+            }
+
+            if (editedType != typeof(string) && editedType.GetTypeWithinCollection() != typeof(string))
+            {
+                DrawError($"We can only work with strings here! And {propertyPath} a {editedType}");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(label)) label = property.displayName;
+            if (editedType.IsArray || editedType.IsUnitySupportedCollection())
+            {
+                if (!_reorderableListCache.TryGetValue(propertyPath, out var reorderableList))
+                {
+                    _reorderableListCache[propertyPath] = reorderableList = new ReorderableList(property.serializedObject, property, true, false, true, true);
+                    reorderableList.drawElementCallback = (rect, index, _, _) =>
+                    {
+                        var subElementPath = property.GetArrayElementAtIndex(index);
+                        if (subElementPath.propertyPath == null)
+                        {
+                            DrawError(rect, $"Cannot find element at index == {index}");
+                            return;
+                        }
+
+                        var subAutoCompleteField = GetOrCreateAutoCompleteField(subElementPath.propertyPath, autoCompleteOptionsFactory);
+                        subAutoCompleteField.OnGUI(rect, false);
+                    };
+                    reorderableList.elementHeight = EditorGUIUtility.singleLineHeight;
+                }
+
+                // property.isExpanded = EditorGUILayout.Foldout(property.isExpanded, label, EditorStyles.foldoutHeader);
+                DrawListFoldoutHeader(property, label);
+                if (property.isExpanded) reorderableList.DoLayoutList();
+
+                return;
+            }
+
+            var autoCompleteField = GetOrCreateAutoCompleteField(propertyPath, autoCompleteOptionsFactory);
+            autoCompleteField.OnGUI();
+        }
+
+        private AutoCompleteField GetOrCreateAutoCompleteField(string propertyPath, Func<IEnumerable<string>> autoCompleteOptionsFactory)
+        {
+            var property = GetOrFindProperty(propertyPath);
+            if (property == null)
+            {
+                const string errorFieldKey = ",InvalidPropertyPath,";
+                if (!_autoCompleteFieldsCache.TryGetValue(errorFieldKey, out var errorField))
+                    _autoCompleteFieldsCache[errorFieldKey] = errorField = new AutoCompleteField(
+                        null,
+                        null,
+                        () => Array.Empty<string>(),
+                        "ERROR_NO_PROPERTY",
+                        "cannot find property - should neve get here!"
+                    );
+
+                return errorField;
+            }
+
+            if (!_autoCompleteFieldsCache.TryGetValue(propertyPath, out var autoCompleteField)) _autoCompleteFieldsCache[propertyPath] = autoCompleteField = new AutoCompleteField(property, autoCompleteOptionsFactory);
+
+            return autoCompleteField;
         }
 
         public void DrawNestedProperty(string pathToObj, string relativePathToField, string label = "")
@@ -183,5 +265,55 @@ namespace NonebNi.CustomInspector
         public bool Update() => _serializedObject.UpdateIfRequiredOrScript();
 
         public bool Apply() => _serializedObject.ApplyModifiedProperties();
+
+        public void DrawListFoldoutHeader(SerializedProperty listProperty, string label)
+        {
+            //Copying from https://github.com/Unity-Technologies/UnityCsReference/blob/b1cf2a8251cce56190f455419eaa5513d5c8f609/Editor/Mono/Inspector/ReorderableListWrapper.cs#L209, with some tweaks to make everything compiles
+            const float headerPadding = 3f; // todo: maybe handle this as well if not too hassle
+            const float arraySizeWidth = 48f;
+            const float defaultFoldoutHeaderHeight = 18;
+
+            var style = EditorStyles.foldoutHeader;
+            var content = new GUIContent(label);
+
+            var rect = GUILayoutUtility.GetRect(content, style);
+            var headerRect = new Rect(rect.x, rect.y, rect.width - arraySizeWidth, defaultFoldoutHeaderHeight);
+            var sizeRect = new Rect(
+                headerRect.xMax - Indent * EditorGUI.indentLevel,
+                headerRect.y,
+                arraySizeWidth + Indent * EditorGUI.indentLevel,
+                defaultFoldoutHeaderHeight
+            );
+
+            if (!listProperty.isArray) DrawError(rect, "This is not even a list, wtf are you doing");
+
+            listProperty.isExpanded = EditorGUI.BeginFoldoutHeaderGroup(headerRect, listProperty.isExpanded, label);
+            EditorGUI.EndFoldoutHeaderGroup();
+            var sizeProperty = GetOrFindProperty(listProperty, "Array.size");
+            EditorGUI.PropertyField(sizeRect, sizeProperty, GUIContent.none);
+        }
+
+        #region Indent
+
+        private static readonly Lazy<PropertyInfo> IndentMethod = new(
+            () =>
+            {
+                var method = typeof(EditorGUI).GetProperty("indent", BindingFlags.Static | BindingFlags.NonPublic);
+                return method!;
+            }
+        );
+
+        public static int Indent
+        {
+            get
+            {
+                var getValue = IndentMethod.Value.GetValue(null);
+                if (getValue is not int indent) return EditorGUI.indentLevel * 15;
+
+                return indent;
+            }
+        }
+
+        #endregion
     }
 }
