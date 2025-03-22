@@ -146,6 +146,11 @@ namespace NonebNi.CustomInspector
             GUILayout.Label(errorText, NonebGUIStyle.Error);
         }
 
+        public void DrawError(Rect rect, string errorText)
+        {
+            GUI.Label(rect, errorText, NonebGUIStyle.Error);
+        }
+
         public void DrawHeader(string headerText)
         {
             // The inconsistent use of editor styles here feels weird
