@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Stats;
@@ -33,7 +35,7 @@ namespace NonebNi.Core.Units
 
         public UnitData(
             Guid guid,
-            NonebAction[] actions,
+            IReadOnlyCollection<NonebAction> actions,
             Sprite icon,
             string name,
             string factionId,
@@ -49,7 +51,7 @@ namespace NonebNi.Core.Units
             int maxFatigue) : base(name, guid, factionId)
         {
             this.icon = icon;
-            this.actions = actions;
+            this.actions = actions.ToArray();
 
             Stats.CreateStat("health", health, 0, maxHealth);
             Stats.CreateStat("initiative", initiative, 0, 100);

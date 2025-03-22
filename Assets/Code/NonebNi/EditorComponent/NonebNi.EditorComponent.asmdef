@@ -1,20 +1,24 @@
 {
-  "name": "NonebNi.EditorComponent",
-  "rootNamespace": "",
-  "references": [
-    "GUID:8c9f0f875c743b643bbea480a5e687c3",
-    "GUID:893a62e173c68f6478bfef27032343b1",
-    "GUID:acf43146c4364d2419bdbdeac67deb96",
-    "GUID:22f72075764e7f3429d2e98109cc90bc",
-    "GUID:0bb59190ac26341428311711f2ce1fd3"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "NonebNi.EditorComponent",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8c9f0f875c743b643bbea480a5e687c3",
+        "GUID:893a62e173c68f6478bfef27032343b1",
+        "GUID:acf43146c4364d2419bdbdeac67deb96",
+        "GUID:22f72075764e7f3429d2e98109cc90bc",
+        "GUID:0bb59190ac26341428311711f2ce1fd3",
+        "GUID:f346463ed5d00f040b5da3e48ec437e9",
+        "GUID:fd228c28e14f1a34cbe508676c914dd7",
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:e0cd26848372d4e5c891c569017e11f1"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
