@@ -1,4 +1,5 @@
-﻿using NonebNi.Core.Effects;
+﻿using System.Linq;
+using NonebNi.Core.Effects;
 using UnityEngine;
 using static NonebNi.Core.Actions.TargetArea;
 using static NonebNi.Core.Actions.TargetRestriction;
@@ -177,5 +178,10 @@ namespace NonebNi.Core.Actions
             Vault,
             Rotate
         };
+
+        public static NonebAction? Find(string id)
+        {
+            return Actions.FirstOrDefault(a => a.Id == id);
+        }
     }
 }
