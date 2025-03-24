@@ -5,6 +5,7 @@ using Noneb.UI.InputSystems;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
@@ -45,6 +46,7 @@ namespace NonebNi.Develop
             _highlighter = new HexHighlighter(_coordService, highlightConfig, terrainConfig);
             _actionBuffer = new CircularBuffer<NonebAction>(ActionDatas.Lure, ActionDatas.Shoot, ActionDatas.Bash);
             var targetFinder = new TargetFinder(_map);
+            var pathFindingService = new PathfindingService(_map);
 
             _unitData = TestScriptHelpers.CreateUnit("TestPlayer", "player");
             var unitCoord = _coordService.NearestCoordinateForPoint(fakeUnitObj.transform.position);
@@ -54,7 +56,7 @@ namespace NonebNi.Develop
             var enemyCoord = _coordService.NearestCoordinateForPoint(fakeEnemyObj.transform.position);
             _map.Put(enemyCoord, enemy);
 
-            _control = new PlayerTurnWorldSpaceInputControl(inputSystem, _coordService, terrainConfig, viewCamera, _map, _highlighter, targetFinder);
+            _control = new PlayerTurnWorldSpaceInputControl(inputSystem, _coordService, terrainConfig, viewCamera, _map, _highlighter, targetFinder, pathFindingService);
         }
 
         private void OnGUI()
@@ -68,6 +70,9 @@ namespace NonebNi.Develop
             }
 
             if (GUI.Button(rect, "Use TileInspection")) TestHighlightFlow();
+            rect.y += 25;
+
+            if (GUI.Button(rect, "Use Movement")) TestMovementFlow();
             rect.y += 25;
 
             if (GUI.Button(rect, "Use TargetSelection")) TestInputFlow();
@@ -110,6 +115,12 @@ namespace NonebNi.Develop
         {
             _testInputs = null;
             _control.ToTileInspectionMode();
+        }
+
+        private void TestMovementFlow()
+        {
+            _testInputs = null;
+            _control.ToMovementMode(_unitData);
         }
 
         private void TestInputFlow()

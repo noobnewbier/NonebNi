@@ -41,7 +41,17 @@ namespace NonebNi.Develop
             if (GUI.Button(rect, "LookAt 2")) _cameraController.LookAt(lookAtObj2.transform.position);
         }
 
-        #region Camera Initialization
+        private void OnDrawGizmos()
+        {
+            //Too lazy to do this properly but if we need to change this more than 3 times we will refactor: current count=0
+            using (new NonebEditorUtils.HandlesColorScope(Color.red))
+            {
+                // with our approach the y-size doesn't mean much does it...?
+                var size = mapRadius * 2 - setting.BufferToClampingEdge * 2;
+                var cubeSize = new Vector3(size, 1, size);
+                Handles.DrawWireCube(Vector3.up * cubeSize.y * .5f, cubeSize);
+            }
+        }
 
         private (float upBound, float downBound, float rightBound, float leftBound) GetCameraParameters()
         {
@@ -57,19 +67,5 @@ namespace NonebNi.Develop
                 leftBound: mapMinWidth
             );
         }
-
-        private void OnDrawGizmos()
-        {
-            //Too lazy to do this properly but if we need to change this more than 3 times we will refactor: current count=0
-            using (new NonebEditorUtils.HandlesColorScope(Color.red))
-            {
-                // with our approach the y-size doesn't mean much does it...?
-                var size = mapRadius * 2 - setting.BufferToClampingEdge * 2;
-                var cubeSize = new Vector3(size, 1, size);
-                Handles.DrawWireCube(Vector3.up * cubeSize.y * .5f, cubeSize);
-            }
-        }
-
-        #endregion
     }
 }

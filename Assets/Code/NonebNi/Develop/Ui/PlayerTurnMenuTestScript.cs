@@ -58,7 +58,7 @@ namespace NonebNi.Develop
             var presenter = new PlayerTurnPresenter(menu, orderer, new CoordinateAndPositionService(terrainConfigData), map, playerAgent);
             _control = new MockInputControl();
             var cameraController = new MockCameraController();
-            menu.Inject(presenter, _control, cameraController);
+            menu.Init(presenter, _control, cameraController);
 
             _stack = new UIStack(stackRoot);
             await _stack.Push(view);
@@ -115,6 +115,11 @@ namespace NonebNi.Develop
         {
             public string mode;
             public Coordinate? FindHoveredCoordinate() => null;
+
+            public void ToMovementMode(UnitData mover)
+            {
+                mode = "movement";
+            }
 
             public UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default)
             {
@@ -205,6 +210,7 @@ namespace NonebNi.Develop
             public bool IsCoordinateWithinMap(Coordinate coordinate) => coordinate.X < _width && coordinate.Y < _height && coordinate is { X: >= 0, Y: >= 0 };
 
             public IEnumerable<UnitData> GetAllUnits() => _fakeReversedMap.Keys.OfType<UnitData>();
+            public Coordinate Find(EntityData entityData) => Coordinate.Zero;
         }
     }
 }
