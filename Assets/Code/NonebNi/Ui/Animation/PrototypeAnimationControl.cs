@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.UI.Animation;
+using Noneb.UI.Animation.Attributes;
 using NonebNi.Ui.Animation.Sequence;
-using NonebNi.Ui.Common;
-using NonebNi.Ui.Common.Attributes;
 using UnityEngine;
 
 namespace NonebNi.Ui.Animation
@@ -18,11 +18,11 @@ namespace NonebNi.Ui.Animation
     {
         [SerializeField] private Animator animator = null!;
 
-        [AnimatorParameter(nameof(animator), AnimatorControllerParameterType.Trigger), SerializeField]  private string triggerName = null!;
+        [AnimatorParameter(nameof(animator), AnimatorControllerParameterType.Trigger), SerializeField] private string triggerName = null!;
 
-        [AnimatorState(nameof(animator), nameof(finishAnimLayerIndex)), SerializeField]  private string finishAnimState = null!;
+        [AnimatorState(nameof(animator), nameof(finishAnimLayerIndex)), SerializeField] private string finishAnimState = null!;
 
-        [AnimatorLayer(nameof(animator)), SerializeField]  private int finishAnimLayerIndex;
+        [AnimatorLayer(nameof(animator)), SerializeField] private int finishAnimLayerIndex;
 
         public UniTask Play(DieAnimSequence sequence, CancellationToken ct = default)
         {

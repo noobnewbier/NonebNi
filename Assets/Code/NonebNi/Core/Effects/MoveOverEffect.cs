@@ -15,7 +15,7 @@ namespace NonebNi.Core.Effects
                 MoveOverEffect effect,
                 EffectContext context)
             {
-                if (context.Targets.FirstOrDefault() is not Coordinate targetCoord)
+                if (context.TargetGroups.FirstOrDefault()?.AsSingleTarget is not Coordinate targetCoord)
                 {
                     Log.Error($"{nameof(MoveOverEffect)} without a coordinate parameter makes no sense!");
                     yield break;

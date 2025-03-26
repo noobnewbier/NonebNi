@@ -1,23 +1,24 @@
 {
-  "name": "Noneb.EditorConsole",
-  "rootNamespace": "",
-  "references": [
-    "GUID:acf43146c4364d2419bdbdeac67deb96",
-    "GUID:22f72075764e7f3429d2e98109cc90bc",
-    "GUID:8c9f0f875c743b643bbea480a5e687c3",
-    "GUID:343422f337925dd429af874be3f97ffe",
-    "GUID:0ae711f948db9e34e873f3de5ca41309",
-    "GUID:f51ebe6a0ceec4240a699833d6309b23"
-  ],
-  "includePlatforms": [
-    "Editor"
-  ],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "Noneb.EditorConsole",
+    "rootNamespace": "",
+    "references": [
+        "GUID:acf43146c4364d2419bdbdeac67deb96",
+        "GUID:22f72075764e7f3429d2e98109cc90bc",
+        "GUID:8c9f0f875c743b643bbea480a5e687c3",
+        "GUID:343422f337925dd429af874be3f97ffe",
+        "GUID:0ae711f948db9e34e873f3de5ca41309",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:0bb59190ac26341428311711f2ce1fd3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -15,7 +15,7 @@ namespace NonebNi.LevelEditor.Inspectors
         {
             TryInitLevelInspector();
 
-            NonebUpdatableSystem.Update += OnUpdate;
+            NonebEditorUpdatableSystem.Update += OnUpdate;
             SceneManager.activeSceneChanged += OnActiveSceneChanged;
         }
 

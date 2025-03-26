@@ -124,6 +124,15 @@ namespace NonebNi.LevelEditor.Level.Maps
                     yield return unitData.ToTypedEntityData();
         }
 
+        public Coordinate Find(EntityData entityData)
+        {
+            IReadOnlyMap typedSelf = this;
+            if (!typedSelf.TryFind(entityData, out Coordinate coordinate))
+                throw new InvalidOperationException($"{entityData.Name} does not exist on the map!");
+
+            return coordinate;
+        }
+
         public bool IsOccupied(Coordinate axialCoordinate)
         {
             var node = GetNodeFromCoordinate(axialCoordinate);
@@ -303,7 +312,7 @@ namespace NonebNi.LevelEditor.Level.Maps
         {
             var storageCoord = StorageCoordinate.FromAxial(coordinate);
 
-            return storageCoord.X < width && storageCoord.Z < height && storageCoord.X >= 0 && storageCoord.Z >= 0;
+            return storageCoord.X < width && storageCoord.Z < height && storageCoord is { X: >= 0, Z: >= 0 };
         }
 
         private EditorNode GetNodeFromCoordinate(Coordinate coordinate)

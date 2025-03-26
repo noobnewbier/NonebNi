@@ -94,11 +94,11 @@ namespace NonebNi.EditorConsole
                     }
 
                     UnitData? unit;
-                    if (!actionConsoleCommand.ActorCoord.HasValue)
+                    if (actionConsoleCommand.ActorCoord == null)
                     {
                         unit = _turnOrderer.CurrentUnit;
                     }
-                    else if (!_readOnlyMap.TryGet(actionConsoleCommand.ActorCoord.Value, out unit))
+                    else if (!_readOnlyMap.TryGet(actionConsoleCommand.ActorCoord, out unit))
                     {
                         break;
                     }

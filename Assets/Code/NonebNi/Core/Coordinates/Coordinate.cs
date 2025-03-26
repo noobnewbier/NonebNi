@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Maps;
 using Unity.Logging;
@@ -13,8 +14,9 @@ namespace NonebNi.Core.Coordinates
     ///     2. FlatCoordinate refers to the (x, z) value in a packed(without empty padding values) 2d array
     /// </summary>
     [Serializable]
-    public struct Coordinate : IActionTarget, IEquatable<Coordinate>
+    public record Coordinate : IActionTarget
     {
+        public static readonly Coordinate Zero = new(0, 0);
         [SerializeField] private int x;
         [SerializeField] private int z;
 
@@ -23,6 +25,8 @@ namespace NonebNi.Core.Coordinates
             this.x = x;
             this.z = z;
         }
+
+        public Coordinate() { }
 
         public int X => x;
 
@@ -40,17 +44,9 @@ namespace NonebNi.Core.Coordinates
             this + HexDirection.SouthWest
         };
 
-        public bool Equals(Coordinate other) => X == other.X && Z == other.Z;
+        public Coordinate RotateRight() => new(-Y, -x);
 
-        public Coordinate RotateRight()
-        {
-            return new Coordinate(-Y, -x);
-        }
-
-        public Coordinate RotateLeft()
-        {
-            return new Coordinate(-z, -Y);
-        }
+        public Coordinate RotateLeft() => new(-z, -Y);
 
         public Coordinate Normalized()
         {
@@ -75,6 +71,24 @@ namespace NonebNi.Core.Coordinates
                 2f;
 
             return (int)distance;
+        }
+
+        /// <summary>
+        /// I will be honest, I don't know what I am writing but just transcribed the following.
+        /// I mean, it looks like it's going to be correct, so I'll leave it at that.
+        /// https://www.redblobgames.com/grids/hexagons/#range-coordinate
+        /// </summary>
+        public IEnumerable<Coordinate> WithinDistance(int distance)
+        {
+            var xInRangeStart = -distance;
+            var xInRangeEnd = +distance;
+
+            for (var inRangeX = xInRangeStart; inRangeX <= xInRangeEnd; inRangeX++)
+            {
+                var zInRangeStart = Mathf.Max(-distance, -inRangeX - distance);
+                var zInRangeEnd = Mathf.Min(+distance, -inRangeX + distance);
+                for (var inRangeZ = zInRangeStart; inRangeZ <= zInRangeEnd; inRangeZ++) yield return this + (inRangeX, inRangeZ);
+            }
         }
 
         public bool IsOnSameLineWith(Coordinate coordinate) =>
@@ -117,8 +131,6 @@ namespace NonebNi.Core.Coordinates
             }
         }
 
-        public override bool Equals(object? obj) => obj is Coordinate other && Equals(other);
-
         public override int GetHashCode()
         {
             unchecked
@@ -132,11 +144,15 @@ namespace NonebNi.Core.Coordinates
         public static Coordinate operator +(Coordinate a, Coordinate b) => new(a.X + b.X, a.Z + b.Z);
         public static Coordinate operator -(Coordinate a, Coordinate b) => new(a.X - b.X, a.Z - b.Z);
         public static Coordinate operator *(Coordinate a, int i) => new(a.X * i, a.Z * i);
-
-        public static bool operator ==(Coordinate a, Coordinate b) => a.Equals(b);
-
-        public static bool operator !=(Coordinate a, Coordinate b) => !(a == b);
-
         public static Coordinate operator -(Coordinate c) => new(-c.X, -c.Z);
+
+        [PublicAPI]
+        public void Deconstruct(out int outX, out int outZ)
+        {
+            outX = x;
+            outZ = z;
+        }
+
+        public static implicit operator Coordinate((int x, int z) tuple) => new(tuple.x, tuple.z);
     }
 }

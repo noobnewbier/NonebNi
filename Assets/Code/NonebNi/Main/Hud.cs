@@ -1,20 +1,24 @@
-﻿using NonebNi.Core.Agents;
-using NonebNi.Core.Level;
-using NonebNi.Ui.Huds;
+﻿using Cysharp.Threading.Tasks;
+using Noneb.UI.View;
+using NonebNi.Ui.Cameras;
+using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace NonebNi.Main
 {
     public class Hud : MonoBehaviour
     {
-        [FormerlySerializedAs("levelNameView")] [SerializeField]
-        private PrototypeView prototypeView = null!;
+        [SerializeField] private PlayerTurnMenu playerTurnMenu = null!;
 
+        private UIStack _stack = null!;
 
-        public void Init(LevelData levelData, IPlayerAgent playerAgent)
+        public void Init(IPlayerTurnPresenter playerTurnPresenter, IPlayerTurnWorldSpaceInputControl worldSpaceInputControl, ICameraController cameraController)
         {
-            prototypeView.Init(levelData, playerAgent);
+            _stack = new UIStack(gameObject);
+            playerTurnMenu.Init(playerTurnPresenter, worldSpaceInputControl, cameraController);
+
+            //todo: need to await
+            _stack.Push(playerTurnMenu).Forget();
         }
     }
 }

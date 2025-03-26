@@ -75,22 +75,21 @@ namespace NonebNi.Core.Decisions
         private bool IsValidActionDecision(ActionDecision ad)
         {
             var action = ad.Action;
-            var restrictions = action.TargetRestrictions;
+            var requirements = action.TargetRequests;
             var targetCoords = ad.TargetCoords;
 
             //targeted coordinates length must match restrictions length - otherwise we couldn't construct a valid command.
-            if (targetCoords.Length != restrictions.Length) return false;
-
-            //So do the range's length!
-            var ranges = action.Ranges;
-            if (targetCoords.Length != ranges.Length) return false;
+            //each targeted coordinate is validated against the restriction in the same index, so C0 -> R0, C1 -> R1 etc.
+            //this is why the length must match, otherwise it doesn't make sense.
+            //Before you ask, this is an arbitrary decision past you made, and another past you deduced, if you don't like it, well invent time machine.
+            if (targetCoords.Length != requirements.Length) return false;
 
             //if actor is not on the map -> wtf are you doing.
             var actor = ad.ActorEntity;
             if (!_map.TryFind(actor, out Coordinate actorCoord)) return false;
 
             //if any of the target coords is out of range -> this is invalid.
-            var rangeLimitations = ranges.Select(r => r.CalculateRange(actor)).ToArray();
+            var rangeLimitations = requirements.Select(r => r.Range.CalculateRange(actor)).ToArray();
             for (var i = 0; i < rangeLimitations.Length; i++)
             {
                 var targetCoord = targetCoords[i];
@@ -103,8 +102,8 @@ namespace NonebNi.Core.Decisions
             for (var i = 0; i < targetCoords.Length; i++)
             {
                 var coord = targetCoords[i];
-                var restriction = restrictions[i];
-                var validTargets = _targetFinder.FindTargets(actor, coord, action.TargetArea, restriction)
+                var requirement = requirements[i];
+                var validTargets = _targetFinder.FindTargets(actor, coord, requirement.TargetArea, requirement.TargetRestrictionFlags)
                     .ToArray();
 
                 if (!validTargets.Any()) return false;

@@ -17,8 +17,8 @@ namespace NonebNi.Terrain
 
         public Vector3 MapStartingPosition => mapStartingPosition;
         public float InnerRadius => innerRadius;
+        public float OuterRadius => HexMaths.ToOuterRadius(InnerRadius);
 
-        // 0.866025 -> sqrt(3) / 2, read https://catlikecoding.com/unity/tutorials/hex-map/part-1/, session "about hexagons" for details
-        public float OuterRadius => InnerRadius / 0.86602540378f;
+        public Plane GridPlane => new(Vector3.up, mapStartingPosition);
     }
 }

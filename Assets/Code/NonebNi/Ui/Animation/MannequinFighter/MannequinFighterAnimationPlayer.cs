@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.UI.Animation;
 using NonebNi.Ui.Animation.Common;
 using NonebNi.Ui.Animation.Sequence;
 using Unity.Logging;

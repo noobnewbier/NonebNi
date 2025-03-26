@@ -9,9 +9,11 @@ namespace NonebNi.Core.FlowControl
     public interface IUnitTurnOrderer
     {
         UnitData CurrentUnit { get; }
+        IEnumerable<UnitData> UnitsInOrder { get; }
         UnitData ToNextUnit();
     }
 
+    //TODO: the current initiative implementation isn't actually what GDD says but this might not be a bad thing, let's think about that later.
     /// <summary>
     ///     Initiative base, all units must have took one turn before others can go again
     /// </summary>
@@ -35,6 +37,8 @@ namespace NonebNi.Core.FlowControl
         }
 
         public UnitData CurrentUnit { get; private set; }
+
+        public IEnumerable<UnitData> UnitsInOrder => _unitInOrder;
 
         public UnitData ToNextUnit()
         {

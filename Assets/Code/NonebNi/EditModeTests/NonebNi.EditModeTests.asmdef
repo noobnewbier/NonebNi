@@ -1,0 +1,28 @@
+{
+  "name": "NonebNi.EditModeTests",
+  "rootNamespace": "",
+  "references": [
+    "GUID:27619889b8ba8c24980f49ee34dbb44a",
+    "GUID:0acc523941302664db1f4e527237feb3",
+    "GUID:8c9f0f875c743b643bbea480a5e687c3",
+    "GUID:fd228c28e14f1a34cbe508676c914dd7",
+    "GUID:2665a8d13d1b3f18800f46e256720795",
+    "GUID:e0cd26848372d4e5c891c569017e11f1"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Moq.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

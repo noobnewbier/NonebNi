@@ -39,3 +39,16 @@ Configuration of potentially complicated components are validated at design time
 
 Animator's parameters and layers are often prone to typos - so I created some handy inspector for them to make life easier for everyone
 
+## Demo - Auto Complete Fields
+> Search engine shouldn't be the only one auto completing for you
+
+![](./ReadMe/auto-complete-field.gif)
+
+No one wants to type out data reference manually, it's just way too tedious! So I made it simple to draw auto complete fields in the editor.
+
+## Demo - Serializable Dictionary
+> Dictionary in UnityEngine.Object isn't editable by default, so I make sure I can at least work around it.
+
+![](./ReadMe/serializable-dictionary.png)
+
+One day Dictionary would be supported by Unity out of the box, for now I use `SerializableDictionary` to side step this limitation.

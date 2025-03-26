@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.UI.Animation;
 using UnityEngine;
 
 namespace NonebNi.Ui.Animation.Common

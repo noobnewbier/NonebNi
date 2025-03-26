@@ -3,27 +3,17 @@ using UnityEngine;
 
 namespace NonebNi.Core.Units.Skills
 {
-    [Serializable]
-    [Obsolete("Replaced by action")]
+    [Serializable, Obsolete("Replaced by action")]
+    //TODO: maybe not - make it ui only? sounds like a horrible idea let's not do that.
     public class SkillData
     {
-        [SerializeField] private string name;
-        [SerializeField] private int cooldown;
-        [SerializeField] private Sprite icon;
+        [field: SerializeField] public string ActionId { get; private set; }
+        [field: SerializeField] public Sprite Icon { get; private set; }
 
-        public SkillData(string name, int cooldown, Sprite icon)
+        public SkillData(string actionId, Sprite icon)
         {
-            this.name = name;
-            this.cooldown = cooldown;
-            this.icon = icon;
+            ActionId = actionId;
+            Icon = icon;
         }
-
-        public string Name => name;
-
-        public int Cooldown => cooldown;
-
-        public Sprite Icon => icon;
-
-        public int TurnsBeforeAvailable { get; private set; }
     }
 }

@@ -25,7 +25,7 @@ namespace NonebNi.Core.Effects
                 MoveEffect effect,
                 EffectContext context)
             {
-                var targetParam = context.Targets.FirstOrDefault();
+                var targetParam = context.TargetGroups.FirstOrDefault()?.Targets.FirstOrDefault();
                 if (targetParam == null)
                 {
                     Log.Error("Move effect without any target makes no sense!");

@@ -17,10 +17,8 @@ namespace NonebNi.EditorConsole.Commands
         public readonly Coordinate TargetPos;
 
         public TeleportConsoleCommand(
-            [CommandParam("The position of the targeted unit")]
-            Coordinate startPos,
-            [CommandParam("The target position of the unit after teleporting")]
-            Coordinate targetPos)
+            [CommandParam("The position of the targeted unit")] Coordinate startPos,
+            [CommandParam("The target position of the unit after teleporting")] Coordinate targetPos)
         {
             StartPos = startPos;
             TargetPos = targetPos;
@@ -30,11 +28,11 @@ namespace NonebNi.EditorConsole.Commands
         {
             return new NonebAction(
                 "debug-teleport",
-                10000,
-                new[] { TargetRestriction.NonOccupied },
-                TargetArea.Single,
                 0,
-                new Effect[] { new MoveEffect() }
+                10000,
+                TargetArea.Single,
+                TargetRestriction.NonOccupied,
+                new MoveEffect()
             );
         }
     }

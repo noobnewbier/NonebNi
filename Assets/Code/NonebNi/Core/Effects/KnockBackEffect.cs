@@ -31,7 +31,7 @@ namespace NonebNi.Core.Effects
                     yield break;
                 }
 
-                foreach (var target in context.Targets)
+                foreach (var target in context.TargetGroups.SelectMany(g => g.Targets))
                 {
                     if (target is not EntityData targetEntity)
                     {

@@ -16,7 +16,7 @@ namespace NonebNi.Core.Effects
                 PullEntityEffect effect,
                 EffectContext context)
             {
-                var targetParam = context.Targets.FirstOrDefault();
+                var targetParam = context.TargetGroups.FirstOrDefault()?.AsSingleTarget;
                 if (targetParam is not EntityData targetEntity)
                 {
                     Log.Error($"{nameof(PullEntityEffect)} without an Entity parameter makes no sense!");

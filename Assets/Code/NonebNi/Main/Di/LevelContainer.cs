@@ -6,51 +6,63 @@ using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
-using NonebNi.Ui.Statistics.Unit;
+using NonebNi.Ui.Grids;
+using NonebNi.Ui.ViewComponents.PlayerTurn;
 using StrongInject;
+using Unity.Cinemachine;
 using UnityEngine;
 
 namespace NonebNi.Main.Di
 {
     [RegisterModule(typeof(AgentsModule))]
-    [RegisterModule(typeof(CameraControlViewModule))]
+    [RegisterModule(typeof(CameraControllerModule))]
     [RegisterModule(typeof(CoordinateAndPositionServiceModule))]
     [RegisterModule(typeof(LevelFlowControlModule))]
+    [RegisterModule(typeof(UIModule))]
     [Register(typeof(LevelUi), typeof(ILevelUi))]
     [Register(typeof(TerrainMeshCreator), typeof(ITerrainMeshCreator))]
     public partial class LevelContainer : IContainer<ILevelUi>, IContainer<ILevelFlowController>
     {
         [Instance] private readonly IAgent[] _agents;
-        [Instance] private readonly CameraControl _cameraControl;
-        [Instance] private readonly CameraConfig _config;
+        [Instance] private readonly CinemachineCamera _camera;
+        [Instance] private readonly CameraRunner _cameraControl;
+        [Instance] private readonly CinemachinePositionComposer _composer;
+        [Instance] private readonly CameraControlSetting _config;
+        [Instance] private readonly HexHighlightConfig _hexHighlightConfig;
         [Instance] private readonly Hud _hud;
+        [Instance] private readonly Camera _levelCamera; //todo: feels like it shouldn't be here
         [Instance] private readonly LevelData _levelData;
-        [Instance] private readonly Camera _targetCamera;
+        [Instance] private readonly IPlayerTurnMenu _playerTurnMenu;
         [Instance] private readonly Terrain _terrain;
         [Instance] private readonly TerrainConfigData _terrainConfig;
         [Instance] private readonly TerrainMeshData _terrainMeshData;
-        [Instance] private readonly UnitDetailStat _unitDetailStat;
 
         public LevelContainer(
-            CameraConfig config,
-            Camera targetCamera,
+            CameraControlSetting config,
+            CameraRunner cameraControl,
+            CinemachinePositionComposer composer,
             LevelData levelData,
             Hud hud,
-            CameraControl cameraControl,
+            CinemachineCamera camera,
             Terrain terrain,
-            UnitDetailStat unitDetailStat,
             TerrainConfigData terrainConfig,
-            TerrainMeshData terrainMeshData)
+            TerrainMeshData terrainMeshData,
+            IPlayerTurnMenu playerTurnMenu,
+            Camera levelCamera,
+            HexHighlightConfig hexHighlightConfig)
         {
             _config = config;
-            _targetCamera = targetCamera;
             _levelData = levelData;
             _hud = hud;
             _cameraControl = cameraControl;
             _terrain = terrain;
-            _unitDetailStat = unitDetailStat;
             _terrainConfig = terrainConfig;
             _terrainMeshData = terrainMeshData;
+            _playerTurnMenu = playerTurnMenu;
+            _levelCamera = levelCamera;
+            _hexHighlightConfig = hexHighlightConfig;
+            _camera = camera;
+            _composer = composer;
             _agents = _levelData.Factions.Select(
                 f =>
                 {

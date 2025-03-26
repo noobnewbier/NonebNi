@@ -1,0 +1,30 @@
+{
+  "name": "Noneb.Localization.PlayModeTests",
+  "rootNamespace": "",
+  "references": [
+    "GUID:27619889b8ba8c24980f49ee34dbb44a",
+    "GUID:0acc523941302664db1f4e527237feb3",
+    "GUID:893a62e173c68f6478bfef27032343b1",
+    "GUID:8c9f0f875c743b643bbea480a5e687c3",
+    "GUID:acf43146c4364d2419bdbdeac67deb96",
+    "GUID:e7c48c88b0352a64dbc484f617be32a9",
+    "GUID:2665a8d13d1b3f18800f46e256720795",
+    "GUID:e0cd26848372d4e5c891c569017e11f1",
+    "GUID:f51ebe6a0ceec4240a699833d6309b23",
+    "GUID:5c01796d064528144a599661eaab93a6"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Moq.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

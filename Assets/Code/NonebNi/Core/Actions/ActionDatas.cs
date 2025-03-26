@@ -1,4 +1,6 @@
-﻿using NonebNi.Core.Effects;
+﻿using System.Linq;
+using NonebNi.Core.Effects;
+using UnityEngine;
 using static NonebNi.Core.Actions.TargetArea;
 using static NonebNi.Core.Actions.TargetRestriction;
 
@@ -27,119 +29,137 @@ namespace NonebNi.Core.Actions
 
         public static readonly NonebAction Move = new(
             "move",
-            new StatBasedRange(1f, StatBasedRange.StatType.Speed),
-            NonOccupied,
-            Single,
+            "move",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             0,
+            new StatBasedRange(1f, StatBasedRange.StatType.Speed),
+            Single,
+            NonOccupied,
             new MoveEffect()
         );
 
         public static readonly NonebAction Bash = new(
             "bash",
+            "bash",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            Enemy,
+            1,
             Single,
-            1,
+            Enemy,
             new KnockBackEffect(1)
         );
 
         public static readonly NonebAction Shoot = new(
             "shoot",
-            WeaponBasedRange,
-            Enemy,
-            Single,
+            "shoot",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
+            WeaponBasedRange,
+            Single,
+            Enemy,
             new DamageEffect("shoot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
         );
 
         public static readonly NonebAction PowerShot = new(
             "power-shot",
-            WeaponBasedRange,
-            Enemy | ClearPath,
-            Single,
+            "power-shot",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
+            WeaponBasedRange,
+            Single,
+            Enemy | ClearPath,
             new DamageEffect("power-shot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)),
             new KnockBackEffect(1)
         );
 
         public static readonly NonebAction Strike = new(
             "strike",
+            "strike",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            Enemy,
+            1,
             Single,
-            1,
+            Enemy,
             new DamageEffect("strike", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength))
         );
 
         public static readonly NonebAction Swing = new(
             "swing",
+            "swing",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            Enemy,
+            1,
             Fan,
-            1,
+            Enemy,
             new DamageEffect("swing", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength)),
             new KnockBackEffect(1)
         );
 
         public static readonly NonebAction Slash = new(
             "slash",
+            "slash",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            Enemy,
+            1,
             Single,
-            1,
+            Enemy,
             new DamageEffect("slash", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
         );
 
         public static readonly NonebAction TacticalAdvance = new(
             "tactical-advance",
-            new StatBasedRange(1, StatBasedRange.StatType.Focus),
-            new[]
-            {
-                Friendly,
-                NonOccupied
-            },
-            Single,
+            "tactical-advance",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
+            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            Single,
+            new[] { Friendly, NonOccupied },
             new MoveEntityEffect()
         );
 
         public static readonly NonebAction Lure = new(
             "lure",
-            new StatBasedRange(1, StatBasedRange.StatType.Focus),
-            Enemy | ClearPath | FirstTileToTargetDirectionIsEmpty,
-            Single,
+            "lure",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
+            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            Single,
+            Enemy | ClearPath | FirstTileToTargetDirectionIsEmpty,
             new PullEntityEffect()
         );
 
         public static readonly NonebAction Vault = new(
             "vault",
+            "vault",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            Occupied | TargetCoordPlusDirectionToTargetIsEmpty | IsCoordinate,
+            1,
             Single,
-            1,
+            Occupied | TargetCoordPlusDirectionToTargetIsEmpty | IsCoordinate,
             new MoveOverEffect()
         );
 
         public static readonly NonebAction Grapple = new(
             "grapple",
-            new Range[] { 2, 1 },
+            "grapple",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            1,
             new[]
             {
-                Enemy,
-                NonOccupied
+                new TargetRequest(Enemy, Single, 2),
+                new TargetRequest(Enemy, Single, 1)
             },
-            Single,
-            1,
             new MoveEntityEffect()
         );
 
         public static readonly NonebAction Rotate = new(
             "rotate",
+            "rotate",
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            Friendly | NotSelf,
+            1,
             Single,
-            1,
+            Friendly | NotSelf,
             new SwapPositionEffect()
         );
 
@@ -158,5 +178,10 @@ namespace NonebNi.Core.Actions
             Vault,
             Rotate
         };
+
+        public static NonebAction? Find(string id)
+        {
+            return Actions.FirstOrDefault(a => a.Id == id);
+        }
     }
 }
