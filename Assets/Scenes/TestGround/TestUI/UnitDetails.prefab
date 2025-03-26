@@ -295,7 +295,7 @@ MonoBehaviour:
   healthWidget: {fileID: 5716501126979764534}
   fatigueWidget: {fileID: 5802462573433564888}
   initWidget: {fileID: 6922846165299785446}
-  speedWidget: {fileID: 0}
+  speedWidget: {fileID: 969745290381130453}
   nameLabel: {fileID: 4285141193696275445}
 --- !u!1001 &3725602277428850158
 PrefabInstance:
@@ -460,6 +460,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+--- !u!114 &969745290381130453 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4523520288650827579, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+  m_PrefabInstance: {fileID: 3725602277428850158}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3007c090e46444f4ae16cacd396eaa17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2506695421028084377 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1259439700342622071, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}

@@ -13,17 +13,9 @@ MonoBehaviour:
   m_Name: EditorFactionsDataSource
   m_EditorClassIdentifier: 
   <Factions>k__BackingField:
-  - <Id>k__BackingField: Player
-    <IsPlayerControlled>k__BackingField: 1
-    <Allies>k__BackingField:
-    - AllyNpc
-  - <Id>k__BackingField: AllyNpc
-    <IsPlayerControlled>k__BackingField: 0
-    <Allies>k__BackingField:
-    - Player
-  - <Id>k__BackingField: EnemyNpc
-    <IsPlayerControlled>k__BackingField: 0
-    <Allies>k__BackingField: []
-  - <Id>k__BackingField: Neutral
-    <IsPlayerControlled>k__BackingField: 0
-    <Allies>k__BackingField: []
+  - id: Player
+    isPlayerControlled: 1
+    allies: []
+  - id: EnemyNpc
+    isPlayerControlled: 0
+    allies: []
