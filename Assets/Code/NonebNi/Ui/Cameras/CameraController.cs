@@ -109,23 +109,22 @@ namespace NonebNi.Ui.Cameras
         private float GetPanningStrength()
         {
             var mousePosition = Input.mousePosition;
-            var yDistancePercentage = 1f -
-                                      Mathf.Min(
-                                          mousePosition.y,                //to bottom
-                                          Screen.height - mousePosition.y //to top
-                                      ) /
-                                      (Screen.height / 2f);
-            var xDistancePercentage = 1f -
-                                      Mathf.Min(
-                                          mousePosition.x,               //to left
-                                          Screen.width - mousePosition.x //to right
-                                      ) /
-                                      (Screen.width / 2f);
 
+            var yInverseLerp = Mathf.InverseLerp(0f, Screen.height, mousePosition.y);
+            var xInverseLerp = Mathf.InverseLerp(0f, Screen.width, mousePosition.x);
+            var yDistancePercentage =
+                Mathf.Min(
+                    yInverseLerp,    //to bottom
+                    1 - yInverseLerp //to top
+                );
+            var xDistancePercentage =
+                Mathf.Min(
+                    xInverseLerp,    //to left
+                    1 - xInverseLerp //to right
+                );
 
-            if (yDistancePercentage < _config.Setting.EdgePercentageToPan && xDistancePercentage < _config.Setting.EdgePercentageToPan ||
-                yDistancePercentage > 1f ||
-                xDistancePercentage > 1f) // prevent panning when mouse is outside of windows
+            // Too far away from edge -> no need to scroll
+            if (yDistancePercentage > _config.Setting.EdgePercentageToPan && xDistancePercentage > _config.Setting.EdgePercentageToPan)
                 return 0;
 
             var center = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
