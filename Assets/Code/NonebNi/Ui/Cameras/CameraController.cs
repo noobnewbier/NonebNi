@@ -127,6 +127,10 @@ namespace NonebNi.Ui.Cameras
             if (yDistancePercentage > _config.Setting.EdgePercentageToPan && xDistancePercentage > _config.Setting.EdgePercentageToPan)
                 return 0;
 
+            // Don't want to run in background it's annoying to play and debug
+            if (!Application.isFocused)
+                return 0;
+
             var center = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
             var mouseDistanceFromCenter = Vector3.Distance(mousePosition, center);
             var distanceInPercentage = mouseDistanceFromCenter / center.magnitude;
