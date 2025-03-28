@@ -1,20 +1,21 @@
 {
-  "name": "Noneb.Ui",
-  "rootNamespace": "",
-  "references": [
-    "GUID:f51ebe6a0ceec4240a699833d6309b23",
-    "GUID:acf43146c4364d2419bdbdeac67deb96",
-    "GUID:fd228c28e14f1a34cbe508676c914dd7",
-    "GUID:2665a8d13d1b3f18800f46e256720795",
-    "GUID:e0cd26848372d4e5c891c569017e11f1"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "Noneb.Ui",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:acf43146c4364d2419bdbdeac67deb96",
+        "GUID:fd228c28e14f1a34cbe508676c914dd7",
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:e0cd26848372d4e5c891c569017e11f1",
+        "GUID:64b3096235e74f2a93f39cbf9edebfb3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
