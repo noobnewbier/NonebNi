@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPanningSpeed: 40
   bufferToClampingEdge: 5
-  edgePercentageToPan: 0.95
+  edgePercentageToPan: 0.05
   smoothFactor: 2
   maxZoomingSpeed: 150
   minDistanceToMap: 3.36
