@@ -4,24 +4,28 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Agents;
+using NonebNi.Core.Coordinates;
+using NonebNi.Core.Decisions;
+using NonebNi.Core.FlowControl;
+using NonebNi.Core.Maps;
 using NonebNi.Core.Units;
+using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
+using Unity.Logging;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
 {
+    //todo: making player turn works. focus on that.
+    //todo: next step would be sorting out movement
+    //todo: and then we would need a "rest/end turn action" for doing nothing.
+
     //TODO: root handle
     //TODO: someone to init/inject dependencies
     //TODO: clear up folder structure -> make assets feature based as it's confusing the crap out of me, code can stay where it is though. 
-    public interface IPlayerTurnMenu
-    {
-        public event Action<NonebAction?>? ActionSelected;
-        public event Action<UnitData?>? UnitSelected;
-        UniTask SelectAction(NonebAction? action);
-        UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default);
-        UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default);
-    }
+    public interface IPlayerTurnMenu { }
 
     public class PlayerTurnMenu : MonoBehaviour, IViewComponent, IPlayerTurnMenu
     {
@@ -33,6 +37,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         //TODO: at some point this might go somewhere but I am not too fuzzed about a testing UI
         [SerializeField] private Button endTurnButton = null!;
 
+        private IPlayerAgent _agent = null!;
         private ICameraController _cameraController = null!;
         private ICoordinateAndPositionService _coordinateAndPositionService = null!;
         private CancellationTokenSource? _executeActionFlowCts;
@@ -69,7 +74,25 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             }
         }
 
-            endTurnButton.onClick.AddListener(presenter.EndTurn);
+        public NonebAction? SelectedAction { get; private set; }
+
+        public async UniTask OnViewEnter(INonebView? previousView)
+        {
+            actionPanel.ActionSelected += OnActionSelected;
+            orderPanel.UnitSelected += OnUnitSelected;
+
+            await UniTask.WhenAll(
+                SelectAction(null),
+                ShowCurrentTurnUnit()
+            );
+        }
+
+        public UniTask OnViewLeave(INonebView? nextView)
+        {
+            actionPanel.ActionSelected -= OnActionSelected;
+            orderPanel.UnitSelected -= UnitSelected;
+
+            return UniTask.CompletedTask;
         }
 
         public event Action<NonebAction?>? ActionSelected;
@@ -77,6 +100,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public async UniTask SelectAction(NonebAction? action)
         {
+            SelectedAction = action;
             RefreshControlMode();
             await actionPanel.Highlight(action);
         }
@@ -85,7 +109,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         {
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
 
-            var targetUnitPos = _presenter.FindUnitPosition(unit);
+            var targetUnitPos = FindUnitPosition(unit);
             _cameraController.LookAt(targetUnitPos);
             await UniTask.WhenAll(
                 actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token),
@@ -99,28 +123,13 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             await orderPanel.Show(unitsInOrder, linkedCts.Token);
         }
 
-        public async UniTask OnViewEnter(INonebView? previousView)
-        {
-            await _presenter.EnterView();
-            actionPanel.ActionSelected += ActionSelected;
-            orderPanel.UnitSelected += UnitSelected;
-        }
-
-        public UniTask OnViewLeave(INonebView? nextView)
-        {
-            actionPanel.ActionSelected -= ActionSelected;
-            orderPanel.UnitSelected -= UnitSelected;
-
-            return UniTask.CompletedTask;
-        }
-
         private void RefreshControlMode()
         {
             _executeActionFlowCts?.Cancel();
-            if (_presenter.SelectedAction == null)
+            if (SelectedAction == null)
             {
-                if (_presenter.InspectingUnit.Speed > 0)
-                    _worldSpaceInputControl.ToMovementMode(_presenter.InspectingUnit);
+                if (InspectingUnit.Speed > 0)
+                    _worldSpaceInputControl.ToMovementMode(InspectingUnit);
                 else
                     _worldSpaceInputControl.ToTileInspectionMode();
             }
@@ -133,13 +142,80 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private async UniTask ExecuteActionFlow(CancellationToken ct = default)
         {
-            if (_presenter.SelectedAction == null) return;
+            if (SelectedAction == null) return;
 
-            var input = await _worldSpaceInputControl.GetInputForAction(_presenter.InspectingUnit, _presenter.SelectedAction, ct);
-            _presenter.MakeActionDecision(input);
+            var input = await _worldSpaceInputControl.GetInputForAction(InspectingUnit, SelectedAction, ct);
+            MakeActionDecision(input);
             //todo: do something with that input mate.
         }
 
         //TODO: work out the inject process with strong ioc.
+        public void RefreshForNewTurn()
+        {
+            throw new NotImplementedException();
+        }
+
+        private async UniTask ShowCurrentTurnUnit()
+        {
+            await UniTask.WhenAll(
+                ShowUnit(_unitTurnOrderer.CurrentUnit, true),
+                ShowActOrder(_unitTurnOrderer.UnitsInOrder)
+            );
+        }
+
+        private void MakeActionDecision(IEnumerable<Coordinate> coordinates)
+        {
+            if (SelectedAction == null)
+            {
+                Log.Error("Selected action is null - how did you even get here?");
+                return;
+            }
+
+            var decision = new ActionDecision(SelectedAction, InspectingUnit, coordinates);
+            _agent.SetDecision(decision);
+            //todo: need to transition into another state menu but we can do that later.
+        }
+
+        private void EndTurn()
+        {
+            _agent.SetDecision(EndTurnDecision.Instance);
+        }
+
+        private Vector3 FindUnitPosition(UnitData unit)
+        {
+            if (!_map.TryFind(unit, out Coordinate coord)) return default;
+
+            var pos = _coordinateAndPositionService.FindPosition(coord);
+            return pos;
+        }
+
+        private void OnActionSelected(NonebAction? action)
+        {
+            async UniTaskVoid Do()
+            {
+                await SelectAction(action);
+            }
+
+            Do().Forget();
+        }
+
+        private void OnUnitSelected(UnitData? unit)
+        {
+            async UniTaskVoid Do()
+            {
+                if (unit == InspectingUnit) return;
+
+                //todo: make this more concise.
+                _selectedUnit = unit;
+
+                var isActiveUnit = _unitTurnOrderer.CurrentUnit == InspectingUnit;
+                await UniTask.WhenAll(
+                    ShowUnit(InspectingUnit, isActiveUnit),
+                    SelectAction(null)
+                );
+            }
+
+            Do().Forget();
+        }
     }
 }

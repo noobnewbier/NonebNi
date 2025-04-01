@@ -69,6 +69,11 @@ namespace NonebNi.Main
             _levelFlowController.NewTurnStarted -= OnNewTurnStarted;
         }
 
+        private void OnNewTurnStarted()
+        {
+            _hud.RefreshForNewTurn();
+        }
+
         #region Camera Initialization
 
         public (float upBound, float downBound, float rightBound, float leftBound, float minCameraY, float maxCameraY) GetCameraParameters(
