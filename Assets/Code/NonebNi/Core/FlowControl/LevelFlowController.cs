@@ -60,21 +60,21 @@ namespace NonebNi.Core.FlowControl
                 do
                 {
                     var decision = await AgentsService.GetAgentDecision(currentUnit.FactionId);
-                    Debug.Log($"[Level] Received Decision: {decision?.GetType()}");
+                    Log.Info($"[Level] Received Decision: {decision?.GetType()}");
 
                     (err, command) = DecisionValidator.ValidateDecision(decision);
 
-                    if (err != null) Debug.Log($"[Level] Decision Error: {err.Id}, {err.Description}");
+                    if (err != null) Log.Info($"[Level] Decision Error: {err.Id}, {err.Description}");
                 } while (err != null);
 
 
-                Debug.Log($"[Level] Evaluate Command: {command.GetType()}");
+                Log.Info($"[Level] Evaluate Command: {command.GetType()}");
                 var sequences = EvaluationService.Evaluate(command);
                 await SequencePlayer.Play(sequences);
 
                 turnNum++;
                 UnitTurnOrderer.ToNextUnit();
-                Debug.Log("[Level] Finished Evaluation");
+                Log.Info("[Level] Finished Evaluation");
             }
 
             // Expected, this should just run forever, until we have a exit/win/lose condition
