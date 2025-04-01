@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace NonebNi.Core.Stats
 {
@@ -12,7 +13,10 @@ namespace NonebNi.Core.Stats
     [Serializable]
     public class Stat
     {
-        private int _currentValue;
+        [field: SerializeField] public string ID { get; private set; }
+        [SerializeField] private int currentValue;
+        [field: SerializeField] public int MinValue { get; set; } = -1;
+        [field: SerializeField] public int MaxValue { get; set; } = -1;
 
         public Stat(string id)
         {
@@ -29,16 +33,13 @@ namespace NonebNi.Core.Stats
 
         public static Stat Invalid { get; } = new("invalid-stat", -1, -1);
 
-        public string ID { get; }
-        public int MinValue { get; } = -1;
-        public int MaxValue { get; set; } = -1;
 
         public int CurrentValue
         {
-            get => _currentValue;
+            get => currentValue;
             set
             {
-                _currentValue = value;
+                currentValue = value;
                 ClampWithMinValue();
                 ClampWithMaxValue();
             }
@@ -52,18 +53,18 @@ namespace NonebNi.Core.Stats
         {
             if (HasMaxLimit) return;
 
-            if (_currentValue <= MaxValue) return;
+            if (currentValue <= MaxValue) return;
 
-            _currentValue = MaxValue;
+            currentValue = MaxValue;
         }
 
         private void ClampWithMinValue()
         {
             if (HasMinLimit) return;
 
-            if (_currentValue >= MinValue) return;
+            if (currentValue >= MinValue) return;
 
-            _currentValue = MinValue;
+            currentValue = MinValue;
         }
     }
 }
