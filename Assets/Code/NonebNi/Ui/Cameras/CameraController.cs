@@ -10,7 +10,7 @@ namespace NonebNi.Ui.Cameras
         void LookAt(Vector3 position);
         void UpdateCamera();
     }
-    //todo: need to write gizmos drawer to aid testing debuging long term...
+    //todo: need to allow gizmos filtering otherwise this is suicidal
 
     /// <summary>
     /// Note:
@@ -58,6 +58,12 @@ namespace NonebNi.Ui.Cameras
 
         public void UpdateCamera()
         {
+            GizmosDrawer.DrawLine(new Vector3(LeftBound, 0f, DownBound), new Vector3(RightBound, 0f, DownBound));
+            GizmosDrawer.DrawLine(new Vector3(LeftBound, 0f, UpBound), new Vector3(RightBound, 0f, UpBound));
+            GizmosDrawer.DrawLine(new Vector3(LeftBound, 0f, UpBound), new Vector3(LeftBound, 0f, DownBound));
+            GizmosDrawer.DrawLine(new Vector3(RightBound, 0f, UpBound), new Vector3(RightBound, 0f, DownBound));
+            GizmosDrawer.DrawSphere(TargetPos, 0.25f);
+
             Panning();
             Zooming();
         }
