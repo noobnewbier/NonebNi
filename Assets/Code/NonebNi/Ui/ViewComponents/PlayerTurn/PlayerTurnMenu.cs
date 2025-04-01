@@ -34,18 +34,40 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private Button endTurnButton = null!;
 
         private ICameraController _cameraController = null!;
+        private ICoordinateAndPositionService _coordinateAndPositionService = null!;
         private CancellationTokenSource? _executeActionFlowCts;
-
-        private IPlayerTurnPresenter _presenter = null!;
-        private UIStack _stack = null!;
+        private IReadOnlyMap _map = null!;
+        private UnitData? _selectedUnit;
+        private IUnitTurnOrderer _unitTurnOrderer = null!;
         private IPlayerTurnWorldSpaceInputControl _worldSpaceInputControl = null!;
 
-        public void Init(IPlayerTurnPresenter presenter, IPlayerTurnWorldSpaceInputControl worldSpaceInputControl, ICameraController cameraController)
+        public void Init(
+            IPlayerTurnWorldSpaceInputControl worldSpaceInputControl,
+            ICameraController cameraController,
+            IPlayerAgent agent,
+            ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map,
+            IUnitTurnOrderer unitTurnOrderer)
         {
-            _presenter = presenter;
-            _stack = new UIStack(subStackRoot); //todo: may not need stack afterall...?
             _worldSpaceInputControl = worldSpaceInputControl;
             _cameraController = cameraController;
+            _agent = agent;
+            _coordinateAndPositionService = coordinateAndPositionService;
+            _map = map;
+            _unitTurnOrderer = unitTurnOrderer;
+
+            endTurnButton.onClick.AddListener(EndTurn);
+        }
+
+        public UnitData InspectingUnit
+        {
+            get
+            {
+                if (_selectedUnit != null) return _selectedUnit;
+
+                return _unitTurnOrderer.CurrentUnit;
+            }
+        }
 
             endTurnButton.onClick.AddListener(presenter.EndTurn);
         }

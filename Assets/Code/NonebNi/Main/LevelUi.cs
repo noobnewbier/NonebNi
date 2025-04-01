@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NonebNi.Core.Agents;
+using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Terrain;
@@ -13,7 +15,7 @@ namespace NonebNi.Main
     //todo: we need to organize our modules, possibly in a notion diagram, atm it's a fucking mess.
     //I suspect a-lot of our factories aren't necessary and can be reduced down to a level module/container and an ui module
     //sort this out and you can use your main sample scene to test gameplay, you are close fucker, you are v.close to something testable, keep the pressure up babe.
-    public interface ILevelUi
+    public interface ILevelUi : IDisposable
     {
         void Run();
     }
@@ -22,6 +24,7 @@ namespace NonebNi.Main
     {
         private readonly CameraRunner _cameraControl;
         private readonly Hud _hud;
+        private readonly ILevelFlowController _levelFlowController;
         private readonly Terrain _terrain;
 
         public LevelUi(
@@ -32,22 +35,38 @@ namespace NonebNi.Main
             LevelData levelData,
             IPlayerAgent playerAgent,
             ITerrainMeshCreator meshCreator,
-            IPlayerTurnPresenter presenter,
-            IPlayerTurnWorldSpaceInputControl worldSpaceInputControl)
+            IPlayerTurnWorldSpaceInputControl worldSpaceInputControl,
+            ILevelFlowController levelFlowController,
+            ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map,
+            IUnitTurnOrderer unitTurnOrderer)
         {
             _cameraControl = cameraControl;
             _hud = hud;
             _terrain = terrain;
+            _levelFlowController = levelFlowController;
 
             _cameraControl.Init(cameraController);
             //todo: change our DI, it's confusing now.
-            _hud.Init(presenter, worldSpaceInputControl, cameraController);
+            _hud.Init(
+                worldSpaceInputControl,
+                cameraController,
+                playerAgent,
+                coordinateAndPositionService,
+                map,
+                unitTurnOrderer
+            );
             _terrain.Init(meshCreator);
         }
 
         public void Run()
         {
             _cameraControl.Run();
+        }
+
+        public void Dispose()
+        {
+            _levelFlowController.NewTurnStarted -= OnNewTurnStarted;
         }
 
         #region Camera Initialization
