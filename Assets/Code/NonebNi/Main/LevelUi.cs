@@ -61,6 +61,8 @@ namespace NonebNi.Main
 
         public void Run()
         {
+            _levelFlowController.NewTurnStarted += OnNewTurnStarted;
+
             _cameraControl.Run();
         }
 
