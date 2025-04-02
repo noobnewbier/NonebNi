@@ -55,10 +55,9 @@ namespace NonebNi.Develop
             );
             var orderer = new FakeUniTurnOrderer(_unitA.Value, _unitB.Value, _unitC.Value);
             var playerAgent = new PlayerAgent(TestScriptHelpers.CreateFaction("fake-player"));
-            var presenter = new PlayerTurnPresenter(menu, orderer, new CoordinateAndPositionService(terrainConfigData), map, playerAgent);
             _control = new MockInputControl();
             var cameraController = new MockCameraController();
-            menu.Init(presenter, _control, cameraController);
+            menu.Init(_control, cameraController, playerAgent, new CoordinateAndPositionService(terrainConfigData), map, orderer);
 
             _stack = new UIStack(stackRoot);
             await _stack.Push(view);
