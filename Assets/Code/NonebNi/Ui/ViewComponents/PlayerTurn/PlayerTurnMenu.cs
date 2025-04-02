@@ -152,7 +152,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         //TODO: work out the inject process with strong ioc.
         public void RefreshForNewTurn()
         {
-            throw new NotImplementedException();
+            ShowCurrentTurnUnit().Forget();
         }
 
         private async UniTask ShowCurrentTurnUnit()

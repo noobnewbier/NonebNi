@@ -37,5 +37,10 @@ namespace NonebNi.Main
             //todo: need to await
             _stack.Push(playerTurnMenu).Forget();
         }
+
+        public void RefreshForNewTurn()
+        {
+            playerTurnMenu.RefreshForNewTurn();
+        }
     }
 }
