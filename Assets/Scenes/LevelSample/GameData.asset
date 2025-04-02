@@ -30,13 +30,13 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 1432497114648936533
+        - rid: 9202202082920628449
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 1432497114648936534
+        - rid: 9202202082920628450
       - tileData:
           weight: 1
           name: 
@@ -77,43 +77,6 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 1432497114648936535
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 1432497114648936535
       - tileData:
           weight: 1
           name: 
@@ -144,7 +107,44 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 1432497114648936536
+        - rid: 9202202082920628451
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 9202202082920628451
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 9202202082920628452
       - tileData:
           weight: 1
           name: 
@@ -533,7 +533,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1432497114648936533
+    - rid: 9202202082920628449
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name: Wall
@@ -545,7 +545,7 @@ MonoBehaviour:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 1432497114648936534
+    - rid: 9202202082920628450
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name: Noob
@@ -563,9 +563,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 1432497114648936537
+              rid: 9202202082920628453
           <Effects>k__BackingField:
-          - rid: 1432497114648936538
+          - rid: 9202202082920628454
         - <Id>k__BackingField: shoot
           <FatigueCost>k__BackingField: 1
           <Icon>k__BackingField: {fileID: 0}
@@ -575,9 +575,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 1432497114648936539
+              rid: 9202202082920628455
           <Effects>k__BackingField:
-          - rid: 1432497114648936540
+          - rid: 9202202082920628456
         - <Id>k__BackingField: lure
           <FatigueCost>k__BackingField: 1
           <Icon>k__BackingField: {fileID: 0}
@@ -587,12 +587,44 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 1432497114648936541
+              rid: 9202202082920628457
           <Effects>k__BackingField:
-          - rid: 1432497114648936542
+          - rid: 9202202082920628458
         <Stats>k__BackingField:
-          stats: []
-    - rid: 1432497114648936535
+          stats:
+          - <ID>k__BackingField: health
+            currentValue: 100
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 100
+          - <ID>k__BackingField: initiative
+            currentValue: 0
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 100
+          - <ID>k__BackingField: speed
+            currentValue: 5
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 5
+          - <ID>k__BackingField: focus
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: strength
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: armor
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: weaponRange
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: fatigue
+            currentValue: 0
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 0
+    - rid: 9202202082920628451
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name: Wall
@@ -604,7 +636,7 @@ MonoBehaviour:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 1432497114648936536
+    - rid: 9202202082920628452
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name: Noob
@@ -622,9 +654,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 1432497114648936537
+              rid: 9202202082920628453
           <Effects>k__BackingField:
-          - rid: 1432497114648936538
+          - rid: 9202202082920628454
         - <Id>k__BackingField: shoot
           <FatigueCost>k__BackingField: 1
           <Icon>k__BackingField: {fileID: 0}
@@ -634,9 +666,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 1432497114648936539
+              rid: 9202202082920628455
           <Effects>k__BackingField:
-          - rid: 1432497114648936540
+          - rid: 9202202082920628456
         - <Id>k__BackingField: lure
           <FatigueCost>k__BackingField: 1
           <Icon>k__BackingField: {fileID: 0}
@@ -646,26 +678,58 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 1432497114648936541
+              rid: 9202202082920628457
           <Effects>k__BackingField:
-          - rid: 1432497114648936542
+          - rid: 9202202082920628458
         <Stats>k__BackingField:
-          stats: []
-    - rid: 1432497114648936537
+          stats:
+          - <ID>k__BackingField: health
+            currentValue: 100
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 100
+          - <ID>k__BackingField: initiative
+            currentValue: 0
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 100
+          - <ID>k__BackingField: speed
+            currentValue: 5
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 5
+          - <ID>k__BackingField: focus
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: strength
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: armor
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: weaponRange
+            currentValue: 5
+            <MinValue>k__BackingField: -1
+            <MaxValue>k__BackingField: -1
+          - <ID>k__BackingField: fatigue
+            currentValue: 0
+            <MinValue>k__BackingField: 0
+            <MaxValue>k__BackingField: 0
+    - rid: 9202202082920628453
       type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 1432497114648936538
+    - rid: 9202202082920628454
       type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
-    - rid: 1432497114648936539
+    - rid: 9202202082920628455
       type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 1432497114648936540
+    - rid: 9202202082920628456
       type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
-    - rid: 1432497114648936541
+    - rid: 9202202082920628457
       type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 1432497114648936542
+    - rid: 9202202082920628458
       type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
