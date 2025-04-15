@@ -6,17 +6,18 @@ using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using Unity.Logging;
+using UnityEngine;
 
 namespace NonebNi.Core.Effects
 {
     [Serializable]
     public class KnockBackEffect : Effect
     {
-        private readonly int _distance;
+        [SerializeField] private int distance;
 
         public KnockBackEffect(int distance)
         {
-            _distance = distance;
+            this.distance = distance;
         }
 
         public class Evaluator : Evaluator<KnockBackEffect>
@@ -85,7 +86,7 @@ namespace NonebNi.Core.Effects
                 var finalCoord = targetOriginCoord;
 
                 //Find the furthest, non occupied coordinate. Any obstruction within knock back path blocks the knock back.
-                for (var i = 1; i < effect._distance + 1; i++)
+                for (var i = 1; i < effect.distance + 1; i++)
                 {
                     var coordInKnockBackPath = targetOriginCoord + knockBackDirection * i;
                     if (!map.IsCoordinateWithinMap(coordInKnockBackPath)) break;

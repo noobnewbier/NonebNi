@@ -1,16 +1,19 @@
-﻿using NonebNi.Core.Entities;
+﻿using System;
+using NonebNi.Core.Entities;
+using UnityEngine;
 
 namespace NonebNi.Core.Effects
 {
+    [Serializable]
     public class ConstantDamage : Damage
     {
-        private readonly int _amount;
+        [SerializeField] private int amount;
 
         public ConstantDamage(int amount)
         {
-            _amount = amount;
+            this.amount = amount;
         }
 
-        public override int CalculateDamage(EntityData actionCaster, EntityData _) => _amount;
+        public override int CalculateDamage(EntityData actionCaster, EntityData _) => amount;
     }
 }
