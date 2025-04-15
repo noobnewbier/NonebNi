@@ -19,7 +19,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     {
         Coordinate? FindHoveredCoordinate();
         void ToTileInspectionMode();
-        void ToMovementMode(UnitData mover);
         UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default);
         void UpdateTargetSelection();
     }
@@ -103,7 +102,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     inputCoord = coord;
                 }
 
-                _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
                 return inputCoord;
             }
 
@@ -117,10 +115,13 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     ct.ThrowIfCancellationRequested();
 
                     var ranges = _targetFinder.FindRange(caster, request).ToArray();
+
                     _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
                     _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
 
                     var input = await GetUserInputForRequest(ranges, ct);
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
+
                     if (input != null) playerInputs.Add(input);
                 }
 
@@ -129,48 +130,20 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 return playerInputs;
             }
 
+
+            if (action == ActionDatas.Move)
+            {
+                var inputForMovement = await GetInputForMovement(caster, token);
+                if (inputForMovement != null) return new[] { inputForMovement };
+
+                return Enumerable.Empty<Coordinate>();
+            }
+
             _cts?.Cancel();
             _cts = CancellationTokenSource.CreateLinkedTokenSource(token);
             var coordinates = await Do(_cts.Token);
 
             return coordinates;
-        }
-
-        public void ToMovementMode(UnitData mover)
-        {
-            async UniTaskVoid Do(CancellationToken ct)
-            {
-                _hexHighlighter.ClearAll();
-                while (!ct.IsCancellationRequested)
-                {
-                    _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
-
-                    var targetCoord = FindHoveredCoordinate();
-                    if (targetCoord != null)
-                    {
-                        var (isPathExist, path) = _pathfindingService.FindPath(mover, targetCoord);
-                        if (isPathExist)
-                        {
-                            var pathWithoutStartAndEnd = path.Except(new[] { _map.Find(mover), targetCoord });
-                            _hexHighlighter.RequestHighlight(pathWithoutStartAndEnd, HighlightRequestId.MovementHint, HighlightVariation.AreaHint);
-                            _hexHighlighter.RequestHighlight(targetCoord, HighlightRequestId.MovementHint, HighlightVariation.Normal);
-                        }
-                        else
-                        {
-                            _hexHighlighter.RequestHighlight(targetCoord, HighlightRequestId.MovementHint, HighlightVariation.InvalidInput);
-                        }
-                    }
-
-                    await UniTask.NextFrame();
-                }
-
-                _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
-            }
-
-            _cts?.Cancel();
-            _cts = new CancellationTokenSource();
-
-            Do(_cts.Token).Forget();
         }
 
         public void ToTileInspectionMode()
