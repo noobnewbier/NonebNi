@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity.Logging;
@@ -15,6 +17,22 @@ namespace Noneb.UI.View
     /// </summary>
     public class UIStack : IAsyncDisposable //TODO: let stack handles game object as well
     {
+        private readonly CancellationTokenSource _cts = new();
+
+        /// <summary>
+        /// Push/pop/replace's animation transition works asynchronously using channel, this happens they always work in sequence,
+        /// no matter how rapid the request is coming in the transition is always in tact.
+        /// Remember only the transition is asynchronous, the logic is synchronous -> _stack is always logically correct,
+        /// and by extension there can't be any timing issue, at least logically, regarding values of CurrentView
+        /// </summary>
+        private readonly Channel<TransitionRequest> _requestChannel = Channel.CreateSingleConsumerUnbounded<TransitionRequest>();
+
+        /// <summary>
+        /// This field exists purely for debugging purposes, maybe we should put it in a good old ifdef but for now I can live with
+        /// it.
+        /// </summary>
+        private readonly Queue<TransitionRequestInfo> _requestInfos = new();
+
         private readonly GameObject _root;
 
         //TODO: ct support...? I think I might be crying internally
@@ -27,11 +45,10 @@ namespace Noneb.UI.View
         //TODO: is a collection?
         private readonly Dictionary<string, UIStack> _subStacks = new(); //TODO: init/maintain/refresh this, seems like we can hook into unity's event life cycle somewhat? probs better to make this process explicit?
 
-
         public UIStack(GameObject root)
         {
             _root = root;
-            //TODO:
+            RunRequests().Forget();
         }
 
         public INonebView? CurrentView
@@ -44,8 +61,18 @@ namespace Noneb.UI.View
             }
         }
 
+        public IEnumerable<TransitionRequestInfo> RequestsInfo => _requestInfos.AsEnumerable();
+
         public async ValueTask DisposeAsync()
         {
+            //TODO: these might need to be cancellable.
+
+            // await ProcessRequest();
+            _requestChannel.Writer.Complete();
+            await _requestChannel.Reader.Completion;
+            _cts.Cancel();
+            _cts.Dispose();
+
             while (_stack.Any())
             {
                 var view = _stack.Pop();
@@ -53,6 +80,20 @@ namespace Noneb.UI.View
             }
 
             foreach (var stack in _subStacks.Values) await stack.DisposeAsync();
+        }
+
+        private async UniTask RunRequests()
+        {
+            await foreach (var request in _requestChannel.Reader.ReadAllAsync())
+            {
+                //todo: not sure why but this is inconsistent.
+                //my guess is that the previous request is still running before the next one hit... we might need to split transition and the logic
+                await request.Task.Invoke();
+                request.IsDone = true;
+
+                var info = _requestInfos.Dequeue();
+                if (request.Info != info) Log.Error("Something went wrong, logically you should not get here as the queue should be parallel with the channel");
+            }
         }
 
         public UIStack GetSubStack(string name)
@@ -77,17 +118,8 @@ namespace Noneb.UI.View
 
         public async UniTask Push(IViewComponent component)
         {
-            if (component is not MonoBehaviour behaviour)
-            {
-                Log.Error("Unexpected typed - I can't work with non-concept-view component!");
-                return;
-            }
-
-            if (!behaviour.TryGetComponent<INonebView>(out var view))
-            {
-                Log.Error("Behaviour View can't work without a INonebView in the sibling components!");
-                return;
-            }
+            var view = FindViewFromComponent(component);
+            if (view == null) return;
 
             await Push(view);
         }
@@ -99,54 +131,135 @@ namespace Noneb.UI.View
             _ = _stack.TryPeek(out var currentView);
             _stack.Push(nextView);
 
-            if (currentView != null)
+            var request = new TransitionRequest(DoTransition, new TransitionRequestInfo("Push", nextView.Name));
+            await RequestTransition(request);
+            return;
+
+            async UniTask DoTransition()
             {
-                await currentView.Leave(nextView);
-                await currentView.Deactivate();
+                if (currentView != null)
+                {
+                    await currentView.Leave(nextView);
+                    await currentView.Deactivate();
+                }
+
+                if (nextView is NonebViewBehaviour component)
+                    //TODO: code smell
+                    component.transform.SetParent(_root.transform);
+
+                await nextView.Init();
+                await nextView.Activate();
+                await nextView.Enter(currentView);
             }
+        }
 
-            if (nextView is NonebViewBehaviour component)
-                //TODO: code smell
-                component.transform.SetParent(_root.transform);
+        public async UniTask ReplaceCurrent(IViewComponent component)
+        {
+            var view = FindViewFromComponent(component);
+            if (view == null) return;
 
-            await nextView.Init();
-            await nextView.Activate();
-            await nextView.Enter(currentView);
+            await ReplaceCurrent(view);
         }
 
         public async UniTask ReplaceCurrent(INonebView nextView)
         {
+            if (CurrentView == nextView)
+                // Nothing to replace - we are already the same chap
+                return;
+
             _ = _stack.TryPop(out var currentView);
             _stack.Push(nextView);
 
-            if (currentView != null)
-            {
-                await currentView.Leave(nextView);
-                await currentView.Deactivate();
-            }
+            var request = new TransitionRequest(DoTransition, new TransitionRequestInfo("ReplaceCurrent", nextView.Name));
+            await RequestTransition(request);
+            return;
 
-            await nextView.Activate();
-            await nextView.Enter(currentView);
+            async UniTask DoTransition()
+            {
+                if (currentView != null)
+                {
+                    await currentView.Leave(nextView);
+                    await currentView.Deactivate();
+                }
+
+                await nextView.Init();
+                await nextView.Activate();
+                await nextView.Enter(currentView);
+            }
         }
 
         public async UniTask Pop()
         {
             if (!_stack.Any())
-                //TODO: log?
+            {
+                Log.Warning($"You are popping from {_root.name} when there's nothing around for you to pop");
                 return;
+            }
+
 
             var currentView = _stack.Pop();
             _ = _stack.TryPeek(out var nextView);
 
-            await currentView.Leave(nextView);
-            await currentView.Deactivate();
+            var request = new TransitionRequest(DoTransition, new TransitionRequestInfo("Pop", null));
+            await RequestTransition(request);
+            return;
 
-            if (nextView != null)
+            async UniTask DoTransition()
             {
-                // No need to call init here -> you must have called init when pushing.
-                await nextView.Activate();
-                await nextView.Enter(currentView);
+                await currentView.Leave(nextView);
+                await currentView.Deactivate();
+
+                if (nextView != null)
+                {
+                    await nextView.Init();
+                    await nextView.Activate();
+                    await nextView.Enter(currentView);
+                }
             }
         }
+
+        private INonebView? FindViewFromComponent(IViewComponent component)
+        {
+            if (component is not MonoBehaviour behaviour)
+            {
+                Log.Error("Unexpected typed - I can't work with non-concept-view component!");
+                return null;
+            }
+
+            if (!behaviour.TryGetComponent<INonebView>(out var view))
+            {
+                Log.Error("Behaviour View can't work without a INonebView in the sibling components!");
+                return null;
+            }
+
+            return view;
+        }
+
+        public bool IsCurrentComponent(IViewComponent component)
+        {
+            if (CurrentView == null) return false;
+
+            var components = CurrentView.FindViewComponents();
+            return components.Contains(component);
+        }
+
+        private async UniTask RequestTransition(TransitionRequest transitionRequest)
+        {
+            _requestInfos.Enqueue(transitionRequest.Info);
+            if (!_requestChannel.Writer.TryWrite(transitionRequest)) Log.Error("Why is this happening?");
+
+            await UniTask.WaitUntil(() => transitionRequest.IsDone, cancellationToken: _cts.Token);
+        }
+
+        private record TransitionRequest(Func<UniTask> Task, TransitionRequestInfo Info)
+        {
+            public bool IsDone { get; set; }
+        }
+
+        /// <summary>
+        /// This only exists for debug purposes, anything to do with the actual functionality goes to Request instead
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public record TransitionRequestInfo(string OperationName, string? ParameterViewName);
     }
 }
