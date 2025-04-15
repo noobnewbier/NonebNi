@@ -134,6 +134,30 @@ PrefabInstance:
       propertyPath: startMovementData.<Name>k__BackingField
       value: isWalking
       objectReference: {fileID: 0}
+    - target: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: animTable.animIdAndData.validKvPairs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: animTable.animIdAndData.validKvPairs.Array.data[0].<Value>k__BackingField.<Name>k__BackingField
+      value: die
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: animTable.animIdAndData.validKvPairs.Array.data[1].<Value>k__BackingField.<FinishAnimState>k__BackingField
+      value: ManeuinMeleeFighterModel_Death_Temp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: animTable.animIdAndData.validKvPairs.Array.data[2].<Value>k__BackingField.<FinishAnimState>k__BackingField
+      value: ManeuinMeleeFighterModel_Idle_Temp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: animTable.animIdAndData.validKvPairs.Array.data[1].<Value>k__BackingField.<FinishAnimLayerIndex>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8087889736840038546, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
+      propertyPath: animTable.animIdAndData.validKvPairs.Array.data[2].<Value>k__BackingField.<FinishAnimLayerIndex>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9125682408140219177, guid: 46b0fb3bb76f5d141afe70976a220765, type: 3}
       propertyPath: animData.<TargetBoolValue>k__BackingField
       value: 0
