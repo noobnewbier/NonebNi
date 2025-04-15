@@ -6,6 +6,7 @@ using NonebNi.Terrain;
 using NonebNi.Ui.Animation;
 using NonebNi.Ui.Animation.Sequence;
 using NonebNi.Ui.Entities;
+using Unity.Logging;
 
 namespace NonebNi.Ui.Sequences
 {
@@ -45,8 +46,7 @@ namespace NonebNi.Ui.Sequences
                     {
                         var entity = _entityRepository.GetEntity(dieSequence.DeadUnit.Guid);
                         if (entity != null)
-                            await entity.GetAnimationControl<IPlayAnimation<DieAnimSequence>>()
-                                .Play(new DieAnimSequence());
+                            await PlayAnimation(entity, new DieAnimSequence());
 
                         break;
                     }
@@ -55,7 +55,8 @@ namespace NonebNi.Ui.Sequences
                     {
                         var entity = _entityRepository.GetEntity(teleportSequence.Unit.Guid);
                         if (entity != null)
-                            await entity.GetAnimationControl<IPlayAnimation<TeleportAnimSequence>>().Play(
+                            await PlayAnimation(
+                                entity,
                                 new TeleportAnimSequence(
                                     _coordinateAndPositionService.FindPosition(teleportSequence.TargetPos)
                                 )
@@ -68,12 +69,12 @@ namespace NonebNi.Ui.Sequences
                     {
                         var entity = _entityRepository.GetEntity(moveSequence.MovedEntity.Guid);
                         if (entity != null)
-                            await entity.GetAnimationControl<IPlayAnimation<MoveAnimSequence>>()
-                                .Play(
-                                    new MoveAnimSequence(
-                                        moveSequence.TargetCoords.Select(c => _coordinateAndPositionService.FindPosition(c))
-                                    )
-                                );
+                            await PlayAnimation(
+                                entity,
+                                new MoveAnimSequence(
+                                    moveSequence.TargetCoords.Select(c => _coordinateAndPositionService.FindPosition(c))
+                                )
+                            );
 
                         break;
                     }
@@ -82,12 +83,10 @@ namespace NonebNi.Ui.Sequences
                     {
                         var entity = _entityRepository.GetEntity(knockBackSequence.MovedUnit.Guid);
                         if (entity != null)
-                            await entity.GetAnimationControl<IPlayAnimation<KnockBackAnimSequence>>()
-                                .Play(
-                                    new KnockBackAnimSequence(
-                                        _coordinateAndPositionService.FindPosition(knockBackSequence.TargetCoord)
-                                    )
-                                );
+                            await PlayAnimation(
+                                entity,
+                                new KnockBackAnimSequence(_coordinateAndPositionService.FindPosition(knockBackSequence.TargetCoord))
+                            );
 
                         break;
                     }
@@ -96,17 +95,14 @@ namespace NonebNi.Ui.Sequences
                     {
                         var receiver = _entityRepository.GetEntity(damageSequence.DamageReceiver.Guid);
                         if (receiver != null)
-                            await receiver.GetAnimationControl<IPlayAnimation<ReceivedDamageAnimSequence>>()
-                                .Play(
-                                    new ReceivedDamageAnimSequence()
-                                );
+                            await PlayAnimation(receiver, new ReceivedDamageAnimSequence());
 
-                        var actor = _entityRepository.GetEntity(damageSequence.DamageReceiver.Guid);
+                        var actor = _entityRepository.GetEntity(damageSequence.ActionCaster.Guid);
                         if (actor != null)
-                            await actor.GetAnimationControl<IPlayAnimation<ApplyDamageAnimSequence>>()
-                                .Play(
-                                    new ApplyDamageAnimSequence(damageSequence.AnimId, receiver)
-                                );
+                            await PlayAnimation(
+                                actor,
+                                new ApplyDamageAnimSequence(damageSequence.AnimId, receiver)
+                            );
 
                         break;
                     }
@@ -114,6 +110,18 @@ namespace NonebNi.Ui.Sequences
             }
 
             await PlaySequence();
+        }
+
+        private UniTask PlayAnimation<T>(Entity entity, T sequence) where T : IAnimSequence
+        {
+            var animControl = entity.GetAnimationControl<T>();
+            if (animControl == null)
+            {
+                Log.Error($"Failed to find component of type  {nameof(IPlayAnimation)}<{typeof(T).Namespace}>");
+                return UniTask.CompletedTask;
+            }
+
+            return animControl.Play(sequence);
         }
     }
 }
