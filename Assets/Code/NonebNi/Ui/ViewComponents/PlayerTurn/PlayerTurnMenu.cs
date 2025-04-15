@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
@@ -25,9 +24,9 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     //TODO: root handle
     //TODO: someone to init/inject dependencies
     //TODO: clear up folder structure -> make assets feature based as it's confusing the crap out of me, code can stay where it is though. 
-    public interface IPlayerTurnMenu { }
+    public interface IPlayerTurnMenu : IViewComponent { }
 
-    public class PlayerTurnMenu : MonoBehaviour, IViewComponent, IPlayerTurnMenu
+    public class PlayerTurnMenu : MonoBehaviour, IPlayerTurnMenu
     {
         [SerializeField] private GameObject subStackRoot = null!;
         [SerializeField] private UnitActionPanel actionPanel = null!;
@@ -39,8 +38,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private IPlayerAgent _agent = null!;
         private ICameraController _cameraController = null!;
+        private CancellationTokenSource? _controlModeCts;
         private ICoordinateAndPositionService _coordinateAndPositionService = null!;
-        private CancellationTokenSource? _executeActionFlowCts;
         private IReadOnlyMap _map = null!;
         private UnitData? _selectedUnit;
         private IUnitTurnOrderer _unitTurnOrderer = null!;
@@ -81,22 +80,15 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             actionPanel.ActionSelected += OnActionSelected;
             orderPanel.UnitSelected += OnUnitSelected;
 
-            await UniTask.WhenAll(
-                SelectAction(null),
-                ShowCurrentTurnUnit()
-            );
+            await ShowCurrentTurnUnit();
         }
 
         public UniTask OnViewLeave(INonebView? nextView)
         {
             actionPanel.ActionSelected -= OnActionSelected;
-            orderPanel.UnitSelected -= UnitSelected;
 
             return UniTask.CompletedTask;
         }
-
-        public event Action<NonebAction?>? ActionSelected;
-        public event Action<UnitData?>? UnitSelected;
 
         public async UniTask SelectAction(NonebAction? action)
         {
@@ -115,6 +107,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token),
                 detailsPanel.Show(unit, linkedCts.Token)
             );
+            await SelectAction(null);
         }
 
         public async UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default)
@@ -125,37 +118,44 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private void RefreshControlMode()
         {
-            _executeActionFlowCts?.Cancel();
+            _controlModeCts?.Cancel();
+            _controlModeCts = new CancellationTokenSource();
             if (SelectedAction == null)
             {
                 if (InspectingUnit.Speed > 0)
-                    _worldSpaceInputControl.ToMovementMode(InspectingUnit);
+                    MovementFlow(_controlModeCts.Token).Forget();
                 else
-                    _worldSpaceInputControl.ToTileInspectionMode();
+                    InspectTileFlow(_controlModeCts.Token).Forget();
             }
             else
             {
-                _executeActionFlowCts = new CancellationTokenSource();
-                ExecuteActionFlow(_executeActionFlowCts.Token).Forget();
+                ExecuteActionFlow(_controlModeCts.Token).Forget();
             }
         }
+
+        private async UniTask MovementFlow(CancellationToken ct = default)
+        {
+            var input = await _worldSpaceInputControl.GetInputForAction(InspectingUnit, ActionDatas.Move, ct);
+            ct.ThrowIfCancellationRequested();
+
+            MakeActionDecision(ActionDatas.Move, input);
+        }
+
+        private async UniTask InspectTileFlow(CancellationToken ct = default) =>
+            //todo: tile click -> inspect
+            _worldSpaceInputControl.ToTileInspectionMode();
 
         private async UniTask ExecuteActionFlow(CancellationToken ct = default)
         {
             if (SelectedAction == null) return;
 
             var input = await _worldSpaceInputControl.GetInputForAction(InspectingUnit, SelectedAction, ct);
-            MakeActionDecision(input);
-            //todo: do something with that input mate.
+            ct.ThrowIfCancellationRequested();
+
+            MakeActionDecision(SelectedAction, input);
         }
 
-        //TODO: work out the inject process with strong ioc.
-        public void RefreshForNewTurn()
-        {
-            ShowCurrentTurnUnit().Forget();
-        }
-
-        private async UniTask ShowCurrentTurnUnit()
+        public async UniTask ShowCurrentTurnUnit()
         {
             await UniTask.WhenAll(
                 ShowUnit(_unitTurnOrderer.CurrentUnit, true),
@@ -163,21 +163,16 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             );
         }
 
-        private void MakeActionDecision(IEnumerable<Coordinate> coordinates)
+        private void MakeActionDecision(NonebAction action, IEnumerable<Coordinate> coordinates)
         {
-            if (SelectedAction == null)
-            {
-                Log.Error("Selected action is null - how did you even get here?");
-                return;
-            }
-
-            var decision = new ActionDecision(SelectedAction, InspectingUnit, coordinates);
+            var decision = new ActionDecision(action, InspectingUnit, coordinates);
             _agent.SetDecision(decision);
             //todo: need to transition into another state menu but we can do that later.
         }
 
         private void EndTurn()
         {
+            //todo: at some point we need noneb button, which prevent spam click from breaking the UI, I can't be asked to deal with it every single time.
             _agent.SetDecision(EndTurnDecision.Instance);
         }
 

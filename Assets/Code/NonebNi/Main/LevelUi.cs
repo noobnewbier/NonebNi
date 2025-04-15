@@ -4,6 +4,7 @@ using NonebNi.Core.Agents;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
@@ -71,9 +72,9 @@ namespace NonebNi.Main
             _levelFlowController.NewTurnStarted -= OnNewTurnStarted;
         }
 
-        private void OnNewTurnStarted()
+        private void OnNewTurnStarted(UnitData currentUnit)
         {
-            _hud.RefreshForNewTurn();
+            _hud.RefreshForNewTurn(currentUnit);
         }
 
         #region Camera Initialization

@@ -4,6 +4,7 @@ using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Sequences;
+using NonebNi.Core.Units;
 using Unity.Logging;
 
 namespace NonebNi.Core.FlowControl
@@ -15,7 +16,7 @@ namespace NonebNi.Core.FlowControl
         ISequencePlayer SequencePlayer { get; }
         IUnitTurnOrderer UnitTurnOrderer { get; }
         UniTask Run();
-        event Action NewTurnStarted;
+        event TurnStarted NewTurnStarted;
     }
 
     public class LevelFlowController : ILevelFlowController
@@ -51,12 +52,11 @@ namespace NonebNi.Core.FlowControl
             var turnNum = 0; //Mostly for debug purposes - but probably necessary for UI at some point
             while (true)
             {
-                NewTurnStarted?.Invoke();
-
                 var currentUnit = UnitTurnOrderer.CurrentUnit;
                 Log.Info($"[Level] Turn {turnNum}, {currentUnit.Name}'s turn");
-
                 currentUnit.RestoreMovement();
+
+                NewTurnStarted?.Invoke(currentUnit);
 
                 // ReSharper disable RedundantAssignment - Can't declare value tuple without assigning
                 (IDecisionValidator.Error? err, var command) = (null, NullCommand.Instance);
@@ -85,6 +85,6 @@ namespace NonebNi.Core.FlowControl
             // ReSharper disable once FunctionNeverReturns
         }
 
-        public event Action? NewTurnStarted;
+        public event ILevelFlowController.TurnStarted NewTurnStarted;
     }
 }
