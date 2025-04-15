@@ -45,9 +45,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202082920628459
+                rid: 9202202380075532429
             <Effects>k__BackingField:
-            - rid: 9202202082920628460
+            - rid: 9202202380075532430
           - <Id>k__BackingField: shoot
             <FatigueCost>k__BackingField: 1
             <Icon>k__BackingField: {fileID: 0}
@@ -57,9 +57,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202082920628461
+                rid: 9202202380075532431
             <Effects>k__BackingField:
-            - rid: 9202202082920628462
+            - rid: 9202202380075532432
           - <Id>k__BackingField: lure
             <FatigueCost>k__BackingField: 1
             <Icon>k__BackingField: {fileID: 0}
@@ -69,9 +69,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202082920628463
+                rid: 9202202380075532433
             <Effects>k__BackingField:
-            - rid: 9202202082920628464
+            - rid: 9202202380075532434
           <Stats>k__BackingField:
             stats:
             - <ID>k__BackingField: health
@@ -228,9 +228,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202082920628459
+                rid: 9202202380075532429
             <Effects>k__BackingField:
-            - rid: 9202202082920628460
+            - rid: 9202202380075532430
           - <Id>k__BackingField: shoot
             <FatigueCost>k__BackingField: 1
             <Icon>k__BackingField: {fileID: 0}
@@ -240,9 +240,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202082920628461
+                rid: 9202202380075532431
             <Effects>k__BackingField:
-            - rid: 9202202082920628462
+            - rid: 9202202380075532432
           - <Id>k__BackingField: lure
             <FatigueCost>k__BackingField: 1
             <Icon>k__BackingField: {fileID: 0}
@@ -252,9 +252,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202082920628463
+                rid: 9202202380075532433
             <Effects>k__BackingField:
-            - rid: 9202202082920628464
+            - rid: 9202202380075532434
           <Stats>k__BackingField:
             stats:
             - <ID>k__BackingField: health
@@ -680,21 +680,30 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 9202202082920628459
+    - rid: 9202202380075532429
       type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 9202202082920628460
+    - rid: 9202202380075532430
       type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9202202082920628461
+      data:
+        distance: 1
+    - rid: 9202202380075532431
       type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 9202202082920628462
+    - rid: 9202202380075532432
       type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9202202082920628463
+      data:
+        _animId: shoot
+        _damages:
+        - rid: 9202202380075532435
+    - rid: 9202202380075532433
       type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 9202202082920628464
+    - rid: 9202202380075532434
       type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
+    - rid: 9202202380075532435
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statType: 1
