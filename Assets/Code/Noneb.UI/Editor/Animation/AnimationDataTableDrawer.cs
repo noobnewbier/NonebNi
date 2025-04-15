@@ -10,21 +10,21 @@ namespace Noneb.UI.Editor.Animation
     {
         private SerializedProperty? _animIdAndDataProperty;
 
-        private void Init(SerializedProperty property)
+        private void FindProperties(SerializedProperty property)
         {
-            _animIdAndDataProperty ??= property.NFindPropertyRelative("animIdAndData")!;
+            _animIdAndDataProperty = property.NFindPropertyRelative("animIdAndData")!;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            Init(property);
+            FindProperties(property);
 
             EditorGUI.PropertyField(position, _animIdAndDataProperty, label);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            Init(property);
+            FindProperties(property);
 
             return EditorGUI.GetPropertyHeight(_animIdAndDataProperty, label);
         }

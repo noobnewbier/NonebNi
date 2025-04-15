@@ -1,4 +1,5 @@
-﻿using Noneb.UI.Animation;
+﻿using System.Collections.Generic;
+using Noneb.UI.Animation;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -8,37 +9,29 @@ namespace Noneb.UI.Editor.Animation
     [CustomPropertyDrawer(typeof(AnimationData))]
     public class AnimationDataDrawer : PropertyDrawer
     {
-        private SerializedProperty? _finishAnimLayerProperty;
-        private SerializedProperty? _finishAnimStateProperty;
-        private SerializedProperty? _isRootMotionProperty;
-        private SerializedProperty? _nameProperty;
-
-        private AnyTypeAnimatorParameterPicker? _parameterPicker;
-        private SerializedProperty? _targetBoolValueProperty;
-        private SerializedProperty? _targetNumericValueProperty;
-        private SerializedProperty? _typeProperty;
+        private static readonly Dictionary<string, AnyTypeAnimatorParameterPicker> PickersCache = new();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             #region Init
 
-            _parameterPicker ??= CreateNewPicker(property, label)!;
-            _nameProperty ??= property.NFindPropertyRelative(nameof(AnimationData.Name))!;
-            _isRootMotionProperty ??= property.NFindPropertyRelative(nameof(AnimationData.IsRootMotion))!;
-            _typeProperty ??= property.NFindPropertyRelative("type")!;
-            _finishAnimStateProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimState))!;
-            _finishAnimLayerProperty ??= property.NFindPropertyRelative(nameof(AnimationData.FinishAnimLayerIndex))!;
-            _targetBoolValueProperty ??= property.NFindPropertyRelative(nameof(AnimationData.TargetBoolValue))!;
-            _targetNumericValueProperty ??= property.NFindPropertyRelative(nameof(AnimationData.TargetNumericValue))!;
+            var parameterPicker = GetOrCreatePicker(property, label);
+            var nameProperty = property.NFindPropertyRelative(nameof(AnimationData.Name));
+            var isRootMotionProperty = property.NFindPropertyRelative(nameof(AnimationData.IsRootMotion))!;
+            var typeProperty = property.NFindPropertyRelative("type")!;
+            var finishAnimStateProperty = property.NFindPropertyRelative(nameof(AnimationData.FinishAnimState))!;
+            var finishAnimLayerProperty = property.NFindPropertyRelative(nameof(AnimationData.FinishAnimLayerIndex))!;
+            var targetBoolValueProperty = property.NFindPropertyRelative(nameof(AnimationData.TargetBoolValue))!;
+            var targetNumericValueProperty = property.NFindPropertyRelative(nameof(AnimationData.TargetNumericValue))!;
 
             #endregion
 
             position.height = EditorGUIUtility.singleLineHeight;
-            if (_parameterPicker == null)
+            if (parameterPicker == null)
             {
                 GUI.Label(position, "Unable to find animator, check your prefab setup.", NonebGUIStyle.Error);
             }
-            else if (_nameProperty == null)
+            else if (nameProperty == null)
             {
                 GUI.Label(position, "Unable to find all properties, something went wrong.", NonebGUIStyle.Error);
             }
@@ -60,7 +53,7 @@ namespace Noneb.UI.Editor.Animation
                     pickerRect = NonebEditorUtils.ShiftRect(pickerRect, NonebEditorUtils.FoldoutIconWidth);
                 }
 
-                _parameterPicker.Draw(pickerRect, _nameProperty, _typeProperty);
+                parameterPicker.Draw(pickerRect, nameProperty, typeProperty);
             }
 
 
@@ -71,24 +64,24 @@ namespace Noneb.UI.Editor.Animation
                     position = EditorGUI.IndentedRect(position);
 
                     position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                    EditorGUI.PropertyField(position, _isRootMotionProperty, true);
+                    EditorGUI.PropertyField(position, isRootMotionProperty, true);
 
-                    var paramType = _typeProperty?.GetEnumValueFromProperty<AnimatorControllerParameterType>();
+                    var paramType = typeProperty?.GetEnumValueFromProperty<AnimatorControllerParameterType>();
                     var haveStateTransition = paramType is AnimatorControllerParameterType.Bool or AnimatorControllerParameterType.Trigger; //TODO: this feels like a mis-design
                     using (new EditorGUI.DisabledScope(!haveStateTransition))
                     {
                         position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                        EditorGUI.PropertyField(position, _finishAnimLayerProperty, true);
+                        EditorGUI.PropertyField(position, finishAnimLayerProperty, true);
 
                         position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                        EditorGUI.PropertyField(position, _finishAnimStateProperty, true);
+                        EditorGUI.PropertyField(position, finishAnimStateProperty, true);
                     }
 
                     var isBoolType = paramType is AnimatorControllerParameterType.Bool;
                     using (new EditorGUI.DisabledScope(!isBoolType))
                     {
                         position.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                        EditorGUI.PropertyField(position, _targetBoolValueProperty, true);
+                        EditorGUI.PropertyField(position, targetBoolValueProperty, true);
                     }
 
                     var isNumericType = paramType is AnimatorControllerParameterType.Int or AnimatorControllerParameterType.Float;
@@ -98,12 +91,12 @@ namespace Noneb.UI.Editor.Animation
                         if (paramType is AnimatorControllerParameterType.Int)
                             using (var check = new EditorGUI.ChangeCheckScope())
                             {
-                                _targetNumericValueProperty.floatValue = EditorGUI.IntField(position, (int)_targetNumericValueProperty.floatValue);
+                                targetNumericValueProperty.floatValue = EditorGUI.IntField(position, (int)targetNumericValueProperty.floatValue);
 
-                                if (check.changed) _targetNumericValueProperty.serializedObject.ApplyModifiedProperties();
+                                if (check.changed) targetNumericValueProperty.serializedObject.ApplyModifiedProperties();
                             }
                         else
-                            EditorGUI.PropertyField(position, _targetNumericValueProperty, true);
+                            EditorGUI.PropertyField(position, targetNumericValueProperty, true);
                     }
                 }
             }
@@ -116,7 +109,7 @@ namespace Noneb.UI.Editor.Animation
             return EditorGUIUtility.singleLineHeight * 6 + EditorGUIUtility.standardVerticalSpacing * 5;
         }
 
-        private static AnyTypeAnimatorParameterPicker? CreateNewPicker(SerializedProperty property, GUIContent label)
+        private static AnyTypeAnimatorParameterPicker? GetOrCreatePicker(SerializedProperty property, GUIContent label)
         {
             var animator = EditorTimeAnimatorFinder.FindForInspector(property, string.Empty, true);
             if (animator == null) return null;
@@ -124,8 +117,9 @@ namespace Noneb.UI.Editor.Animation
             var controller = animator.runtimeAnimatorController;
             if (controller == null) return null;
 
-            var newPicker = new AnyTypeAnimatorParameterPicker(controller, label);
-            return newPicker;
+            if (!PickersCache.TryGetValue(property.propertyPath, out var picker)) PickersCache[property.propertyPath] = picker = new AnyTypeAnimatorParameterPicker(controller, label);
+
+            return picker;
         }
     }
 }
