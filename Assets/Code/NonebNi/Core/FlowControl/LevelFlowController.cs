@@ -1,5 +1,4 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
@@ -11,6 +10,8 @@ namespace NonebNi.Core.FlowControl
 {
     public interface ILevelFlowController
     {
+        delegate void TurnStarted(UnitData currentUnit);
+
         IAgentsService AgentsService { get; }
         ICommandEvaluationService EvaluationService { get; }
         ISequencePlayer SequencePlayer { get; }
@@ -73,11 +74,18 @@ namespace NonebNi.Core.FlowControl
 
 
                 Log.Info($"[Level] Evaluate Command: {command.GetType()}");
-                var sequences = EvaluationService.Evaluate(command);
-                await SequencePlayer.Play(sequences);
+                //TODO: preferrably there is an auto end turn button which ends turn when there's absolutely nothing you can do, hard to implement without being annoying though
+                if (command is EndTurnCommand)
+                {
+                    turnNum++;
+                    UnitTurnOrderer.ToNextUnit();
+                }
+                else
+                {
+                    var sequences = EvaluationService.Evaluate(command);
+                    await SequencePlayer.Play(sequences);
+                }
 
-                turnNum++;
-                UnitTurnOrderer.ToNextUnit();
                 Log.Info("[Level] Finished Evaluation");
             }
 
