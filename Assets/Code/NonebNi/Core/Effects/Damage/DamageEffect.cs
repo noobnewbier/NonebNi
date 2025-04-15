@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Sequences;
 using NonebNi.Core.Units;
+using UnityEngine;
 
 namespace NonebNi.Core.Effects
 {
     //TODO: implement all those effecto
+    [Serializable]
     public class DamageEffect : Effect
     {
-        private readonly string _animId;
+        [SerializeField] private string _animId;
 
         //https://www.notion.so/Action-System-eda1779accf74f97906f1cf9047f9506?pvs=4
-        private readonly Damage[] _damages;
+        [SerializeReference] private Damage[] _damages;
 
         public DamageEffect(string animId, params Damage[] damages)
         {

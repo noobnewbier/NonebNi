@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace NonebNi.Core.Effects
 {
+    [Serializable]
     public class StatBasedDamage : Damage
     {
         public enum StatType
@@ -14,13 +15,13 @@ namespace NonebNi.Core.Effects
             Focus
         }
 
-        private readonly float _ratio;
-        private readonly StatType _statType;
+        [SerializeField] private float ratio;
+        [SerializeField] private StatType statType;
 
         public StatBasedDamage(float ratio, StatType statType)
         {
-            _ratio = ratio;
-            _statType = statType;
+            this.ratio = ratio;
+            this.statType = statType;
         }
 
         public override int CalculateDamage(EntityData actionCaster, EntityData target)
@@ -31,14 +32,14 @@ namespace NonebNi.Core.Effects
                 return 0;
             }
 
-            var stat = _statType switch
+            var stat = statType switch
             {
                 StatType.Focus => unitData.Focus,
                 StatType.Strength => unitData.Strength,
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            var rawDamage = stat * _ratio;
+            var rawDamage = stat * ratio;
             if (target is not UnitData targetUnit)
             {
                 Log.Error(

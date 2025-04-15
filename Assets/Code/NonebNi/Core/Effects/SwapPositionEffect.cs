@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
@@ -7,6 +8,7 @@ using Unity.Logging;
 
 namespace NonebNi.Core.Effects
 {
+    [Serializable]
     public class SwapPositionEffect : Effect
     {
         public class Evaluator : Evaluator<SwapPositionEffect>
