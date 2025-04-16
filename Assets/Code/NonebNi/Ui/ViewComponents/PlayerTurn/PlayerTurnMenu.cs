@@ -210,7 +210,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         {
             async UniTaskVoid Do()
             {
-                var isActiveUnit = _unitTurnOrderer.CurrentUnit == _selectedUnit;
+                var isActiveUnit = _selectedUnit == _data?.ActiveUnit;
                 await ShowUnit(unit, isActiveUnit);
             }
 
