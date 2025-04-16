@@ -93,6 +93,6 @@ namespace NonebNi.Core.FlowControl
             // ReSharper disable once FunctionNeverReturns
         }
 
-        public event ILevelFlowController.TurnStarted NewTurnStarted;
+        public event ILevelFlowController.TurnStarted? NewTurnStarted;
     }
 }
