@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Localization.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Stats;
@@ -15,7 +16,7 @@ namespace NonebNi.Core.Units
         [SerializeField] private NonebAction[] actions;
         [field: SerializeField] public StatsCollection Stats { get; private set; } = new();
 
-        public UnitData(string name) : this(
+        public UnitData(NonebLocString name) : this(
             System.Guid.NewGuid(),
             Array.Empty<NonebAction>(),
             Sprite.Create(Texture2D.redTexture, new Rect(0, 0, 1, 1), Vector2.zero),
@@ -37,7 +38,7 @@ namespace NonebNi.Core.Units
             Guid guid,
             IReadOnlyCollection<NonebAction> actions,
             Sprite icon,
-            string name,
+            NonebLocString name,
             string factionId,
             int maxHealth,
             int health,
