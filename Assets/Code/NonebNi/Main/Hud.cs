@@ -41,8 +41,7 @@ namespace NonebNi.Main
                 unitTurnOrderer
             );
 
-            //todo: need to await
-            _stack.Push(playerTurnMenu).Forget();
+            RefreshForNewTurn(unitTurnOrderer.CurrentUnit);
         }
 
         public void RefreshForNewTurn(UnitData currentUnit)
@@ -52,10 +51,7 @@ namespace NonebNi.Main
             {
                 if (currentUnit.FactionId == _agent.Faction.Id)
                 {
-                    if (!_stack.IsCurrentComponent(playerTurnMenu))
-                        await _stack.ReplaceCurrent(playerTurnMenu);
-                    else
-                        await playerTurnMenu.ShowCurrentTurnUnit();
+                    await _stack.ReplaceCurrent(playerTurnMenu, new IPlayerTurnMenu.Data(currentUnit));
                 }
                 else
                 {
