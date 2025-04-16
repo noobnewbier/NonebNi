@@ -13,6 +13,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private StatWidget initWidget = null!;
         [SerializeField] private StatWidget speedWidget = null!;
         [SerializeField] private TextMeshProUGUI nameLabel = null!;
+        [SerializeField] private TextMeshProUGUI factionLabel = null!;
 
         public async UniTask Show(UnitData data, CancellationToken ct = default)
         {
@@ -21,7 +22,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             var (_, initiative) = data.Stats.FindStat("initiative");
             var (_, speed) = data.Stats.FindStat("speed");
 
-            nameLabel.text = data.Name;
+            nameLabel.text = data.Name.GetLocalized();
+            factionLabel.text = data.FactionId;
             healthWidget.Show(health);
             fatigueWidget.Show(fatigue);
             initWidget.Show(initiative);
