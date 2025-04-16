@@ -40,7 +40,7 @@ namespace Noneb.UI.View
         //TODO: we probs want to log everything that happens in a UI stack
         //TODO: could be useful for ui stack to have a name for debug purposes.
 
-        private readonly Stack<INonebView> _stack = new();
+        private readonly Stack<ViewStack> _stack = new();
 
         //TODO: is a collection?
         private readonly Dictionary<string, UIStack> _subStacks = new(); //TODO: init/maintain/refresh this, seems like we can hook into unity's event life cycle somewhat? probs better to make this process explicit?
@@ -57,7 +57,7 @@ namespace Noneb.UI.View
             {
                 if (!_stack.TryPeek(out var current)) return null;
 
-                return current;
+                return current.View;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Noneb.UI.View
 
             while (_stack.Any())
             {
-                var view = _stack.Pop();
+                var (view, _) = _stack.Pop();
                 await view.TearDown();
             }
 
@@ -114,78 +114,49 @@ namespace Noneb.UI.View
             foreach (var (name, subStack) in _subStacks) yield return (name, subStack);
         }
 
-        public IEnumerable<INonebView> GetViews() => _stack;
+        public IEnumerable<INonebView> GetViews() => _stack.Select(t => t.View);
 
-        public async UniTask Push(IViewComponent component)
+        public async UniTask Push(IViewComponent component, object? viewData = null)
         {
             var view = FindViewFromComponent(component);
             if (view == null) return;
 
-            await Push(view);
+            await Push(view, viewData);
         }
 
-        public async UniTask Push(INonebView nextView)
+        public async UniTask Push(INonebView nextView, object? viewData = null)
         {
             //TODO: which makes more sense/separate method or parameter overlay
             //Handles everything
-            _ = _stack.TryPeek(out var currentView);
-            _stack.Push(nextView);
+            _ = _stack.TryPeek(out var currentViewStack);
+            var nextViewStack = new ViewStack(nextView, viewData);
+            _stack.Push(nextViewStack);
 
-            var request = new TransitionRequest(DoTransition, new TransitionRequestInfo("Push", nextView.Name));
+            var request = new TransitionRequest(() => Transition(currentViewStack.View, nextViewStack), new TransitionRequestInfo("Push", nextView.Name));
             await RequestTransition(request);
-            return;
-
-            async UniTask DoTransition()
-            {
-                if (currentView != null)
-                {
-                    await currentView.Leave(nextView);
-                    await currentView.Deactivate();
-                }
-
-                if (nextView is NonebViewBehaviour component)
-                    //TODO: code smell
-                    component.transform.SetParent(_root.transform);
-
-                await nextView.Init();
-                await nextView.Activate();
-                await nextView.Enter(currentView);
-            }
         }
 
-        public async UniTask ReplaceCurrent(IViewComponent component)
+        public async UniTask ReplaceCurrent(IViewComponent component, object? viewData = null)
         {
             var view = FindViewFromComponent(component);
             if (view == null) return;
 
-            await ReplaceCurrent(view);
+            await ReplaceCurrent(view, viewData);
         }
 
-        public async UniTask ReplaceCurrent(INonebView nextView)
+        public async UniTask ReplaceCurrent(INonebView nextView, object? viewData = null)
         {
+            //todo: how do I handle cases like this where I only need minimal change on the UI?
             if (CurrentView == nextView)
                 // Nothing to replace - we are already the same chap
                 return;
 
-            _ = _stack.TryPop(out var currentView);
-            _stack.Push(nextView);
+            _ = _stack.TryPop(out var currentViewStack);
+            var nextViewStack = new ViewStack(nextView, viewData);
+            _stack.Push(nextViewStack);
 
-            var request = new TransitionRequest(DoTransition, new TransitionRequestInfo("ReplaceCurrent", nextView.Name));
+            var request = new TransitionRequest(() => Transition(currentViewStack?.View, nextViewStack), new TransitionRequestInfo("ReplaceCurrent", nextView.Name));
             await RequestTransition(request);
-            return;
-
-            async UniTask DoTransition()
-            {
-                if (currentView != null)
-                {
-                    await currentView.Leave(nextView);
-                    await currentView.Deactivate();
-                }
-
-                await nextView.Init();
-                await nextView.Activate();
-                await nextView.Enter(currentView);
-            }
         }
 
         public async UniTask Pop()
@@ -197,24 +168,22 @@ namespace Noneb.UI.View
             }
 
 
-            var currentView = _stack.Pop();
-            _ = _stack.TryPeek(out var nextView);
+            var currentViewStack = _stack.Pop();
+            _ = _stack.TryPeek(out var nextViewStack);
 
-            var request = new TransitionRequest(DoTransition, new TransitionRequestInfo("Pop", null));
+            var request = new TransitionRequest(() => Transition(currentViewStack.View, nextViewStack), new TransitionRequestInfo("Pop", null));
             await RequestTransition(request);
-            return;
+        }
 
-            async UniTask DoTransition()
+        private async UniTask Transition(INonebView? currentView, ViewStack? nextViewStack)
+        {
+            if (currentView == null && nextViewStack == null) Log.Warning("This is an noop and likely not what you wanted");
+
+            if (currentView != null) await LeaveCurrentView(currentView, nextViewStack?.View);
+
+            if (nextViewStack != null)
             {
-                await currentView.Leave(nextView);
-                await currentView.Deactivate();
-
-                if (nextView != null)
-                {
-                    await nextView.Init();
-                    await nextView.Activate();
-                    await nextView.Enter(currentView);
-                }
+                await EnterNextView(currentView, nextViewStack.View, nextViewStack.ViewData);
             }
         }
 
@@ -251,6 +220,22 @@ namespace Noneb.UI.View
             await UniTask.WaitUntil(() => transitionRequest.IsDone, cancellationToken: _cts.Token);
         }
 
+        private async UniTask LeaveCurrentView(INonebView currentView, INonebView? nextView)
+        {
+            await currentView.Leave(currentView, nextView);
+            await currentView.Deactivate();
+        }
+
+        private async UniTask EnterNextView(INonebView? previousView, INonebView nextView, object? viewData)
+        {
+            if (nextView is NonebViewBehaviour component)
+                component.transform.SetParent(_root.transform);
+
+            await nextView.Init();
+            await nextView.Activate(viewData);
+            await nextView.Enter(previousView, nextView);
+        }
+
         private record TransitionRequest(Func<UniTask> Task, TransitionRequestInfo Info)
         {
             public bool IsDone { get; set; }
@@ -261,5 +246,7 @@ namespace Noneb.UI.View
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public record TransitionRequestInfo(string OperationName, string? ParameterViewName);
+
+        private record ViewStack(INonebView View, object? ViewData);
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Noneb.UI.View
 {
-    public class UIActivityHandler : MonoBehaviour, IViewComponent
+    public class UIActivityHandler : MonoBehaviour, IViewComponent<NullViewData>
     {
         [SerializeField] private CanvasGroup canvasGroup = null!;
 
@@ -16,7 +16,7 @@ namespace Noneb.UI.View
         }
 
         //TODO: probs need overlay check...
-        public UniTask OnViewActivate()
+        public UniTask OnViewActivate(NullViewData? _)
         {
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = _canBlockRaycast;

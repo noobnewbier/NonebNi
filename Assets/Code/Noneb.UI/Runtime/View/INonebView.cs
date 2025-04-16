@@ -45,29 +45,29 @@ namespace Noneb.UI.View
 
         //TODO: handle overlay
         //TODO: cancellation token? does it makes sense?
-        internal async UniTask Enter(INonebView? previousView)
+        internal async UniTask Enter(INonebView? previousView, INonebView nextView)
         {
             //TODO: what's the relationship with substacks here...
             //TODO: dk what i need more but feels like i missed sth
 
             var handlers = FindViewComponents();
-            var enterTasks = handlers.Select(h => h.OnViewEnter(previousView));
+            var enterTasks = handlers.Select(h => h.OnViewEnter(previousView, nextView));
             await UniTask.WhenAll(enterTasks);
         }
 
-        internal async UniTask Leave(INonebView? nextView)
+        internal async UniTask Leave(INonebView currentView, INonebView? nextView)
         {
             var handlers = FindViewComponents();
-            var exitTasks = handlers.Select(h => h.OnViewLeave(nextView));
+            var exitTasks = handlers.Select(h => h.OnViewLeave(currentView, nextView));
             await UniTask.WhenAll(exitTasks);
         }
 
-        internal async UniTask Activate()
+        internal async UniTask Activate(object? viewData)
         {
             SetActive(true);
 
             var handlers = FindViewComponents();
-            var activateTasks = handlers.Select(h => h.OnViewActivate());
+            var activateTasks = handlers.Select(h => h.OnViewActivate(viewData));
             await UniTask.WhenAll(activateTasks);
 
             var childElements = FindChildElements();
