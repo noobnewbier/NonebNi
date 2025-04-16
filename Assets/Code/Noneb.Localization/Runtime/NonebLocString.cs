@@ -22,6 +22,10 @@ namespace Noneb.Localization.Runtime
 
         public string GetLocalized() => debugString;
 
+        public override string ToString() => GetLocalized();
+
+        public static implicit operator string(NonebLocString locString) => locString.GetLocalized();
+
         public static implicit operator NonebLocString(string debugValue) => new(debugValue);
     }
 }
