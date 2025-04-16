@@ -104,21 +104,17 @@ namespace NonebNi.Develop
                 _buffer = new CircularBuffer<UnitData>(unitsInOrder);
             }
 
-            public UnitData CurrentUnit => _buffer.Current;
-
             public IEnumerable<UnitData> UnitsInOrder => _buffer;
+
+            public UnitData CurrentUnit => _buffer.Current;
             public UnitData ToNextUnit() => _buffer.MoveNext();
+            public IEnumerable<UnitData> GetActOrderForTurns(int turn) => _buffer;
         }
 
         private class MockInputControl : IPlayerTurnWorldSpaceInputControl
         {
             public string mode;
             public Coordinate? FindHoveredCoordinate() => null;
-
-            public void ToMovementMode(UnitData mover)
-            {
-                mode = "movement";
-            }
 
             public UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default)
             {
@@ -132,6 +128,11 @@ namespace NonebNi.Develop
             }
 
             public void UpdateTargetSelection() { }
+
+            public void ToMovementMode(UnitData mover)
+            {
+                mode = "movement";
+            }
         }
 
         private class MockCameraController : ICameraController

@@ -119,17 +119,21 @@ namespace NonebNi.Develop
 
         private void TestMovementFlow()
         {
-            _testInputs = null;
-            _control.ToMovementMode(_unitData);
+            TestActionFlow(ActionDatas.Move);
         }
 
         private void TestInputFlow()
+        {
+            TestActionFlow(_actionBuffer.Current);
+        }
+
+        private void TestActionFlow(NonebAction action)
         {
             async UniTask Do(CancellationToken ct)
             {
                 _testInputs = null;
 
-                var inputs = await _control.GetInputForAction(_unitData, _actionBuffer.Current, ct);
+                var inputs = await _control.GetInputForAction(_unitData, action, ct);
                 _testInputs = inputs.ToArray();
             }
 
