@@ -11,7 +11,6 @@ using NonebNi.Core.Maps;
 using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
-using Unity.Logging;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,7 +23,10 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     //TODO: root handle
     //TODO: someone to init/inject dependencies
     //TODO: clear up folder structure -> make assets feature based as it's confusing the crap out of me, code can stay where it is though. 
-    public interface IPlayerTurnMenu : IViewComponent { }
+    public interface IPlayerTurnMenu : IViewComponent<IPlayerTurnMenu.Data>
+    {
+        public record Data(UnitData ActiveUnit);
+    }
 
     public class PlayerTurnMenu : MonoBehaviour, IPlayerTurnMenu
     {
@@ -40,6 +42,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         private ICameraController _cameraController = null!;
         private CancellationTokenSource? _controlModeCts;
         private ICoordinateAndPositionService _coordinateAndPositionService = null!;
+
+        private IPlayerTurnMenu.Data? _data;
         private IReadOnlyMap _map = null!;
         private UnitData? _selectedUnit;
         private IUnitTurnOrderer _unitTurnOrderer = null!;
@@ -63,42 +67,47 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             endTurnButton.onClick.AddListener(EndTurn);
         }
 
-        public UnitData InspectingUnit
-        {
-            get
-            {
-                if (_selectedUnit != null) return _selectedUnit;
-
-                return _unitTurnOrderer.CurrentUnit;
-            }
-        }
-
         public NonebAction? SelectedAction { get; private set; }
 
-        public async UniTask OnViewEnter(INonebView? previousView)
+        public UniTask OnViewActivate(IPlayerTurnMenu.Data? viewData)
         {
+            _data = viewData;
+
             actionPanel.ActionSelected += OnActionSelected;
             orderPanel.UnitSelected += OnUnitSelected;
-
-            await ShowCurrentTurnUnit();
+            return UniTask.CompletedTask;
         }
 
-        public UniTask OnViewLeave(INonebView? nextView)
+        public async UniTask OnViewEnter(INonebView? previousView, INonebView currentView)
+        {
+            if (_data == null) return;
+
+            //todo: current unit timing issue -> we need to pass in data as the push pop happens
+            await UniTask.WhenAll(
+                ShowUnit(_data.ActiveUnit, true),
+                ShowActOrder(_unitTurnOrderer.GetActOrderForTurns(10))
+            );
+        }
+
+        public UniTask OnViewDeactivate()
         {
             actionPanel.ActionSelected -= OnActionSelected;
+            orderPanel.UnitSelected -= OnUnitSelected;
 
             return UniTask.CompletedTask;
         }
 
-        public async UniTask SelectAction(NonebAction? action)
+        private async UniTask SelectAction(NonebAction? action)
         {
             SelectedAction = action;
             RefreshControlMode();
             await actionPanel.Highlight(action);
         }
 
-        public async UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default)
+        private async UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default)
         {
+            _selectedUnit = unit;
+
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
 
             var targetUnitPos = FindUnitPosition(unit);
@@ -110,19 +119,25 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             await SelectAction(null);
         }
 
-        public async UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default)
+        private async UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default)
         {
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
             await orderPanel.Show(unitsInOrder, linkedCts.Token);
         }
 
+        //todo: something is wrong with the inspected unit, is it with DI doing weird stuffs?
         private void RefreshControlMode()
         {
             _controlModeCts?.Cancel();
             _controlModeCts = new CancellationTokenSource();
+
+            if (_selectedUnit == null)
+                // We ain't controlling nothing
+                return;
+
             if (SelectedAction == null)
             {
-                if (InspectingUnit.Speed > 0)
+                if (_selectedUnit == _data?.ActiveUnit && _selectedUnit.Speed > 0)
                     MovementFlow(_controlModeCts.Token).Forget();
                 else
                     InspectTileFlow(_controlModeCts.Token).Forget();
@@ -135,7 +150,9 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private async UniTask MovementFlow(CancellationToken ct = default)
         {
-            var input = await _worldSpaceInputControl.GetInputForAction(InspectingUnit, ActionDatas.Move, ct);
+            if (_selectedUnit == null) return;
+
+            var input = await _worldSpaceInputControl.GetInputForAction(_selectedUnit, ActionDatas.Move, ct);
             ct.ThrowIfCancellationRequested();
 
             MakeActionDecision(ActionDatas.Move, input);
@@ -148,24 +165,19 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         private async UniTask ExecuteActionFlow(CancellationToken ct = default)
         {
             if (SelectedAction == null) return;
+            if (_selectedUnit == null) return;
 
-            var input = await _worldSpaceInputControl.GetInputForAction(InspectingUnit, SelectedAction, ct);
+            var input = await _worldSpaceInputControl.GetInputForAction(_selectedUnit, SelectedAction, ct);
             ct.ThrowIfCancellationRequested();
 
             MakeActionDecision(SelectedAction, input);
         }
 
-        public async UniTask ShowCurrentTurnUnit()
-        {
-            await UniTask.WhenAll(
-                ShowUnit(_unitTurnOrderer.CurrentUnit, true),
-                ShowActOrder(_unitTurnOrderer.UnitsInOrder)
-            );
-        }
-
         private void MakeActionDecision(NonebAction action, IEnumerable<Coordinate> coordinates)
         {
-            var decision = new ActionDecision(action, InspectingUnit, coordinates);
+            if (_selectedUnit == null) return;
+
+            var decision = new ActionDecision(action, _selectedUnit, coordinates);
             _agent.SetDecision(decision);
             //todo: need to transition into another state menu but we can do that later.
         }
@@ -194,20 +206,12 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Do().Forget();
         }
 
-        private void OnUnitSelected(UnitData? unit)
+        private void OnUnitSelected(UnitData unit)
         {
             async UniTaskVoid Do()
             {
-                if (unit == InspectingUnit) return;
-
-                //todo: make this more concise.
-                _selectedUnit = unit;
-
-                var isActiveUnit = _unitTurnOrderer.CurrentUnit == InspectingUnit;
-                await UniTask.WhenAll(
-                    ShowUnit(InspectingUnit, isActiveUnit),
-                    SelectAction(null)
-                );
+                var isActiveUnit = _unitTurnOrderer.CurrentUnit == _selectedUnit;
+                await ShowUnit(unit, isActiveUnit);
             }
 
             Do().Forget();
