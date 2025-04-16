@@ -16,5 +16,16 @@ MonoBehaviour:
   entityName: Newb
   health: 100
   maxHealth: 100
-  skillDataSource: []
-  initiative: 1
+  actionIds:
+  - bash
+  - shoot
+  - lure
+  initiative: 0
+  speed: 5
+  focus: 5
+  strength: 5
+  armor: 5
+  weaponRange: 5
+  fatigue: 0
+  maxFatigue: 0
+
