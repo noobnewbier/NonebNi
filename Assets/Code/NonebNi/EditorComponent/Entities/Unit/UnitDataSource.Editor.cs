@@ -32,6 +32,8 @@ namespace NonebNi.EditorComponent.Entities.Unit
 
                 _drawer.DrawProperty(nameof(health));
                 _drawer.DrawProperty(nameof(maxHealth));
+                _drawer.DrawProperty(nameof(icon));
+                _drawer.DrawProperty(nameof(entityName));
                 _drawer.DrawAutoCompleteProperty(
                     nameof(actionIds),
                     () => ActionDatas.Actions.Select(a => a.Id).ToArray()

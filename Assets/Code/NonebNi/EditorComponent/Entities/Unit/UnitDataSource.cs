@@ -60,9 +60,5 @@ namespace NonebNi.EditorComponent.Entities.Unit
                 )
             );
         }
-
-#if UNITY_EDITOR
-
-#endif
     }
 }
