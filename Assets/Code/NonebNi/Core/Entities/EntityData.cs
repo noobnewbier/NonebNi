@@ -1,4 +1,5 @@
 ﻿using System;
+using Noneb.Localization.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Tiles;
 using UnityEngine;
@@ -22,12 +23,12 @@ namespace NonebNi.Core.Entities
     [Serializable]
     public abstract class EntityData : IActionTarget
     {
-        [SerializeField] private string name;
+        [SerializeField] private NonebLocString name;
         [SerializeField] private SerializableGuid serializableGuid;
 
         [field: SerializeField] public string FactionId { get; private set; }
 
-        protected EntityData(string name, Guid serializableGuid, string factionId)
+        protected EntityData(NonebLocString name, Guid serializableGuid, string factionId)
         {
             this.name = name;
             this.serializableGuid = new SerializableGuid(serializableGuid);
@@ -37,10 +38,10 @@ namespace NonebNi.Core.Entities
         public abstract bool IsTileOccupier { get; }
 
         public SerializableGuid Guid => serializableGuid;
-        public string Name => name;
+        public NonebLocString Name => name;
 
         public bool IsSystem => this == SystemEntity.Instance;
 
-        public override string ToString() => Name;
+        public override string ToString() => Name.GetLocalized();
     }
 }
