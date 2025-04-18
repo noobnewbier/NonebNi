@@ -12,6 +12,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private StatWidget fatigueWidget = null!;
         [SerializeField] private StatWidget initWidget = null!;
         [SerializeField] private StatWidget speedWidget = null!;
+        [SerializeField] private StatWidget actionPointWidget = null!;
         [SerializeField] private TextMeshProUGUI nameLabel = null!;
         [SerializeField] private TextMeshProUGUI factionLabel = null!;
 
@@ -21,12 +22,14 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             var (_, fatigue) = data.Stats.FindStat("fatigue");
             var (_, initiative) = data.Stats.FindStat("initiative");
             var (_, speed) = data.Stats.FindStat("speed");
+            var (_, actionPoint) = data.Stats.FindStat("actionPoint");
 
             nameLabel.text = data.Name.GetLocalized();
             factionLabel.text = data.FactionId;
             healthWidget.Show(health);
             fatigueWidget.Show(fatigue);
             initWidget.Show(initiative);
+            actionPointWidget.Show(actionPoint);
             speedWidget.Show(speed);
         }
     }
