@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using NonebNi.Core.Stats;
 using NonebNi.Core.Units;
 using TMPro;
 using UnityEngine;
@@ -18,11 +19,11 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public async UniTask Show(UnitData data, CancellationToken ct = default)
         {
-            var (_, health) = data.Stats.FindStat("health");
-            var (_, fatigue) = data.Stats.FindStat("fatigue");
-            var (_, initiative) = data.Stats.FindStat("initiative");
-            var (_, speed) = data.Stats.FindStat("speed");
-            var (_, actionPoint) = data.Stats.FindStat("actionPoint");
+            var (_, health) = data.Stats.FindStat(StatId.Health);
+            var (_, fatigue) = data.Stats.FindStat(StatId.Fatigue);
+            var (_, initiative) = data.Stats.FindStat(StatId.Initiative);
+            var (_, speed) = data.Stats.FindStat(StatId.Speed);
+            var (_, actionPoint) = data.Stats.FindStat(StatId.ActionPoint);
 
             nameLabel.text = data.Name.GetLocalized();
             factionLabel.text = data.FactionId;
