@@ -30,7 +30,9 @@ namespace NonebNi.Develop
                 3,
                 3,
                 0,
-                10
+                10,
+                15,
+                1
             )
         );
 
@@ -50,7 +52,9 @@ namespace NonebNi.Develop
                 3,
                 3,
                 0,
-                10
+                10,
+                15,
+                1
             )
         );
 

@@ -87,7 +87,9 @@ namespace NonebNi.Develop
                 10,
                 3,
                 10,
-                50
+                50,
+                15,
+                1
             );
 
         private async UniTask ShowPattern(params UnitData[] units)

@@ -23,6 +23,8 @@ namespace NonebNi.EditorComponent.Entities.Unit
         [SerializeField] private int weaponRange;
         [SerializeField] private int fatigue;
         [SerializeField] private int maxFatigue;
+        [SerializeField] private int fatigueRecovery;
+        [SerializeField] private int maxActionPoint;
 
 
         public override EditorEntityData<UnitData> CreateData(Guid guid, string factionId)
@@ -56,7 +58,9 @@ namespace NonebNi.EditorComponent.Entities.Unit
                     armor,
                     weaponRange,
                     fatigue,
-                    maxFatigue
+                    maxFatigue,
+                    fatigueRecovery,
+                    maxActionPoint
                 )
             );
         }
