@@ -46,6 +46,7 @@ namespace NonebNi.EditorComponent.Entities.Unit
                 _drawer.DrawProperty(nameof(weaponRange));
                 _drawer.DrawProperty(nameof(fatigue));
                 _drawer.DrawProperty(nameof(maxFatigue));
+                _drawer.DrawProperty(nameof(maxActionPoint));
 
                 _drawer.Apply();
             }

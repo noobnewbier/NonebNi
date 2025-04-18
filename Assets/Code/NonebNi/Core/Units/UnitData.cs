@@ -31,7 +31,9 @@ namespace NonebNi.Core.Units
             0,
             0,
             0,
-            0
+            0,
+            1,
+            1
         ) { }
 
         public UnitData(
@@ -49,7 +51,9 @@ namespace NonebNi.Core.Units
             int armor,
             int weaponRange,
             int fatigue,
-            int maxFatigue) : base(name, guid, factionId)
+            int maxFatigue,
+            int fatigueRecovery,
+            int maxActionPoint) : base(name, guid, factionId)
         {
             this.icon = icon;
             this.actions = actions.ToArray();
@@ -62,6 +66,7 @@ namespace NonebNi.Core.Units
             Stats.CreateStat("armor", armor);
             Stats.CreateStat("weaponRange", weaponRange);
             Stats.CreateStat("fatigue", fatigue, 0, maxFatigue);
+            Stats.CreateStat("actionPoint", maxActionPoint, 0, maxActionPoint);
         }
 
         public UnitData(UnitData unitData) : this(
@@ -79,7 +84,9 @@ namespace NonebNi.Core.Units
             unitData.Armor,
             unitData.WeaponRange,
             unitData.Fatigue,
-            unitData.MaxFatigue
+            unitData.MaxFatigue,
+            unitData.FatigueRecovery,
+            unitData.MaxActionPoint
         ) { }
 
         public int Focus
@@ -194,12 +201,53 @@ namespace NonebNi.Core.Units
             set => _ = Stats.SetValue("fatigue", value);
         }
 
+        public int FatigueRecovery
+        {
+            get
+            {
+                var (_, value) = Stats.GetValue("fatigueRecovery");
+
+                return value;
+            }
+        }
+
+        public int MaxActionPoint
+        {
+            get
+            {
+                var (_, value) = Stats.GetMaxValue("actionPoint");
+
+                return value;
+            }
+        }
+
+        public int ActionPoint
+        {
+            get
+            {
+                var (_, value) = Stats.GetValue("actionPoint");
+
+                return value;
+            }
+            set => _ = Stats.SetValue("actionPoint", value);
+        }
+
         public override bool IsTileOccupier => true;
 
         public void RestoreMovement()
         {
             var (_, maxSpeed) = Stats.GetMaxValue("speed");
             Speed = maxSpeed;
+        }
+
+        public void RestoreActionPoint()
+        {
+            ActionPoint = MaxActionPoint;
+        }
+
+        public void RecoverFatigue()
+        {
+            Fatigue += FatigueRecovery;
         }
     }
 }

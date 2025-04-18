@@ -39,7 +39,9 @@ namespace NonebNi.EditModeTests.GameLogic
                 0,
                 0,
                 0,
-                9
+                9,
+                15,
+                1
             );
 
         public static UnitData CreateLivingUnit() =>
@@ -58,7 +60,9 @@ namespace NonebNi.EditModeTests.GameLogic
                 0,
                 0,
                 0,
-                9
+                9,
+                15,
+                1
             );
 
         public static UnitData CreateSlowUnit() =>
@@ -77,7 +81,9 @@ namespace NonebNi.EditModeTests.GameLogic
                 0,
                 0,
                 0,
-                9
+                9,
+                15,
+                1
             );
 
         public static UnitData CreateHighPriorityUnit() =>
@@ -96,7 +102,9 @@ namespace NonebNi.EditModeTests.GameLogic
                 0,
                 0,
                 0,
-                9
+                9,
+                15,
+                1
             );
 
         public static UnitData CreateLowPriorityUnit() =>
@@ -115,7 +123,9 @@ namespace NonebNi.EditModeTests.GameLogic
                 0,
                 0,
                 0,
-                9
+                9,
+                15,
+                1
             );
 
         private static Sprite GetDefaultSprite() =>

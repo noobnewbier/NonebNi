@@ -83,7 +83,9 @@ namespace NonebNi.Develop
             10,
             3,
             10,
-            50
+            50,
+            15,
+            1
         );
 
         public static Faction CreateFaction(string id) => Cache.GetFaction(id);

@@ -11,7 +11,10 @@ namespace NonebNi.Core.Actions
     public class NonebAction
     {
         [field: SerializeField] public string Id { get; private set; }
+
+        //todo: if we have more "cost" field we need a cost class that can take a stat and do the math
         [field: SerializeField] public int FatigueCost { get; private set; }
+        [field: SerializeField] public int ActionPointCost { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public NonebLocString Name { get; private set; }
         [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; } = Array.Empty<TargetRequest>();
@@ -22,11 +25,13 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             IEnumerable<TargetRequest> targetRequirements,
             IEnumerable<Effect> effects)
         {
             Id = id;
             FatigueCost = fatigueCost;
+            ActionPointCost = actionPointCost;
             Icon = icon;
             Name = name;
             TargetRequests = targetRequirements.ToArray();
@@ -38,6 +43,7 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             IEnumerable<TargetRequest> targetRequirements,
             params Effect[] effects) :
             this(
@@ -45,6 +51,7 @@ namespace NonebNi.Core.Actions
                 name,
                 icon,
                 fatigueCost,
+                actionPointCost,
                 targetRequirements,
                 effects.AsEnumerable()
             ) { }
@@ -54,6 +61,7 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             TargetRequest targetRequest,
             params Effect[] effects) :
             this(
@@ -61,6 +69,7 @@ namespace NonebNi.Core.Actions
                 name,
                 icon,
                 fatigueCost,
+                actionPointCost,
                 new[] { targetRequest },
                 effects.AsEnumerable()
             ) { }
@@ -70,6 +79,7 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             Range range,
             TargetArea targetArea,
             IEnumerable<TargetRestriction> targetRestrictions,
@@ -79,6 +89,7 @@ namespace NonebNi.Core.Actions
                 name,
                 icon,
                 fatigueCost,
+                actionPointCost,
                 targetRestrictions.Select(r => new TargetRequest(r, targetArea, range)),
                 effects
             ) { }
@@ -88,6 +99,7 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             Range range,
             TargetArea targetArea,
             TargetRestriction targetRestriction,
@@ -97,6 +109,7 @@ namespace NonebNi.Core.Actions
                 name,
                 icon,
                 fatigueCost,
+                actionPointCost,
                 new[]
                 {
                     new TargetRequest(targetRestriction, targetArea, range)
@@ -108,20 +121,23 @@ namespace NonebNi.Core.Actions
             string id,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             TargetRequest targetRequest,
             params Effect[] effects) : this(
             id,
             $"NAMELESS_{id}",
             icon,
             fatigueCost,
+            actionPointCost,
             new[] { targetRequest },
             effects
         ) { }
 
-        public NonebAction(string id, int fatigueCost, Range range, TargetArea area, TargetRestriction restriction, params Effect[] effects) : this(
+        public NonebAction(string id, int fatigueCost, int actionPointCost, Range range, TargetArea area, TargetRestriction restriction, params Effect[] effects) : this(
             id,
             Sprite.Create(Texture2D.blackTexture, Rect.zero, Vector2.zero),
             fatigueCost,
+            actionPointCost,
             new TargetRequest(
                 restriction,
                 area,

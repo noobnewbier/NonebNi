@@ -33,6 +33,7 @@ namespace NonebNi.Core.Actions
 
         public IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request)
         {
+            //todo: sometimes caster coord is null -> why?
             if (!_map.TryFind(caster, out Coordinate casterCoord)) yield break;
 
             var range = request.Range.CalculateRange(caster);

@@ -29,6 +29,7 @@ namespace NonebNi.EditorConsole.Commands
             return new NonebAction(
                 "debug-teleport",
                 0,
+                0,
                 10000,
                 TargetArea.Single,
                 TargetRestriction.NonOccupied,
