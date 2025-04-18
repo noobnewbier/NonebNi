@@ -3,6 +3,7 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Units;
 using Unity.Logging;
 
 namespace NonebNi.Core.Decisions
@@ -57,13 +58,25 @@ namespace NonebNi.Core.Decisions
                 case EndTurnDecision:
                     return (null, new EndTurnCommand());
                 case ActionDecision ad:
-                    if (!IsValidActionDecision(ad))
+
+                    if (!CanActorPayCost(ad))
+                        return (
+                            new IDecisionValidator.Error(
+                                "cannot-pay-cost",
+                                $"{ad.Action.Name} cost more than what the {ad.ActorEntity} can pay for"
+                            ),
+                            NullCommand.Instance
+                        );
+
+                    if (!IsTargetingValid(ad))
                     {
                         return (
                             new IDecisionValidator.Error(
                                 "invalid-target",
-                                $"action {ad.Action} cannot be targeted at {ad.TargetCoords}"
-                            ), new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords)); //TODO: validate    
+                                $"action {ad.Action.Name} cannot be targeted at {ad.TargetCoords}"
+                            ),
+                            NullCommand.Instance
+                        );
                     }
 
                     return (null, new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords));
@@ -72,7 +85,23 @@ namespace NonebNi.Core.Decisions
             }
         }
 
-        private bool IsValidActionDecision(ActionDecision ad)
+        private bool CanActorPayCost(ActionDecision ad)
+        {
+            var action = ad.Action;
+            var actor = ad.ActorEntity;
+
+            if (action is { FatigueCost: <= 0, ActionPointCost: <= 0 })
+                // Nothing to pay!
+                return true;
+
+            if (actor is not UnitData unit)
+                //atm only unit can pay, in the future this might change
+                return false;
+
+            return unit.Fatigue >= action.FatigueCost && unit.ActionPoint >= action.ActionPointCost;
+        }
+
+        private bool IsTargetingValid(ActionDecision ad)
         {
             var action = ad.Action;
             var requirements = action.TargetRequests;
