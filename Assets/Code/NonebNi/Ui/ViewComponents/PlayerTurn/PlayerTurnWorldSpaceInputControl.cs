@@ -112,14 +112,14 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 var playerInputs = new List<Coordinate>();
                 foreach (var request in action.TargetRequests)
                 {
-                    ct.ThrowIfCancellationRequested();
-
                     var ranges = _targetFinder.FindRange(caster, request).ToArray();
 
                     _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
                     _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
 
                     var input = await GetUserInputForRequest(ranges, ct);
+                    ct.ThrowIfCancellationRequested();
+
                     _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
 
                     if (input != null) playerInputs.Add(input);
@@ -179,6 +179,50 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             if (coord == null) return;
 
             _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, HighlightVariation.Normal);
+        }
+
+        private async UniTask<Coordinate?> GetInputForMovement(UnitData mover, CancellationToken token = default)
+        {
+            /*
+             * In theory we can use GetInputForAction, just that the UI is slightly different so we want to have a variant anyway
+             */
+
+            async UniTask<Coordinate?> GetUserInputForRequest(CancellationToken ct)
+            {
+                Coordinate? inputCoord = null;
+                _hexHighlighter.ClearAll();
+                while (!ct.IsCancellationRequested && inputCoord == null)
+                {
+                    await UniTask.NextFrame();
+
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
+                    var coord = FindHoveredCoordinate();
+                    if (coord == null) continue;
+
+                    var (isPathExist, path) = _pathfindingService.FindPath(mover, coord);
+                    if (!isPathExist)
+                    {
+                        _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.InvalidInput);
+                        continue;
+                    }
+
+                    var pathWithoutStartAndEnd = path.Except(new[] { _map.Find(mover), coord });
+                    _hexHighlighter.RequestHighlight(pathWithoutStartAndEnd, HighlightRequestId.MovementHint, HighlightVariation.AreaHint);
+                    _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.Normal);
+
+                    if (!_inputSystem.LeftClick) continue;
+                    inputCoord = coord;
+                }
+
+                _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
+                return inputCoord;
+            }
+
+            _cts?.Cancel();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(token);
+            var coordinate = await GetUserInputForRequest(_cts.Token);
+
+            return coordinate;
         }
     }
 }
