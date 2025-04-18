@@ -55,7 +55,10 @@ namespace NonebNi.Core.FlowControl
             {
                 var currentUnit = UnitTurnOrderer.CurrentUnit;
                 Log.Info($"[Level] Turn {turnNum}, {currentUnit.Name}'s turn");
+
                 currentUnit.RestoreMovement();
+                currentUnit.RestoreActionPoint();
+                currentUnit.RecoverFatigue();
 
                 NewTurnStarted?.Invoke(currentUnit);
 
