@@ -60,7 +60,7 @@ namespace NonebNi.Core.Actions
             WeaponBasedRange,
             Single,
             Enemy,
-            new DamageEffect("shoot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
+            new DamageEffect("shoot", new StatBasedDamage(1f, StatId.Focus))
         );
 
         public static readonly NonebAction PowerShot = new(
@@ -72,7 +72,7 @@ namespace NonebNi.Core.Actions
             WeaponBasedRange,
             Single,
             Enemy | ClearPath,
-            new DamageEffect("power-shot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)),
+            new DamageEffect("power-shot", new StatBasedDamage(1f, StatId.Focus)),
             new KnockBackEffect(1)
         );
 
@@ -85,7 +85,7 @@ namespace NonebNi.Core.Actions
             1,
             Single,
             Enemy,
-            new DamageEffect("strike", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength))
+            new DamageEffect("strike", new StatBasedDamage(1f, StatId.Strength))
         );
 
         public static readonly NonebAction Swing = new(
@@ -97,7 +97,7 @@ namespace NonebNi.Core.Actions
             1,
             Fan,
             Enemy,
-            new DamageEffect("swing", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength)),
+            new DamageEffect("swing", new StatBasedDamage(1f, StatId.Strength)),
             new KnockBackEffect(1)
         );
 
@@ -110,7 +110,7 @@ namespace NonebNi.Core.Actions
             1,
             Single,
             Enemy,
-            new DamageEffect("slash", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
+            new DamageEffect("slash", new StatBasedDamage(1f, StatId.Focus))
         );
 
         public static readonly NonebAction TacticalAdvance = new(
@@ -119,7 +119,7 @@ namespace NonebNi.Core.Actions
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
             1,
-            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            new StatBasedRange(1, StatId.Focus),
             Single,
             new[] { Friendly, NonOccupied },
             new MoveEntityEffect()
@@ -131,7 +131,7 @@ namespace NonebNi.Core.Actions
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
             1,
-            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            new StatBasedRange(1, StatId.Focus),
             Single,
             Enemy | ClearPath | FirstTileToTargetDirectionIsEmpty,
             new PullEntityEffect()
