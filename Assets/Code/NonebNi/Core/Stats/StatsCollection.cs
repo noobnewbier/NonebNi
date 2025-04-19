@@ -89,7 +89,7 @@ namespace NonebNi.Core.Stats
             //under the current model we can kill ourself by paying for cost,
             //we might need to introduce some way to say "this stat can go to zero but that stat cannot"
 
-            if (stat.CurrentValue - stat.MinValue <= cost.Cost) return PayCostError.NotEnoughValue;
+            if (stat.CurrentValue - stat.MinValue < cost.Cost) return PayCostError.NotEnoughValue;
 
             return null;
         }
