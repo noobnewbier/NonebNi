@@ -47,13 +47,13 @@ namespace NonebNi.Core.Stats
             }
         }
 
-        public bool HasMaxLimit => MaxValue == -1;
+        public bool HasMaxLimit => MaxValue != -1;
 
-        private bool HasMinLimit => MinValue == -1;
+        private bool HasMinLimit => MinValue != -1;
 
         private void ClampWithMaxValue()
         {
-            if (HasMaxLimit) return;
+            if (!HasMaxLimit) return;
 
             if (currentValue <= MaxValue) return;
 
@@ -62,7 +62,7 @@ namespace NonebNi.Core.Stats
 
         private void ClampWithMinValue()
         {
-            if (HasMinLimit) return;
+            if (!HasMinLimit) return;
 
             if (currentValue >= MinValue) return;
 
