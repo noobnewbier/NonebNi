@@ -7,6 +7,9 @@ using Priority_Queue;
 using Unity.Logging;
 using UnityEngine;
 using UnityUtils.Pooling;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace NonebNi.Ui.Grids
 {
@@ -134,6 +137,19 @@ namespace NonebNi.Ui.Grids
 
         private void ServeRequest(Coordinate coordinate)
         {
+            /*
+             * We have an issue where UniTask runs one frame after exit playmode. As a result code calling this can happens when we break playmode and back to edit mode, result in asset lingering.
+             * Either change UniTask's PlayerLoopHelper.InsertRunner and get rid of the "run one frame afterward" behaviour or suck it up and deal with it.
+             *
+             * If I got annoyed enough, I will do something about it, but for now it's a problem for another day.
+             *
+             * https://github.com/Cysharp/UniTask/issues/543
+             * https://github.com/Cysharp/UniTask/blob/8042b29ff87dd5506d7aad72bd6d8d7405985f27/src/UniTask/Assets/Plugins/UniTask/Runtime/PlayerLoopHelper.cs#L204
+             */
+#if UNITY_EDITOR
+            if (!EditorApplication.isPlaying) return;
+#endif
+
             if (!_highlightMappings.TryGetValue(coordinate, out var responseRequests)) return;
 
             var currentReq = responseRequests.Requests.FirstOrDefault();
