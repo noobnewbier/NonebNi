@@ -6,21 +6,16 @@ using UnityEngine;
 
 namespace NonebNi.Core.Actions
 {
+    [Serializable]
     public class StatBasedRange : Range
     {
-        public enum StatType
-        {
-            Focus,
-            Speed
-        }
+        [SerializeField] private float ratio;
+        [SerializeField] private string statId;
 
-        private readonly float _ratio;
-        private readonly StatType _statType;
-
-        public StatBasedRange(float ratio, StatType statType)
+        public StatBasedRange(float ratio, string statId)
         {
-            _ratio = ratio;
-            _statType = statType;
+            this.ratio = ratio;
+            this.statId = statId;
         }
 
         public override int CalculateRange(EntityData actionCaster)
@@ -31,14 +26,13 @@ namespace NonebNi.Core.Actions
                 return 0;
             }
 
-            var stat = _statType switch
+            var (success, stat) = unitData.Stats.GetValue(statId);
+            if (!success)
             {
-                StatType.Focus => unitData.Focus,
-                StatType.Speed => unitData.Speed,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                return 0;
+            }
 
-            var range = stat * _ratio;
+            var range = stat * ratio;
             return Mathf.RoundToInt(range);
         }
     }
