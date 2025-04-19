@@ -1,7 +1,9 @@
-﻿using NonebNi.Core.Entities;
+﻿using System;
+using NonebNi.Core.Entities;
 
 namespace NonebNi.Core.Actions
 {
+    [Serializable]
     public abstract class Range
     {
         public abstract int CalculateRange(EntityData actionCaster);

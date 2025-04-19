@@ -1,9 +1,11 @@
-﻿using NonebNi.Core.Entities;
+﻿using System;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Units;
 using Unity.Logging;
 
 namespace NonebNi.Core.Actions
 {
+    [Serializable]
     public class WeaponBasedRange : Range
     {
         public override int CalculateRange(EntityData actionCaster)
