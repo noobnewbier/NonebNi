@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Noneb.Localization.Runtime;
 using NonebNi.Core.Effects;
+using NonebNi.Core.Stats;
 using UnityEngine;
 
 namespace NonebNi.Core.Actions
@@ -11,14 +12,21 @@ namespace NonebNi.Core.Actions
     public class NonebAction
     {
         [field: SerializeField] public string Id { get; private set; }
-
-        //todo: if we have more "cost" field we need a cost class that can take a stat and do the math
-        [field: SerializeField] public int FatigueCost { get; private set; }
-        [field: SerializeField] public int ActionPointCost { get; private set; }
+        [field: SerializeField] public StatCost[] Costs { get; private set; }
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public NonebLocString Name { get; private set; }
-        [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; } = Array.Empty<TargetRequest>();
-        [field: SerializeReference] public Effect[] Effects { get; private set; } = Array.Empty<Effect>(); //todo:...?
+        [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; }
+        [field: SerializeReference] public Effect[] Effects { get; private set; }
+
+        public NonebAction(string id, StatCost[] costs, Sprite icon, NonebLocString name, TargetRequest[] targetRequests, Effect[] effects)
+        {
+            Id = id;
+            Costs = costs;
+            Icon = icon;
+            Name = name;
+            TargetRequests = targetRequests;
+            Effects = effects;
+        }
 
         public NonebAction(
             string id,
@@ -27,16 +35,19 @@ namespace NonebNi.Core.Actions
             int fatigueCost,
             int actionPointCost,
             IEnumerable<TargetRequest> targetRequirements,
-            IEnumerable<Effect> effects)
-        {
-            Id = id;
-            FatigueCost = fatigueCost;
-            ActionPointCost = actionPointCost;
-            Icon = icon;
-            Name = name;
-            TargetRequests = targetRequirements.ToArray();
-            Effects = effects.ToArray();
-        }
+            IEnumerable<Effect> effects) :
+            this(
+                id,
+                new StatCost[]
+                {
+                    new(StatId.Fatigue, fatigueCost),
+                    new(StatId.ActionPoint, actionPointCost)
+                },
+                icon,
+                name,
+                targetRequirements.ToArray(),
+                effects.ToArray()
+            ) { }
 
         public NonebAction(
             string id,
