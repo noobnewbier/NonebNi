@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NonebNi.Core.Effects;
+using NonebNi.Core.Stats;
 using UnityEngine;
 using static NonebNi.Core.Actions.TargetArea;
 using static NonebNi.Core.Actions.TargetRestriction;
@@ -31,12 +32,18 @@ namespace NonebNi.Core.Actions
             "move",
             "move",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
-            0,
-            1,
-            new StatBasedRange(1f, StatBasedRange.StatType.Speed),
-            Single,
-            NonOccupied,
-            new MoveEffect()
+            new[]
+            {
+                new StatCost(StatId.Speed, 1)
+            },
+            new[]
+            {
+                new TargetRequest(NonOccupied, Single, new StatBasedRange(1f, StatId.Speed))
+            },
+            new Effect[]
+            {
+                new MoveEffect()
+            }
         );
 
         public static readonly NonebAction Bash = new(
