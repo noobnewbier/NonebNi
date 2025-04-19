@@ -8,6 +8,12 @@ namespace NonebNi.Core.Stats
     [Serializable]
     public class StatsCollection
     {
+        public enum PayCostError
+        {
+            StatNotFound,
+            NotEnoughValue
+        }
+
         [SerializeField] private List<Stat> stats;
 
         public StatsCollection(IEnumerable<Stat> stats)
@@ -72,6 +78,32 @@ namespace NonebNi.Core.Stats
             };
 
             return AddStat(newStat);
+        }
+
+        public PayCostError? CheckCanPayCost(StatCost cost)
+        {
+            var (success, stat) = FindStat(cost.StatId);
+            if (!success) return PayCostError.StatNotFound;
+
+            //todo:
+            //under the current model we can kill ourself by paying for cost,
+            //we might need to introduce some way to say "this stat can go to zero but that stat cannot"
+
+            if (stat.CurrentValue - stat.MinValue <= cost.Cost) return PayCostError.NotEnoughValue;
+
+            return null;
+        }
+
+        public PayCostError? PayCost(StatCost cost)
+        {
+            var error = CheckCanPayCost(cost);
+            if (error != null) return error;
+
+            var (success, stat) = FindStat(cost.StatId);
+            if (!success) return PayCostError.StatNotFound;
+
+            stat.CurrentValue -= cost.Cost;
+            return null;
         }
     }
 }

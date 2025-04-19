@@ -12,5 +12,19 @@
         public const string Fatigue = "fatigue";
         public const string ActionPoint = "action-point";
         public const string FatigueRecovery = "fatigue-recovery";
+
+        public static readonly string[] All =
+        {
+            Health,
+            Initiative,
+            Speed,
+            Focus,
+            Strength,
+            Armor,
+            WeaponRange,
+            Fatigue,
+            ActionPoint,
+            FatigueRecovery
+        };
     }
 }

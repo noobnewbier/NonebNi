@@ -90,7 +90,7 @@ namespace NonebNi.Core.Decisions
             var action = ad.Action;
             var actor = ad.ActorEntity;
 
-            if (action is { FatigueCost: <= 0, ActionPointCost: <= 0 })
+            if (!action.Costs.Any())
                 // Nothing to pay!
                 return true;
 
@@ -98,7 +98,13 @@ namespace NonebNi.Core.Decisions
                 //atm only unit can pay, in the future this might change
                 return false;
 
-            return unit.Fatigue >= action.FatigueCost && unit.ActionPoint >= action.ActionPointCost;
+            foreach (var cost in action.Costs)
+            {
+                var error = unit.Stats.CheckCanPayCost(cost);
+                if (error != null) return false;
+            }
+
+            return true;
         }
 
         private bool IsTargetingValid(ActionDecision ad)
