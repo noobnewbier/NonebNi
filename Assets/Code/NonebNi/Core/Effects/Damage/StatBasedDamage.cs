@@ -9,19 +9,13 @@ namespace NonebNi.Core.Effects
     [Serializable]
     public class StatBasedDamage : Damage
     {
-        public enum StatType
-        {
-            Strength,
-            Focus
-        }
-
         [SerializeField] private float ratio;
-        [SerializeField] private StatType statType;
+        [SerializeField] private string statId;
 
-        public StatBasedDamage(float ratio, StatType statType)
+        public StatBasedDamage(float ratio, string statId)
         {
             this.ratio = ratio;
-            this.statType = statType;
+            this.statId = statId;
         }
 
         public override int CalculateDamage(EntityData actionCaster, EntityData target)
@@ -32,12 +26,11 @@ namespace NonebNi.Core.Effects
                 return 0;
             }
 
-            var stat = statType switch
+            var (success, stat) = unitData.Stats.GetValue(statId);
+            if (!success)
             {
-                StatType.Focus => unitData.Focus,
-                StatType.Strength => unitData.Strength,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                return 0;
+            }
 
             var rawDamage = stat * ratio;
             if (target is not UnitData targetUnit)
