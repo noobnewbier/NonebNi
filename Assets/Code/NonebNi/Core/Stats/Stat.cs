@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace NonebNi.Core.Stats
@@ -11,6 +12,7 @@ namespace NonebNi.Core.Stats
     /// Does not support negative
     /// </summary>
     [Serializable]
+    [DebuggerDisplay("{ID}: {currentValue} [{MinValue} to {MaxValue}]")]
     public class Stat
     {
         [field: SerializeField] public string ID { get; private set; }
