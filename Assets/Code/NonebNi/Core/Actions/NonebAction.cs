@@ -12,13 +12,13 @@ namespace NonebNi.Core.Actions
     public class NonebAction
     {
         [field: SerializeField] public string Id { get; private set; }
-        [field: SerializeField] public StatCost[] Costs { get; private set; }
-        [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public NonebLocString Name { get; private set; }
+        [field: SerializeField] public Sprite Icon { get; private set; }
+        [field: SerializeField] public StatCost[] Costs { get; private set; }
         [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; }
         [field: SerializeReference] public Effect[] Effects { get; private set; }
 
-        public NonebAction(string id, StatCost[] costs, Sprite icon, NonebLocString name, TargetRequest[] targetRequests, Effect[] effects)
+        public NonebAction(string id, NonebLocString name, Sprite icon, StatCost[] costs, TargetRequest[] targetRequests, Effect[] effects)
         {
             Id = id;
             Costs = costs;
@@ -38,13 +38,13 @@ namespace NonebNi.Core.Actions
             IEnumerable<Effect> effects) :
             this(
                 id,
+                name,
+                icon,
                 new StatCost[]
                 {
                     new(StatId.Fatigue, fatigueCost),
                     new(StatId.ActionPoint, actionPointCost)
                 },
-                icon,
-                name,
                 targetRequirements.ToArray(),
                 effects.ToArray()
             ) { }
