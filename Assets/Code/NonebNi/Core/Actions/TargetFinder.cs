@@ -127,14 +127,14 @@ namespace NonebNi.Core.Actions
                     return (true, null);
                 case TargetRestriction.Friendly:
                 {
-                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.TargetTypeNotMatched());
                     if (caster.FactionId != targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotFriendly());
 
                     return (true, null);
                 }
                 case TargetRestriction.Enemy:
                 {
-                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.TargetTypeNotMatched());
                     if (caster.FactionId == targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotEnemy());
                     return (true, null);
                 }
@@ -212,7 +212,7 @@ namespace NonebNi.Core.Actions
 
         public abstract record RestrictionCheckFailedReason
         {
-            public record UnmatchTargetType : RestrictionCheckFailedReason;
+            public record TargetTypeNotMatched : RestrictionCheckFailedReason;
 
             public record NotFriendly : RestrictionCheckFailedReason;
 
