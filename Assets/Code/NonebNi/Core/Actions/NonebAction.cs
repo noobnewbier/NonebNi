@@ -17,8 +17,9 @@ namespace NonebNi.Core.Actions
         [field: SerializeField] public StatCost[] Costs { get; private set; }
         [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; }
         [field: SerializeReference] public Effect[] Effects { get; private set; }
+        [field: SerializeField] public bool IsComboStarter { get; private set; }
 
-        public NonebAction(string id, NonebLocString name, Sprite icon, StatCost[] costs, TargetRequest[] targetRequests, Effect[] effects)
+        public NonebAction(string id, NonebLocString name, Sprite icon, StatCost[] costs, TargetRequest[] targetRequests, Effect[] effects, bool isComboStarter)
         {
             Id = id;
             Costs = costs;
@@ -26,6 +27,7 @@ namespace NonebNi.Core.Actions
             Name = name;
             TargetRequests = targetRequests;
             Effects = effects;
+            IsComboStarter = isComboStarter;
         }
 
         public NonebAction(
@@ -35,7 +37,8 @@ namespace NonebNi.Core.Actions
             int fatigueCost,
             int actionPointCost,
             IEnumerable<TargetRequest> targetRequirements,
-            IEnumerable<Effect> effects) :
+            IEnumerable<Effect> effects,
+            bool isComboStarter) :
             this(
                 id,
                 name,
@@ -46,7 +49,8 @@ namespace NonebNi.Core.Actions
                     new(StatId.ActionPoint, actionPointCost)
                 },
                 targetRequirements.ToArray(),
-                effects.ToArray()
+                effects.ToArray(),
+                isComboStarter
             ) { }
 
         public NonebAction(
@@ -56,6 +60,7 @@ namespace NonebNi.Core.Actions
             int fatigueCost,
             int actionPointCost,
             IEnumerable<TargetRequest> targetRequirements,
+            bool isComboStarter,
             params Effect[] effects) :
             this(
                 id,
@@ -64,7 +69,8 @@ namespace NonebNi.Core.Actions
                 fatigueCost,
                 actionPointCost,
                 targetRequirements,
-                effects.AsEnumerable()
+                effects.AsEnumerable(),
+                isComboStarter
             ) { }
 
         public NonebAction(
@@ -74,6 +80,7 @@ namespace NonebNi.Core.Actions
             int fatigueCost,
             int actionPointCost,
             TargetRequest targetRequest,
+            bool isComboStarter,
             params Effect[] effects) :
             this(
                 id,
@@ -82,7 +89,8 @@ namespace NonebNi.Core.Actions
                 fatigueCost,
                 actionPointCost,
                 new[] { targetRequest },
-                effects.AsEnumerable()
+                effects.AsEnumerable(),
+                isComboStarter
             ) { }
 
         public NonebAction(
@@ -94,6 +102,7 @@ namespace NonebNi.Core.Actions
             Range range,
             TargetArea targetArea,
             IEnumerable<TargetRestriction> targetRestrictions,
+            bool isComboStarter,
             params Effect[] effects) :
             this(
                 id,
@@ -102,6 +111,7 @@ namespace NonebNi.Core.Actions
                 fatigueCost,
                 actionPointCost,
                 targetRestrictions.Select(r => new TargetRequest(r, targetArea, range)),
+                isComboStarter,
                 effects
             ) { }
 
@@ -114,6 +124,7 @@ namespace NonebNi.Core.Actions
             Range range,
             TargetArea targetArea,
             TargetRestriction targetRestriction,
+            bool isComboStarter,
             params Effect[] effects)
             : this(
                 id,
@@ -125,6 +136,7 @@ namespace NonebNi.Core.Actions
                 {
                     new TargetRequest(targetRestriction, targetArea, range)
                 },
+                isComboStarter,
                 effects
             ) { }
 
@@ -134,6 +146,7 @@ namespace NonebNi.Core.Actions
             int fatigueCost,
             int actionPointCost,
             TargetRequest targetRequest,
+            bool isComboStarter,
             params Effect[] effects) : this(
             id,
             $"NAMELESS_{id}",
@@ -141,10 +154,11 @@ namespace NonebNi.Core.Actions
             fatigueCost,
             actionPointCost,
             new[] { targetRequest },
+            isComboStarter,
             effects
         ) { }
 
-        public NonebAction(string id, int fatigueCost, int actionPointCost, Range range, TargetArea area, TargetRestriction restriction, params Effect[] effects) : this(
+        public NonebAction(string id, int fatigueCost, int actionPointCost, Range range, TargetArea area, TargetRestriction restriction, bool isComboStarter, params Effect[] effects) : this(
             id,
             Sprite.Create(Texture2D.blackTexture, Rect.zero, Vector2.zero),
             fatigueCost,
@@ -154,6 +168,7 @@ namespace NonebNi.Core.Actions
                 area,
                 range
             ),
+            isComboStarter,
             effects
         ) { }
 

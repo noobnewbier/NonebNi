@@ -43,7 +43,8 @@ namespace NonebNi.Core.Actions
             new Effect[]
             {
                 new MoveEffect()
-            }
+            },
+            false
         );
 
         public static readonly NonebAction Bash = new(
@@ -55,6 +56,7 @@ namespace NonebNi.Core.Actions
             1,
             Single,
             Enemy,
+            true,
             new KnockBackEffect(1)
         );
 
@@ -67,6 +69,7 @@ namespace NonebNi.Core.Actions
             WeaponBasedRange,
             Single,
             Enemy,
+            false,
             new DamageEffect("shoot", new StatBasedDamage(1f, StatId.Focus))
         );
 
@@ -79,6 +82,7 @@ namespace NonebNi.Core.Actions
             WeaponBasedRange,
             Single,
             Enemy | ClearPath,
+            true,
             new DamageEffect("power-shot", new StatBasedDamage(1f, StatId.Focus)),
             new KnockBackEffect(1)
         );
@@ -92,6 +96,7 @@ namespace NonebNi.Core.Actions
             1,
             Single,
             Enemy,
+            false,
             new DamageEffect("strike", new StatBasedDamage(1f, StatId.Strength))
         );
 
@@ -104,6 +109,7 @@ namespace NonebNi.Core.Actions
             1,
             Fan,
             Enemy,
+            true,
             new DamageEffect("swing", new StatBasedDamage(1f, StatId.Strength)),
             new KnockBackEffect(1)
         );
@@ -117,6 +123,7 @@ namespace NonebNi.Core.Actions
             1,
             Single,
             Enemy,
+            false,
             new DamageEffect("slash", new StatBasedDamage(1f, StatId.Focus))
         );
 
@@ -129,6 +136,7 @@ namespace NonebNi.Core.Actions
             new StatBasedRange(1, StatId.Focus),
             Single,
             new[] { Friendly, NonOccupied },
+            true,
             new MoveEntityEffect()
         );
 
@@ -141,6 +149,7 @@ namespace NonebNi.Core.Actions
             new StatBasedRange(1, StatId.Focus),
             Single,
             Enemy | ClearPath | FirstTileToTargetDirectionIsEmpty,
+            true,
             new PullEntityEffect()
         );
 
@@ -153,6 +162,7 @@ namespace NonebNi.Core.Actions
             1,
             Single,
             Occupied | TargetCoordPlusDirectionToTargetIsEmpty | IsCoordinate,
+            false,
             new MoveOverEffect()
         );
 
@@ -167,6 +177,7 @@ namespace NonebNi.Core.Actions
                 new TargetRequest(Enemy, Single, 2),
                 new TargetRequest(Enemy, Single, 1)
             },
+            true,
             new MoveEntityEffect()
         );
 
@@ -179,6 +190,7 @@ namespace NonebNi.Core.Actions
             1,
             Single,
             Friendly | NotSelf,
+            true,
             new SwapPositionEffect()
         );
 
