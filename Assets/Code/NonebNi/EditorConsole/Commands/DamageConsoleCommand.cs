@@ -30,6 +30,7 @@ namespace NonebNi.EditorConsole.Commands
                 10000,
                 TargetArea.Single,
                 TargetRestriction.None,
+                false,
                 new DamageEffect("slash", _damage)
             );
         }

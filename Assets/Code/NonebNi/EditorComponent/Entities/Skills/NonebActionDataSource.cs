@@ -21,6 +21,7 @@ namespace NonebNi.EditorComponent.Entities.Skills
         [field: SerializeField] public Sprite? Icon { get; private set; }
         [field: SerializeField] public NonebLocString Name { get; private set; } = string.Empty;
         [field: SerializeField] public TargetRequest[] Requirements { get; private set; } = Array.Empty<TargetRequest>();
+        [field: SerializeField] public bool IsComboStarter { get; private set; }
 
 
         public NonebAction CreateData() =>
@@ -31,7 +32,8 @@ namespace NonebNi.EditorComponent.Entities.Skills
                 FatigueCost,
                 ActionPointCost,
                 Requirements,
-                Effects
+                Effects,
+                IsComboStarter
             );
     }
 }
