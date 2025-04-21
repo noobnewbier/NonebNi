@@ -41,15 +41,19 @@ namespace NonebNi.Core.Stats
             get => currentValue;
             set
             {
+                var oldValue = currentValue;
                 currentValue = value;
                 ClampWithMinValue();
                 ClampWithMaxValue();
+
+                if (currentValue != oldValue) ValueChanged?.Invoke(this);
             }
         }
 
         public bool HasMaxLimit => MaxValue != -1;
 
         private bool HasMinLimit => MinValue != -1;
+        public event Action<Stat>? ValueChanged;
 
         private void ClampWithMaxValue()
         {

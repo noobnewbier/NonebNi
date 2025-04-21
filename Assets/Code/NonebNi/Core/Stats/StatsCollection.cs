@@ -6,7 +6,7 @@ using UnityEngine;
 namespace NonebNi.Core.Stats
 {
     [Serializable]
-    public class StatsCollection
+    public class StatsCollection : ISerializationCallbackReceiver
     {
         public enum PayCostError
         {
@@ -18,10 +18,13 @@ namespace NonebNi.Core.Stats
 
         public StatsCollection(IEnumerable<Stat> stats)
         {
-            this.stats = new List<Stat>(stats);
+            this.stats = new List<Stat>();
+
+            foreach (var stat in stats) AddStat(stat);
         }
 
         public StatsCollection(params Stat[] stats) : this((IEnumerable<Stat>)stats) { }
+        public event Action<Stat>? StatUpdated;
 
         public (bool success, Stat stat) FindStat(string id)
         {
@@ -67,7 +70,13 @@ namespace NonebNi.Core.Stats
             if (foundDuplicates) return false;
 
             stats.Add(stat);
+            stat.ValueChanged += OnValueChanged;
             return true;
+        }
+
+        private void OnValueChanged(Stat updatedStat)
+        {
+            StatUpdated?.Invoke(updatedStat);
         }
 
         public bool CreateStat(string id, int currentValue, int minValue = -1, int maxValue = -1)
@@ -105,5 +114,20 @@ namespace NonebNi.Core.Stats
             stat.CurrentValue -= cost.Cost;
             return null;
         }
+
+        #region Save/Load
+
+        /*
+         * Wbn if we don't need this, mh2 model doesn't need it as they've got the whole init shenanigans in init process
+         * maybe we can mimic it?
+         */
+        public void OnBeforeSerialize() { }
+
+        public void OnAfterDeserialize()
+        {
+            foreach (var stat in stats) stat.ValueChanged += OnValueChanged;
+        }
+
+        #endregion
     }
 }
