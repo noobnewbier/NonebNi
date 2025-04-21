@@ -3,7 +3,6 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
-using NonebNi.Core.Units;
 using Unity.Logging;
 
 namespace NonebNi.Core.Decisions
@@ -42,7 +41,7 @@ namespace NonebNi.Core.Decisions
 
     public class DecisionValidator : IDecisionValidator
     {
-        private readonly IReadOnlyMap _map; //TODO: PathFinding
+        private readonly IReadOnlyMap _map;
         private readonly ITargetFinder _targetFinder;
 
         public DecisionValidator(IReadOnlyMap map, ITargetFinder targetFinder)
@@ -58,8 +57,7 @@ namespace NonebNi.Core.Decisions
                 case EndTurnDecision:
                     return (null, new EndTurnCommand());
                 case ActionDecision ad:
-
-                    if (!CanActorPayCost(ad))
+                    if (!ad.ActorEntity.CanPayActionCost(ad.Action))
                         return (
                             new IDecisionValidator.Error(
                                 "cannot-pay-cost",
@@ -83,28 +81,6 @@ namespace NonebNi.Core.Decisions
                 default:
                     return (IDecisionValidator.Error.Unknown, NullCommand.Instance);
             }
-        }
-
-        private bool CanActorPayCost(ActionDecision ad)
-        {
-            var action = ad.Action;
-            var actor = ad.ActorEntity;
-
-            if (!action.Costs.Any())
-                // Nothing to pay!
-                return true;
-
-            if (actor is not UnitData unit)
-                //atm only unit can pay, in the future this might change
-                return false;
-
-            foreach (var cost in action.Costs)
-            {
-                var error = unit.Stats.CheckCanPayCost(cost);
-                if (error != null) return false;
-            }
-
-            return true;
         }
 
         private bool IsTargetingValid(ActionDecision ad)

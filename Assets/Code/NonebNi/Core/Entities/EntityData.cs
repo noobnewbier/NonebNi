@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using Noneb.Localization.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Tiles;
+using NonebNi.Core.Units;
 using UnityEngine;
 using UnityUtils.Serialization;
 
@@ -43,5 +45,24 @@ namespace NonebNi.Core.Entities
         public bool IsSystem => this == SystemEntity.Instance;
 
         public override string ToString() => Name.GetLocalized();
+
+        public bool CanPayActionCost(NonebAction action)
+        {
+            if (!action.Costs.Any())
+                // Nothing to pay!
+                return true;
+
+            if (this is not UnitData unit)
+                //atm only unit can pay, in the future this might change
+                return false;
+
+            foreach (var cost in action.Costs)
+            {
+                var error = unit.Stats.CheckCanPayCost(cost);
+                if (error != null) return false;
+            }
+
+            return true;
+        }
     }
 }
