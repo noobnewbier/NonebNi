@@ -102,7 +102,7 @@ namespace NonebNi.EditorConsole
             var commandsDataRepository = new CommandsDataRepository();
             var actionRepository = new ActionRepository(ActionDatas.Actions);
             var commandHandler = new CommandHandler(
-                levelFlowController.EvaluationService,
+                levelFlowController.Evaluator,
                 levelData.Map,
                 levelFlowController.SequencePlayer,
                 commandsDataRepository,

@@ -18,16 +18,16 @@ namespace NonebNi.EditorConsole
 {
     public class CommandHandler
     {
+        private readonly IActionCommandEvaluator _actionCommandEvaluator;
         private readonly IActionRepository _actionRepository;
         private readonly IAgentsService _agentsService;
-        private readonly ICommandEvaluationService _commandEvaluationService;
         private readonly ICommandsDataRepository _commandsDataRepository;
         private readonly IReadOnlyMap _readOnlyMap;
         private readonly ISequencePlayer _sequencePlayer;
         private readonly IUnitTurnOrderer _turnOrderer;
 
         public CommandHandler(
-            ICommandEvaluationService commandEvaluationService,
+            IActionCommandEvaluator actionCommandEvaluator,
             IReadOnlyMap readOnlyMap,
             ISequencePlayer sequencePlayer,
             ICommandsDataRepository commandsDataRepository,
@@ -35,7 +35,7 @@ namespace NonebNi.EditorConsole
             IUnitTurnOrderer turnOrderer,
             IActionRepository actionRepository)
         {
-            _commandEvaluationService = commandEvaluationService;
+            _actionCommandEvaluator = actionCommandEvaluator;
             _readOnlyMap = readOnlyMap;
             _sequencePlayer = sequencePlayer;
             _commandsDataRepository = commandsDataRepository;
@@ -208,9 +208,9 @@ Command description:
             }
         }
 
-        private async UniTask EvaluateSequence(ICommand command)
+        private async UniTask EvaluateSequence(ActionCommand command)
         {
-            var sequences = _commandEvaluationService.Evaluate(command);
+            var sequences = _actionCommandEvaluator.Evaluate(command);
 
             await _sequencePlayer.Play(sequences);
         }

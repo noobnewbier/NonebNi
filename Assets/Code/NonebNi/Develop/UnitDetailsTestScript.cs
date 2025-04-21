@@ -70,16 +70,16 @@ namespace NonebNi.Develop
         private void OnGUI()
         {
             var rect = new Rect(10, 10, 150, 25);
-            if (GUI.Button(rect, "Show A")) ShowPattern(_unitA.Value).Forget();
+            if (GUI.Button(rect, "Show A")) ShowPattern(_unitA.Value);
             rect.y += 25;
 
-            if (GUI.Button(rect, "Show B")) ShowPattern(_unitB.Value).Forget();
+            if (GUI.Button(rect, "Show B")) ShowPattern(_unitB.Value);
             rect.y += 25;
         }
 
-        private async UniTask ShowPattern(UnitData unit)
+        private void ShowPattern(UnitData unit)
         {
-            await panel.Show(unit);
+            panel.Show(unit);
         }
     }
 }
