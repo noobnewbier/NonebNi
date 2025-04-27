@@ -1,5 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
-using NonebNi.Core.FlowControl;
+﻿using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Main.Di;
 using NonebNi.Terrain;
@@ -25,7 +24,7 @@ namespace NonebNi.Main
         [Header("Camera"), SerializeField] private CameraRunner cameraControl = null!;
 
 
-        private ILevelUi _levelUi = null!;
+        public ILevelUi LevelUi { get; private set; } = null!;
         public LevelData? LevelData { get; private set; }
         public ILevelFlowController? LevelFlowController { get; private set; }
         public TerrainConfigData? TerrainConfig { get; private set; }
@@ -52,10 +51,10 @@ namespace NonebNi.Main
                 hexHighlightConfig
             );
             LevelFlowController = levelContainer.Resolve<ILevelFlowController>().Value;
-            _levelUi = levelContainer.Resolve<ILevelUi>().Value;
+            LevelUi = levelContainer.Resolve<ILevelUi>().Value;
 
-            LevelFlowController.Run().Forget();
-            _levelUi.Run();
+            var levelEventsReader = LevelFlowController.Run();
+            LevelUi.Run(levelEventsReader);
         }
     }
 }

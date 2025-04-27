@@ -8,7 +8,6 @@ using NonebNi.Core.Decisions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
-using NonebNi.Core.Sequences;
 using NonebNi.Core.Units;
 using NonebNi.EditorConsole.Commands;
 using NonebNi.EditorConsole.Commands.Attributes;
@@ -22,26 +21,26 @@ namespace NonebNi.EditorConsole
         private readonly IActionRepository _actionRepository;
         private readonly IAgentsService _agentsService;
         private readonly ICommandsDataRepository _commandsDataRepository;
+        private readonly ILevelFlowController _levelFlowController;
         private readonly IReadOnlyMap _readOnlyMap;
-        private readonly ISequencePlayer _sequencePlayer;
         private readonly IUnitTurnOrderer _turnOrderer;
 
         public CommandHandler(
             IActionCommandEvaluator actionCommandEvaluator,
             IReadOnlyMap readOnlyMap,
-            ISequencePlayer sequencePlayer,
             ICommandsDataRepository commandsDataRepository,
             IAgentsService agentsService,
             IUnitTurnOrderer turnOrderer,
-            IActionRepository actionRepository)
+            IActionRepository actionRepository,
+            ILevelFlowController levelFlowController)
         {
             _actionCommandEvaluator = actionCommandEvaluator;
             _readOnlyMap = readOnlyMap;
-            _sequencePlayer = sequencePlayer;
             _commandsDataRepository = commandsDataRepository;
             _agentsService = agentsService;
             _turnOrderer = turnOrderer;
             _actionRepository = actionRepository;
+            _levelFlowController = levelFlowController;
         }
 
         public async UniTask Handle(IConsoleCommand command, StringBuilder outputBuffer)
@@ -53,7 +52,7 @@ namespace NonebNi.EditorConsole
                 case TeleportConsoleCommand teleportCommand:
                 {
                     if (_readOnlyMap.TryGet<UnitData>(teleportCommand.StartPos, out var unit))
-                        await EvaluateSequence(
+                        EvaluateSequence(
                             new ActionCommand(teleportCommand.GetAction(), unit, teleportCommand.TargetPos)
                         );
                     break;
@@ -62,7 +61,7 @@ namespace NonebNi.EditorConsole
                 case DamageConsoleCommand damageConsoleCommand:
                 {
                     if (_readOnlyMap.TryGet<UnitData>(damageConsoleCommand.Coordinate, out _))
-                        await EvaluateSequence(
+                        EvaluateSequence(
                             new ActionCommand(
                                 damageConsoleCommand.GetAction(),
                                 SystemEntity.Instance,
@@ -103,7 +102,7 @@ namespace NonebNi.EditorConsole
                         break;
                     }
 
-                    await EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoords));
+                    EvaluateSequence(new ActionCommand(action, unit, actionConsoleCommand.TargetCoords));
 
                     break;
                 }
@@ -208,11 +207,12 @@ Command description:
             }
         }
 
-        private async UniTask EvaluateSequence(ActionCommand command)
+        private void EvaluateSequence(ActionCommand command)
         {
             var sequences = _actionCommandEvaluator.Evaluate(command);
+            var @event = new LevelEvent.SequenceOccured(sequences);
 
-            await _sequencePlayer.Play(sequences);
+            _levelFlowController.ForcePlayEvent(@event);
         }
     }
 }

@@ -104,11 +104,11 @@ namespace NonebNi.EditorConsole
             var commandHandler = new CommandHandler(
                 levelFlowController.Evaluator,
                 levelData.Map,
-                levelFlowController.SequencePlayer,
                 commandsDataRepository,
                 levelFlowController.AgentsService,
                 levelFlowController.UnitTurnOrderer,
-                actionRepository
+                actionRepository,
+                levelFlowController
             );
             var parser = new ExpressionParser(commandsDataRepository);
             var lexer = new TextLexer();

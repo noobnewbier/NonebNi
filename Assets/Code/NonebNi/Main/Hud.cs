@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
 using NonebNi.Core.Agents;
 using NonebNi.Core.FlowControl;
@@ -41,10 +42,10 @@ namespace NonebNi.Main
                 unitTurnOrderer
             );
 
-            RefreshForNewTurn(unitTurnOrderer.CurrentUnit);
+            ShowNewTurn(unitTurnOrderer.CurrentUnit);
         }
 
-        public void RefreshForNewTurn(UnitData currentUnit)
+        public void ShowNewTurn(UnitData currentUnit)
         {
             //todo: cts support?
             async UniTask Do()
@@ -60,6 +61,11 @@ namespace NonebNi.Main
             }
 
             Do().Forget();
+        }
+
+        public void ShowComboUI(UnitData unit)
+        {
+            throw new NotImplementedException();
         }
     }
 }

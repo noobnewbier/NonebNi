@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Combos;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
-using NonebNi.Core.Sequences;
 using NonebNi.Core.Units;
 using Unity.Logging;
 
@@ -14,14 +12,11 @@ namespace NonebNi.Core.FlowControl
 {
     public interface ILevelFlowController
     {
-        delegate void TurnStarted(UnitData currentUnit);
-
         IAgentsService AgentsService { get; }
         IActionCommandEvaluator Evaluator { get; }
-        ISequencePlayer SequencePlayer { get; }
         IUnitTurnOrderer UnitTurnOrderer { get; }
-        UniTask Run();
-        event TurnStarted NewTurnStarted;
+        ChannelReader<LevelEvent> Run();
+        void ForcePlayEvent(LevelEvent levelEvent);
     }
 
     public class LevelFlowController : ILevelFlowController
@@ -30,31 +25,40 @@ namespace NonebNi.Core.FlowControl
             IActionCommandEvaluator evaluator,
             IUnitTurnOrderer unitTurnOrderer,
             IAgentsService agentService,
-            ISequencePlayer sequencePlayer,
             IDecisionValidator decisionValidator,
             IComboChecker comboChecker)
         {
             Evaluator = evaluator;
             UnitTurnOrderer = unitTurnOrderer;
             AgentsService = agentService;
-            SequencePlayer = sequencePlayer;
             DecisionValidator = decisionValidator;
             _comboChecker = comboChecker;
+
+            _eventChannel = Channel.CreateSingleConsumerUnbounded<LevelEvent>();
         }
 
         public IDecisionValidator DecisionValidator { get; }
-
         public IAgentsService AgentsService { get; }
-
         public IActionCommandEvaluator Evaluator { get; }
-
-        public ISequencePlayer SequencePlayer { get; }
-
         public IUnitTurnOrderer UnitTurnOrderer { get; }
 
         private readonly IComboChecker _comboChecker;
 
-        public async UniTask Run()
+        /// <summary>
+        /// If we need a state machine, we can add one later, atm a simple event queue would suffice
+        /// </summary>
+        /// <returns></returns>
+        private readonly Channel<LevelEvent> _eventChannel;
+
+        public ChannelReader<LevelEvent> Run()
+        {
+            //todo: at some point we need a way to kill it.
+            RunLevelFlow().Forget();
+
+            return _eventChannel.Reader;
+        }
+
+        private async UniTask RunLevelFlow()
         {
             //TODO: replace all these logging w/ a Decorator using StrongInject.
 
@@ -68,12 +72,13 @@ namespace NonebNi.Core.FlowControl
                 currentUnit.RestoreActionPoint();
                 currentUnit.RecoverFatigue();
 
-                NewTurnStarted?.Invoke(currentUnit);
+                var newTurn = new LevelEvent.NewTurn(currentUnit);
+                WriteEvent(newTurn);
 
                 while (true)
                 {
                     // ReSharper restore RedundantAssignment
-                    var command = await WaitForAgencyInput(currentUnit);
+                    var command = await WaitForAgentInput(currentUnit);
                     bool isDone;
                     switch (command)
                     {
@@ -100,38 +105,49 @@ namespace NonebNi.Core.FlowControl
             // ReSharper disable once FunctionNeverReturns
         }
 
-        public event ILevelFlowController.TurnStarted? NewTurnStarted;
+        public void ForcePlayEvent(LevelEvent levelEvent)
+        {
+            WriteEvent(levelEvent);
+        }
+
+        private void WriteEvent(LevelEvent levelEvent)
+        {
+            if (!_eventChannel.Writer.TryWrite(levelEvent)) Log.Error("[Level] You should really, never have got here");
+        }
 
         private async UniTask ActionEvaluationFlow(ActionCommand command, UnitData currentUnit)
         {
-            var startActionSequence = Evaluator.Evaluate(command).ToArray();
-            var comboSequence = (await GetComboSequence(command, currentUnit)).ToArray();
-            var fullSequence = startActionSequence.Concat(comboSequence);
-            await SequencePlayer.Play(fullSequence);
-
-            Log.Info("[Level] Finished Evaluation");
+            EvaluateCommand(command);
+            await ComboFlow(command, currentUnit);
         }
 
-        //todo: combo checker - how is it used? that idk but we will find out. I think it might be a good idea to have core to signal that we need input from UI and have the UI act accordingly.
-        private async UniTask<IEnumerable<ISequence>> GetComboSequence(ActionCommand previousCommand, UnitData comboStarter)
+        private void EvaluateCommand(ActionCommand command)
         {
-            if (!previousCommand.Action.Effects.Any())
-            {
-                //todo: combo effect, or effect defining if they are comboable. or even action?
-            }
-
-//todo: somewhere somehow, the type hierarchy has gone wrong, very wrong
-            if (await WaitForAgencyInput(comboStarter) is not ActionCommand actionCommand) return Enumerable.Empty<ISequence>();
-
-            if (actionCommand.ActorEntity is not UnitData comboTaker) return Enumerable.Empty<ISequence>();
-
-            var sequence = Evaluator.Evaluate(actionCommand).ToArray();
-            var nextSequence = await GetComboSequence(actionCommand, comboTaker);
-
-            return sequence.Concat(nextSequence);
+            var actionSequence = Evaluator.Evaluate(command).ToArray();
+            var sequenceEvent = new LevelEvent.SequenceOccured(actionSequence);
+            WriteEvent(sequenceEvent);
         }
 
-        private async UniTask<ICommand> WaitForAgencyInput(UnitData currentUnit)
+        private async UniTask ComboFlow(ActionCommand startingCommand, UnitData comboStarter)
+        {
+            // no combo -> nothing to do we can just bugger off
+            var possibleCombos = _comboChecker.FindComboOptions(startingCommand).ToArray();
+            if (!possibleCombos.Any()) return;
+
+            // wait till the agent give us to something to work on 
+            var comboDecisionEvent = new LevelEvent.WaitForComboDecision(comboStarter, possibleCombos);
+            WriteEvent(comboDecisionEvent);
+            if (await WaitForAgentInput(comboStarter) is not ActionCommand actionCommand) return;
+
+            // work on that something
+            EvaluateCommand(actionCommand);
+
+            // check if we can actually keep comboing -> combo till heat death if necessary
+            if (actionCommand.ActorEntity is not UnitData comboTaker) return;
+            await ComboFlow(actionCommand, comboTaker);
+        }
+
+        private async UniTask<ICommand> WaitForAgentInput(UnitData currentUnit)
         {
             IDecisionValidator.Error? err;
             ICommand command;
