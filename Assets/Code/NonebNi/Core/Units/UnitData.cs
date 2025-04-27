@@ -59,13 +59,14 @@ namespace NonebNi.Core.Units
             this.actions = actions.ToArray();
 
             Stats.CreateStat(StatId.Health, health, 0, maxHealth);
-            Stats.CreateStat(StatId.Initiative, initiative, 0, 100);
+            Stats.CreateStat(StatId.Initiative, initiative, 0, 100); //todo: technically initiative and timetoact is two different concept, is bulking them tgt easier to code?
             Stats.CreateStat(StatId.Speed, speed, 0, speed);
             Stats.CreateStat(StatId.Focus, focus);
             Stats.CreateStat(StatId.Strength, strength);
             Stats.CreateStat(StatId.Armor, armor);
             Stats.CreateStat(StatId.WeaponRange, weaponRange);
-            Stats.CreateStat(StatId.Fatigue, fatigue, 0, maxFatigue);
+            //todo: we can call fatigue stamina(or just MP) to fix the "reverse ui display" problem
+            Stats.CreateStat(StatId.Fatigue, maxFatigue, 0, maxFatigue);
             Stats.CreateStat(StatId.ActionPoint, maxActionPoint, 0, maxActionPoint);
             Stats.CreateStat(StatId.FatigueRecovery, fatigue);
         }
