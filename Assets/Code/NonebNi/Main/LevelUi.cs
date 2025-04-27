@@ -119,7 +119,7 @@ namespace NonebNi.Main
         ///     Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
         ///     Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
         /// </summary>
-        public (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace(TerrainConfigData terrainConfigData, Camera camera)
+        private (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace(TerrainConfigData terrainConfigData, Camera camera)
         {
             var cameraFrustumCorners = GetCameraFrustumCorners(camera);
             var cameraPosition = camera.transform.position;
