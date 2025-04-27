@@ -112,10 +112,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
             var targetUnitPos = FindUnitPosition(unit);
             _cameraController.LookAt(targetUnitPos);
-            await UniTask.WhenAll(
-                actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token),
-                detailsPanel.Show(unit, linkedCts.Token)
-            );
+            detailsPanel.Show(unit);
+            await actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token);
             await SelectAction(null);
         }
 
