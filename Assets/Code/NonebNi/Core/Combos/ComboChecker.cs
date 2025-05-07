@@ -45,9 +45,6 @@ namespace NonebNi.Core.Combos
                     foreach (var option in _actionOptionFinder.FindOptionsTargetingUnit(targetedUnit, actorFactionId).OfType<ActionCommand>())
                         yield return option;
             }
-
-            // you can of course, always just end turn
-            yield return new EndTurnCommand();
         }
     }
 }

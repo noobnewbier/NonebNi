@@ -63,9 +63,6 @@ namespace NonebNi.Core.Decisions
                 toReturn.AddRange(validCommands);
             }
 
-            // you can always do nothing
-            toReturn.Add(new EndTurnCommand());
-
             return toReturn;
         }
 
