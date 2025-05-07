@@ -8,5 +8,7 @@ namespace NonebNi.Core.Stats
     {
         [field: SerializeField] public string StatId { get; private set; } = StatId;
         [field: SerializeField] public int Cost { get; private set; } = Cost;
+
+        public static StatCost operator /(StatCost a, int i) => a with { Cost = a.Cost / i };
     }
 }
