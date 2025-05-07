@@ -34,7 +34,13 @@ namespace NonebNi.Core.Decisions
         public IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit)
         {
             var actions = actorUnit.Actions;
-            var affordableActions = actions.Where(actorUnit.CanPayActionCost);
+            var affordableActions = actions.Where(
+                a =>
+                {
+                    var cost = _commandEvaluator.FindActionCostInCurrentState(a);
+                    return actorUnit.CanPayCosts(cost);
+                }
+            );
             var toReturn = new List<ICommand>();
 
             // all possible action commands that an actor can do.
