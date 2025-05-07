@@ -5,6 +5,7 @@ using NonebNi.Core.Commands;
 using NonebNi.Core.Effects;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
+using NonebNi.Core.Stats;
 using NonebNi.Core.Units;
 using Unity.Logging;
 
@@ -14,20 +15,46 @@ namespace NonebNi.Core.FlowControl
     {
         IEnumerable<ISequence> Evaluate(ActionCommand command);
         List<EffectTargetGroup> FindEffectedTargets(ActionCommand command);
+        IEnumerable<StatCost> FindActionCostInCurrentState(NonebAction action);
     }
 
     public class ActionCommandEvaluator : IActionCommandEvaluator
     {
         //TODO: maybe a list for priority..? but priority should be baked within the class no?
         private readonly IReadOnlyCollection<IEffectEvaluator> _evaluators;
+        private readonly IGameEventControl _gameEventControl;
         private readonly IMap _map;
         private readonly ITargetFinder _targetFinder;
 
-        public ActionCommandEvaluator(IMap map, ITargetFinder targetFinder, IReadOnlyCollection<IEffectEvaluator> evaluators)
+        public ActionCommandEvaluator(IMap map, ITargetFinder targetFinder, IReadOnlyCollection<IEffectEvaluator> evaluators, IGameEventControl gameEventControl)
         {
             _map = map;
             _targetFinder = targetFinder;
             _evaluators = evaluators;
+            _gameEventControl = gameEventControl;
+        }
+
+        public IEnumerable<StatCost> FindActionCostInCurrentState(NonebAction action)
+        {
+            foreach (var c in action.Costs)
+            {
+                var cost = c;
+                if (_gameEventControl.Current is LevelEvent.WaitForComboDecision)
+                    switch (cost.StatId)
+                    {
+                        case StatId.ActionPoint:
+                            // Don't need to pay action point on combo
+                            continue;
+
+                        case StatId.Fatigue:
+
+                            // gameplay logic -> fatigue requirement is divided by 2 
+                            cost /= 2;
+                            break;
+                    }
+
+                yield return cost;
+            }
         }
 
         public IEnumerable<ISequence> Evaluate(ActionCommand command)
@@ -38,8 +65,12 @@ namespace NonebNi.Core.FlowControl
                 if (command.ActorEntity is not UnitData unitData)
                     Log.Warning($"{command.ActorEntity} is not an unit - cannot pay cost for {command.Action} - we are still doing it though");
                 else
-                    foreach (var cost in command.Action.Costs)
+                {
+                    foreach (var cost in FindActionCostInCurrentState(command.Action))
+                    {
                         unitData.Stats.PayCost(cost);
+                    }
+                }
             }
 
             return command.Action.Effects.SelectMany(
