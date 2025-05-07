@@ -2,13 +2,11 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using NonebNi.Core.Agents;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
-using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
 using UnityUtils;
 
@@ -19,68 +17,53 @@ namespace NonebNi.Main
     //sort this out and you can use your main sample scene to test gameplay, you are close fucker, you are v.close to something testable, keep the pressure up babe.
     public interface ILevelUi : IDisposable
     {
-        void Run(ChannelReader<LevelEvent> levelEventsReader);
+        void Run();
     }
 
     public class LevelUi : ILevelUi
     {
         private readonly CameraRunner _cameraControl;
         private readonly ICameraController _cameraController;
-        private readonly ICoordinateAndPositionService _coordinateAndPositionService;
         private readonly CancellationTokenSource _cts;
+        private readonly IGameEventControl _gameEventControl;
         private readonly Hud _hud;
-        private readonly IReadOnlyMap _map;
+
+        private readonly Hud.Dependencies _hudDeps;
         private readonly ITerrainMeshCreator _meshCreator;
-        private readonly IPlayerAgent _playerAgent;
         private readonly ISequencePlayer _sequencePlayer;
         private readonly Terrain _terrain;
-        private readonly IUnitTurnOrderer _unitTurnOrderer;
-        private readonly IPlayerTurnWorldSpaceInputControl _worldSpaceInputControl;
 
         public LevelUi(
             CameraRunner cameraControl,
             Hud hud,
             Terrain terrain,
             ICameraController cameraController,
-            IPlayerAgent playerAgent,
             ITerrainMeshCreator meshCreator,
-            IPlayerTurnWorldSpaceInputControl worldSpaceInputControl,
-            ICoordinateAndPositionService coordinateAndPositionService,
-            IReadOnlyMap map,
-            IUnitTurnOrderer unitTurnOrderer,
-            ISequencePlayer sequencePlayer)
+            ISequencePlayer sequencePlayer,
+            IGameEventControl gameEventControl,
+            Hud.Dependencies hudDeps)
         {
             _meshCreator = meshCreator;
-            _worldSpaceInputControl = worldSpaceInputControl;
-            _coordinateAndPositionService = coordinateAndPositionService;
-            _map = map;
-            _unitTurnOrderer = unitTurnOrderer;
             _cameraControl = cameraControl;
             _hud = hud;
             _terrain = terrain;
             _cameraController = cameraController;
-            _playerAgent = playerAgent;
             _sequencePlayer = sequencePlayer;
+            _gameEventControl = gameEventControl;
+            _hudDeps = hudDeps;
 
             //todo: change our DI, it's confusing now.
             _cts = new CancellationTokenSource();
         }
 
-        public void Run(ChannelReader<LevelEvent> levelEventsReader)
+        public void Run()
         {
             _cameraControl.Init(_cameraController);
-            _hud.Init(
-                _worldSpaceInputControl,
-                _cameraController,
-                _playerAgent,
-                _coordinateAndPositionService,
-                _map,
-                _unitTurnOrderer
-            );
+            _hud.Init(_hudDeps);
             _terrain.Init(_meshCreator);
             _cameraControl.Run();
 
-            ProcessLevelEvents(levelEventsReader, _cts.Token).Forget();
+            ProcessLevelEvents(_cts.Token).Forget();
         }
 
         public void Dispose()
@@ -88,24 +71,27 @@ namespace NonebNi.Main
             _cts.Cancel();
         }
 
-        private async UniTaskVoid ProcessLevelEvents(ChannelReader<LevelEvent> levelEventsReader, CancellationToken ct)
+        private async UniTaskVoid ProcessLevelEvents(CancellationToken ct)
         {
-            await foreach (var @event in levelEventsReader.ReadAllAsync())
+            await foreach (var @event in _gameEventControl.Subscribe(ct))
             {
                 ct.ThrowIfCancellationRequested();
                 switch (@event)
                 {
-                    case LevelEvent.NewTurn newTurn:
-                        _hud.ShowNewTurn(newTurn.Unit);
+                    case LevelEvent.GameStart:
+                    case LevelEvent.None:
+                        break;
+
+                    case LevelEvent.WaitForActiveUnitDecision newTurn:
+                        _hud.ShowActiveUnitControlMenu(newTurn.Unit);
                         break;
 
                     case LevelEvent.SequenceOccured sequenceOccured:
-                        if (sequenceOccured.Sequences.Any(s => s is not MoveSequence)) _sequencePlayer.Play(sequenceOccured.Sequences);
-
+                        _sequencePlayer.Play(sequenceOccured.Sequences);
                         break;
 
                     case LevelEvent.WaitForComboDecision waitForComboDecision:
-                        _hud.ShowComboUI(waitForComboDecision.Unit);
+                        _hud.ShowComboUI(waitForComboDecision.Unit, waitForComboDecision.PossibleCombos);
                         break;
 
                     default:
