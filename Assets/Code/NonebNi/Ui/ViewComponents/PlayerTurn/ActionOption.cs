@@ -45,12 +45,14 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Clicked?.Invoke(Action);
         }
 
-        public async UniTask SetHighlight(bool isHighlighted)
+        public async UniTask SetHighlight(bool isHighlighted, CancellationToken ct = default)
         {
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
+
             var anim = isHighlighted ?
                 highlightOnAnim :
                 highlightOffAnim;
-            await button.animator.PlayAnimation(anim, destroyCancellationToken);
+            await button.animator.PlayAnimation(anim, linkedCts.Token);
         }
     }
 }
