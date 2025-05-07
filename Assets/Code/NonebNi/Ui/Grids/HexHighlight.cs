@@ -1,4 +1,5 @@
 ﻿using NonebNi.Terrain;
+using NonebNi.Ui.Attributes;
 using UnityEngine;
 
 namespace NonebNi.Ui.Grids
@@ -6,6 +7,7 @@ namespace NonebNi.Ui.Grids
     /// <summary>
     /// Uses line renderer to draw some lines, but in the future it will be more beautiful(hopefully)
     /// </summary>
+    [NonebUniversalEditor]
     public class HexHighlight : MonoBehaviour
     {
         [SerializeField] private LineRenderer lineRenderer = null!;
@@ -17,6 +19,7 @@ namespace NonebNi.Ui.Grids
             if (lineRenderer == null) lineRenderer = gameObject.AddComponent<LineRenderer>();
         }
 
+        [CallOnEditorEnabled(1f)]
         public void Draw(float targetHexInnerRadius)
         {
             if (Mathf.Approximately(_hexInnerRadius, targetHexInnerRadius)) return;
