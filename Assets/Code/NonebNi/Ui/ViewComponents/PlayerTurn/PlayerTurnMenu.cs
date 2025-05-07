@@ -37,32 +37,21 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         //TODO: at some point this might go somewhere but I am not too fuzzed about a testing UI
         [SerializeField] private Button endTurnButton = null!;
+        private IActionInputControl _actionInputControl = null!;
 
         private IPlayerAgent _agent = null!;
         private ICameraController _cameraController = null!;
         private CancellationTokenSource? _controlModeCts;
-        private ICoordinateAndPositionService _coordinateAndPositionService = null!;
 
         private IPlayerTurnMenu.Data? _data;
-        private IReadOnlyMap _map = null!;
-        private UnitData? _selectedUnit;
         private IUnitTurnOrderer _unitTurnOrderer = null!;
-        private IPlayerTurnWorldSpaceInputControl _worldSpaceInputControl = null!;
 
-        public void Init(
-            IPlayerTurnWorldSpaceInputControl worldSpaceInputControl,
-            ICameraController cameraController,
-            IPlayerAgent agent,
-            ICoordinateAndPositionService coordinateAndPositionService,
-            IReadOnlyMap map,
-            IUnitTurnOrderer unitTurnOrderer)
+        public void Init(Dependencies dependencies)
         {
-            _worldSpaceInputControl = worldSpaceInputControl;
-            _cameraController = cameraController;
-            _agent = agent;
-            _coordinateAndPositionService = coordinateAndPositionService;
-            _map = map;
-            _unitTurnOrderer = unitTurnOrderer;
+            _actionInputControl = dependencies.ActionInputControl;
+            _cameraController = dependencies.CameraController;
+            _agent = dependencies.Agent;
+            _unitTurnOrderer = dependencies.UnitTurnOrderer;
 
             endTurnButton.onClick.AddListener(EndTurn);
         }
@@ -214,5 +203,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
             Do().Forget();
         }
+
+        public record Dependencies(IActionInputControl ActionInputControl, ICameraController CameraController, IPlayerAgent Agent, IUnitTurnOrderer UnitTurnOrderer);
     }
 }
