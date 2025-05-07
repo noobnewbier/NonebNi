@@ -27,4 +27,6 @@ MonoBehaviour:
   armor: 5
   weaponRange: 5
   fatigue: 0
-  maxFatigue: 0
+  maxFatigue: 100
+  fatigueRecovery: 0
+  maxActionPoint: 1
