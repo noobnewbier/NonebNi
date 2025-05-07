@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
 using NonebNi.Ui.Attributes;
@@ -11,6 +13,7 @@ namespace NonebNi.CustomInspector
     [CustomEditor(typeof(MonoBehaviour), true, isFallback = true)]
     public class NonebUniversalInspector : Editor
     {
+        private IEnumerable<(MethodInfo method, CallOnEditorEnabled attribute)> _calledOnEnabledMethod = Enumerable.Empty<(MethodInfo method, CallOnEditorEnabled attribute)>();
         private NonebGUIDrawer _editorDataDrawer = null!;
         private NonebGUIDrawer _mainDrawer = null!;
         private MonoBehaviour _self = null!;
@@ -20,6 +23,16 @@ namespace NonebNi.CustomInspector
             _mainDrawer = new NonebGUIDrawer(serializedObject);
             _editorDataDrawer = new NonebGUIDrawer(new SerializedObject(EditorData.instance));
             _self = (MonoBehaviour)target;
+
+            CallOnEditorEnabled();
+        }
+
+        private void CallOnEditorEnabled()
+        {
+            if (Application.isPlaying) return;
+
+            _calledOnEnabledMethod = ReflectionUtils.GetMethodsByAttribute<CallOnEditorEnabled>(target.GetType());
+            foreach (var (method, attribute) in _calledOnEnabledMethod) method.Invoke(_self, attribute.Parameters);
         }
 
         public override void OnInspectorGUI()
@@ -36,9 +49,24 @@ namespace NonebNi.CustomInspector
 
             _editorDataDrawer.Update();
             DrawUIStacks();
+            DrawCalledOnEnabeInitMethod();
             _editorDataDrawer.Apply();
 
             Repaint();
+        }
+
+        private void DrawCalledOnEnabeInitMethod()
+        {
+            if (_calledOnEnabledMethod.Any())
+                using (_editorDataDrawer.BoxScope())
+                {
+                    if (_editorDataDrawer.Foldout("Auto Called Init Method"))
+                        foreach (var (method, attribute) in _calledOnEnabledMethod)
+                        {
+                            var paramLists = string.Join(",", attribute.Parameters.Select(p => p.ToString()));
+                            _editorDataDrawer.DrawLabel($"{method.Name}({paramLists})");
+                        }
+                }
         }
 
         private void DrawUIStacks()
