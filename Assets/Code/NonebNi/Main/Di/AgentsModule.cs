@@ -4,12 +4,12 @@ using StrongInject;
 
 namespace NonebNi.Main.Di
 {
+    [
+        Register(typeof(AgentsService), typeof(IAgentsService))
+    ]
     public class AgentsModule
     {
         [Factory]
         public static IPlayerAgent ProvidePlayerAgent(IAgent[] agents) => agents.OfType<IPlayerAgent>().First();
-
-        [Factory]
-        public static IAgentsService ProvideAgentService(IAgent[] agents) => new AgentsService(agents);
     }
 }

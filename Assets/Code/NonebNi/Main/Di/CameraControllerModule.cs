@@ -3,10 +3,10 @@ using NonebNi.Core.Maps;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using StrongInject;
-using Unity.Cinemachine;
 
 namespace NonebNi.Main.Di
 {
+    [Register(typeof(CameraController), typeof(ICameraController))]
     public class CameraControllerModule
     {
         [Factory]
@@ -20,8 +20,5 @@ namespace NonebNi.Main.Di
 
             return new CameraConfig(setting, mapMinHeight, mapMinWidth, mapMaxWidth, mapMaxHeight);
         }
-
-        [Factory]
-        public static ICameraController CreateCameraControllerView(CameraConfig config, CinemachineCamera camera, CinemachinePositionComposer composer) => new CameraController(config, camera, composer);
     }
 }

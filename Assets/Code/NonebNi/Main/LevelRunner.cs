@@ -50,11 +50,12 @@ namespace NonebNi.Main
                 cameraControl.Camera,
                 hexHighlightConfig
             );
-            LevelFlowController = levelContainer.Resolve<ILevelFlowController>().Value;
-            LevelUi = levelContainer.Resolve<ILevelUi>().Value;
+            var (levelFlowController, levelUi) = levelContainer.Resolve().Value;
+            LevelFlowController = levelFlowController;
+            LevelUi = levelUi;
 
-            var levelEventsReader = LevelFlowController.Run();
-            LevelUi.Run(levelEventsReader);
+            levelFlowController.Run();
+            levelUi.Run();
         }
     }
 }

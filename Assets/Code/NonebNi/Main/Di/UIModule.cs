@@ -6,9 +6,12 @@ using StrongInject;
 namespace NonebNi.Main.Di
 {
     //TODO: change the DI
-    [Register(typeof(PlayerTurnMenu), typeof(IPlayerTurnMenu)), Register(typeof(PlayerTurnWorldSpaceInputControl), typeof(IPlayerTurnWorldSpaceInputControl)), Register(typeof(NonebInputSystem), typeof(IInputSystem)), Register(typeof(HexHighlighter), typeof(IHexHighlighter))]
-    // [Register(typeof(HexHighlightConfig),typeof()]
-    // [Register(typeof(Core.Maps.Map),typeof()]
-    // [Register(typeof(UnityEngine.Camera),typeof()]
+    [
+        Register(typeof(ActionInputControl), typeof(IActionInputControl)),
+        Register(typeof(PlayerTurnWorldSpaceInputControl), typeof(IPlayerTurnWorldSpaceInputControl)),
+        Register(typeof(NonebInputSystem), typeof(IInputSystem)),
+        Register(typeof(HexHighlighter), typeof(IHexHighlighter)),
+        RegisterModule(typeof(HudModule))
+    ]
     public class UIModule { }
 }
