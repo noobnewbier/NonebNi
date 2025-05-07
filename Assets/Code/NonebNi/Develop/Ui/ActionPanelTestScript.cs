@@ -41,12 +41,7 @@ namespace NonebNi.Develop
 
         private void OnPanelOnActionSelected(NonebAction? action)
         {
-            async UniTaskVoid Do()
-            {
-                await panel.Highlight(action);
-            }
-
-            Do().Forget();
+            panel.Select(action);
         }
 
         private async UniTask ShowAndCancel()

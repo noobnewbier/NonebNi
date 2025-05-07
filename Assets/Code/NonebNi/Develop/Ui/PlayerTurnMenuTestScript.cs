@@ -57,7 +57,7 @@ namespace NonebNi.Develop
             var playerAgent = new PlayerAgent(TestScriptHelpers.CreateFaction("fake-player"));
             _control = new MockInputControl();
             var cameraController = new MockCameraController();
-            menu.Init(_control, cameraController, playerAgent, new CoordinateAndPositionService(terrainConfigData), map, orderer);
+            menu.Init(new PlayerTurnMenu.Dependencies(_control, cameraController, playerAgent, orderer));
 
             _stack = new UIStack(stackRoot);
             await _stack.Push(view);
@@ -113,9 +113,10 @@ namespace NonebNi.Develop
             public IEnumerable<UnitData> GetActOrderForTurns(int turn) => _buffer;
         }
 
-        private class MockInputControl : IPlayerTurnWorldSpaceInputControl
+        private class MockInputControl : IActionInputControl
         {
             public string mode;
+            public UniTask SetActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit, CancellationToken ct = default) => throw new NotImplementedException();
             public Coordinate? FindHoveredCoordinate() => null;
 
             public UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default)
@@ -142,6 +143,8 @@ namespace NonebNi.Develop
             public void LookAt(Vector3 position) { }
 
             public void UpdateCamera() { }
+
+            public void LookAt(EntityData entity) { }
         }
 
         private class MockMap : IReadOnlyMap

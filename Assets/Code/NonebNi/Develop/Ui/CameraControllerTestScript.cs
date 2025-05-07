@@ -1,4 +1,7 @@
-﻿using NonebNi.Ui.Cameras;
+﻿using Moq;
+using NonebNi.Core.Maps;
+using NonebNi.Terrain;
+using NonebNi.Ui.Cameras;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
@@ -23,7 +26,7 @@ namespace NonebNi.Develop
         {
             var (upBound, downBound, rightBound, leftBound) = GetCameraParameters();
             var config = new CameraConfig(setting, downBound, leftBound, rightBound, upBound);
-            _cameraController = new CameraController(config, controlledCamera, composer);
+            _cameraController = new CameraController(config, controlledCamera, composer, Mock.Of<ICoordinateAndPositionService>(), Mock.Of<IReadOnlyMap>());
         }
 
         private void Update()

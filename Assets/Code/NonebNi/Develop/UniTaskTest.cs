@@ -1,28 +1,85 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace NonebNi.Develop
 {
     public class UniTaskTest : MonoBehaviour
     {
-        [SerializeField] private int times;
+        private bool _isDone;
 
-        private readonly Channel<int> channel = Channel.CreateSingleConsumerUnbounded<int>();
-
-        private void Awake()
+        [ContextMenu(nameof(TestTcs))]
+        public void TestTcs()
         {
-            async UniTaskVoid Do()
+            var tcs = new UniTaskCompletionSource();
+
+            async void Do()
             {
-                await foreach (var i in channel.Reader.ReadAllAsync()) Debug.Log($"{Time.frameCount}");
+                var startFrame = Time.frameCount;
+
+                await tcs.Task;
+
+                var currentFrame = Time.frameCount;
+                Debug.Log(startFrame == currentFrame);
             }
 
-            Do().Forget();
+
+            Do();
+            tcs.TrySetResult();
         }
 
-        [ContextMenu(nameof(Publish))]
-        public void Publish()
+
+        [ContextMenu(nameof(TestCt))]
+        public void TestCt()
         {
-            for (var i = 0; i < times; i++) channel.Writer.TryWrite(1);
+            var tcs = new UniTaskCompletionSource();
+
+            async UniTask RunningTask(CancellationToken ct)
+            {
+                var startFrame = Time.frameCount;
+                try
+                {
+                    await UniTask.WaitForSeconds(199, cancellationToken: ct, cancelImmediately: true);
+                }
+                finally
+                {
+                    var currentFrame = Time.frameCount;
+                    Debug.Log(startFrame == currentFrame);
+                    Debug.Log(startFrame);
+                    Debug.Log(currentFrame);
+                }
+            }
+
+            async void Do()
+            {
+                var cts = new CancellationTokenSource();
+                RunningTask(cts.Token).Forget();
+
+                cts.Cancel();
+            }
+
+            Do();
+            tcs.TrySetResult();
+        }
+
+        [ContextMenu(nameof(TestWaitUntil))]
+        public void TestWaitUntil()
+        {
+            _isDone = false;
+
+            async void Do()
+            {
+                var startFrame = Time.frameCount;
+
+                await UniTask.WaitUntil(() => _isDone);
+
+                var currentFrame = Time.frameCount;
+                Debug.Log(startFrame == currentFrame);
+            }
+
+
+            Do();
+            _isDone = true;
         }
     }
 }
