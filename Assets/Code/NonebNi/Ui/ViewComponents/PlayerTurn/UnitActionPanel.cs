@@ -18,10 +18,11 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private Animator panelAnimator = null!;
         [SerializeField] private AnimationData inspectionMode = null!;
         [SerializeField] private AnimationData controlMode = null!;
+        private CancellationTokenSource? _cts;
 
-
-        private NonebAction? _highlightedAction;
         private bool _isInspectionMode;
+
+        public NonebAction? SelectedAction { get; private set; }
 
         public event Action<NonebAction?>? ActionSelected;
 
@@ -66,23 +67,30 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             ActionSelected?.Invoke(action);
         }
 
-        public async UniTask Highlight(NonebAction? action)
+        public void Select(NonebAction? action)
         {
-            _highlightedAction = action;
-            await RefreshHighlight();
+            SelectedAction = action;
+            RefreshHighlight();
         }
 
-        private async UniTask RefreshHighlight()
+        private void RefreshHighlight()
         {
-            var tasks = new List<UniTask>();
-            foreach (var actionButton in actionsRoot.GetComponentsInChildren<ActionOption>())
+            async UniTaskVoid Do(CancellationToken ct)
             {
-                var isHighlighted = actionButton.Action == _highlightedAction;
-                var task = actionButton.SetHighlight(isHighlighted);
-                tasks.Add(task);
+                var tasks = new List<UniTask>();
+                foreach (var actionButton in actionsRoot.GetComponentsInChildren<ActionOption>())
+                {
+                    var isHighlighted = actionButton.Action == SelectedAction;
+                    var task = actionButton.SetHighlight(isHighlighted, ct);
+                    tasks.Add(task);
+                }
+
+                await UniTask.WhenAll(tasks);
             }
 
-            await UniTask.WhenAll(tasks);
+            _cts?.Cancel();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(destroyCancellationToken);
+            Do(_cts.Token).Forget();
         }
     }
 }
