@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Noneb.Localization.Runtime;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Stats;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using UnityEngine;
@@ -46,17 +47,13 @@ namespace NonebNi.Core.Entities
 
         public override string ToString() => Name.GetLocalized();
 
-        public bool CanPayActionCost(NonebAction action)
+        public bool CanPayCosts(IEnumerable<StatCost> costs)
         {
-            if (!action.Costs.Any())
-                // Nothing to pay!
-                return true;
-
             if (this is not UnitData unit)
                 //atm only unit can pay, in the future this might change
                 return false;
 
-            foreach (var cost in action.Costs)
+            foreach (var cost in costs)
             {
                 var error = unit.Stats.CheckCanPayCost(cost);
                 if (error != null) return false;
