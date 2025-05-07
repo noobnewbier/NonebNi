@@ -7,7 +7,11 @@ namespace NonebNi.Core.FlowControl
 {
     public abstract record LevelEvent
     {
-        public record NewTurn(UnitData Unit) : LevelEvent;
+        public record None : LevelEvent;
+
+        public record GameStart : LevelEvent;
+
+        public record WaitForActiveUnitDecision(UnitData Unit) : LevelEvent;
 
         public record WaitForComboDecision(UnitData Unit, IEnumerable<ICommand> PossibleCombos) : LevelEvent;
 
