@@ -15,15 +15,15 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private TextMeshProUGUI nameLabel = null!;
         [SerializeField] private TextMeshProUGUI factionLabel = null!;
 
-        private UnitData? _currentUnit;
+        public UnitData? ShownUnit { get; private set; }
 
         public void Show(UnitData data)
         {
             //TODO: need unsubscribe before exiting
-            if (_currentUnit != null) _currentUnit.Stats.StatUpdated -= OnStatUpdated;
+            if (ShownUnit != null) ShownUnit.Stats.StatUpdated -= OnStatUpdated;
 
-            _currentUnit = data;
-            _currentUnit.Stats.StatUpdated += OnStatUpdated;
+            ShownUnit = data;
+            ShownUnit.Stats.StatUpdated += OnStatUpdated;
             Refresh();
         }
 
@@ -34,16 +34,16 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private void Refresh()
         {
-            if (_currentUnit == null) return;
+            if (ShownUnit == null) return;
 
-            var (_, health) = _currentUnit.Stats.FindStat(StatId.Health);
-            var (_, fatigue) = _currentUnit.Stats.FindStat(StatId.Fatigue);
-            var (_, initiative) = _currentUnit.Stats.FindStat(StatId.Initiative);
-            var (_, speed) = _currentUnit.Stats.FindStat(StatId.Speed);
-            var (_, actionPoint) = _currentUnit.Stats.FindStat(StatId.ActionPoint);
+            var (_, health) = ShownUnit.Stats.FindStat(StatId.Health);
+            var (_, fatigue) = ShownUnit.Stats.FindStat(StatId.Fatigue);
+            var (_, initiative) = ShownUnit.Stats.FindStat(StatId.Initiative);
+            var (_, speed) = ShownUnit.Stats.FindStat(StatId.Speed);
+            var (_, actionPoint) = ShownUnit.Stats.FindStat(StatId.ActionPoint);
 
-            nameLabel.text = _currentUnit.Name.GetLocalized();
-            factionLabel.text = _currentUnit.FactionId;
+            nameLabel.text = ShownUnit.Name.GetLocalized();
+            factionLabel.text = ShownUnit.FactionId;
             healthWidget.Show(health);
             fatigueWidget.Show(fatigue);
             initWidget.Show(initiative);
