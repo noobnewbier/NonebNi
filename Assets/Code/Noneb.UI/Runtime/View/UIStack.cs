@@ -89,7 +89,7 @@ namespace Noneb.UI.View
                 //todo: not sure why but this is inconsistent.
                 //my guess is that the previous request is still running before the next one hit... we might need to split transition and the logic
                 await request.Task.Invoke();
-                request.IsDone = true;
+                if (!request.DoneTrigger.TrySetResult() && request.DoneTrigger.UnsafeGetStatus() != UniTaskStatus.Canceled) Log.Error("How did you get here, ever");
 
                 var info = _requestInfos.Dequeue();
                 if (request.Info != info) Log.Error("Something went wrong, logically you should not get here as the queue should be parallel with the channel");
@@ -116,6 +116,7 @@ namespace Noneb.UI.View
 
         public IEnumerable<INonebView> GetViews() => _stack.Select(t => t.View);
 
+        //todo: this is not type safe, makes me sadge, any way to fix it? any more to the generic fuckery seems bad though  
         public async UniTask Push(IViewComponent component, object? viewData = null)
         {
             var view = FindViewFromComponent(component);
@@ -212,12 +213,13 @@ namespace Noneb.UI.View
             return components.Contains(component);
         }
 
-        private async UniTask RequestTransition(TransitionRequest transitionRequest)
+        private UniTask RequestTransition(TransitionRequest transitionRequest)
         {
             _requestInfos.Enqueue(transitionRequest.Info);
             if (!_requestChannel.Writer.TryWrite(transitionRequest)) Log.Error("Why is this happening?");
 
-            await UniTask.WaitUntil(() => transitionRequest.IsDone, cancellationToken: _cts.Token);
+            _cts.Token.Register(() => transitionRequest.DoneTrigger.TrySetCanceled());
+            return transitionRequest.DoneTrigger.Task;
         }
 
         private async UniTask LeaveCurrentView(INonebView currentView, INonebView? nextView)
@@ -238,7 +240,7 @@ namespace Noneb.UI.View
 
         private record TransitionRequest(Func<UniTask> Task, TransitionRequestInfo Info)
         {
-            public bool IsDone { get; set; }
+            public UniTaskCompletionSource DoneTrigger { get; } = new();
         }
 
         /// <summary>
