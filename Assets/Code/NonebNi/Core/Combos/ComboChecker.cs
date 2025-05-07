@@ -2,6 +2,7 @@
 using System.Linq;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
+using NonebNi.Core.Effects;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Units;
 
@@ -10,6 +11,7 @@ namespace NonebNi.Core.Combos
     public interface IComboChecker
     {
         IEnumerable<ICommand> FindComboOptions(ICommand command);
+        IEnumerable<ICommand> FindComboOptions(IEnumerable<EffectTargetGroup> effectedTargets, string actorFactionId);
     }
 
     public class ComboChecker : IComboChecker
@@ -25,13 +27,18 @@ namespace NonebNi.Core.Combos
 
         public IEnumerable<ICommand> FindComboOptions(ICommand command)
         {
-            if (command is not ActionCommand actionCommand) yield break;
+            if (command is not ActionCommand actionCommand) return Enumerable.Empty<ICommand>();
 
             var action = actionCommand.Action;
-            if (!action.IsComboStarter) yield break;
+            if (!action.IsComboStarter) return Enumerable.Empty<ICommand>();
 
             var actorFactionId = actionCommand.ActorEntity.FactionId;
             var effectedTargets = _commandEvaluator.FindEffectedTargets(actionCommand);
+            return FindComboOptions(effectedTargets, actorFactionId);
+        }
+
+        public IEnumerable<ICommand> FindComboOptions(IEnumerable<EffectTargetGroup> effectedTargets, string actorFactionId)
+        {
             foreach (var target in effectedTargets.SelectMany(group => group.Targets))
             {
                 if (target is not UnitData targetedUnit) continue;
