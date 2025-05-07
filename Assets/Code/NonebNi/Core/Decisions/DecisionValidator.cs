@@ -2,6 +2,7 @@
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using Unity.Logging;
 
@@ -41,13 +42,15 @@ namespace NonebNi.Core.Decisions
 
     public class DecisionValidator : IDecisionValidator
     {
+        private readonly IActionCommandEvaluator _commandEvaluator;
         private readonly IReadOnlyMap _map;
         private readonly ITargetFinder _targetFinder;
 
-        public DecisionValidator(IReadOnlyMap map, ITargetFinder targetFinder)
+        public DecisionValidator(IReadOnlyMap map, ITargetFinder targetFinder, IActionCommandEvaluator commandEvaluator)
         {
             _map = map;
             _targetFinder = targetFinder;
+            _commandEvaluator = commandEvaluator;
         }
 
         public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision? decision)
@@ -57,7 +60,9 @@ namespace NonebNi.Core.Decisions
                 case EndTurnDecision:
                     return (null, new EndTurnCommand());
                 case ActionDecision ad:
-                    if (!ad.ActorEntity.CanPayActionCost(ad.Action))
+                {
+                    var cost = _commandEvaluator.FindActionCostInCurrentState(ad.Action);
+                    if (!ad.ActorEntity.CanPayCosts(cost))
                         return (
                             new IDecisionValidator.Error(
                                 "cannot-pay-cost",
@@ -78,6 +83,7 @@ namespace NonebNi.Core.Decisions
                     }
 
                     return (null, new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords));
+                }
                 default:
                     return (IDecisionValidator.Error.Unknown, NullCommand.Instance);
             }
