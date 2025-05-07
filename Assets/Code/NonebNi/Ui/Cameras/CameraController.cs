@@ -1,4 +1,8 @@
-﻿using Unity.Cinemachine;
+﻿using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
+using NonebNi.Core.Maps;
+using NonebNi.Terrain;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityUtils;
@@ -9,6 +13,7 @@ namespace NonebNi.Ui.Cameras
     {
         void LookAt(Vector3 position);
         void UpdateCamera();
+        void LookAt(EntityData entity);
     }
     //todo: need to allow gizmos filtering otherwise this is suicidal
 
@@ -23,6 +28,8 @@ namespace NonebNi.Ui.Cameras
     {
         private readonly CinemachineCamera _camera;
         private readonly CameraConfig _config;
+        private readonly ICoordinateAndPositionService _coordinateAndPositionService;
+        private readonly IReadOnlyMap _map;
         private readonly CinemachinePositionComposer _positionComposer;
 
         private float _accumulatedZoomingDecelerationValue;
@@ -32,11 +39,15 @@ namespace NonebNi.Ui.Cameras
         public CameraController(
             CameraConfig config,
             CinemachineCamera controlledCamera,
-            CinemachinePositionComposer positionComposer)
+            CinemachinePositionComposer positionComposer,
+            ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map)
         {
             _config = config;
             _camera = controlledCamera;
             _positionComposer = positionComposer;
+            _coordinateAndPositionService = coordinateAndPositionService;
+            _map = map;
         }
 
         private Vector3 TargetPos
@@ -54,6 +65,12 @@ namespace NonebNi.Ui.Cameras
         {
             //TODO: if too far away - turn off smoothing and look ahead.
             TargetPos = position;
+        }
+
+        public void LookAt(EntityData entity)
+        {
+            var pos = FindEntityPosition(entity);
+            LookAt(pos);
         }
 
         public void UpdateCamera()
@@ -92,6 +109,14 @@ namespace NonebNi.Ui.Cameras
             newZoom = Mathf.Min(newZoom, _config.Setting.MaxDistanceToMap);
 
             _positionComposer.CameraDistance = newZoom;
+        }
+
+        private Vector3 FindEntityPosition(EntityData entity)
+        {
+            if (!_map.TryFind(entity, out Coordinate coord)) return default;
+
+            var pos = _coordinateAndPositionService.FindPosition(coord);
+            return pos;
         }
 
         #region Panning
