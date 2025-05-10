@@ -10,10 +10,11 @@ namespace Noneb.UI.View
         [SerializeField] private AnimationData enterAnimationData = null!;
         [SerializeField] private AnimationData leaveAnimationData = null!;
 
+        [SerializeField] private bool shouldAnimOnTransitionSelfTransition = true;
+
         public async UniTask OnViewEnter(INonebView? previousView, INonebView currentView)
         {
-            //todo: who is my view wtf mate
-            if (previousView == currentView)
+            if (previousView == currentView && !shouldAnimOnTransitionSelfTransition)
                 // no need to replay the enter animation
                 return;
 
@@ -22,7 +23,7 @@ namespace Noneb.UI.View
 
         public async UniTask OnViewLeave(INonebView currentView, INonebView? nextView)
         {
-            if (currentView == nextView)
+            if (currentView == nextView && !shouldAnimOnTransitionSelfTransition)
                 // no need to play the leave animation - we are coming back
                 return;
 
