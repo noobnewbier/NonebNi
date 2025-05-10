@@ -145,7 +145,7 @@ namespace NonebNi.Core.FlowControl
         private async UniTask ComboFlow(List<EffectTargetGroup> previouslyAffectedTargets, UnitData comboStarter)
         {
             // no combo -> nothing to do we can just bugger off
-            var possibleCombos = _comboChecker.FindComboOptions(previouslyAffectedTargets, comboStarter.FactionId).ToArray();
+            var possibleCombos = _comboChecker.FindComboOptions(comboStarter, previouslyAffectedTargets).ToArray();
             if (!possibleCombos.Any()) return;
 
             // wait till the agent give us to something to work on 

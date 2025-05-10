@@ -3,6 +3,7 @@ using System.Linq;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Effects;
+using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Units;
 
@@ -11,7 +12,7 @@ namespace NonebNi.Core.Combos
     public interface IComboChecker
     {
         IEnumerable<ICommand> FindComboOptions(ICommand command);
-        IEnumerable<ICommand> FindComboOptions(IEnumerable<EffectTargetGroup> effectedTargets, string actorFactionId);
+        IEnumerable<ICommand> FindComboOptions(EntityData actor, IEnumerable<EffectTargetGroup> effectedTargets);
     }
 
     public class ComboChecker : IComboChecker
@@ -34,23 +35,24 @@ namespace NonebNi.Core.Combos
 
             var actorFactionId = actionCommand.ActorEntity.FactionId;
             var effectedTargets = _commandEvaluator.FindEffectedTargets(actionCommand);
-            return FindComboOptions(effectedTargets, actorFactionId);
+            return FindComboOptions(actionCommand.ActorEntity, effectedTargets);
         }
 
-        public IEnumerable<ICommand> FindComboOptions(IEnumerable<EffectTargetGroup> effectedTargets, string actorFactionId)
+        public IEnumerable<ICommand> FindComboOptions(EntityData actor, IEnumerable<EffectTargetGroup> effectedTargets)
         {
             foreach (var target in effectedTargets.SelectMany(group => group.Targets))
             {
                 if (target is not UnitData targetedUnit) continue;
 
-                if (targetedUnit.FactionId == actorFactionId)
+                if (targetedUnit.FactionId == actor.FactionId)
                     // if target is your own faction -> find command that target can do.
                     foreach (var option in _actionOptionFinder.FindOptionsForActor(targetedUnit).OfType<ActionCommand>())
                         yield return option;
                 else
                     // if target is enemy -> find command from friendly that targets it
-                    foreach (var option in _actionOptionFinder.FindOptionsTargetingUnit(targetedUnit, actorFactionId).OfType<ActionCommand>())
-                        yield return option;
+                    foreach (var option in _actionOptionFinder.FindOptionsTargetingUnit(targetedUnit, actor.FactionId).OfType<ActionCommand>())
+                        if (option.ActorEntity != actor)
+                            yield return option;
             }
         }
     }
