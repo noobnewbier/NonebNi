@@ -51,13 +51,15 @@ namespace Noneb.UI.View
             RunRequests().Forget();
         }
 
-        public INonebView? CurrentView
+        public INonebView? CurrentView => CurrentViewStack?.View;
+
+        private ViewStack? CurrentViewStack
         {
             get
             {
                 if (!_stack.TryPeek(out var current)) return null;
 
-                return current.View;
+                return current;
             }
         }
 
@@ -148,7 +150,7 @@ namespace Noneb.UI.View
         public async UniTask ReplaceCurrent(INonebView nextView, object? viewData = null)
         {
             //todo: how do I handle cases like this where I only need minimal change on the UI?
-            if (CurrentView == nextView)
+            if (nextView == CurrentViewStack?.View && viewData == CurrentViewStack?.ViewData)
                 // Nothing to replace - we are already the same chap
                 return;
 
