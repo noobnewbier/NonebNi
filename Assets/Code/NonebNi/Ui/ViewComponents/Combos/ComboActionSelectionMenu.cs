@@ -13,7 +13,13 @@ namespace NonebNi.Ui.ViewComponents.Combos
 {
     public interface IComboActionSelectionMenu : IViewComponent<IComboActionSelectionMenu.Data>
     {
-        public record Data(UnitData ActiveUnit, IEnumerable<NonebAction> PossibleComboActions);
+        //todo: possible combo - use them
+        //todo: reenter same unit should not leave view
+        //todo: when comboing https://privatebin.net/?11090be6f34f7d9d#ARRBfCgcANGSsTnrtNod9YpeLzyhNKtMNeRbVkLTEqxH
+        //todo: when combo can infinite
+        //todo: path find -> walk around enemy
+
+        public record Data(UnitData ActiveUnit, IEnumerable<NonebAction> PossibleComboActions, UIInputReader<UIInput> InputReader);
 
         public record UIInput(IDecision Decision);
     }
@@ -23,7 +29,7 @@ namespace NonebNi.Ui.ViewComponents.Combos
         [SerializeField] private UnitActionPanel actionPanel = null!;
         [SerializeField] private UnitDetailsPanel detailsPanel = null!;
 
-        private CancellationTokenSource? _cts;
+        private CancellationTokenSource _cts = new();
         private IComboActionSelectionMenu.Data? _data;
         private Dependencies _deps = null!;
 
@@ -35,6 +41,7 @@ namespace NonebNi.Ui.ViewComponents.Combos
         public UniTask OnViewActivate(IComboActionSelectionMenu.Data? viewData)
         {
             _data = viewData;
+            _cts = new CancellationTokenSource();
 
             actionPanel.ActionSelected += OnActionSelected;
             return UniTask.CompletedTask;
@@ -45,10 +52,12 @@ namespace NonebNi.Ui.ViewComponents.Combos
             if (_data == null) return;
 
             await ShowUnit(_data.ActiveUnit, true);
+            WaitForUserInput(_cts.Token).Forget();
         }
 
         public UniTask OnViewDeactivate()
         {
+            _cts.Cancel();
             actionPanel.ActionSelected -= OnActionSelected;
 
             return UniTask.CompletedTask;
@@ -71,17 +80,18 @@ namespace NonebNi.Ui.ViewComponents.Combos
 
         private void SelectAction(NonebAction? action)
         {
-            async UniTaskVoid Do(CancellationToken ct)
-            {
-                actionPanel.Select(action);
-                await _deps.ActionInputControl.SetActionContext(detailsPanel.ShownUnit, actionPanel.SelectedAction, true, ct);
-            }
-
-            _cts?.Cancel();
-            _cts = new CancellationTokenSource();
-            Do(_cts.Token).Forget();
+            actionPanel.Select(action);
+            _deps.ActionDecisionFlowControl.UpdateActionContext(detailsPanel.ShownUnit, actionPanel.SelectedAction, true);
         }
 
-        public record Dependencies(ICameraController CameraController, IActionInputControl ActionInputControl);
+        private async UniTaskVoid WaitForUserInput(CancellationToken ct)
+        {
+            var decision = await _deps.ActionDecisionFlowControl.WaitForUserInput(ct);
+            ct.ThrowIfCancellationRequested();
+
+            _data?.InputReader.Write(new IComboActionSelectionMenu.UIInput(decision));
+        }
+
+        public record Dependencies(ICameraController CameraController, IActionDecisionFlowControl ActionDecisionFlowControl);
     }
 }

@@ -83,7 +83,7 @@ namespace NonebNi.Main
                         break;
 
                     case LevelEvent.WaitForActiveUnitDecision newTurn:
-                        _hud.ShowActiveUnitControlMenu(newTurn.Unit);
+                        _hud.ActiveUnitControlFlow(newTurn.Unit);
                         break;
 
                     case LevelEvent.SequenceOccured sequenceOccured:
@@ -91,7 +91,7 @@ namespace NonebNi.Main
                         break;
 
                     case LevelEvent.WaitForComboDecision waitForComboDecision:
-                        _hud.ShowComboUI(waitForComboDecision.Unit, waitForComboDecision.PossibleCombos);
+                        _hud.ComboUIFlow(waitForComboDecision.PossibleCombos);
                         break;
 
                     default:

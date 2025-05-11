@@ -22,7 +22,9 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     //TODO: clear up folder structure -> make assets feature based as it's confusing the crap out of me, code can stay where it is though. 
     public interface IPlayerTurnMenu : IViewComponent<IPlayerTurnMenu.Data>
     {
-        public record Data(UnitData ActiveUnit);
+        public record Data(UnitData ActiveUnit, UIInputReader<UIInput> InputReader);
+
+        public record UIInput(IDecision Decision);
     }
 
     public class PlayerTurnMenu : MonoBehaviour, IPlayerTurnMenu
@@ -34,18 +36,18 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         //TODO: at some point this might go somewhere but I am not too fuzzed about a testing UI
         [SerializeField] private Button endTurnButton = null!;
-        private IActionInputControl _actionInputControl = null!;
+        private IActionDecisionFlowControl _actionDecisionFlowControl = null!;
 
         private IPlayerAgent _agent = null!;
         private ICameraController _cameraController = null!;
-        private CancellationTokenSource? _controlModeCts;
+        private CancellationTokenSource _cts = new();
 
         private IPlayerTurnMenu.Data? _data;
         private IUnitTurnOrderer _unitTurnOrderer = null!;
 
         public void Init(Dependencies dependencies)
         {
-            _actionInputControl = dependencies.ActionInputControl;
+            _actionDecisionFlowControl = dependencies.ActionDecisionFlowControl;
             _cameraController = dependencies.CameraController;
             _agent = dependencies.Agent;
             _unitTurnOrderer = dependencies.UnitTurnOrderer;
@@ -56,6 +58,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         public UniTask OnViewActivate(IPlayerTurnMenu.Data? viewData)
         {
             _data = viewData;
+            _cts = new CancellationTokenSource();
 
             actionPanel.ActionSelected += OnActionSelected;
             orderPanel.UnitSelected += OnUnitSelected;
@@ -71,16 +74,26 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 ShowUnit(_data.ActiveUnit, true),
                 ShowActOrder(_unitTurnOrderer.GetActOrderForTurns(10))
             );
+
+            WaitForUserInput(_cts.Token).Forget();
         }
 
         public UniTask OnViewDeactivate()
         {
-            _controlModeCts?.Cancel();
+            _cts.Cancel();
 
             actionPanel.ActionSelected -= OnActionSelected;
             orderPanel.UnitSelected -= OnUnitSelected;
 
             return UniTask.CompletedTask;
+        }
+
+        private async UniTaskVoid WaitForUserInput(CancellationToken ct)
+        {
+            var decision = await _actionDecisionFlowControl.WaitForUserInput(ct);
+            ct.ThrowIfCancellationRequested();
+
+            _data?.InputReader.Write(new IPlayerTurnMenu.UIInput(decision));
         }
 
         private void SelectAction(NonebAction? action)
@@ -107,26 +120,19 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private void RefreshControlMode()
         {
-            async UniTaskVoid Do(CancellationToken ct)
-            {
-                var unitContext = detailsPanel.ShownUnit;
-                var isActiveUnit = unitContext == _data?.ActiveUnit;
-                var actionContext = actionPanel.SelectedAction;
-                if (actionContext == null)
-                    if (isActiveUnit && unitContext?.Speed > 0)
-                        actionContext = ActionDatas.Move;
+            var unitContext = detailsPanel.ShownUnit;
+            var isActiveUnit = unitContext == _data?.ActiveUnit;
+            var actionContext = actionPanel.SelectedAction;
+            if (actionContext == null)
+                if (isActiveUnit && unitContext?.Speed > 0)
+                    actionContext = ActionDatas.Move;
 
-                await _actionInputControl.SetActionContext(unitContext, actionContext, isActiveUnit, ct);
-            }
-
-            _controlModeCts?.Cancel();
-            _controlModeCts = new CancellationTokenSource();
-            Do(_controlModeCts.Token).Forget();
+            _actionDecisionFlowControl.UpdateActionContext(unitContext, actionContext, isActiveUnit);
         }
 
         private void EndTurn()
         {
-            _controlModeCts?.Cancel();
+            _cts?.Cancel();
             //todo: at some point we need noneb button, which prevent spam click from breaking the UI, I can't be asked to deal with it every single time.
             _agent.SetDecision(EndTurnDecision.Instance);
         }
@@ -147,6 +153,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Do().Forget();
         }
 
-        public record Dependencies(IActionInputControl ActionInputControl, ICameraController CameraController, IPlayerAgent Agent, IUnitTurnOrderer UnitTurnOrderer);
+        public record Dependencies(IActionDecisionFlowControl ActionDecisionFlowControl, ICameraController CameraController, IPlayerAgent Agent, IUnitTurnOrderer UnitTurnOrderer);
     }
 }

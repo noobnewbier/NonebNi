@@ -7,7 +7,7 @@ namespace NonebNi.Main.Di
 {
     //TODO: change the DI
     [
-        Register(typeof(ActionInputControl), typeof(IActionInputControl)),
+        Register(typeof(ActionDecisionFlowControl), typeof(IActionDecisionFlowControl)),
         Register(typeof(PlayerTurnWorldSpaceInputControl), typeof(IPlayerTurnWorldSpaceInputControl)),
         Register(typeof(NonebInputSystem), typeof(IInputSystem)),
         Register(typeof(HexHighlighter), typeof(IHexHighlighter)),

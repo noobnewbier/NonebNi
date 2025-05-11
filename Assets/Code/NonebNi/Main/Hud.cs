@@ -36,16 +36,22 @@ namespace NonebNi.Main
             comboActionSelectionMenu.Init(_deps.ComboActionSelectionMenuDeps);
             comboUnitSelectionMenu.Init(_deps.ComboUnitSelectionMenuDeps);
 
-            ShowActiveUnitControlMenu(_deps.UnitTurnOrderer.CurrentUnit);
+            ActiveUnitControlFlow(_deps.UnitTurnOrderer.CurrentUnit);
         }
 
-        public void ShowActiveUnitControlMenu(UnitData currentUnit)
+        public void ActiveUnitControlFlow(UnitData currentUnit)
         {
             //todo: cts support?
             async UniTask Do()
             {
                 if (currentUnit.FactionId == _deps.Agent.Faction.Id)
-                    await _stack.ReplaceCurrent(playerTurnMenu, new IPlayerTurnMenu.Data(currentUnit));
+                {
+                    var reader = new UIInputReader<IPlayerTurnMenu.UIInput>();
+                    await _stack.ReplaceCurrent(playerTurnMenu, new IPlayerTurnMenu.Data(currentUnit, reader));
+
+                    var input = await reader.Read();
+                    _deps.Agent.SetDecision(input.Decision);
+                }
                 else
                     await _stack.ReplaceCurrent(enemyTurnMenu);
             }
@@ -53,7 +59,7 @@ namespace NonebNi.Main
             Do().Forget();
         }
 
-        public void ShowComboUI(UnitData unit, IEnumerable<ICommand> possibleCombos)
+        public void ComboUIFlow(IEnumerable<ICommand> possibleCombos)
         {
             async UniTask Do()
             {
@@ -64,7 +70,6 @@ namespace NonebNi.Main
                     .OfType<UnitData>()
                     .ToArray();
 
-                //todo: we successfully freezed the game by combo oh ya
                 IDecision? userDecision = null;
                 while (userDecision == null)
                 {
@@ -84,7 +89,7 @@ namespace NonebNi.Main
                         await _stack.Pop();
                 }
 
-                _deps.Agent.SetDecision(EndTurnDecision.Instance);
+                _deps.Agent.SetDecision(userDecision);
             }
 
             Do().Forget();
@@ -96,7 +101,7 @@ namespace NonebNi.Main
                 var possibleActionForSelectedUnit = availableCombos
                     .Where(c => c.ActorEntity == selectedUnit)
                     .Select(a => a.Action);
-                await _stack.ReplaceCurrent(comboActionSelectionMenu, new IComboActionSelectionMenu.Data(unit, possibleActionForSelectedUnit));
+                await _stack.ReplaceCurrent(comboActionSelectionMenu, new IComboActionSelectionMenu.Data(selectedUnit, possibleActionForSelectedUnit, reader));
                 var uiInput = await reader.Read();
 
                 return uiInput.Decision;
