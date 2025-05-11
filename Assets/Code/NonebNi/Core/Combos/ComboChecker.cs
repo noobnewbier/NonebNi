@@ -33,7 +33,6 @@ namespace NonebNi.Core.Combos
             var action = actionCommand.Action;
             if (!action.IsComboStarter) return Enumerable.Empty<ICommand>();
 
-            var actorFactionId = actionCommand.ActorEntity.FactionId;
             var effectedTargets = _commandEvaluator.FindEffectedTargets(actionCommand);
             return FindComboOptions(actionCommand.ActorEntity, effectedTargets);
         }
