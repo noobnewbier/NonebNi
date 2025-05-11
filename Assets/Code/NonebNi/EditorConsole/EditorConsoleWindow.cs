@@ -91,7 +91,7 @@ namespace NonebNi.EditorConsole
 
         private bool TryActivateConsole()
         {
-            var levelRunner = FindObjectOfType<LevelRunner>();
+            var levelRunner = FindAnyObjectByType<LevelRunner>();
             if (levelRunner == null) return false;
 
             var levelFlowController = levelRunner.LevelFlowController;
