@@ -9,6 +9,7 @@ using Noneb.UI.View;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
@@ -113,29 +114,12 @@ namespace NonebNi.Develop
             public IEnumerable<UnitData> GetActOrderForTurns(int turn) => _buffer;
         }
 
-        private class MockInputControl : IActionInputControl
+        private class MockInputControl : IActionDecisionFlowControl
         {
             public string mode;
-            public UniTask SetActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit, CancellationToken ct = default) => throw new NotImplementedException();
-            public Coordinate? FindHoveredCoordinate() => null;
+            public UniTask<ActionDecision> WaitForUserInput(CancellationToken ct = default) => throw new NotImplementedException();
 
-            public UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default)
-            {
-                mode = "target-selection";
-                return new UniTask<IEnumerable<Coordinate>>(Enumerable.Empty<Coordinate>());
-            }
-
-            public void ToTileInspectionMode()
-            {
-                mode = "tile-inspection";
-            }
-
-            public void UpdateTargetSelection() { }
-
-            public void ToMovementMode(UnitData mover)
-            {
-                mode = "movement";
-            }
+            public void UpdateActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit) => throw new NotImplementedException();
         }
 
         private class MockCameraController : ICameraController
