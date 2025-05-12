@@ -14,7 +14,7 @@ namespace NonebNi.Core.FlowControl
     public interface IActionCommandEvaluator
     {
         IEnumerable<ISequence> Evaluate(ActionCommand command);
-        List<EffectTargetGroup> FindEffectedTargets(ActionCommand command);
+        EffectContext FindEffectContext(ActionCommand command);
         IEnumerable<StatCost> FindActionCostInCurrentState(NonebAction action);
     }
 
@@ -76,8 +76,7 @@ namespace NonebNi.Core.FlowControl
             return command.Action.Effects.SelectMany(
                 e =>
                 {
-                    var targetGroups = FindEffectedTargets(command);
-                    var context = new EffectContext(_map, command.ActorEntity, targetGroups);
+                    var context = FindEffectContext(command);
 
                     var (isSuccess, sequences) = Evaluate(e, context);
                     if (!isSuccess) Log.Error($"Cannot find evaluator that can handle ({e.GetType()})");
@@ -87,7 +86,7 @@ namespace NonebNi.Core.FlowControl
             );
         }
 
-        public List<EffectTargetGroup> FindEffectedTargets(ActionCommand command)
+        public EffectContext FindEffectContext(ActionCommand command)
         {
             var requests = command.Action.TargetRequests;
             var targetGroups = new List<EffectTargetGroup>();
@@ -104,7 +103,7 @@ namespace NonebNi.Core.FlowControl
                 targetGroups.Add(group);
             }
 
-            return targetGroups;
+            return new EffectContext(_map, command, targetGroups);
         }
 
         private (bool isSuccess, IEnumerable<ISequence> sequences) Evaluate(Effect e, EffectContext context)

@@ -3,7 +3,6 @@ using System.Linq;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Effects;
-using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Units;
 
@@ -12,7 +11,7 @@ namespace NonebNi.Core.Combos
     public interface IComboChecker
     {
         IEnumerable<ICommand> FindComboOptions(ICommand command);
-        IEnumerable<ICommand> FindComboOptions(EntityData actor, IEnumerable<EffectTargetGroup> effectedTargets);
+        IEnumerable<ICommand> FindComboOptions(EffectContext context);
     }
 
     public class ComboChecker : IComboChecker
@@ -30,16 +29,17 @@ namespace NonebNi.Core.Combos
         {
             if (command is not ActionCommand actionCommand) return Enumerable.Empty<ICommand>();
 
-            var action = actionCommand.Action;
-            if (!action.IsComboStarter) return Enumerable.Empty<ICommand>();
-
-            var effectedTargets = _commandEvaluator.FindEffectedTargets(actionCommand);
-            return FindComboOptions(actionCommand.ActorEntity, effectedTargets);
+            var context = _commandEvaluator.FindEffectContext(actionCommand);
+            return FindComboOptions(context);
         }
 
-        public IEnumerable<ICommand> FindComboOptions(EntityData actor, IEnumerable<EffectTargetGroup> effectedTargets)
+        public IEnumerable<ICommand> FindComboOptions(EffectContext context)
         {
-            foreach (var target in effectedTargets.SelectMany(group => group.Targets))
+            var command = context.Command;
+            if (!command.Action.IsComboStarter) yield break;
+
+            var actor = context.Command.ActorEntity;
+            foreach (var target in context.TargetGroups.SelectMany(group => group.Targets))
             {
                 if (target is not UnitData targetedUnit) continue;
 

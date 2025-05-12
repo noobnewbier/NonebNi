@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Agents;
@@ -128,24 +127,24 @@ namespace NonebNi.Core.FlowControl
 
         private async UniTask ActionEvaluationFlow(ActionCommand command, UnitData currentUnit)
         {
-            var effectedTarget = EvaluateCommand(command);
-            await ComboFlow(effectedTarget, currentUnit);
+            var context = EvaluateCommand(command);
+            await ComboFlow(context, currentUnit);
         }
 
-        private List<EffectTargetGroup> EvaluateCommand(ActionCommand command)
+        private EffectContext EvaluateCommand(ActionCommand command)
         {
-            var effectedTarget = Evaluator.FindEffectedTargets(command);
+            var context = Evaluator.FindEffectContext(command);
             var actionSequence = Evaluator.Evaluate(command).ToArray();
             var sequenceEvent = new LevelEvent.SequenceOccured(actionSequence);
             _gameEventControl.WriteEvent(sequenceEvent);
 
-            return effectedTarget;
+            return context;
         }
 
-        private async UniTask ComboFlow(List<EffectTargetGroup> previouslyAffectedTargets, UnitData comboStarter)
+        private async UniTask ComboFlow(EffectContext comboContext, UnitData comboStarter)
         {
             // no combo -> nothing to do we can just bugger off
-            var possibleCombos = _comboChecker.FindComboOptions(comboStarter, previouslyAffectedTargets).ToArray();
+            var possibleCombos = _comboChecker.FindComboOptions(comboContext).ToArray();
             if (!possibleCombos.Any()) return;
 
             // wait till the agent give us to something to work on 
@@ -154,11 +153,11 @@ namespace NonebNi.Core.FlowControl
             if (await AgentsService.GetAgentInput(comboStarter.FactionId) is not ActionCommand actionCommand) return;
 
             // work on that something
-            var targetsAffectedByCombo = EvaluateCommand(actionCommand);
+            var nextComboContext = EvaluateCommand(actionCommand);
 
             // check if we can actually keep comboing -> combo till heat death if necessary
             if (actionCommand.ActorEntity is not UnitData comboTaker) return;
-            await ComboFlow(targetsAffectedByCombo, comboTaker);
+            await ComboFlow(nextComboContext, comboTaker);
         }
     }
 }

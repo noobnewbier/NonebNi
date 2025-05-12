@@ -81,8 +81,8 @@ namespace NonebNi.Core.Decisions
                             continue;
 
                         case ActionCommand actionCommand:
-                            var effectedTargets = _commandEvaluator.FindEffectedTargets(actionCommand);
-                            if (effectedTargets.Any(g => g.Targets.Contains(targetUnit))) yield return option;
+                            var context = _commandEvaluator.FindEffectContext(actionCommand);
+                            if (context.TargetGroups.Any(g => g.Targets.Contains(targetUnit))) yield return option;
                             break;
 
                         default:
