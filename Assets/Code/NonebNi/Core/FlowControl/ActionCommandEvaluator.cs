@@ -39,7 +39,7 @@ namespace NonebNi.Core.FlowControl
             foreach (var c in action.Costs)
             {
                 var cost = c;
-                if (_gameEventControl.Current is LevelEvent.WaitForComboDecision)
+                if (_gameEventControl.IsEvaluatingCombo)
                     switch (cost.StatId)
                     {
                         case StatId.ActionPoint:

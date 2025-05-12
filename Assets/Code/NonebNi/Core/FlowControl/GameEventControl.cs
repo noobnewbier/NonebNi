@@ -8,6 +8,7 @@ namespace NonebNi.Core.FlowControl
     public interface IGameEventControl : IDisposable
     {
         LevelEvent Current { get; }
+        bool IsEvaluatingCombo { get; }
         void WriteEvent(LevelEvent value);
         IUniTaskAsyncEnumerable<LevelEvent> Subscribe(CancellationToken ct);
     }
@@ -28,6 +29,23 @@ namespace NonebNi.Core.FlowControl
         }
 
         public LevelEvent Current { get; private set; } = new LevelEvent.None();
+
+        public bool IsEvaluatingCombo
+        {
+            get
+            {
+                return Current switch
+                {
+                    LevelEvent.GameStart or LevelEvent.None or LevelEvent.WaitForActiveUnitDecision => false,
+
+                    // slightly weird that sequence occured is here -> but note how as long as we are mid-sequence evaluation and checking for cost,
+                    // we are always evaluating for combo, I can regret later
+                    LevelEvent.SequenceOccured or
+                        LevelEvent.WaitForComboDecision => true,
+                    _ => throw new ArgumentOutOfRangeException(nameof(Current))
+                };
+            }
+        }
 
         public void WriteEvent(LevelEvent value)
         {
