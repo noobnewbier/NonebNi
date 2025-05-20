@@ -16,7 +16,15 @@ namespace NonebNi.Core.Actions
         [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public StatCost[] Costs { get; private set; }
         [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; }
-        [field: SerializeReference] public Effect[] Effects { get; private set; }
+
+        /// <summary>
+        /// Note the order here is important,
+        /// e.g knock back before damage is applied means the damage might not be applied if the unit is now not in its original
+        /// position.
+        /// </summary>
+        [field: SerializeReference]
+        public Effect[] Effects { get; private set; }
+
         [field: SerializeField] public bool IsComboStarter { get; private set; }
 
         public NonebAction(string id, NonebLocString name, Sprite icon, StatCost[] costs, TargetRequest[] targetRequests, Effect[] effects, bool isComboStarter)
