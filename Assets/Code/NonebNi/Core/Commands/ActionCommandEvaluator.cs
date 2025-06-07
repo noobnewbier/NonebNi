@@ -4,7 +4,6 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Effects;
 using NonebNi.Core.Maps;
-using NonebNi.Core.Sequences;
 using NonebNi.Core.Stats;
 using NonebNi.Core.Units;
 using Unity.Logging;
@@ -13,7 +12,7 @@ namespace NonebNi.Core.FlowControl
 {
     public interface IActionCommandEvaluator
     {
-        IEnumerable<ISequence> Evaluate(ActionCommand command);
+        EffectResult Evaluate(ActionCommand command);
         EffectContext FindEffectContext(ActionCommand command);
         IEnumerable<StatCost> FindActionCostInCurrentState(NonebAction action);
     }
@@ -39,7 +38,7 @@ namespace NonebNi.Core.FlowControl
             foreach (var c in action.Costs)
             {
                 var cost = c;
-                if (_gameEventControl.IsEvaluatingCombo)
+                if (_gameEventControl.ActiveActionResult.CanCombo)
                     switch (cost.StatId)
                     {
                         case StatId.ActionPoint:
@@ -57,7 +56,7 @@ namespace NonebNi.Core.FlowControl
             }
         }
 
-        public IEnumerable<ISequence> Evaluate(ActionCommand command)
+        public EffectResult Evaluate(ActionCommand command)
         {
             //todo: wbn if decision validator can be baked into this?
             if (command.Action.Costs.Any())
@@ -73,17 +72,20 @@ namespace NonebNi.Core.FlowControl
                 }
             }
 
-            return command.Action.Effects.SelectMany(
+            var results = command.Action.Effects.Select(
                 e =>
                 {
                     var context = FindEffectContext(command);
 
-                    var (isSuccess, sequences) = Evaluate(e, context);
+                    var (isSuccess, result) = Evaluate(e, context);
                     if (!isSuccess) Log.Error($"Cannot find evaluator that can handle ({e.GetType()})");
 
-                    return sequences;
+                    return result;
                 }
-            );
+            ).ToArray();
+
+            var resultAggregate = results.Aggregate((a, b) => a.Concat(b));
+            return resultAggregate;
         }
 
         public EffectContext FindEffectContext(ActionCommand command)
@@ -106,7 +108,7 @@ namespace NonebNi.Core.FlowControl
             return new EffectContext(_map, command, targetGroups);
         }
 
-        private (bool isSuccess, IEnumerable<ISequence> sequences) Evaluate(Effect e, EffectContext context)
+        private (bool isSuccess, EffectResult result) Evaluate(Effect e, EffectContext context)
         {
             foreach (var evaluator in _evaluators)
             {
@@ -114,7 +116,7 @@ namespace NonebNi.Core.FlowControl
                 if (isSuccess) return (true, sequences);
             }
 
-            return (false, Enumerable.Empty<ISequence>());
+            return (false, EffectResult.Empty);
         }
     }
 }

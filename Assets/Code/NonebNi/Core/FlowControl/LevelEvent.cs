@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using NonebNi.Core.Commands;
-using NonebNi.Core.Sequences;
+using NonebNi.Core.Effects;
 using NonebNi.Core.Units;
 
 namespace NonebNi.Core.FlowControl
@@ -13,8 +13,8 @@ namespace NonebNi.Core.FlowControl
 
         public record WaitForActiveUnitDecision(UnitData Unit) : LevelEvent;
 
-        public record WaitForComboDecision(UnitData Unit, IEnumerable<ICommand> PossibleCombos) : LevelEvent;
+        public record WaitForComboDecision(IEnumerable<ICommand> PossibleCombos) : LevelEvent;
 
-        public record SequenceOccured(IEnumerable<ISequence> Sequences) : LevelEvent;
+        public record SequenceOccured(EffectResult Result) : LevelEvent;
     }
 }

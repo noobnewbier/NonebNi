@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
@@ -14,7 +15,7 @@ namespace NonebNi.Core.Effects
     {
         public class Evaluator : Evaluator<MoveEntityEffect>
         {
-            protected override IEnumerable<ISequence> OnEvaluate(
+            protected override EffectResult OnEvaluate(
                 MoveEntityEffect effect,
                 EffectContext context)
             {
@@ -25,18 +26,30 @@ namespace NonebNi.Core.Effects
                 if (groups.FirstOrDefault()?.AsSingleTarget is not EntityData targetEntity)
                 {
                     Log.Error($"{nameof(MoveEntityEffect)} without an entity to move makes no sense!");
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
                 if (groups.ElementAtOrDefault(1)?.AsSingleTarget is not Coordinate targetCoord)
                 {
                     Log.Error($"{nameof(MoveEntityEffect)} without a coordinate as target position makes no sense!");
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
                 var result = context.Map.Move(targetEntity, targetCoord);
 
-                if (result == MoveResult.Success) yield return new MoveSequence(targetEntity, targetCoord);
+                if (result != MoveResult.Success) return EffectResult.Empty;
+
+                var sequences = new List<ISequence>();
+                var receivers = new HashSet<IActionTarget>();
+                var carriers = new HashSet<EntityData>();
+                if (targetEntity.FactionId == context.ActionCaster.FactionId)
+                    carriers.Add(targetEntity);
+                else
+                    receivers.Add(targetEntity);
+
+                sequences.Add(new MoveSequence(targetEntity, targetCoord));
+
+                return new EffectResult(sequences, receivers, carriers);
             }
         }
     }

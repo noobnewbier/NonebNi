@@ -1,23 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NonebNi.Core.Actions;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Sequences;
 
 namespace NonebNi.Core.Effects
 {
     public interface IEffectEvaluator
     {
-        public (bool isSuccess, IEnumerable<ISequence> sequences) Evaluate(Effect effect, EffectContext context);
+        public (bool isSuccess, EffectResult result) Evaluate(Effect effect, EffectContext context);
     }
 
     public interface IEffectEvaluator<in T> : IEffectEvaluator where T : Effect
     {
-        (bool isSuccess, IEnumerable<ISequence> sequences) IEffectEvaluator.Evaluate(Effect effect, EffectContext context)
+        (bool isSuccess, EffectResult result) IEffectEvaluator.Evaluate(Effect effect, EffectContext context)
         {
-            if (effect is not T typedEffect) return (false, Enumerable.Empty<ISequence>());
+            if (effect is not T typedEffect) return (false, new EffectResult(Enumerable.Empty<ISequence>(), new HashSet<IActionTarget>(), new HashSet<EntityData>()));
 
             return (true, Evaluate(typedEffect, context));
         }
 
-        public IEnumerable<ISequence> Evaluate(T effect, EffectContext context);
+        public EffectResult Evaluate(T effect, EffectContext context);
     }
 }

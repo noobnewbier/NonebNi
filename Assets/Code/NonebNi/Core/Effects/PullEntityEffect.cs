@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
@@ -14,7 +15,7 @@ namespace NonebNi.Core.Effects
     {
         public class Evaluator : Evaluator<PullEntityEffect>
         {
-            protected override IEnumerable<ISequence> OnEvaluate(
+            protected override EffectResult OnEvaluate(
                 PullEntityEffect effect,
                 EffectContext context)
             {
@@ -22,19 +23,19 @@ namespace NonebNi.Core.Effects
                 if (targetParam is not EntityData targetEntity)
                 {
                     Log.Error($"{nameof(PullEntityEffect)} without an Entity parameter makes no sense!");
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(context.ActionCaster, out Coordinate actorCoord))
                 {
                     Log.Error($"{context.ActionCaster.Name} is not on the map!");
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(targetEntity, out Coordinate targetCoord))
                 {
                     Log.Error($"{targetEntity.Name} is not on the map!");
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
                 if (!actorCoord.IsOnSameLineWith(targetCoord))
@@ -42,7 +43,7 @@ namespace NonebNi.Core.Effects
                     Log.Error(
                         $"{targetEntity.Name} is not on the same line with {context.ActionCaster.Name} - effect is undefined!"
                     );
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
                 var direction = (targetCoord - actorCoord).Normalized();
@@ -51,10 +52,19 @@ namespace NonebNi.Core.Effects
                 if (result != MoveResult.Success)
                 {
                     Log.Warning($"Failed movement! Reason: {result}.");
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
-                yield return new MoveSequence(targetEntity, pulledToCoord);
+                var sequences = new List<ISequence>();
+                var receivers = new HashSet<IActionTarget>();
+                var carriers = new HashSet<EntityData>();
+                if (targetEntity.FactionId == context.ActionCaster.FactionId)
+                    carriers.Add(targetEntity);
+                else
+                    receivers.Add(targetEntity);
+
+                sequences.Add(new MoveSequence(targetEntity, pulledToCoord));
+                return new EffectResult(sequences, receivers, carriers);
             }
         }
     }

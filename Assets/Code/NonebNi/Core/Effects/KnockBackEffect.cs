@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
@@ -22,14 +23,18 @@ namespace NonebNi.Core.Effects
 
         public class Evaluator : Evaluator<KnockBackEffect>
         {
-            protected override IEnumerable<ISequence> OnEvaluate(
+            protected override EffectResult OnEvaluate(
                 KnockBackEffect effect,
                 EffectContext context)
             {
+                var sequences = new List<ISequence>();
+                var receivers = new HashSet<IActionTarget>();
+                var carriers = new HashSet<EntityData>();
+
                 if (!context.Map.TryFind(context.ActionCaster, out Coordinate casterCoord))
                 {
                     Log.Error($"[Effect] {context.ActionCaster} does not exist in the map!");
-                    yield break;
+                    return new EffectResult(sequences);
                 }
 
                 foreach (var target in context.TargetGroups.SelectMany(g => g.Targets))
@@ -64,7 +69,12 @@ namespace NonebNi.Core.Effects
                         case MoveResult.Success:
                         case MoveResult.NoEffect:
                         case MoveResult.ErrorTargetOccupied:
-                            yield return new KnockBackSequence(targetEntity, finalCoord);
+                            sequences.Add(new KnockBackSequence(targetEntity, finalCoord));
+                            if (targetEntity.FactionId == context.ActionCaster.FactionId)
+                                carriers.Add(targetEntity);
+                            else
+                                receivers.Add(targetEntity);
+
                             break;
 
                         case MoveResult.ErrorEntityIsNotOnBoard:
@@ -75,6 +85,8 @@ namespace NonebNi.Core.Effects
                             throw new ArgumentOutOfRangeException();
                     }
                 }
+
+                return new EffectResult(sequences, receivers, carriers);
             }
 
             private Coordinate GetCoordinateAfterKnockBack(

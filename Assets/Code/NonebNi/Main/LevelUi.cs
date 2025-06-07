@@ -87,7 +87,7 @@ namespace NonebNi.Main
                         break;
 
                     case LevelEvent.SequenceOccured sequenceOccured:
-                        _sequencePlayer.Play(sequenceOccured.Sequences);
+                        _sequencePlayer.Play(sequenceOccured.Result.Sequences);
                         break;
 
                     case LevelEvent.WaitForComboDecision waitForComboDecision:

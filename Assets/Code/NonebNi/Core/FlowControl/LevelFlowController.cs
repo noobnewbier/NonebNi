@@ -2,8 +2,8 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Agents;
-using NonebNi.Core.Combos;
 using NonebNi.Core.Commands;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.Effects;
 using NonebNi.Core.Units;
 using Unity.Logging;
@@ -46,14 +46,14 @@ namespace NonebNi.Core.FlowControl
             IActionCommandEvaluator evaluator,
             IUnitTurnOrderer unitTurnOrderer,
             IAgentsService agentService,
-            IComboChecker comboChecker,
-            IGameEventControl gameEventControl)
+            IGameEventControl gameEventControl,
+            IActionOptionFinder optionFinder)
         {
             Evaluator = evaluator;
             UnitTurnOrderer = unitTurnOrderer;
             AgentsService = agentService;
-            _comboChecker = comboChecker;
             _gameEventControl = gameEventControl;
+            _optionFinder = optionFinder;
         }
 
         public IAgentsService AgentsService { get; }
@@ -61,7 +61,7 @@ namespace NonebNi.Core.FlowControl
         public IUnitTurnOrderer UnitTurnOrderer { get; }
 
         private readonly IGameEventControl _gameEventControl;
-        private readonly IComboChecker _comboChecker;
+        private readonly IActionOptionFinder _optionFinder;
 
         public void Run()
         {
@@ -134,8 +134,8 @@ namespace NonebNi.Core.FlowControl
         private EffectContext EvaluateCommand(ActionCommand command)
         {
             var context = Evaluator.FindEffectContext(command);
-            var actionSequence = Evaluator.Evaluate(command).ToArray();
-            var sequenceEvent = new LevelEvent.SequenceOccured(actionSequence);
+            var result = Evaluator.Evaluate(command);
+            var sequenceEvent = new LevelEvent.SequenceOccured(result);
             _gameEventControl.WriteEvent(sequenceEvent);
 
             return context;
@@ -144,11 +144,11 @@ namespace NonebNi.Core.FlowControl
         private async UniTask ComboFlow(EffectContext comboContext, UnitData comboStarter)
         {
             // no combo -> nothing to do we can just bugger off
-            var possibleCombos = _comboChecker.FindComboOptions(comboContext).ToArray();
+            var possibleCombos = _optionFinder.FindComboOptions(comboContext).ToArray();
             if (!possibleCombos.Any()) return;
 
             // wait till the agent give us to something to work on 
-            var comboDecisionEvent = new LevelEvent.WaitForComboDecision(comboStarter, possibleCombos);
+            var comboDecisionEvent = new LevelEvent.WaitForComboDecision(possibleCombos);
             _gameEventControl.WriteEvent(comboDecisionEvent);
             if (await AgentsService.GetAgentInput(comboStarter.FactionId) is not ActionCommand actionCommand) return;
 

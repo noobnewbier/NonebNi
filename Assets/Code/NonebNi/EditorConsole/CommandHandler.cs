@@ -209,8 +209,8 @@ Command description:
 
         private void EvaluateSequence(ActionCommand command)
         {
-            var sequences = _actionCommandEvaluator.Evaluate(command);
-            var @event = new LevelEvent.SequenceOccured(sequences);
+            var result = _actionCommandEvaluator.Evaluate(command);
+            var @event = new LevelEvent.SequenceOccured(result);
 
             _levelFlowController.ForcePlayEvent(@event);
         }

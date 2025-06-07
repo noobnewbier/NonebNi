@@ -140,6 +140,7 @@ namespace NonebNi.Core.Actions
             new MoveEntityEffect()
         );
 
+        //todo: clear path might not be working as intended. time to whip out our automatic test before it's too late.
         public static readonly NonebAction Lure = new(
             "lure",
             "lure",

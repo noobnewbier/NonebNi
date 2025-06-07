@@ -210,6 +210,7 @@ namespace NonebNi.Core.Actions
             }
         }
 
+        //todo: maybe not nested.
         public abstract record RestrictionCheckFailedReason
         {
             public record TargetTypeNotMatched : RestrictionCheckFailedReason;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
+using NonebNi.Core.Effects;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Units;
@@ -12,8 +13,7 @@ namespace NonebNi.Core.Decisions
 {
     public interface IActionOptionFinder
     {
-        IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit);
-        IEnumerable<ICommand> FindOptionsTargetingUnit(UnitData targetUnit, string actingFactionId);
+        IEnumerable<ICommand> FindComboOptions(EffectContext context);
     }
 
     public class ActionOptionFinder : IActionOptionFinder
@@ -31,7 +31,29 @@ namespace NonebNi.Core.Decisions
             _commandEvaluator = commandEvaluator;
         }
 
-        public IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit)
+        public IEnumerable<ICommand> FindComboOptions(EffectContext context)
+        {
+            var command = context.Command;
+            if (!command.Action.IsComboStarter) yield break;
+
+            var actor = context.Command.ActorEntity;
+            foreach (var target in context.TargetGroups.SelectMany(group => group.Targets))
+            {
+                if (target is not UnitData targetedUnit) continue;
+
+                if (targetedUnit.FactionId == actor.FactionId)
+                    // if target is your own faction -> find command that target can do.
+                    foreach (var option in FindOptionsForActor(targetedUnit).OfType<ActionCommand>())
+                        yield return option;
+                else
+                    // if target is enemy -> find command from friendly that targets it
+                    foreach (var option in FindOptionsTargetingUnit(targetedUnit, actor.FactionId).OfType<ActionCommand>())
+                        if (option.ActorEntity != actor)
+                            yield return option;
+            }
+        }
+
+        private IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit)
         {
             var actions = actorUnit.Actions;
             var affordableActions = actions.Where(
@@ -67,7 +89,7 @@ namespace NonebNi.Core.Decisions
         }
 
         //todo: this is the sort of shit we need automated testing for 
-        public IEnumerable<ICommand> FindOptionsTargetingUnit(UnitData targetUnit, string actingFactionId)
+        private IEnumerable<ICommand> FindOptionsTargetingUnit(UnitData targetUnit, string actingFactionId)
         {
             var allUnitsInFaction = _map.GetAllUnits().Where(u => u.FactionId == actingFactionId);
             foreach (var potentialActor in allUnitsInFaction)

@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
-using Unity.Logging;
 
 namespace NonebNi.Core.Decisions
 {
@@ -43,14 +43,16 @@ namespace NonebNi.Core.Decisions
     public class DecisionValidator : IDecisionValidator
     {
         private readonly IActionCommandEvaluator _commandEvaluator;
+        private readonly IGameEventControl _gameEventControl;
         private readonly IReadOnlyMap _map;
         private readonly ITargetFinder _targetFinder;
 
-        public DecisionValidator(IReadOnlyMap map, ITargetFinder targetFinder, IActionCommandEvaluator commandEvaluator)
+        public DecisionValidator(IReadOnlyMap map, ITargetFinder targetFinder, IActionCommandEvaluator commandEvaluator, IGameEventControl gameEventControl)
         {
             _map = map;
             _targetFinder = targetFinder;
             _commandEvaluator = commandEvaluator;
+            _gameEventControl = gameEventControl;
         }
 
         public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision? decision)
@@ -82,6 +84,15 @@ namespace NonebNi.Core.Decisions
                         );
                     }
 
+                    if (IsTargetingComboTarget(ad) && IsStartingFromComboCarrier(ad))
+                        return (
+                            new IDecisionValidator.Error(
+                                "invalid-target",
+                                "You must be targeting the combo target or start with the combo carrier"
+                            ),
+                            NullCommand.Instance
+                        );
+
                     return (null, new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords));
                 }
                 default:
@@ -89,7 +100,35 @@ namespace NonebNi.Core.Decisions
             }
         }
 
+        private bool IsStartingFromComboCarrier(ActionDecision ad)
+        {
+            return _gameEventControl.ActiveActionResult.ValidComboCarrier.Any(c => c == ad.ActorEntity);
+        }
+
+        private bool IsTargetingComboTarget(ActionDecision ad)
+        {
+            if (!_gameEventControl.ActiveActionResult.ValidComboReceiver.Any()) return false;
+
+            var (isValidTargets, actionTargetGroups) = FindTargetFromInput(ad);
+            if (isValidTargets) return false;
+
+            foreach (var targets in actionTargetGroups)
+            {
+                var targetGroupContainsReceiver = _gameEventControl.ActiveActionResult.ValidComboReceiver.Intersect(targets).Any();
+                if (targetGroupContainsReceiver) return true;
+            }
+
+            return false;
+        }
+
         private bool IsTargetingValid(ActionDecision ad)
+        {
+            var (isValidTargets, _) = FindTargetFromInput(ad);
+
+            return isValidTargets;
+        }
+
+        private (bool, List<IActionTarget[]> toReturn) FindTargetFromInput(ActionDecision ad)
         {
             var action = ad.Action;
             var requirements = action.TargetRequests;
@@ -99,53 +138,33 @@ namespace NonebNi.Core.Decisions
             //each targeted coordinate is validated against the restriction in the same index, so C0 -> R0, C1 -> R1 etc.
             //this is why the length must match, otherwise it doesn't make sense.
             //Before you ask, this is an arbitrary decision past you made, and another past you deduced, if you don't like it, well invent time machine.
-            if (targetCoords.Length != requirements.Length) return false;
+            if (targetCoords.Length != requirements.Length) return (false, new List<IActionTarget[]>());
 
             //if actor is not on the map -> wtf are you doing.
             var actor = ad.ActorEntity;
-            if (!_map.TryFind(actor, out Coordinate actorCoord)) return false;
+            if (!_map.TryFind(actor, out Coordinate actorCoord)) return (false, new List<IActionTarget[]>());
 
-            //if any of the target coords is out of range -> this is invalid.
-            var rangeLimitations = requirements.Select(r => r.Range.CalculateRange(actor)).ToArray();
-            for (var i = 0; i < rangeLimitations.Length; i++)
-            {
-                var targetCoord = targetCoords[i];
-                var rangeLimit = rangeLimitations[i];
-                var distanceToTarget = actorCoord.DistanceTo(targetCoord);
-                if (distanceToTarget > rangeLimit) return false;
-            }
-
-            //every targeted coordinate must have at least one valid target - otherwise it is an invalid command(can't target a coordinate without a target!).
+            var toReturn = new List<IActionTarget[]>();
             for (var i = 0; i < targetCoords.Length; i++)
             {
-                var coord = targetCoords[i];
                 var requirement = requirements[i];
+                var coord = targetCoords[i];
+                var rangeLimit = requirement.Range.CalculateRange(actor);
+                var distanceToTarget = actorCoord.DistanceTo(coord);
+
+                // must meet all range limit for this to be valid
+                if (distanceToTarget > rangeLimit) return (false, new List<IActionTarget[]>());
+
                 var validTargets = _targetFinder.FindTargets(actor, coord, requirement.TargetArea, requirement.TargetRestrictionFlags)
                     .ToArray();
 
-                if (!validTargets.Any()) return false;
+                //every targeted coordinate must have at least one valid target - otherwise it is an invalid command(can't target a coordinate without a target!).
+                if (!validTargets.Any()) return (false, new List<IActionTarget[]>());
 
-                if (validTargets.Length > 1)
-                    /*
-                     * NOTE:
-                     * At the moment, there's a risk where if:
-                     * 1. a coordinate have multiple valid target
-                     * 2. the action is only valid for a single target - imagine if you a "slashing" a single entity
-                     *
-                     * The current check won't suffice as in this case having more than one valid target becomes invalid.
-                     * What I really want to do, I think, is to have the input give me a list of the actual target instead of giving me a bunch of coordinate?
-                     * Hard to tell but for now this suffice.
-                     * ---
-                     * Had another think when I came back to this the a few days later.
-                     * I have a feeling that the core of the issue is that we are changing our "core" to work with the user interface,
-                     * maybe this is why we are taking a coordinate as an input instead of an IActionTarget, which led to this weird gymnastic...
-                     */
-                    Log.Warning(
-                        "More than one valid targets, it's most likely not what you expect when you are writing this - you were taking shortcuts and decided not to fix this issue right now, refer to the comment for more details"
-                    );
+                toReturn.Add(validTargets);
             }
 
-            return true;
+            return (true, toReturn);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using NonebNi.Core.Effects;
 using Unity.Logging;
 
 namespace NonebNi.Core.FlowControl
@@ -8,11 +9,15 @@ namespace NonebNi.Core.FlowControl
     public interface IGameEventControl : IDisposable
     {
         LevelEvent Current { get; }
-        bool IsEvaluatingCombo { get; }
+        EffectResult ActiveActionResult { get; }
         void WriteEvent(LevelEvent value);
         IUniTaskAsyncEnumerable<LevelEvent> Subscribe(CancellationToken ct);
     }
 
+    /// <summary>
+    /// This is slowly ballooning - it started off as a way to keep track of the current event.
+    /// Is it a red flag?
+    /// </summary>
     public class GameEventControl : IGameEventControl
     {
         /// <summary>
@@ -30,26 +35,16 @@ namespace NonebNi.Core.FlowControl
 
         public LevelEvent Current { get; private set; } = new LevelEvent.None();
 
-        public bool IsEvaluatingCombo
-        {
-            get
-            {
-                return Current switch
-                {
-                    LevelEvent.GameStart or LevelEvent.None or LevelEvent.WaitForActiveUnitDecision => false,
-
-                    // slightly weird that sequence occured is here -> but note how as long as we are mid-sequence evaluation and checking for cost,
-                    // we are always evaluating for combo, I can regret later
-                    LevelEvent.SequenceOccured or
-                        LevelEvent.WaitForComboDecision => true,
-                    _ => throw new ArgumentOutOfRangeException(nameof(Current))
-                };
-            }
-        }
+        /// <summary>
+        /// "Active" Action is the one that we are still evaluating for combo, sequence effect etc.
+        /// </summary>
+        public EffectResult ActiveActionResult { get; private set; } = EffectResult.Empty;
 
         public void WriteEvent(LevelEvent value)
         {
             Current = value;
+            UpdateComboSequence();
+
             if (!_channel.Writer.TryWrite(value)) Log.Error("[Level] You should really, never have got here");
         }
 
@@ -59,6 +54,16 @@ namespace NonebNi.Core.FlowControl
 
             _isSubscribed = true;
             return _channel.Reader.ReadAllAsync(ct);
+        }
+
+        private void UpdateComboSequence()
+        {
+            ActiveActionResult = Current switch
+            {
+                LevelEvent.WaitForActiveUnitDecision => EffectResult.Empty,
+                LevelEvent.SequenceOccured { Result: { CanCombo: true } } sequenceOccured => sequenceOccured.Result,
+                _ => ActiveActionResult
+            };
         }
     }
 }
