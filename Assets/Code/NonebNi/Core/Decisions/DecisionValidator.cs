@@ -110,7 +110,7 @@ namespace NonebNi.Core.Decisions
             if (!_gameEventControl.ActiveActionResult.ValidComboReceiver.Any()) return false;
 
             var (isValidTargets, actionTargetGroups) = FindTargetFromInput(ad);
-            if (isValidTargets) return false;
+            if (!isValidTargets) return false;
 
             foreach (var targets in actionTargetGroups)
             {
