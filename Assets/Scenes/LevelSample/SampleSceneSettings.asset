@@ -30,48 +30,64 @@ MonoBehaviour:
       serializedUnitDatas:
       - serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
         entityData:
-          name: Noob
+          name:
+            debugString: Enemy1
           serializableGuid:
             serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
           <FactionId>k__BackingField: EnemyNpc
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           actions:
           - <Id>k__BackingField: bash
-            <FatigueCost>k__BackingField: 1
-            <Icon>k__BackingField: {fileID: 0}
             <Name>k__BackingField:
               debugString: bash
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202380075532429
+                rid: 3323204825083805804
             <Effects>k__BackingField:
-            - rid: 9202202380075532430
+            - rid: 3323204825083805805
+            <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
-            <FatigueCost>k__BackingField: 1
-            <Icon>k__BackingField: {fileID: 0}
             <Name>k__BackingField:
               debugString: shoot
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202380075532431
+                rid: 3323204825083805806
             <Effects>k__BackingField:
-            - rid: 9202202380075532432
+            - rid: 3323204825083805807
+            <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
-            <FatigueCost>k__BackingField: 1
-            <Icon>k__BackingField: {fileID: 0}
             <Name>k__BackingField:
               debugString: lure
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202380075532433
+                rid: 3323204825083805808
             <Effects>k__BackingField:
-            - rid: 9202202380075532434
+            - rid: 3323204825083805809
+            <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
             - <ID>k__BackingField: health
@@ -98,14 +114,22 @@ MonoBehaviour:
               currentValue: 5
               <MinValue>k__BackingField: -1
               <MaxValue>k__BackingField: -1
-            - <ID>k__BackingField: weaponRange
+            - <ID>k__BackingField: weapon-range
               currentValue: 5
               <MinValue>k__BackingField: -1
               <MaxValue>k__BackingField: -1
             - <ID>k__BackingField: fatigue
-              currentValue: 0
+              currentValue: 100
               <MinValue>k__BackingField: 0
-              <MaxValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
     - tileData:
         weight: 1
         name: 
@@ -213,48 +237,64 @@ MonoBehaviour:
       serializedUnitDatas:
       - serializedGuid: 65aba40ecdb36647bce8aa10aa4fec55
         entityData:
-          name: Noob
+          name:
+            debugString: Friendly1
           serializableGuid:
             serializedGuid: 65aba40ecdb36647bce8aa10aa4fec55
           <FactionId>k__BackingField: Player
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           actions:
           - <Id>k__BackingField: bash
-            <FatigueCost>k__BackingField: 1
-            <Icon>k__BackingField: {fileID: 0}
             <Name>k__BackingField:
               debugString: bash
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202380075532429
+                rid: 3323204825083805804
             <Effects>k__BackingField:
-            - rid: 9202202380075532430
+            - rid: 3323204825083805805
+            <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
-            <FatigueCost>k__BackingField: 1
-            <Icon>k__BackingField: {fileID: 0}
             <Name>k__BackingField:
               debugString: shoot
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202380075532431
+                rid: 3323204825083805806
             <Effects>k__BackingField:
-            - rid: 9202202380075532432
+            - rid: 3323204825083805807
+            <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
-            <FatigueCost>k__BackingField: 1
-            <Icon>k__BackingField: {fileID: 0}
             <Name>k__BackingField:
               debugString: lure
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 9202202380075532433
+                rid: 3323204825083805808
             <Effects>k__BackingField:
-            - rid: 9202202380075532434
+            - rid: 3323204825083805809
+            <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
             - <ID>k__BackingField: health
@@ -281,14 +321,174 @@ MonoBehaviour:
               currentValue: 5
               <MinValue>k__BackingField: -1
               <MaxValue>k__BackingField: -1
-            - <ID>k__BackingField: weaponRange
+            - <ID>k__BackingField: weapon-range
               currentValue: 5
               <MinValue>k__BackingField: -1
               <MaxValue>k__BackingField: -1
             - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas:
+      - serializedGuid: fd7e07d158aecc49af3931f1ccb8d14e
+        entityData:
+          name:
+            debugString: Friendly2
+          serializableGuid:
+            serializedGuid: fd7e07d158aecc49af3931f1ccb8d14e
+          <FactionId>k__BackingField: Player
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: bash
+            <Name>k__BackingField:
+              debugString: bash
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 3323204825083805804
+            <Effects>k__BackingField:
+            - rid: 3323204825083805805
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: shoot
+            <Name>k__BackingField:
+              debugString: shoot
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 3323204825083805806
+            <Effects>k__BackingField:
+            - rid: 3323204825083805807
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: lure
+            <Name>k__BackingField:
+              debugString: lure
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 138
+              <TargetArea>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 3323204825083805808
+            <Effects>k__BackingField:
+            - rid: 3323204825083805809
+            <IsComboStarter>k__BackingField: 1
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
               currentValue: 0
               <MinValue>k__BackingField: 0
-              <MaxValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
     - tileData:
         weight: 1
         name: 
@@ -333,57 +533,109 @@ MonoBehaviour:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
+      serializedUnitDatas:
+      - serializedGuid: 4bacf6ed5fd09549bc888283d8e1a8af
+        entityData:
+          name:
+            debugString: Enemy2
+          serializableGuid:
+            serializedGuid: 4bacf6ed5fd09549bc888283d8e1a8af
+          <FactionId>k__BackingField: EnemyNpc
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: bash
+            <Name>k__BackingField:
+              debugString: bash
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 3323204825083805804
+            <Effects>k__BackingField:
+            - rid: 3323204825083805805
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: shoot
+            <Name>k__BackingField:
+              debugString: shoot
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 3323204825083805806
+            <Effects>k__BackingField:
+            - rid: 3323204825083805807
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: lure
+            <Name>k__BackingField:
+              debugString: lure
+            <Icon>k__BackingField: {fileID: 0}
+            <Costs>k__BackingField:
+            - <StatId>k__BackingField: fatigue
+              <Cost>k__BackingField: 1
+            - <StatId>k__BackingField: action-point
+              <Cost>k__BackingField: 1
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 138
+              <TargetArea>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 3323204825083805808
+            <Effects>k__BackingField:
+            - rid: 3323204825083805809
+            <IsComboStarter>k__BackingField: 1
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
     - tileData:
         weight: 1
         name: 
@@ -680,30 +932,33 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 9202202380075532429
+    - rid: 3323204825083805804
       type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data: 
-    - rid: 9202202380075532430
+      data:
+        range: 1
+    - rid: 3323204825083805805
       type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         distance: 1
-    - rid: 9202202380075532431
+    - rid: 3323204825083805806
       type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 9202202380075532432
+    - rid: 3323204825083805807
       type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         _animId: shoot
         _damages:
-        - rid: 9202202380075532435
-    - rid: 9202202380075532433
+        - rid: 3323204825083805810
+    - rid: 3323204825083805808
       type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data: 
-    - rid: 9202202380075532434
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 3323204825083805809
       type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
-    - rid: 9202202380075532435
+    - rid: 3323204825083805810
       type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         ratio: 1
-        statType: 1
+        statId: focus
