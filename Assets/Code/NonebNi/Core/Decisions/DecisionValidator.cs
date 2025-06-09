@@ -27,14 +27,14 @@ namespace NonebNi.Core.Decisions
         {
             public const string UnknownId = "unknown";
 
-            public Error(string id, string description)
+            public Error(string id, NonebLocString description)
             {
                 Id = id;
                 Description = description;
             }
 
             public string Id { get; }
-            public string Description { get; }
+            public NonebLocString Description { get; }
 
             public static Error Unknown { get; } = new(UnknownId, "Failed for an undefined reason");
         }
