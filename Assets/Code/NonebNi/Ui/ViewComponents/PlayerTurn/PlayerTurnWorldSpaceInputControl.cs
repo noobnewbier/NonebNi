@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Noneb.UI.InputSystems;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Pathfinding;
@@ -35,6 +36,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         private readonly IPathfindingService _pathfindingService;
         private readonly Camera _playerViewCamera;
         private readonly ITargetFinder _targetFinder;
+        private readonly IDecisionValidator _validator;
 
         private CancellationTokenSource? _cts;
 
@@ -47,7 +49,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             IReadOnlyMap map,
             IHexHighlighter hexHighlighter,
             ITargetFinder targetFinder,
-            IPathfindingService pathfindingService)
+            IPathfindingService pathfindingService,
+            IDecisionValidator validator)
         {
             _inputSystem = inputSystem;
             _coordinateAndPositionService = coordinateAndPositionService;
@@ -56,6 +59,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             _hexHighlighter = hexHighlighter;
             _targetFinder = targetFinder;
             _pathfindingService = pathfindingService;
+            _validator = validator;
             _gridPlane = terrainConfigData.GridPlane;
         }
 
@@ -74,7 +78,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public async UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default)
         {
-            async UniTask<Coordinate?> GetUserInputForRequest((RangeStatus status, Coordinate coord)[] ranges, CancellationToken subCt)
+            async UniTask<Coordinate?> GetUserInputForRequest(IReadOnlyList<Coordinate> inputForPreviousRequests, CancellationToken subCt)
             {
                 Coordinate? inputCoord = null;
                 while (inputCoord == null)
@@ -86,16 +90,15 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     if (coord == null) continue;
 
                     // Keep showing the highlight - we are good
-                    (RangeStatus status, Coordinate _)? matchingRangeStatus = ranges.FirstOrDefault(t => t.coord == coord);
-                    var isValidInput = matchingRangeStatus is { status: RangeStatus.Targetable };
-                    var variation = isValidInput ?
+                    var (canBeValid, _) = _validator.ValidateDecisionConstructionInput(action, caster, inputForPreviousRequests, coord);
+                    var variation = canBeValid ?
                         HighlightVariation.ValidInput :
                         HighlightVariation.InvalidInput;
                     _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, variation);
 
                     if (!_inputSystem.LeftClick) continue;
 
-                    if (!isValidInput)
+                    if (!canBeValid)
                         //todo: signal invalid input - potentially audio and even a tooltip to explain why shit is wrong
                         continue;
 
@@ -118,7 +121,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                         _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
                         _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
 
-                        var input = await GetUserInputForRequest(ranges, subCt);
+                        var input = await GetUserInputForRequest(playerInputs, subCt);
                         subCt.ThrowIfCancellationRequested();
 
                         _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);

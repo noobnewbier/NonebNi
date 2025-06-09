@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Noneb.Localization.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 
@@ -19,6 +21,8 @@ namespace NonebNi.Core.Decisions
     public interface IDecisionValidator
     {
         (Error? error, ICommand command) ValidateDecision(IDecision? decision);
+
+        (bool canBeValid, Error? error) ValidateDecisionConstructionInput(NonebAction action, EntityData caster, IReadOnlyList<Coordinate> existingInput, Coordinate newInput);
 
         /// <summary>
         ///     Describe why a decision is invalid.
@@ -98,6 +102,55 @@ namespace NonebNi.Core.Decisions
                 }
                 default:
                     return (IDecisionValidator.Error.Unknown, NullCommand.Instance);
+            }
+        }
+
+        //todo: instead of checking an input, it might be easier to check in bulk, that way we don't have to rework our code. the front cost might be expensive but hopefully ain't too bad.
+        //we can also you know, just cache the fucker?
+        public (bool canBeValid, IDecisionValidator.Error? error) ValidateDecisionConstructionInput(NonebAction action, EntityData caster, IReadOnlyList<Coordinate> existingInput, Coordinate newInput)
+        {
+            /*
+             * Note:
+             * Since this method is, quite literally, probably going to be called every frame,
+             * we probably want to improve the efficiency by caching *something*.
+             *
+             * We can in theory turn this in to an async func that slowly takes more input(or just make it a separate class dude, we need to handle backing in UI as well).
+             *
+             * But hey we also shouldn't optimize without profiling so fuck it future me it's your job.
+             */
+            var requests = action.TargetRequests;
+            var request = requests[existingInput.Count];
+
+            var (canBeValid, error) = RangeCheck();
+            if (existingInput.Count < requests.Length - 1)
+                // normally we only check for range
+                return (canBeValid, error);
+
+            // but at the last step we want to check for combo constraint as well
+            if (!canBeValid)
+                // don't even check for combo - we are invalid just for the range
+                return (false, error);
+
+            // construct a decision, and do a usual rundown to check everything(include combos), not the most efficient but will do for now.
+            var decision = new ActionDecision(action, caster, existingInput.Append(newInput));
+            var (decisionError, _) = ValidateDecision(decision);
+            if (decisionError != null) return (false, decisionError);
+
+            return (true, null);
+
+            (bool canBeValid, IDecisionValidator.Error? error) RangeCheck()
+            {
+                var ranges = _targetFinder.FindRange(caster, request).ToArray();
+                var (status, _) = ranges.FirstOrDefault(t => t.coord == newInput);
+                if (status == null)
+                    // it's so far out the target finder don't even think it should be in the list it returns -> is there a more elegant way?
+                    return (false, new IDecisionValidator.Error("range-error", nameof(RangeStatus.OutOfRange)));
+
+                var isValidInput = status is RangeStatus.Targetable;
+
+                if (!isValidInput) return (false, new IDecisionValidator.Error("range-error", status.GetType().Name));
+
+                return (true, null);
             }
         }
 
