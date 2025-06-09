@@ -84,14 +84,15 @@ namespace NonebNi.Core.Decisions
                         );
                     }
 
-                    if (IsTargetingComboTarget(ad) && IsStartingFromComboCarrier(ad))
-                        return (
-                            new IDecisionValidator.Error(
-                                "invalid-target",
-                                "You must be targeting the combo target or start with the combo carrier"
-                            ),
-                            NullCommand.Instance
-                        );
+                    if (_gameEventControl.ActiveActionResult.CanCombo)
+                        if (!IsTargetingComboTarget(ad) && !IsStartingFromComboCarrier(ad))
+                            return (
+                                new IDecisionValidator.Error(
+                                    "invalid-target",
+                                    "You must be targeting the combo target or start with the combo carrier"
+                                ),
+                                NullCommand.Instance
+                            );
 
                     return (null, new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords));
                 }
