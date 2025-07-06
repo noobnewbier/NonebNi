@@ -50,9 +50,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805804
+                rid: 8598465853672915247
             <Effects>k__BackingField:
-            - rid: 3323204825083805805
+            - rid: 8598465853672915248
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
@@ -67,9 +67,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805806
+                rid: 8598465853672915249
             <Effects>k__BackingField:
-            - rid: 3323204825083805807
+            - rid: 8598465853672915250
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
@@ -84,9 +84,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805808
+                rid: 8598465853672915251
             <Effects>k__BackingField:
-            - rid: 3323204825083805809
+            - rid: 8598465853672915252
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -257,9 +257,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805804
+                rid: 8598465853672915247
             <Effects>k__BackingField:
-            - rid: 3323204825083805805
+            - rid: 8598465853672915248
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
@@ -274,9 +274,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805806
+                rid: 8598465853672915249
             <Effects>k__BackingField:
-            - rid: 3323204825083805807
+            - rid: 8598465853672915250
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
@@ -291,9 +291,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805808
+                rid: 8598465853672915251
             <Effects>k__BackingField:
-            - rid: 3323204825083805809
+            - rid: 8598465853672915252
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -409,9 +409,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805804
+                rid: 8598465853672915247
             <Effects>k__BackingField:
-            - rid: 3323204825083805805
+            - rid: 8598465853672915248
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
@@ -426,9 +426,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805806
+                rid: 8598465853672915249
             <Effects>k__BackingField:
-            - rid: 3323204825083805807
+            - rid: 8598465853672915250
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
@@ -443,9 +443,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805808
+                rid: 8598465853672915251
             <Effects>k__BackingField:
-            - rid: 3323204825083805809
+            - rid: 8598465853672915252
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -556,9 +556,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805804
+                rid: 8598465853672915247
             <Effects>k__BackingField:
-            - rid: 3323204825083805805
+            - rid: 8598465853672915248
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
@@ -573,9 +573,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805806
+                rid: 8598465853672915249
             <Effects>k__BackingField:
-            - rid: 3323204825083805807
+            - rid: 8598465853672915250
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
@@ -590,9 +590,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 3323204825083805808
+                rid: 8598465853672915251
             <Effects>k__BackingField:
-            - rid: 3323204825083805809
+            - rid: 8598465853672915252
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -932,32 +932,32 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 3323204825083805804
+    - rid: 8598465853672915247
       type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data:
         range: 1
-    - rid: 3323204825083805805
+    - rid: 8598465853672915248
       type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         distance: 1
-    - rid: 3323204825083805806
+    - rid: 8598465853672915249
       type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 3323204825083805807
+    - rid: 8598465853672915250
       type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         _animId: shoot
         _damages:
-        - rid: 3323204825083805810
-    - rid: 3323204825083805808
+        - rid: 8598465853672915253
+    - rid: 8598465853672915251
       type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data:
         ratio: 1
         statId: focus
-    - rid: 3323204825083805809
+    - rid: 8598465853672915252
       type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
-    - rid: 3323204825083805810
+    - rid: 8598465853672915253
       type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         ratio: 1

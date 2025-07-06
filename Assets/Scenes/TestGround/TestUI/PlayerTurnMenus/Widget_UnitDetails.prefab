@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 1723497699150511639}
   - component: {fileID: 3032201815592418977}
   m_Layer: 5
-  m_Name: UnitDetails
+  m_Name: Widget_UnitDetails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -573,6 +573,18 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: request
+      value: 8598465853672915021
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: 'managedReferences[8598465853672915021]'
+      value: NonebNi.Ui NonebNi.Ui.Tooltips.TooltipRequest/Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: managedReferences[8598465853672915021].<Message>k__BackingField.debugString
+      value: Determines how far you can move in one turn
+      objectReference: {fileID: 0}
     - target: {fileID: 8965332415731777774, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -745,6 +757,18 @@ PrefabInstance:
     - target: {fileID: 4656417089870493517, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: request
+      value: 8598465853672915019
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: 'managedReferences[8598465853672915019]'
+      value: NonebNi.Ui NonebNi.Ui.Tooltips.TooltipRequest/Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: managedReferences[8598465853672915019].<Message>k__BackingField.debugString
+      value: Initiative determines how fast/often you act relative to other units
       objectReference: {fileID: 0}
     - target: {fileID: 8965332415731777774, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -927,6 +951,19 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: request
+      value: 8598465853672915022
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: 'managedReferences[8598465853672915022]'
+      value: NonebNi.Ui NonebNi.Ui.Tooltips.TooltipRequest/Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: managedReferences[8598465853672915022].<Message>k__BackingField.debugString
+      value: All actions cost action point, you cannot act once you run out and must
+        wait for the next one
+      objectReference: {fileID: 0}
     - target: {fileID: 8965332415731777774, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1100,6 +1137,18 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: request
+      value: 8598465853672915020
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: 'managedReferences[8598465853672915020]'
+      value: NonebNi.Ui NonebNi.Ui.Tooltips.TooltipRequest/Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: managedReferences[8598465853672915020].<Message>k__BackingField.debugString
+      value: You use fatigue to cast skills and actions.
+      objectReference: {fileID: 0}
     - target: {fileID: 8965332415731777774, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1268,6 +1317,26 @@ PrefabInstance:
     - target: {fileID: 4656417089870493517, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: request
+      value: 8598465853672914944
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: 'managedReferences[8598465853672914944]'
+      value: NonebNi.Ui NonebNi.Ui.Tooltips.TooltipRequest/Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: managedReferences[8598465853672914944].<Position>k__BackingField.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: managedReferences[8598465853672914944].<Position>k__BackingField.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784791914661686193, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
+      propertyPath: managedReferences[8598465853672914944].<Message>k__BackingField.debugString
+      value: When Healt goes to 0, your unit is dead
       objectReference: {fileID: 0}
     - target: {fileID: 8965332415731777774, guid: 24d0b52623b91104dbbef3f0dc851d3e, type: 3}
       propertyPath: m_AnchorMax.y
