@@ -49,13 +49,13 @@ namespace NonebNi.CustomInspector
 
             _editorDataDrawer.Update();
             DrawUIStacks();
-            DrawCalledOnEnabeInitMethod();
+            DrawCalledOnEnableInitMethod();
             _editorDataDrawer.Apply();
 
             Repaint();
         }
 
-        private void DrawCalledOnEnabeInitMethod()
+        private void DrawCalledOnEnableInitMethod()
         {
             if (_calledOnEnabledMethod.Any())
                 using (_editorDataDrawer.BoxScope())
