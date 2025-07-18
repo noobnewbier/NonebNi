@@ -23,7 +23,7 @@ namespace Noneb.UI.InputSystems
                 if (EventSystem.current.currentInputModule is not InputSystemUIInputModule uiInputModule) return false;
 
                 var lastRaycastResult = uiInputModule.GetLastRaycastResult(Mouse.current.deviceId);
-                fea
+
                 var layer = LayerMask.NameToLayer("UI");
                 return lastRaycastResult.gameObject != null && lastRaycastResult.gameObject.layer == layer;
             }
