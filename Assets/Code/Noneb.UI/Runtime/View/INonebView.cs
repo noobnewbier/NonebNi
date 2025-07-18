@@ -48,6 +48,8 @@ namespace Noneb.UI.View
             //TODO: at some point more complicated logic for "activeness" and relevant state tracking?
             var handlers = FindViewComponents();
             var initTasks = handlers.Select(h => h.OnViewTearDown());
+            InitState = InitializationState.PreInitialize;
+
             await UniTask.WhenAll(initTasks);
         }
 
