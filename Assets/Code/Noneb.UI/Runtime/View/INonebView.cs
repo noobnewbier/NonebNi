@@ -19,6 +19,10 @@ namespace Noneb.UI.View
         internal InitializationState InitState { get; set; }
         bool IsViewActive { get; }
 
+        /// <summary>
+        /// Called once when the view is entered. Won't be called again afterward.
+        /// Will be called before Enter.
+        /// </summary>
         internal async UniTask Init()
         {
             //TODO: there has to be a better way than this crap. the proper way is to use lock and return the cached task but that seems like overkill...
@@ -33,6 +37,10 @@ namespace Noneb.UI.View
             InitState = InitializationState.Initialized;
         }
 
+        /// <summary>
+        /// Called when the stack is disposed, or when the view is leaving the stack.
+        /// Will be called after Leave.
+        /// </summary>
         internal async UniTask TearDown()
         {
             SetActive(false);
@@ -62,6 +70,9 @@ namespace Noneb.UI.View
             await UniTask.WhenAll(exitTasks);
         }
 
+        /// <summary>
+        /// Activate get called before Enter
+        /// </summary>
         internal async UniTask Activate(object? viewData)
         {
             SetActive(true);
@@ -75,6 +86,9 @@ namespace Noneb.UI.View
             await UniTask.WhenAll(elementActivateTasks);
         }
 
+        /// <summary>
+        /// Deactivate get called before Leave
+        /// </summary>
         internal async UniTask Deactivate()
         {
             SetActive(false);
