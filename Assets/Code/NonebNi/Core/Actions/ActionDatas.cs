@@ -44,7 +44,8 @@ namespace NonebNi.Core.Actions
             {
                 new MoveEffect()
             },
-            false
+            false,
+            "Moving to target position"
         );
 
         public static readonly NonebAction Bash = new(
@@ -57,6 +58,7 @@ namespace NonebNi.Core.Actions
             Single,
             Enemy,
             true,
+            "Use your shield to knock back enemy for one tile, does little damage",
             new KnockBackEffect(1)
         );
 
@@ -70,6 +72,7 @@ namespace NonebNi.Core.Actions
             Single,
             Enemy,
             false,
+            "Shoot an enemy at range, does good damage",
             new DamageEffect("shoot", new StatBasedDamage(1f, StatId.Focus))
         );
 
@@ -83,6 +86,7 @@ namespace NonebNi.Core.Actions
             Single,
             Enemy | ClearPath,
             true,
+            "Shoot at a clear target on a straight line, the arrow is so powerful it knockbacks the target by one tile",
             new DamageEffect("power-shot", new StatBasedDamage(1f, StatId.Focus)),
             new KnockBackEffect(1)
         );
@@ -97,6 +101,7 @@ namespace NonebNi.Core.Actions
             Single,
             Enemy,
             false,
+            "An overhead strike that does ok damage",
             new DamageEffect("strike", new StatBasedDamage(1f, StatId.Strength))
         );
 
@@ -110,6 +115,7 @@ namespace NonebNi.Core.Actions
             Fan,
             Enemy,
             true,
+            "Swinging your zweihander to intimidate your enemy, does okay damage and knock back nearby enemies by one tile",
             new DamageEffect("swing", new StatBasedDamage(1f, StatId.Strength)),
             new KnockBackEffect(1)
         );
@@ -124,6 +130,7 @@ namespace NonebNi.Core.Actions
             Single,
             Enemy,
             false,
+            "A quick slash with your short sword, dealing okay damage",
             new DamageEffect("slash", new StatBasedDamage(1f, StatId.Focus))
         );
 
@@ -137,6 +144,7 @@ namespace NonebNi.Core.Actions
             Single,
             new[] { Friendly, NonOccupied },
             true,
+            "Commanding another friendly unit to move to another position",
             new MoveEntityEffect()
         );
 
@@ -151,6 +159,7 @@ namespace NonebNi.Core.Actions
             Single,
             Enemy | ClearPath | FirstTileToTargetDirectionIsEmpty,
             true,
+            "Faking an opening and draw enemy towards you",
             new PullEntityEffect()
         );
 
@@ -164,6 +173,7 @@ namespace NonebNi.Core.Actions
             Single,
             Occupied | TargetCoordPlusDirectionToTargetIsEmpty | IsCoordinate,
             false,
+            "Jumping over an obstacle and land in front of it",
             new MoveOverEffect()
         );
 
@@ -179,6 +189,7 @@ namespace NonebNi.Core.Actions
                 new TargetRequest(Enemy, Single, 1)
             },
             true,
+            "Grabbing an enemy to a near by position",
             new MoveEntityEffect()
         );
 
@@ -192,6 +203,7 @@ namespace NonebNi.Core.Actions
             Single,
             Friendly | NotSelf,
             true,
+            "Using your footwork to swap position with an ally",
             new SwapPositionEffect()
         );
 
