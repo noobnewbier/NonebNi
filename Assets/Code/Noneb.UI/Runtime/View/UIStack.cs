@@ -42,8 +42,7 @@ namespace Noneb.UI.View
 
         private readonly Stack<ViewStack> _stack = new();
 
-        //TODO: is a collection?
-        private readonly Dictionary<string, UIStack> _subStacks = new(); //TODO: init/maintain/refresh this, seems like we can hook into unity's event life cycle somewhat? probs better to make this process explicit?
+        public UIStack(MonoBehaviour monoBehaviour) : this(monoBehaviour.gameObject) { }
 
         public UIStack(GameObject root)
         {
@@ -77,11 +76,13 @@ namespace Noneb.UI.View
 
             while (_stack.Any())
             {
-                var (view, _) = _stack.Pop();
+                var (view, _, _) = _stack.Pop();
                 await view.TearDown();
             }
 
-            foreach (var stack in _subStacks.Values) await stack.DisposeAsync();
+            foreach (var (_, __, subStacks) in _stack)
+            foreach (var stack in subStacks.Values)
+                await stack.DisposeAsync();
         }
 
         private async UniTask RunRequests()
@@ -98,14 +99,34 @@ namespace Noneb.UI.View
             }
         }
 
-        public UIStack GetSubStack(string name)
+        public UIStack GetSubStack(string name, IViewComponent component)
         {
-            if (!_subStacks.TryGetValue(name, out var subStack))
+            if (component is not MonoBehaviour behaviour)
             {
-                var subStackRoot = new GameObject(name);
+                Log.Error("Unexpected typed - I can't work with non-concept-view component!");
+                return GetSubStack(name);
+            }
+
+            return GetSubStack(name, behaviour);
+        }
+
+
+        public UIStack GetSubStack(string name, MonoBehaviour monoBehaviour) => GetSubStack(name, monoBehaviour.gameObject);
+
+        public UIStack GetSubStack(string name, GameObject? subStackRoot = null)
+        {
+            if (CurrentViewStack == null)
+            {
+                Push(new ConceptView("ConceptView")).Forget();
+            }
+
+            var subStacks = CurrentViewStack!.SubStacks;
+            if (!subStacks.TryGetValue(name, out var subStack))
+            {
+                subStackRoot ??= new GameObject(name);
                 subStackRoot.transform.SetParent(_root.transform);
 
-                _subStacks[name] = subStack = new UIStack(subStackRoot);
+                subStacks[name] = subStack = new UIStack(subStackRoot);
             }
 
             return subStack;
@@ -113,7 +134,10 @@ namespace Noneb.UI.View
 
         public IEnumerable<(string name, UIStack subStack)> GetSubStacks()
         {
-            foreach (var (name, subStack) in _subStacks) yield return (name, subStack);
+            if (CurrentViewStack?.SubStacks == null) yield break;
+
+            foreach (var (name, subStack) in CurrentViewStack.SubStacks)
+                yield return (name, subStack);
         }
 
         public IEnumerable<INonebView> GetViews() => _stack.Select(t => t.View);
@@ -132,10 +156,10 @@ namespace Noneb.UI.View
             //TODO: which makes more sense/separate method or parameter overlay
             //Handles everything
             _ = _stack.TryPeek(out var currentViewStack);
-            var nextViewStack = new ViewStack(nextView, viewData);
+            var nextViewStack = new ViewStack(nextView, viewData, new Dictionary<string, UIStack>());
             _stack.Push(nextViewStack);
 
-            var request = new TransitionRequest(() => Transition(currentViewStack.View, nextViewStack), new TransitionRequestInfo("Push", nextView.Name));
+            var request = new TransitionRequest(() => Transition(currentViewStack, nextViewStack, false), new TransitionRequestInfo("Push", nextView.Name));
             await RequestTransition(request);
         }
 
@@ -155,10 +179,10 @@ namespace Noneb.UI.View
                 return;
 
             _ = _stack.TryPop(out var currentViewStack);
-            var nextViewStack = new ViewStack(nextView, viewData);
+            var nextViewStack = new ViewStack(nextView, viewData, new Dictionary<string, UIStack>());
             _stack.Push(nextViewStack);
 
-            var request = new TransitionRequest(() => Transition(currentViewStack?.View, nextViewStack), new TransitionRequestInfo("ReplaceCurrent", nextView.Name));
+            var request = new TransitionRequest(() => Transition(currentViewStack, nextViewStack, true), new TransitionRequestInfo("ReplaceCurrent", nextView.Name));
             await RequestTransition(request);
         }
 
@@ -174,19 +198,19 @@ namespace Noneb.UI.View
             var currentViewStack = _stack.Pop();
             _ = _stack.TryPeek(out var nextViewStack);
 
-            var request = new TransitionRequest(() => Transition(currentViewStack.View, nextViewStack), new TransitionRequestInfo("Pop", null));
+            var request = new TransitionRequest(() => Transition(currentViewStack, nextViewStack, true), new TransitionRequestInfo("Pop", null));
             await RequestTransition(request);
         }
 
-        private async UniTask Transition(INonebView? currentView, ViewStack? nextViewStack)
+        private async UniTask Transition(ViewStack? currentViewStack, ViewStack? nextViewStack, bool isCurrentStackRemoved)
         {
-            if (currentView == null && nextViewStack == null) Log.Warning("This is an noop and likely not what you wanted");
+            if (currentViewStack == null && nextViewStack == null) Log.Warning("This is an noop and likely not what you wanted");
 
-            if (currentView != null) await LeaveCurrentView(currentView, nextViewStack?.View);
+            if (currentViewStack != null) await LeaveCurrentView(currentViewStack, nextViewStack, isCurrentStackRemoved);
 
             if (nextViewStack != null)
             {
-                await EnterNextView(currentView, nextViewStack.View, nextViewStack.ViewData);
+                await EnterNextView(currentViewStack, nextViewStack, nextViewStack.ViewData);
             }
         }
 
@@ -224,20 +248,50 @@ namespace Noneb.UI.View
             return transitionRequest.DoneTrigger.Task;
         }
 
-        private async UniTask LeaveCurrentView(INonebView currentView, INonebView? nextView)
+        private async UniTask LeaveCurrentView(ViewStack currentStack, ViewStack? nextStack, bool isCurrentStackRemoved)
         {
-            await currentView.Leave(currentView, nextView);
-            await currentView.Deactivate();
+            // substacks get deactivated
+            await UniTask.WhenAll(
+                    currentStack.SubStacks.Values
+                        .Select(s => s.CurrentView).Where(e => e != null).Select(e => e!)
+                        .Select(v => v.Deactivate())
+                )
+                .SuppressCancellationThrow();
+
+            // deactivate the root as well
+            await currentStack.View.Deactivate().SuppressCancellationThrow();
+
+            // leave in animation
+            await currentStack.View.Leave(currentStack.View, nextStack?.View).SuppressCancellationThrow();
+
+            if (isCurrentStackRemoved) await currentStack.View.TearDown().SuppressCancellationThrow();
         }
 
-        private async UniTask EnterNextView(INonebView? previousView, INonebView nextView, object? viewData)
+        private async UniTask EnterNextView(ViewStack? previousStack, ViewStack nextStack, object? viewData)
         {
-            if (nextView is NonebViewBehaviour component)
+            if (nextStack.View is NonebViewBehaviour component)
                 component.transform.SetParent(_root.transform);
 
-            await nextView.Init();
-            await nextView.Activate(viewData);
-            await nextView.Enter(previousView, nextView);
+            // init when necessary
+            await nextStack.View.Init();
+
+            // activate the root
+            await nextStack.View.Activate(viewData);
+
+            // substacks get activated after root is online
+            await UniTask.WhenAll(
+                nextStack.SubStacks.Values
+                    .Select(
+                        s =>
+                        {
+                            if (s.CurrentViewStack?.View == null) return UniTask.CompletedTask;
+
+                            return s.CurrentViewStack.View.Activate(s.CurrentViewStack.ViewData);
+                        }
+                    )
+            );
+
+            await nextStack.View.Enter(previousStack?.View, nextStack.View);
         }
 
         private record TransitionRequest(Func<UniTask> Task, TransitionRequestInfo Info)
@@ -251,6 +305,6 @@ namespace Noneb.UI.View
         [EditorBrowsable(EditorBrowsableState.Never)]
         public record TransitionRequestInfo(string OperationName, string? ParameterViewName);
 
-        private record ViewStack(INonebView View, object? ViewData);
+        private record ViewStack(INonebView View, object? ViewData, Dictionary<string, UIStack> SubStacks);
     }
 }
