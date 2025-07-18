@@ -18,6 +18,7 @@ namespace Noneb.UI.View
         public string Name { get; }
 
         internal InitializationState InitState { get; set; }
+        internal Dictionary<IViewComponent, bool> IsComponentWaked { get; set; }
         bool IsViewActive { get; }
 
         /// <summary>
@@ -28,9 +29,20 @@ namespace Noneb.UI.View
         {
             //TODO: there has to be a better way than this crap. the proper way is to use lock and return the cached task but that seems like overkill...
             if (InitState != InitializationState.PreInitialize) return;
+            var handlers = FindViewComponents().ToArray();
+
+            //wake 
+            var awakeTasks = new List<UniTask>();
+            foreach (var handler in handlers)
+            {
+                var isComponentWaked = IsComponentWaked.GetValueOrDefault(handler);
+                if (!isComponentWaked) awakeTasks.Add(handler.OnViewAwake());
+            }
+
+            await UniTask.WhenAll(awakeTasks);
+            foreach (var handler in handlers) IsComponentWaked[handler] = true;
 
             //TODO: at some point more complicated logic for "activeness" and relevant state tracking?
-            var handlers = FindViewComponents();
             var initTasks = handlers.Select(h => h.OnViewInit());
             InitState = InitializationState.Initializing;
             await UniTask.WhenAll(initTasks);

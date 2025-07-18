@@ -5,6 +5,12 @@ namespace Noneb.UI.View
     public interface IViewComponent
     {
         /// <summary>
+        /// This thing only get called once - how nice! It's always called before init as well, use it in place of Unity's Awake as
+        /// it will be called before the GO is awaked.
+        /// </summary>
+        public UniTask OnViewAwake() => UniTask.CompletedTask;
+
+        /// <summary>
         /// This is where you gather dependencies, load temporary(for the lifetime of the view stack) resources etc
         /// </summary>
         public UniTask OnViewInit() => UniTask.CompletedTask; //TODO: maybe I should get rid of this and let main-ish/entry point handle it.

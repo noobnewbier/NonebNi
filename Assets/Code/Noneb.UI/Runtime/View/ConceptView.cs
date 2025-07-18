@@ -16,6 +16,7 @@ namespace Noneb.UI.View
         }
 
         public string Name { get; }
+        Dictionary<IViewComponent, bool> INonebView.IsComponentWaked { get; set; } = new();
         INonebView.InitializationState INonebView.InitState { get; set; }
         public bool IsViewActive { get; private set; }
 
