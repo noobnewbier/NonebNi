@@ -1,10 +1,12 @@
 ﻿using NonebNi.Core.Stats;
+using NonebNi.Ui.Attributes;
 using TMPro;
 using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
 {
+    [NonebUniversalEditor]
     public class StatWidget : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI valueText = null!;
