@@ -10,6 +10,7 @@ using NonebNi.Core.Units;
 using NonebNi.Ui.Attributes;
 using NonebNi.Ui.ViewComponents.Combos;
 using NonebNi.Ui.ViewComponents.EnemyTurnMenu;
+using NonebNi.Ui.ViewComponents.HexTooltip;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
 
@@ -27,10 +28,10 @@ namespace NonebNi.Main
         private Dependencies _deps = null!;
         private UIStack _stack = null!;
 
-        public void Init(Dependencies dependencies)
+        public void Init(Dependencies dependencies, UIStack stack)
         {
             _deps = dependencies;
-            _stack = new UIStack(gameObject);
+            _stack = stack;
 
             playerTurnMenu.Init(_deps.PlayerTurnMenuDeps);
             comboActionSelectionMenu.Init(_deps.ComboActionSelectionMenuDeps);
@@ -122,6 +123,7 @@ namespace NonebNi.Main
             ComboActionSelectionMenu.Dependencies ComboActionSelectionMenuDeps,
             ComboUnitSelectionMenu.Dependencies ComboUnitSelectionMenuDeps,
             IPlayerAgent Agent,
-            IUnitTurnOrderer UnitTurnOrderer);
+            IUnitTurnOrderer UnitTurnOrderer,
+            HexTooltipControl.Dependencies HexTooltipControlDeps);
     }
 }

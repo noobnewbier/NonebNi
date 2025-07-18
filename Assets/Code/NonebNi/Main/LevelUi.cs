@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.UI.View;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
+using NonebNi.Ui.Tooltips;
+using NonebNi.Ui.UIContexts;
 using UnityEngine;
 using UnityUtils;
 
@@ -20,10 +23,15 @@ namespace NonebNi.Main
         void Run();
     }
 
+    /// <summary>
+    /// Note:
+    /// wbn if we have all the GO dependencies into one single class, atm it's so tangled with LevelContainer it's a mess
+    /// </summary>
     public class LevelUi : ILevelUi
     {
         private readonly CameraRunner _cameraControl;
         private readonly ICameraController _cameraController;
+        private readonly SharedContextInitializer _contextInitializer;
         private readonly CancellationTokenSource _cts;
         private readonly IGameEventControl _gameEventControl;
         private readonly Hud _hud;
@@ -31,9 +39,12 @@ namespace NonebNi.Main
         private readonly Hud.Dependencies _hudDeps;
         private readonly ITerrainMeshCreator _meshCreator;
         private readonly ISequencePlayer _sequencePlayer;
+        private readonly UIStack _stack;
         private readonly Terrain _terrain;
+        private readonly ITooltipCanvas _tooltipCanvas;
 
         public LevelUi(
+            CanvasRoot canvasRoot,
             CameraRunner cameraControl,
             Hud hud,
             Terrain terrain,
@@ -41,7 +52,10 @@ namespace NonebNi.Main
             ITerrainMeshCreator meshCreator,
             ISequencePlayer sequencePlayer,
             IGameEventControl gameEventControl,
-            Hud.Dependencies hudDeps)
+            Hud.Dependencies hudDeps,
+            ITooltipCanvas tooltipCanvas,
+            SharedContextInitializer contextInitializer
+        )
         {
             _meshCreator = meshCreator;
             _cameraControl = cameraControl;
@@ -51,15 +65,25 @@ namespace NonebNi.Main
             _sequencePlayer = sequencePlayer;
             _gameEventControl = gameEventControl;
             _hudDeps = hudDeps;
+            _tooltipCanvas = tooltipCanvas;
+            _contextInitializer = contextInitializer;
 
             //todo: change our DI, it's confusing now.
             _cts = new CancellationTokenSource();
+            _stack = canvasRoot.GetStack();
         }
 
         public void Run()
         {
+            _contextInitializer.Init();
             _cameraControl.Init(_cameraController);
-            _hud.Init(_hudDeps);
+
+            var hudStack = _stack.GetSubStack("Hud", _hud);
+            _hud.Init(_hudDeps, hudStack);
+
+            var tooltipStack = _stack.GetSubStack("Tooltip", _tooltipCanvas);
+            tooltipStack.Push(_tooltipCanvas).Forget();
+
             _terrain.Init(_meshCreator);
             _cameraControl.Run();
 

@@ -3,6 +3,7 @@ using NonebNi.Core.Level;
 using NonebNi.Main.Di;
 using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
+using NonebNi.Ui.Tooltips;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ namespace NonebNi.Main
         [SerializeField] private Terrain terrain = null!;
         [SerializeField] private PlayerTurnMenu playerTurnMenu = null!;
         [SerializeField] private HexHighlightConfig hexHighlightConfig = new();
+        [SerializeField] private TooltipCanvas tooltipCanvas = null!;
+        [SerializeField] private CanvasRoot canvasRoot = null!;
 
 
         [Header("Level Data"), SerializeField] private LevelDataSource levelDataSource = null!;
@@ -48,7 +51,9 @@ namespace NonebNi.Main
                 new TerrainMeshData(),
                 playerTurnMenu,
                 cameraControl.Camera,
-                hexHighlightConfig
+                hexHighlightConfig,
+                tooltipCanvas,
+                canvasRoot
             );
             var (levelFlowController, levelUi) = levelContainer.Resolve().Value;
             LevelFlowController = levelFlowController;

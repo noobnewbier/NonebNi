@@ -7,6 +7,7 @@ using NonebNi.Core.Maps;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using NonebNi.Ui.Grids;
+using NonebNi.Ui.Tooltips;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using StrongInject;
 using StrongInject.Modules;
@@ -21,6 +22,7 @@ namespace NonebNi.Main.Di
     [RegisterModule(typeof(CoordinateAndPositionServiceModule))]
     [RegisterModule(typeof(LevelFlowControlModule))]
     [RegisterModule(typeof(UIModule))]
+    [RegisterModule(typeof(SharedContextModule))]
     [Register(typeof(LevelUi), typeof(ILevelUi))]
     [Register(typeof(TerrainMeshCreator), typeof(ITerrainMeshCreator))]
     [RegisterModule(typeof(ValueTupleModule))]
@@ -29,16 +31,18 @@ namespace NonebNi.Main.Di
         [Instance] private readonly IAgent[] _agents;
         [Instance] private readonly CinemachineCamera _camera;
         [Instance] private readonly CameraRunner _cameraControl;
+        [Instance] private readonly CanvasRoot _canvasRoot;
         [Instance] private readonly CinemachinePositionComposer _composer;
         [Instance] private readonly CameraControlSetting _config;
         [Instance] private readonly HexHighlightConfig _hexHighlightConfig;
         [Instance] private readonly Hud _hud;
         [Instance] private readonly Camera _levelCamera; //todo: feels like it shouldn't be here
         [Instance] private readonly LevelData _levelData;
-        [Instance] private readonly IPlayerTurnMenu _playerTurnMenu;
+        [Instance] private readonly IPlayerTurnMenu _playerTurnMenu; //todo: need?
         [Instance] private readonly Terrain _terrain;
         [Instance] private readonly TerrainConfigData _terrainConfig;
         [Instance] private readonly TerrainMeshData _terrainMeshData;
+        [Instance] private readonly ITooltipCanvas _tooltipCanvas;
 
         public LevelContainer(
             CameraControlSetting config,
@@ -52,7 +56,9 @@ namespace NonebNi.Main.Di
             TerrainMeshData terrainMeshData,
             IPlayerTurnMenu playerTurnMenu,
             Camera levelCamera,
-            HexHighlightConfig hexHighlightConfig)
+            HexHighlightConfig hexHighlightConfig,
+            ITooltipCanvas tooltipCanvas,
+            CanvasRoot canvasRoot)
         {
             _config = config;
             _levelData = levelData;
@@ -64,6 +70,8 @@ namespace NonebNi.Main.Di
             _playerTurnMenu = playerTurnMenu;
             _levelCamera = levelCamera;
             _hexHighlightConfig = hexHighlightConfig;
+            _tooltipCanvas = tooltipCanvas;
+            _canvasRoot = canvasRoot;
             _camera = camera;
             _composer = composer;
             _agents = _levelData.Factions.Select(
