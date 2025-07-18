@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.Element;
 
@@ -83,7 +84,11 @@ namespace Noneb.UI.View
             var activateTasks = handlers.Select(h => h.OnViewActivate(viewData));
             await UniTask.WhenAll(activateTasks);
 
-            var childElements = FindChildElements();
+            var childElements = FindChildElements().ToArray();
+
+            var elementInitTasks = childElements.Select(c => c.Init());
+            await UniTask.WhenAll(elementInitTasks);
+
             var elementActivateTasks = childElements.Select(c => c.Activate());
             await UniTask.WhenAll(elementActivateTasks);
         }
