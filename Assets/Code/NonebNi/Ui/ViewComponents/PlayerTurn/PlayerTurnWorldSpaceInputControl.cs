@@ -65,6 +65,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public Coordinate? FindHoveredCoordinate()
         {
+            if (_inputSystem.IsMouseOverUi) return null;
+
             //TODO: it probably makes sense to put this input code into the input system - but then it's in game ony...
             var point = _inputSystem.MousePosition;
             var ray = _playerViewCamera.ScreenPointToRay(point);
