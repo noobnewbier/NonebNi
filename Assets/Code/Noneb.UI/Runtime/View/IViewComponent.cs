@@ -5,12 +5,13 @@ namespace Noneb.UI.View
     public interface IViewComponent
     {
         /// <summary>
-        /// This is where you gather dependencies, load permanent(for the duration of the entire game) resources etc
+        /// This is where you gather dependencies, load temporary(for the lifetime of the view stack) resources etc
         /// </summary>
         public UniTask OnViewInit() => UniTask.CompletedTask; //TODO: maybe I should get rid of this and let main-ish/entry point handle it.
 
         /// <summary>
         /// You are about to die now -> say your last word
+        /// I mean, releasing temporary resources.
         /// </summary>
         public UniTask OnViewTearDown() => UniTask.CompletedTask;
 
@@ -26,7 +27,7 @@ namespace Noneb.UI.View
 
         /// <summary>
         /// Tearing down input handler and event hook.
-        /// Releasing temporary resources.
+        /// Note UI can/perhaps should still be visible at this point, whether you want to do it is up to the component's discrete
         /// </summary>
         public UniTask OnViewDeactivate() => UniTask.CompletedTask;
 
