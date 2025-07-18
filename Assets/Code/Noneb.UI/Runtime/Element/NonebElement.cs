@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
 using Unity.Logging;
@@ -9,10 +10,10 @@ namespace Noneb.UI.Element
 {
     public sealed class NonebElement : MonoBehaviour
     {
-        public async UniTask Init()
+        public async UniTask Init(CancellationToken ct = default)
         {
             var eventComponents = FindComponents(transform).ToList();
-            var initTasks = eventComponents.Select(c => c.OnInit());
+            var initTasks = eventComponents.Select(c => c.OnInit(ct));
 
             await UniTask.WhenAll(initTasks);
         }
@@ -54,7 +55,7 @@ namespace Noneb.UI.Element
 
         //TODO: unit test this.
         //TODO: we really need to unify this into one place, this is disaster waiting to happen.
-        public static async UniTask<(bool isSuccess, NonebElement element)> CreateElementFromPrefab(NonebElement elementPrefab, Transform elementHolder)
+        public static async UniTask<(bool isSuccess, NonebElement element)> CreateElementFromPrefab(NonebElement elementPrefab, Transform elementHolder, CancellationToken ct = default)
         {
             var createdElement = Instantiate(elementPrefab, elementHolder);
             INonebView? ownerView = createdElement.OwnerView;
@@ -66,10 +67,10 @@ namespace Noneb.UI.Element
 
             if (ownerView.InitState == INonebView.InitializationState.PreInitialize) return (true, createdElement);
 
-            if (ownerView.InitState == INonebView.InitializationState.Initializing) await UniTask.WaitUntil(() => ownerView.InitState == INonebView.InitializationState.Initialized);
+            if (ownerView.InitState == INonebView.InitializationState.Initializing) await UniTask.WaitUntil(() => ownerView.InitState == INonebView.InitializationState.Initialized, cancellationToken: ct);
 
             createdElement.transform.SetParent(elementHolder.transform);
-            await createdElement.Init();
+            await createdElement.Init(ct);
 
             if (!ownerView.IsViewActive) return (true, createdElement);
 

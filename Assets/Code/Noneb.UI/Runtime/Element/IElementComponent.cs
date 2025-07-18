@@ -1,10 +1,11 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace Noneb.UI.Element
 {
     public interface IElementComponent
     {
-        public UniTask OnInit() => UniTask.CompletedTask;
+        public UniTask OnInit(CancellationToken ct) => UniTask.CompletedTask;
 
         public UniTask OnActivate() => UniTask.CompletedTask;
 
