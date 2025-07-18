@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using Noneb.UI.Animation;
 using Noneb.UI.Element;
 using NonebNi.Core.Actions;
+using NonebNi.Ui.Tooltips;
 using TMPro;
 using Unity.Logging;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     {
         [SerializeField] private TextMeshProUGUI actionName = null!;
         [SerializeField] private NonebButton button = null!;
+        [SerializeField] private TooltipDetector tooltipDetector = null!;
 
         [SerializeField] private AnimationData highlightOnAnim = new();
         [SerializeField] private AnimationData highlightOffAnim = new();
@@ -30,6 +32,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public async UniTask Show(NonebAction action, CancellationToken ct = default)
         {
+            tooltipDetector.SetRequest(new TooltipRequest.Text(action.Tooltip));
             Action = action;
             actionName.text = action.Name.GetLocalized();
         }
