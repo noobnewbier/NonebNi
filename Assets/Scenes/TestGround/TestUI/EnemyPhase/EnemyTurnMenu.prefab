@@ -128,7 +128,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!95 &9009440693348709819
 Animator:
@@ -206,6 +206,7 @@ MonoBehaviour:
     <FinishAnimLayerIndex>k__BackingField: 0
     <TargetNumericValue>k__BackingField: 0
     <TargetBoolValue>k__BackingField: 0
+  shouldAnimOnTransitionSelfTransition: 1
 --- !u!114 &6253036870112914903
 MonoBehaviour:
   m_ObjectHideFlags: 0

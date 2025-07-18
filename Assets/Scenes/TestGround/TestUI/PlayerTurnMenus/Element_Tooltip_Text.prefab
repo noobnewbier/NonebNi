@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1627870547950500279}
   - component: {fileID: 7638966721556475617}
   - component: {fileID: 937156837735990907}
+  - component: {fileID: 571074591869210505}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -33,7 +34,7 @@ RectTransform:
   m_Father: {fileID: 5077775719648400675}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -65,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: When you run out of health. You Die
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -136,6 +137,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &571074591869210505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5569325081168102304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: 200
+  m_MinHeight: -1
+  m_PreferredWidth: 400
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1001 &8560903410951441892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -150,11 +171,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3510998283861350599, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3510998283861350599, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3510998283861350599, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
       propertyPath: m_AnchorMax.x
@@ -237,7 +258,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1540978538868178781, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 9189008906267691212}
+    - targetCorrespondingSourceObject: {fileID: 1540978538868178781, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8807142693309457879}
+    - targetCorrespondingSourceObject: {fileID: 1540978538868178781, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1321352347036061737}
+    - targetCorrespondingSourceObject: {fileID: 1540978538868178781, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6540592068528101307}
+    - targetCorrespondingSourceObject: {fileID: 1540978538868178781, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4510012833209954301}
   m_SourcePrefab: {fileID: 100100000, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
 --- !u!95 &1976801182789373868 stripped
 Animator:
@@ -254,6 +287,36 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1540978538868178781, guid: 63f647b0a3d796d47980c91c6b3aae49, type: 3}
   m_PrefabInstance: {fileID: 8560903410951441892}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9189008906267691212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182352563810611897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &8807142693309457879
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,3 +347,51 @@ MonoBehaviour:
     <TargetNumericValue>k__BackingField: 0
     <TargetBoolValue>k__BackingField: 0
   textComponent: {fileID: 937156837735990907}
+--- !u!114 &1321352347036061737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182352563810611897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 5
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &6540592068528101307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182352563810611897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 2
+  m_VerticalFit: 2
+--- !u!222 &4510012833209954301
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7182352563810611897}
+  m_CullTransparentMesh: 1

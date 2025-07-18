@@ -30,13 +30,13 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 8598465853672915234
+        - rid: 8598466130961236171
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 8598465853672915235
+        - rid: 8598466130961236172
       - tileData:
           weight: 1
           name: 
@@ -57,94 +57,6 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 8598465853672915236
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 8598465853672915236
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 8598465853672915237
       - tileData:
           weight: 1
           name: 
@@ -195,7 +107,49 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 8598465853672915238
+        - rid: 8598466130961236173
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 8598466130961236173
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 8598466130961236174
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
       - tileData:
           weight: 1
           name: 
@@ -241,7 +195,53 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 8598465853672915239
+        - rid: 8598466130961236175
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 8598466130961236176
       - tileData:
           weight: 1
           name: 
@@ -535,7 +535,37 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8598465853672915234
+    - rid: 8598466130961236151
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 8598466130961236152
+      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        distance: 1
+    - rid: 8598466130961236153
+      type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data: 
+    - rid: 8598466130961236154
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: shoot
+        _damages:
+        - rid: 8598466130961236157
+    - rid: 8598466130961236155
+      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 8598466130961236156
+      type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 8598466130961236157
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 8598466130961236171
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name:
@@ -548,7 +578,7 @@ MonoBehaviour:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 8598465853672915235
+    - rid: 8598466130961236172
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -561,6 +591,9 @@ MonoBehaviour:
         - <Id>k__BackingField: bash
           <Name>k__BackingField:
             debugString: bash
+          <Tooltip>k__BackingField:
+            debugString: Use your shield to knock back enemy for one tile, does little
+              damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -571,13 +604,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915240
+              rid: 8598466130961236151
           <Effects>k__BackingField:
-          - rid: 8598465853672915241
+          - rid: 8598466130961236152
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
             debugString: shoot
+          <Tooltip>k__BackingField:
+            debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -588,13 +623,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915242
+              rid: 8598466130961236153
           <Effects>k__BackingField:
-          - rid: 8598465853672915243
+          - rid: 8598466130961236154
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
             debugString: lure
+          <Tooltip>k__BackingField:
+            debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -605,9 +642,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915244
+              rid: 8598466130961236155
           <Effects>k__BackingField:
-          - rid: 8598465853672915245
+          - rid: 8598466130961236156
           <IsComboStarter>k__BackingField: 1
         <Stats>k__BackingField:
           stats:
@@ -651,7 +688,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 8598465853672915236
+    - rid: 8598466130961236173
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name:
@@ -664,7 +701,7 @@ MonoBehaviour:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 8598465853672915237
+    - rid: 8598466130961236174
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -677,6 +714,9 @@ MonoBehaviour:
         - <Id>k__BackingField: bash
           <Name>k__BackingField:
             debugString: bash
+          <Tooltip>k__BackingField:
+            debugString: Use your shield to knock back enemy for one tile, does little
+              damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -687,13 +727,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915240
+              rid: 8598466130961236151
           <Effects>k__BackingField:
-          - rid: 8598465853672915241
+          - rid: 8598466130961236152
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
             debugString: shoot
+          <Tooltip>k__BackingField:
+            debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -704,13 +746,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915242
+              rid: 8598466130961236153
           <Effects>k__BackingField:
-          - rid: 8598465853672915243
+          - rid: 8598466130961236154
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
             debugString: lure
+          <Tooltip>k__BackingField:
+            debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -721,9 +765,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915244
+              rid: 8598466130961236155
           <Effects>k__BackingField:
-          - rid: 8598465853672915245
+          - rid: 8598466130961236156
           <IsComboStarter>k__BackingField: 1
         <Stats>k__BackingField:
           stats:
@@ -767,7 +811,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 8598465853672915238
+    - rid: 8598466130961236175
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -780,6 +824,9 @@ MonoBehaviour:
         - <Id>k__BackingField: bash
           <Name>k__BackingField:
             debugString: bash
+          <Tooltip>k__BackingField:
+            debugString: Use your shield to knock back enemy for one tile, does little
+              damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -790,13 +837,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915240
+              rid: 8598466130961236151
           <Effects>k__BackingField:
-          - rid: 8598465853672915241
+          - rid: 8598466130961236152
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
             debugString: shoot
+          <Tooltip>k__BackingField:
+            debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -807,13 +856,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915242
+              rid: 8598466130961236153
           <Effects>k__BackingField:
-          - rid: 8598465853672915243
+          - rid: 8598466130961236154
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
             debugString: lure
+          <Tooltip>k__BackingField:
+            debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -824,9 +875,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915244
+              rid: 8598466130961236155
           <Effects>k__BackingField:
-          - rid: 8598465853672915245
+          - rid: 8598466130961236156
           <IsComboStarter>k__BackingField: 1
         <Stats>k__BackingField:
           stats:
@@ -870,7 +921,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 8598465853672915239
+    - rid: 8598466130961236176
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -883,6 +934,9 @@ MonoBehaviour:
         - <Id>k__BackingField: bash
           <Name>k__BackingField:
             debugString: bash
+          <Tooltip>k__BackingField:
+            debugString: Use your shield to knock back enemy for one tile, does little
+              damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -893,13 +947,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915240
+              rid: 8598466130961236151
           <Effects>k__BackingField:
-          - rid: 8598465853672915241
+          - rid: 8598466130961236152
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
             debugString: shoot
+          <Tooltip>k__BackingField:
+            debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -910,13 +966,15 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915242
+              rid: 8598466130961236153
           <Effects>k__BackingField:
-          - rid: 8598465853672915243
+          - rid: 8598466130961236154
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
             debugString: lure
+          <Tooltip>k__BackingField:
+            debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <Costs>k__BackingField:
           - <StatId>k__BackingField: fatigue
@@ -927,9 +985,9 @@ MonoBehaviour:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 8598465853672915244
+              rid: 8598466130961236155
           <Effects>k__BackingField:
-          - rid: 8598465853672915245
+          - rid: 8598466130961236156
           <IsComboStarter>k__BackingField: 1
         <Stats>k__BackingField:
           stats:
@@ -973,33 +1031,3 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 8598465853672915240
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 1
-    - rid: 8598465853672915241
-      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        distance: 1
-    - rid: 8598465853672915242
-      type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data: 
-    - rid: 8598465853672915243
-      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        _animId: shoot
-        _damages:
-        - rid: 8598465853672915246
-    - rid: 8598465853672915244
-      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: focus
-    - rid: 8598465853672915245
-      type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 8598465853672915246
-      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: focus

@@ -750,6 +750,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8759818880475913915, guid: f817c8453e98f7b4995e2ee09736e4a4, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8857302148505695076, guid: f817c8453e98f7b4995e2ee09736e4a4, type: 3}
       propertyPath: m_Name
       value: ComboActionSelectionMenu
@@ -773,6 +777,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8857302148505695076, guid: f817c8453e98f7b4995e2ee09736e4a4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8910305291706644863}
+    - targetCorrespondingSourceObject: {fileID: 8857302148505695076, guid: f817c8453e98f7b4995e2ee09736e4a4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6716811554217067652}
   m_SourcePrefab: {fileID: 100100000, guid: f817c8453e98f7b4995e2ee09736e4a4, type: 3}
 --- !u!224 &4847055576807616813 stripped
 RectTransform:
@@ -798,6 +805,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionPanel: {fileID: 1099405053199455535}
   detailsPanel: {fileID: 1979879344207911688}
+--- !u!114 &6716811554217067652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7394636648769820343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7094e9d27e8d40db85ff7c99d7d5b86e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interruptThreshold: 1
+  dismissThreshold: 1
+  delay: 0.75
 --- !u!1001 &3561637821616448937
 PrefabInstance:
   m_ObjectHideFlags: 0

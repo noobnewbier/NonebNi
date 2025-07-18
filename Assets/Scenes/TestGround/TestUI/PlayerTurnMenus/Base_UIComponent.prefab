@@ -128,3 +128,4 @@ MonoBehaviour:
     <FinishAnimLayerIndex>k__BackingField: 0
     <TargetNumericValue>k__BackingField: 0
     <TargetBoolValue>k__BackingField: 0
+  shouldAnimOnTransitionSelfTransition: 1

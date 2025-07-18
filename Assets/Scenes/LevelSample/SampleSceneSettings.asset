@@ -40,6 +40,9 @@ MonoBehaviour:
           - <Id>k__BackingField: bash
             <Name>k__BackingField:
               debugString: bash
+            <Tooltip>k__BackingField:
+              debugString: Use your shield to knock back enemy for one tile, does
+                little damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -50,13 +53,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915247
+                rid: 8598466130961236158
             <Effects>k__BackingField:
-            - rid: 8598465853672915248
+            - rid: 8598466130961236159
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
               debugString: shoot
+            <Tooltip>k__BackingField:
+              debugString: Shoot an enemy at range, does good damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -67,13 +72,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915249
+                rid: 8598466130961236160
             <Effects>k__BackingField:
-            - rid: 8598465853672915250
+            - rid: 8598466130961236161
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
               debugString: lure
+            <Tooltip>k__BackingField:
+              debugString: Faking an opening and draw enemy towards you
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -84,9 +91,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915251
+                rid: 8598466130961236162
             <Effects>k__BackingField:
-            - rid: 8598465853672915252
+            - rid: 8598466130961236163
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -247,6 +254,9 @@ MonoBehaviour:
           - <Id>k__BackingField: bash
             <Name>k__BackingField:
               debugString: bash
+            <Tooltip>k__BackingField:
+              debugString: Use your shield to knock back enemy for one tile, does
+                little damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -257,13 +267,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915247
+                rid: 8598466130961236158
             <Effects>k__BackingField:
-            - rid: 8598465853672915248
+            - rid: 8598466130961236159
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
               debugString: shoot
+            <Tooltip>k__BackingField:
+              debugString: Shoot an enemy at range, does good damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -274,13 +286,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915249
+                rid: 8598466130961236160
             <Effects>k__BackingField:
-            - rid: 8598465853672915250
+            - rid: 8598466130961236161
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
               debugString: lure
+            <Tooltip>k__BackingField:
+              debugString: Faking an opening and draw enemy towards you
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -291,9 +305,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915251
+                rid: 8598466130961236162
             <Effects>k__BackingField:
-            - rid: 8598465853672915252
+            - rid: 8598466130961236163
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -399,6 +413,9 @@ MonoBehaviour:
           - <Id>k__BackingField: bash
             <Name>k__BackingField:
               debugString: bash
+            <Tooltip>k__BackingField:
+              debugString: Use your shield to knock back enemy for one tile, does
+                little damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -409,13 +426,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915247
+                rid: 8598466130961236158
             <Effects>k__BackingField:
-            - rid: 8598465853672915248
+            - rid: 8598466130961236159
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
               debugString: shoot
+            <Tooltip>k__BackingField:
+              debugString: Shoot an enemy at range, does good damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -426,13 +445,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915249
+                rid: 8598466130961236160
             <Effects>k__BackingField:
-            - rid: 8598465853672915250
+            - rid: 8598466130961236161
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
               debugString: lure
+            <Tooltip>k__BackingField:
+              debugString: Faking an opening and draw enemy towards you
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -443,9 +464,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915251
+                rid: 8598466130961236162
             <Effects>k__BackingField:
-            - rid: 8598465853672915252
+            - rid: 8598466130961236163
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -546,6 +567,9 @@ MonoBehaviour:
           - <Id>k__BackingField: bash
             <Name>k__BackingField:
               debugString: bash
+            <Tooltip>k__BackingField:
+              debugString: Use your shield to knock back enemy for one tile, does
+                little damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -556,13 +580,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915247
+                rid: 8598466130961236158
             <Effects>k__BackingField:
-            - rid: 8598465853672915248
+            - rid: 8598466130961236159
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
               debugString: shoot
+            <Tooltip>k__BackingField:
+              debugString: Shoot an enemy at range, does good damage
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -573,13 +599,15 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915249
+                rid: 8598466130961236160
             <Effects>k__BackingField:
-            - rid: 8598465853672915250
+            - rid: 8598466130961236161
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
               debugString: lure
+            <Tooltip>k__BackingField:
+              debugString: Faking an opening and draw enemy towards you
             <Icon>k__BackingField: {fileID: 0}
             <Costs>k__BackingField:
             - <StatId>k__BackingField: fatigue
@@ -590,9 +618,9 @@ MonoBehaviour:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598465853672915251
+                rid: 8598466130961236162
             <Effects>k__BackingField:
-            - rid: 8598465853672915252
+            - rid: 8598466130961236163
             <IsComboStarter>k__BackingField: 1
           <Stats>k__BackingField:
             stats:
@@ -932,32 +960,32 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8598465853672915247
+    - rid: 8598466130961236158
       type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data:
         range: 1
-    - rid: 8598465853672915248
+    - rid: 8598466130961236159
       type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         distance: 1
-    - rid: 8598465853672915249
+    - rid: 8598466130961236160
       type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 8598465853672915250
+    - rid: 8598466130961236161
       type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         _animId: shoot
         _damages:
-        - rid: 8598465853672915253
-    - rid: 8598465853672915251
+        - rid: 8598466130961236164
+    - rid: 8598466130961236162
       type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data:
         ratio: 1
         statId: focus
-    - rid: 8598465853672915252
+    - rid: 8598466130961236163
       type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
-    - rid: 8598465853672915253
+    - rid: 8598466130961236164
       type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         ratio: 1
