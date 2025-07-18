@@ -9,9 +9,15 @@ namespace Noneb.UI.View
 
         private bool _canBlockRaycast;
 
-        public UniTask OnViewInit()
+        public UniTask OnViewAwake()
         {
             _canBlockRaycast = canvasGroup.blocksRaycasts;
+            return UniTask.CompletedTask;
+        }
+
+        public UniTask OnViewInit()
+        {
+            gameObject.SetActive(true);
             return UniTask.CompletedTask;
         }
 
@@ -29,6 +35,12 @@ namespace Noneb.UI.View
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
+            return UniTask.CompletedTask;
+        }
+
+        public UniTask OnViewTearDown()
+        {
+            gameObject.SetActive(false);
             return UniTask.CompletedTask;
         }
     }
