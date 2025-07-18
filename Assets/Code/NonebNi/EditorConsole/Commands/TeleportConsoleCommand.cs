@@ -34,6 +34,7 @@ namespace NonebNi.EditorConsole.Commands
                 TargetArea.Single,
                 TargetRestriction.NonOccupied,
                 false,
+                string.Empty,
                 new MoveEffect()
             );
         }
