@@ -15,7 +15,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private UnitData? _unitData;
 
-        public UniTask OnInit()
+        public UniTask OnInit(CancellationToken ct)
         {
             button.Clicked += OnButtonClicked;
             return UniTask.CompletedTask;
