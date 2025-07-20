@@ -9,6 +9,10 @@ using UnityEngine;
 
 namespace NonebNi.Main
 {
+    /// <summary>
+    /// Note: feels like we can resolve ui deps in a separate container, have it static ? or level runner can make a static
+    /// accessible thing.
+    /// </summary>
     public class LevelRunner : MonoBehaviour
     {
         [Header("UI"), SerializeField] private Hud hud = null!;
@@ -37,8 +41,11 @@ namespace NonebNi.Main
             LevelData = levelDataSource.GetData();
             TerrainConfig = terrainConfig.CreateData();
 
-            //todo: this is all jank atm, we need to refactor this after we confirm ui works.
-            //TODO: either level container create level flow control which needs level UI
+            /*
+             * Note:
+             * this is all jank atm, we need to refactor this after we confirm ui works.
+             * either level container create level flow control which needs level UI
+             */
             var levelContainer = new LevelContainer(
                 cameraControl.Config,
                 cameraControl,

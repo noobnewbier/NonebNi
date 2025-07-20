@@ -18,6 +18,8 @@ namespace NonebNi.Ui.ViewComponents.Combos
         //todo: when comboing https://privatebin.net/?11090be6f34f7d9d#ARRBfCgcANGSsTnrtNod9YpeLzyhNKtMNeRbVkLTEqxH
         //todo: when combo can infinite
         //todo: path find -> walk around enemy
+        //todo: need to figure out the awkwardness when the game start...
+        //todo: input get cancelled
 
         public record Data(UnitData ActiveUnit, IEnumerable<NonebAction> PossibleComboActions, UIInputReader<UIInput> InputReader);
 

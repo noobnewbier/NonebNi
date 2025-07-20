@@ -16,7 +16,11 @@ using UnityEngine;
 
 namespace NonebNi.Main.Di
 {
-    //todo: i got a feeling that I can just make it an IContainer of both core, ui and debug, this limits the amount of "fuck Editor needs Core's module for something" 
+    /// <summary>
+    /// Note:
+    /// i got a feeling that I can just make it an IContainer of both core, ui and debug, this limits the amount of "fuck
+    /// Editor needs Core's module for something"
+    /// </summary>
     [RegisterModule(typeof(AgentsModule))]
     [RegisterModule(typeof(CameraControllerModule))]
     [RegisterModule(typeof(CoordinateAndPositionServiceModule))]

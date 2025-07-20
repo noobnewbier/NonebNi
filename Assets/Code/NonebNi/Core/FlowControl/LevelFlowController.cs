@@ -143,6 +143,17 @@ namespace NonebNi.Core.FlowControl
 
         private async UniTask ComboFlow(EffectContext comboContext, UnitData comboStarter)
         {
+            /*
+             * Note:
+             * - I am convinced there's no way we can make it completely type safe and work for ability that may or may not exist in this world
+             * - we need to pick our poison
+             * - my guess is that we can make evaluator spits out isequence, and not necessary carry out what the sequence does until later point.
+             * - that way effect context can stays within whatever action is doing, and any ai/ui work can use the sequence THAT IS YET TO BE EXECUTED to find out what the fuck will happen
+             *
+             * At some point, I left this comment:
+             * "this should, really, not be how we do it."
+             * Yet reading it breifly I have no idea what's wrong so I am just gonna leave this as is and future me can ponder about it.
+             */
             // no combo -> nothing to do we can just bugger off
             var possibleCombos = _optionFinder.FindComboOptions(comboContext).ToArray();
             if (!possibleCombos.Any()) return;

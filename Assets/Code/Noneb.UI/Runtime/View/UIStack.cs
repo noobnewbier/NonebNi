@@ -14,6 +14,10 @@ namespace Noneb.UI.View
     /// This should be how we are interacting with the push/pop interaction.
     /// TODO: atm this only deal with the most basic of basics, we will "need" to expand on this.
     /// look at your notebook it has more details.
+    /// Note:
+    /// - omg I really need a good code clean up, it's getting confusing
+    /// - atm this only deal with the most basic of basics, we will "need" to expand on this.
+    /// - look at your notebook it has more details.
     /// </summary>
     public class UIStack : IAsyncDisposable //TODO: let stack handles game object as well
     {
