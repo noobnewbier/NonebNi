@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -9,14 +7,6 @@ namespace NonebNi.CustomInspector
 {
     public partial class NonebGUIDrawer
     {
-        private static readonly Lazy<PropertyInfo> IndentMethod = new(
-            () =>
-            {
-                var method = typeof(EditorGUI).GetProperty("indent", BindingFlags.Static | BindingFlags.NonPublic);
-                return method!;
-            }
-        );
-
         private readonly Dictionary<string, bool> _foldoutStates = new();
 
         public NonebGUIDrawer(SerializedObject serializedObject)
@@ -24,25 +14,19 @@ namespace NonebNi.CustomInspector
             _serializedObject = serializedObject;
         }
 
-        public static int Indent
-        {
-            get
-            {
-                var getValue = IndentMethod.Value.GetValue(null);
-                if (getValue is not int indent) return EditorGUI.indentLevel * 15;
-
-                return indent;
-            }
-        }
-
 
         //todo: maybe? https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callerargumentexpressionattribute?view=net-6.0
 
-        public bool DrawButton(string label) => GUILayout.Button(label);
+        public bool DrawButton(string label)
+        {
+            var rect = GetIndentedRect(label, GUI.skin.button);
+            return GUI.Button(rect, label);
+        }
 
         public void DrawError(string errorText)
         {
-            GUILayout.Label(errorText, NonebGUIStyle.Error);
+            var rect = GetIndentedRect(errorText, NonebGUIStyle.Error);
+            DrawError(rect, errorText);
         }
 
         public void DrawError(Rect rect, string errorText)
@@ -53,18 +37,21 @@ namespace NonebNi.CustomInspector
         public void DrawHeader(string headerText)
         {
             // The inconsistent use of editor styles here feels weird
-            GUILayout.Label(headerText, EditorStyles.boldLabel);
+            var rect = GetIndentedRect(headerText, EditorStyles.boldLabel);
+            GUI.Label(rect, headerText, EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
         }
 
         public void DrawLabel(string label)
         {
-            GUILayout.Label(label, NonebGUIStyle.Normal);
+            var rect = GetIndentedRect(label, NonebGUIStyle.Normal);
+            GUI.Label(rect, label, NonebGUIStyle.Normal);
         }
 
         public void DrawHint(string label)
         {
-            GUILayout.Label(label, NonebGUIStyle.Hint);
+            var rect = GetIndentedRect(label, NonebGUIStyle.Hint);
+            GUI.Label(rect, label, NonebGUIStyle.Hint);
         }
 
         public bool DrawDefaultInspector(Editor editor) => DoDrawDefaultInspector(editor);
@@ -127,9 +114,7 @@ namespace NonebNi.CustomInspector
             const float defaultFoldoutHeaderHeight = 18;
 
             var style = EditorStyles.foldoutHeader;
-            var content = new GUIContent(label);
-
-            var rect = GUILayoutUtility.GetRect(content, style);
+            var rect = GetIndentedRect(label, style);
             var headerRect = new Rect(rect.x, rect.y, rect.width - arraySizeWidth, defaultFoldoutHeaderHeight);
             var sizeRect = new Rect(
                 headerRect.xMax - Indent * EditorGUI.indentLevel,
