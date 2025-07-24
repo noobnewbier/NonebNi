@@ -10,6 +10,10 @@ namespace NonebNi.CustomInspector.AbstractClass
 {
     /// <summary>
     /// If you are reading this, and know of a better way to do this, please enlighten me as it is gross.
+    ///
+    /// Note:
+    /// can adapt to a new way of doing it - this guy did a lot of leg work already?
+    /// https://github.com/AlexeyTaranov/SerializeReferenceDropdown
     /// </summary>
     public class TypePicker
     {
