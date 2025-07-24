@@ -116,7 +116,7 @@ namespace NonebNi.CustomInspector
         {
             if (!_foldoutStates.TryGetValue(id, out var state)) _foldoutStates[id] = state = false;
 
-            return _foldoutStates[id] = EditorGUILayout.Foldout(state, label, EditorStyles.foldoutHeader);
+            return _foldoutStates[id] = EditorGUILayout.Foldout(state, label);
         }
 
         public void DrawListFoldoutHeader(SerializedProperty listProperty, string label)
