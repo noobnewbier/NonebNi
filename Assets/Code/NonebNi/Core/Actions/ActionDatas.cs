@@ -20,6 +20,9 @@ namespace NonebNi.Core.Actions
      * 3. move
      */
 
+    //todo: make sure, all actions, fucking work, including combos
+    //todo: ai after that should be "trivial"
+    //todo: ui seems bugged
 
     //TODO: this is temporary before we figure out how do we store action/effects, most likely through SO w/ potential to transition to Json
     //TODO: there's no way we can collect all(mod included) dependencies at compile, as some of them don't even exist, we will need to collect them via some form of reflection...? 
@@ -145,7 +148,7 @@ namespace NonebNi.Core.Actions
             new[] { Friendly, NonOccupied },
             true,
             "Commanding another friendly unit to move to another position",
-            new MoveEntityEffect()
+            new MoveEntityEffect() //todo: path finding, and change how the range works?
         );
 
         //todo: clear path might not be working as intended. time to whip out our automatic test before it's too late.
@@ -186,12 +189,12 @@ namespace NonebNi.Core.Actions
             new[]
             {
                 new TargetRequest(Enemy, Single, 2),
-                new TargetRequest(Enemy, Single, 1)
+                new TargetRequest(NonOccupied, Single, 1)
             },
             true,
             "Grabbing an enemy to a near by position",
             new MoveEntityEffect()
-        );
+        ); // todo: doesn't work.
 
         public static readonly NonebAction Rotate = new(
             "rotate",
@@ -205,7 +208,7 @@ namespace NonebNi.Core.Actions
             true,
             "Using your footwork to swap position with an ally",
             new SwapPositionEffect()
-        );
+        ); //todo: doesn't work
 
         public static NonebAction[] Actions =
         {
