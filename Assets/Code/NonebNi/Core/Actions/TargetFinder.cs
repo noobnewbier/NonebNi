@@ -273,9 +273,9 @@ namespace NonebNi.Core.Actions
                         yield break;
                     }
 
-                    if (_map.TryFind(actor, out Coordinate actorCoord))
+                    if (!_map.TryFind(actor, out Coordinate actorCoord))
                     {
-                        Log.Error("Actor is not found on the map. We can't figure out the direction of the fan!");
+                        Log.Error("{actor} is not found on the map. We can't figure out the direction of the fan!", actor);
                         yield break;
                     }
 
