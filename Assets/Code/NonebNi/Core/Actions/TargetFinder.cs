@@ -200,7 +200,7 @@ namespace NonebNi.Core.Actions
                 }
                 case TargetRestriction.NotSelf:
                 {
-                    if (ReferenceEquals(target, caster)) return (false, new RestrictionCheckFailedReason.NotOthers());
+                    if (ReferenceEquals(targetEntity, caster)) return (false, new RestrictionCheckFailedReason.NotOthers());
 
                     return (true, null);
                 }
