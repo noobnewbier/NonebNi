@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.DataIds;
 using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
@@ -14,7 +16,7 @@ namespace NonebNi.Core.Pathfinding
     {
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(EntityData entity, Coordinate goal);
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal);
-        (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal);
+        (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal, params DataId<Faction>[] passableFactions);
     }
 
     public class PathfindingService : IPathfindingService
@@ -56,7 +58,7 @@ namespace NonebNi.Core.Pathfinding
         }
 
         // ReSharper disable once CognitiveComplexity - it's just an A* implementation we copy from wiki, no need to fix.
-        public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal)
+        public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal, params DataId<Faction>[] passableFactions)
         {
             /*
              * If performance became an issue:
@@ -112,6 +114,10 @@ namespace NonebNi.Core.Pathfinding
                         continue;
 
                     var tentativeGScore = gScore[current] + neighbourTileData.Value.Weight;
+                    if (_map.TryGet<EntityData>(neighbour, out var neighbourEntity))
+                        if (!passableFactions.Contains<DataId<Faction>>(neighbourEntity.FactionId))
+                            tentativeGScore += TileData.ObstacleWeight;
+
                     if (tentativeGScore >= gScore[neighbour]) continue;
 
                     cameFrom[neighbour] = current;
