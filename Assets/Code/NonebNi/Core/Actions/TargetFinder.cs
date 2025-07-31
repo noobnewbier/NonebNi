@@ -261,38 +261,47 @@ namespace NonebNi.Core.Actions
             Coordinate targetCoord,
             TargetArea targetArea)
         {
-            switch (targetArea)
+            foreach (var coordinate in FindUnfilteredCoordinates())
+                if (_map.IsCoordinateWithinMap(coordinate))
+                    yield return coordinate;
+
+            yield break;
+
+            IEnumerable<Coordinate> FindUnfilteredCoordinates()
             {
-                case TargetArea.Single:
-                    yield return targetCoord;
-                    break;
-                case TargetArea.Fan:
-                    if (actor.IsSystem)
-                    {
-                        Log.Error($"{TargetArea.Fan} is not supported for System Entity");
-                        yield break;
-                    }
+                switch (targetArea)
+                {
+                    case TargetArea.Single:
+                        yield return targetCoord;
+                        break;
+                    case TargetArea.Fan:
+                        if (actor.IsSystem)
+                        {
+                            Log.Error($"{TargetArea.Fan} is not supported for System Entity");
+                            yield break;
+                        }
 
-                    if (!_map.TryFind(actor, out Coordinate actorCoord))
-                    {
-                        Log.Error("{actor} is not found on the map. We can't figure out the direction of the fan!", actor);
-                        yield break;
-                    }
+                        if (!_map.TryFind(actor, out Coordinate actorCoord))
+                        {
+                            Log.Error("{actor} is not found on the map. We can't figure out the direction of the fan!", actor);
+                            yield break;
+                        }
 
-                    var relativeCoord = targetCoord - actorCoord;
-                    yield return targetCoord;
-                    yield return relativeCoord.RotateLeft();
-                    yield return relativeCoord.RotateRight();
+                        var relativeCoord = targetCoord - actorCoord;
+                        yield return targetCoord;
+                        yield return relativeCoord.RotateLeft();
+                        yield return relativeCoord.RotateRight();
 
-                    break;
-                case TargetArea.Circle:
-                    foreach (var neighbour in targetCoord.Neighbours)
-                        if (_map.IsCoordinateWithinMap(neighbour))
-                            yield return neighbour;
+                        break;
+                    case TargetArea.Circle:
+                        foreach (var neighbour in targetCoord.Neighbours)
+                            if (_map.IsCoordinateWithinMap(neighbour))
+                                yield return neighbour;
 
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(targetArea), targetArea, null);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(targetArea), targetArea, null);
+                }
             }
         }
 
