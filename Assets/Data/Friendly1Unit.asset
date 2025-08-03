@@ -20,6 +20,14 @@ MonoBehaviour:
   - bash
   - shoot
   - lure
+  - grapple
+  - tactical-advance
+  - rotate
+  - swing
+  - power-shot
+  - strike
+  - swing
+  - vault
   initiative: 0
   speed: 5
   focus: 5
