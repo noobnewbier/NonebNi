@@ -293,10 +293,12 @@ namespace NonebNi.Core.Actions
                             yield break;
                         }
 
-                        var relativeCoord = targetCoord - actorCoord;
+                        if (actorCoord.DistanceTo(targetCoord) > 1) Log.Error($"{TargetArea.Fan} cannot deal with anything that's not right next to the actor! This might change later but for now it's unecessarily complicated");
+
+                        var relativeCoord = (targetCoord - actorCoord).Normalized();
                         yield return targetCoord;
-                        yield return relativeCoord.RotateLeft();
-                        yield return relativeCoord.RotateRight();
+                        yield return actorCoord + relativeCoord.RotateLeft();
+                        yield return actorCoord + relativeCoord.RotateRight();
 
                         break;
                     case TargetArea.Circle:
