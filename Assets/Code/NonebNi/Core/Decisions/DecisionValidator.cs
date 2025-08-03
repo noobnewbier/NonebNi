@@ -164,7 +164,13 @@ namespace NonebNi.Core.Decisions
 
                     case RangeStatus.InRangeButNoTarget:
                     case RangeStatus.NotTargetable:
-                        return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.InvalidTarget, status.GetType().Name));
+                    {
+                        // make sure we did check the area of effect as well.
+                        var targets = _targetFinder.FindTargets(caster, newInput, request.TargetArea, request.TargetRestrictionFlags);
+                        if (!targets.Any()) return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.InvalidTarget, status.GetType().Name));
+
+                        return (true, null);
+                    }
 
                     default:
                         Log.Error($"Unhandled type {status}");
@@ -201,17 +207,17 @@ namespace NonebNi.Core.Decisions
             return isValidTargets;
         }
 
-        private (bool, List<IActionTarget[]> toReturn) FindTargetFromInput(ActionDecision ad)
+        private (bool isValidTargets, List<IActionTarget[]> toReturn) FindTargetFromInput(ActionDecision ad)
         {
             var action = ad.Action;
-            var requirements = action.TargetRequests;
+            var requests = action.TargetRequests;
             var targetCoords = ad.TargetCoords;
 
             //targeted coordinates length must match restrictions length - otherwise we couldn't construct a valid command.
             //each targeted coordinate is validated against the restriction in the same index, so C0 -> R0, C1 -> R1 etc.
             //this is why the length must match, otherwise it doesn't make sense.
             //Before you ask, this is an arbitrary decision past you made, and another past you deduced, if you don't like it, well invent time machine.
-            if (targetCoords.Length != requirements.Length) return (false, new List<IActionTarget[]>());
+            if (targetCoords.Length != requests.Length) return (false, new List<IActionTarget[]>());
 
             //if actor is not on the map -> wtf are you doing.
             var actor = ad.ActorEntity;
@@ -220,15 +226,15 @@ namespace NonebNi.Core.Decisions
             var toReturn = new List<IActionTarget[]>();
             for (var i = 0; i < targetCoords.Length; i++)
             {
-                var requirement = requirements[i];
+                var request = requests[i];
                 var coord = targetCoords[i];
-                var rangeLimit = requirement.Range.CalculateRange(actor);
+                var rangeLimit = request.Range.CalculateRange(actor);
                 var distanceToTarget = actorCoord.DistanceTo(coord);
 
                 // must meet all range limit for this to be valid
                 if (distanceToTarget > rangeLimit) return (false, new List<IActionTarget[]>());
 
-                var validTargets = _targetFinder.FindTargets(actor, coord, requirement.TargetArea, requirement.TargetRestrictionFlags)
+                var validTargets = _targetFinder.FindTargets(actor, coord, request.TargetArea, request.TargetRestrictionFlags)
                     .ToArray();
 
                 //every targeted coordinate must have at least one valid target - otherwise it is an invalid command(can't target a coordinate without a target!).
