@@ -172,6 +172,8 @@ namespace NonebNi.Core.Actions
                     var direction = (targetCoord - casterCoord).Normalized();
                     var firstTileToTargetDirection = casterCoord + direction;
 
+                    if (!_map.IsCoordinateWithinMap(firstTileToTargetDirection)) return (false, new RestrictionCheckFailedReason.NotInMap());
+
                     if (_map.IsOccupied(firstTileToTargetDirection)) return (false, new RestrictionCheckFailedReason.NotClearPath());
 
                     return (true, null);
@@ -182,6 +184,8 @@ namespace NonebNi.Core.Actions
 
                     var direction = (targetCoord - casterCoord).Normalized();
                     var targetCoordPlusDirection = targetCoord + direction;
+
+                    if (!_map.IsCoordinateWithinMap(targetCoordPlusDirection)) return (false, new RestrictionCheckFailedReason.NotInMap());
 
                     if (_map.IsOccupied(targetCoordPlusDirection)) return (false, new RestrictionCheckFailedReason.NotClearPath());
 
@@ -240,6 +244,8 @@ namespace NonebNi.Core.Actions
             public record CasterNotOnMap : RestrictionCheckFailedReason;
 
             public record TargetNotOnMap : RestrictionCheckFailedReason;
+
+            public record NotInMap : RestrictionCheckFailedReason;
         }
 
 
