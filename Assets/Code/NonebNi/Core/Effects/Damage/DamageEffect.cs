@@ -22,6 +22,8 @@ namespace NonebNi.Core.Effects
             _damages = damages;
         }
 
+        public override bool IsEffectNegative => true;
+
         public class Evaluator : Evaluator<DamageEffect>
         {
             protected override EffectResult OnEvaluate(

@@ -21,6 +21,8 @@ namespace NonebNi.Core.Effects
             this.distance = distance;
         }
 
+        public override bool IsEffectNegative => false;
+
         public class Evaluator : Evaluator<KnockBackEffect>
         {
             protected override EffectResult OnEvaluate(

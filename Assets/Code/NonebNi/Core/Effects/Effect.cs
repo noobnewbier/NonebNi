@@ -5,6 +5,8 @@ namespace NonebNi.Core.Effects
     [Serializable]
     public abstract class Effect
     {
+        public abstract bool IsEffectNegative { get; }
+
         //TODO: we need a way to find a way to figure out if the effect is valid,
         //and in some case bubble the error up and disable the action itself(whilst in some case it can proceeds)
         /// <summary>

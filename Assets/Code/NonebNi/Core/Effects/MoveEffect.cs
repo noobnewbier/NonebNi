@@ -12,6 +12,8 @@ namespace NonebNi.Core.Effects
     [Serializable]
     public class MoveEffect : Effect
     {
+        public override bool IsEffectNegative => false;
+
         public class Evaluator : Evaluator<MoveEffect>
         {
             private readonly IPathfindingService _pathfindingService;
