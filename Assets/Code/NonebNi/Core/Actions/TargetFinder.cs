@@ -20,6 +20,11 @@ namespace NonebNi.Core.Actions
             TargetRestriction restrictionFlags);
 
         IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request);
+
+        IEnumerable<Coordinate> GetTargetedCoordinates(
+            EntityData actor,
+            Coordinate targetCoord,
+            TargetArea targetArea);
     }
 
     public class TargetFinder : ITargetFinder
@@ -262,7 +267,7 @@ namespace NonebNi.Core.Actions
                 yield return target;
         }
 
-        private IEnumerable<Coordinate> GetTargetedCoordinates(
+        public IEnumerable<Coordinate> GetTargetedCoordinates(
             EntityData actor,
             Coordinate targetCoord,
             TargetArea targetArea)

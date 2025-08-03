@@ -80,7 +80,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public async UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default)
         {
-            async UniTask<Coordinate?> GetUserInputForRequest(IReadOnlyList<Coordinate> inputForPreviousRequests, CancellationToken subCt)
+            async UniTask<Coordinate?> GetUserInputForRequest(IReadOnlyList<Coordinate> inputForPreviousRequests, TargetRequest currentRequest, CancellationToken subCt)
             {
                 Coordinate? inputCoord = null;
                 while (inputCoord == null)
@@ -92,11 +92,21 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     if (coord == null) continue;
 
                     // Keep showing the highlight - we are good
-                    var (canBeValid, _) = _validator.ValidateDecisionConstructionInput(action, caster, inputForPreviousRequests, coord);
+                    var (canBeValid, error) = _validator.ValidateDecisionConstructionInput(action, caster, inputForPreviousRequests, coord);
+                    if (!canBeValid && error?.Type == IDecisionValidator.ErrorType.OutOfRange)
+                    {
+                        _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, HighlightVariation.InvalidInput);
+                        continue;
+                    }
+
                     var variation = canBeValid ?
                         HighlightVariation.ValidInput :
                         HighlightVariation.InvalidInput;
-                    _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, variation);
+
+                    //todo: more sophisticated logic is needed here - the variation might need to change depending if we are hitting enemy/allies
+                    var targetedCoords = _targetFinder.GetTargetedCoordinates(caster, coord, currentRequest.TargetArea);
+                    foreach (var targetedCoord in targetedCoords) _hexHighlighter.RequestHighlight(targetedCoord, HighlightRequestId.TargetSelection, variation);
+
 
                     if (!_inputSystem.LeftClick) continue;
 
@@ -123,7 +133,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                         _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
                         _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
 
-                        var input = await GetUserInputForRequest(playerInputs, subCt);
+                        var input = await GetUserInputForRequest(playerInputs, request, subCt);
                         subCt.ThrowIfCancellationRequested();
 
                         _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);

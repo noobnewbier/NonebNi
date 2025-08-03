@@ -7,6 +7,7 @@ using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
+using Unity.Logging;
 
 namespace NonebNi.Core.Decisions
 {
@@ -20,6 +21,14 @@ namespace NonebNi.Core.Decisions
     /// </summary>
     public interface IDecisionValidator
     {
+        public enum ErrorType
+        {
+            Unknown,
+            CannotPayCost,
+            InvalidTarget,
+            OutOfRange
+        }
+
         (Error? error, ICommand command) ValidateDecision(IDecision? decision);
 
         (bool canBeValid, Error? error) ValidateDecisionConstructionInput(NonebAction action, EntityData caster, IReadOnlyList<Coordinate> existingInput, Coordinate newInput);
@@ -29,18 +38,17 @@ namespace NonebNi.Core.Decisions
         /// </summary>
         public class Error
         {
-            public const string UnknownId = "unknown";
+            public readonly NonebLocString Description;
 
-            public Error(string id, NonebLocString description)
+            public readonly ErrorType Type;
+
+            public Error(ErrorType type, NonebLocString description)
             {
-                Id = id;
+                Type = type;
                 Description = description;
             }
 
-            public string Id { get; }
-            public NonebLocString Description { get; }
-
-            public static Error Unknown { get; } = new(UnknownId, "Failed for an undefined reason");
+            public static Error Unknown { get; } = new(ErrorType.Unknown, "Failed for an undefined reason");
         }
     }
 
@@ -71,7 +79,7 @@ namespace NonebNi.Core.Decisions
                     if (!ad.ActorEntity.CanPayCosts(cost))
                         return (
                             new IDecisionValidator.Error(
-                                "cannot-pay-cost",
+                                IDecisionValidator.ErrorType.CannotPayCost,
                                 $"{ad.Action.Name} cost more than what the {ad.ActorEntity} can pay for"
                             ),
                             NullCommand.Instance
@@ -81,7 +89,7 @@ namespace NonebNi.Core.Decisions
                     {
                         return (
                             new IDecisionValidator.Error(
-                                "invalid-target",
+                                IDecisionValidator.ErrorType.InvalidTarget,
                                 $"action {ad.Action.Name} cannot be targeted at {ad.TargetCoords}"
                             ),
                             NullCommand.Instance
@@ -92,7 +100,7 @@ namespace NonebNi.Core.Decisions
                         if (!IsTargetingComboTarget(ad) && !IsStartingFromComboCarrier(ad))
                             return (
                                 new IDecisionValidator.Error(
-                                    "invalid-target",
+                                    IDecisionValidator.ErrorType.InvalidTarget,
                                     "You must be targeting the combo target or start with the combo carrier"
                                 ),
                                 NullCommand.Instance
@@ -144,13 +152,24 @@ namespace NonebNi.Core.Decisions
                 var (status, _) = ranges.FirstOrDefault(t => t.coord == newInput);
                 if (status == null)
                     // it's so far out the target finder don't even think it should be in the list it returns -> is there a more elegant way?
-                    return (false, new IDecisionValidator.Error("range-error", nameof(RangeStatus.OutOfRange)));
+                    return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.OutOfRange, nameof(RangeStatus.OutOfRange)));
 
-                var isValidInput = status is RangeStatus.Targetable;
+                switch (status)
+                {
+                    case RangeStatus.Targetable:
+                        return (true, null);
 
-                if (!isValidInput) return (false, new IDecisionValidator.Error("range-error", status.GetType().Name));
+                    case RangeStatus.OutOfRange:
+                        return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.OutOfRange, status.GetType().Name));
 
-                return (true, null);
+                    case RangeStatus.InRangeButNoTarget:
+                    case RangeStatus.NotTargetable:
+                        return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.InvalidTarget, status.GetType().Name));
+
+                    default:
+                        Log.Error($"Unhandled type {status}");
+                        return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.InvalidTarget, status.GetType().Name));
+                }
             }
         }
 

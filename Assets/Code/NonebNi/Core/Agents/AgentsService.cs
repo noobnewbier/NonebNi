@@ -43,7 +43,7 @@ namespace NonebNi.Core.Agents
 
                 (err, command) = _validator.ValidateDecision(decision);
 
-                if (err != null) Log.Info($"[Level] Decision Error: {err.Id}, {err.Description}");
+                if (err != null) Log.Info($"[Level] Decision Error: {err.Type}, {err.Description}");
             } while (err != null);
 
             Log.Info($"[Level] Evaluate Command: {command.GetType()}");
