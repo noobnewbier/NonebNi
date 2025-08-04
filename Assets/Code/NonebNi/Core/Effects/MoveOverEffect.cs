@@ -11,8 +11,6 @@ namespace NonebNi.Core.Effects
     [Serializable]
     public class MoveOverEffect : Effect
     {
-        public override bool IsEffectNegative => false;
-
         public class Evaluator : Evaluator<MoveOverEffect>
         {
             protected override EffectResult OnEvaluate(

@@ -13,8 +13,6 @@ namespace NonebNi.Core.Effects
     [Serializable]
     public class PullEntityEffect : Effect
     {
-        public override bool IsEffectNegative => false;
-
         public class Evaluator : Evaluator<PullEntityEffect>
         {
             protected override EffectResult OnEvaluate(

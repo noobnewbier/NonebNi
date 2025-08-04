@@ -12,8 +12,6 @@ namespace NonebNi.Core.Effects
     [Serializable]
     public class SwapPositionEffect : Effect
     {
-        public override bool IsEffectNegative => false;
-
         public class Evaluator : Evaluator<SwapPositionEffect>
         {
             protected override EffectResult OnEvaluate(
