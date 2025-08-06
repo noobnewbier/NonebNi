@@ -16,16 +16,18 @@ namespace NonebNi.Core.Pathfinding
     {
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(EntityData entity, Coordinate goal);
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal);
-        (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal, params DataId<Faction>[] passableFactions);
+        (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal);
     }
 
     public class PathfindingService : IPathfindingService
     {
+        private readonly IFactionService _factionService;
         private readonly IReadOnlyMap _map;
 
-        public PathfindingService(IReadOnlyMap map)
+        public PathfindingService(IReadOnlyMap map, IFactionService factionService)
         {
             _map = map;
+            _factionService = factionService;
         }
 
         //TODO: context system.... context is like container holding contextual data..., in test phase we populate it with mocks?
@@ -40,7 +42,7 @@ namespace NonebNi.Core.Pathfinding
                 return (false, Enumerable.Empty<Coordinate>());
             }
 
-            var (isPathExist, path) = FindPath(entityPos, goal);
+            var (isPathExist, path) = FindPath(entityPos, goal, entity.FactionId);
             var pathAsArray = path as Coordinate[] ?? path.ToArray();
 
             return (isPathExist, pathAsArray);
@@ -57,8 +59,10 @@ namespace NonebNi.Core.Pathfinding
             return (isPathExist, pathAsArray);
         }
 
+        public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal) => FindPath(start, goal, string.Empty);
+
         // ReSharper disable once CognitiveComplexity - it's just an A* implementation we copy from wiki, no need to fix.
-        public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal, params DataId<Faction>[] passableFactions)
+        private (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal, DataId<Faction> factionId)
         {
             /*
              * If performance became an issue:
@@ -115,7 +119,7 @@ namespace NonebNi.Core.Pathfinding
 
                     var tentativeGScore = gScore[current] + neighbourTileData.Value.Weight;
                     if (_map.TryGet<EntityData>(neighbour, out var neighbourEntity))
-                        if (!passableFactions.Contains<DataId<Faction>>(neighbourEntity.FactionId))
+                        if (!_factionService.IsAlly(factionId, neighbourEntity.FactionId))
                             tentativeGScore += TileData.ObstacleWeight;
 
                     if (tentativeGScore >= gScore[neighbour]) continue;
