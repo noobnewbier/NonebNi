@@ -99,13 +99,18 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                         continue;
                     }
 
-                    var variation = canBeValid ?
-                        HighlightVariation.ValidInput :
-                        HighlightVariation.InvalidInput;
 
                     //todo: more sophisticated logic is needed here - the variation might need to change depending if we are hitting enemy/allies
-                    var targetedCoords = _targetFinder.GetTargetedCoordinates(caster, coord, currentRequest.TargetArea);
-                    foreach (var targetedCoord in targetedCoords) _hexHighlighter.RequestHighlight(targetedCoord, HighlightRequestId.TargetSelection, variation);
+                    var targetedStatuses = _targetFinder.GetTargetedCoordinates(caster, coord, currentRequest).ToArray();
+                    var isAnyDangerous = targetedStatuses.Any(s => s.isDangerous);
+                    var variation = canBeValid switch
+                    {
+                        true when isAnyDangerous => HighlightVariation.DangerousInput,
+                        true => HighlightVariation.ValidInput,
+                        _ => HighlightVariation.InvalidInput
+                    };
+
+                    foreach (var (_, coordinate) in targetedStatuses) _hexHighlighter.RequestHighlight(coordinate, HighlightRequestId.TargetSelection, variation);
 
 
                     if (!_inputSystem.LeftClick) continue;
