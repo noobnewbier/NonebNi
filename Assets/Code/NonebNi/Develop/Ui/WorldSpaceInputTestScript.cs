@@ -6,8 +6,10 @@ using Noneb.UI.InputSystems;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.DataIds;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Units;
@@ -49,8 +51,9 @@ namespace NonebNi.Develop
             _map = new Map(20, 20);
             _highlighter = new HexHighlighter(_coordService, highlightConfig, terrainConfig);
             _actionBuffer = new CircularBuffer<NonebAction>(ActionDatas.Lure, ActionDatas.Shoot, ActionDatas.Bash);
-            var targetFinder = new TargetFinder(_map);
-            var pathFindingService = new PathfindingService(_map);
+            var fakeFactionService = new FakeFactionService();
+            var targetFinder = new TargetFinder(_map, fakeFactionService);
+            var pathFindingService = new PathfindingService(_map, fakeFactionService);
             var fakeValidator = new FakeDecisionValidator();
 
             _unitData = TestScriptHelpers.CreateUnit("TestPlayer", "player");
@@ -165,6 +168,13 @@ namespace NonebNi.Develop
             public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision? decision) => default;
 
             public (bool canBeValid, IDecisionValidator.Error? error) ValidateDecisionConstructionInput(NonebAction action, EntityData caster, IReadOnlyList<Coordinate> existingInput, Coordinate newInput) => default;
+        }
+
+        private class FakeFactionService : IFactionService
+        {
+            public bool IsAlly(DataId<Faction> a, DataId<Faction> b) => false;
+
+            public Faction FindFaction(DataId<Faction> factionId) => new(factionId, false);
         }
 
         #endregion
