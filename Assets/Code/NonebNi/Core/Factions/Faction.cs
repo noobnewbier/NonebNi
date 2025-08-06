@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NonebNi.Core.DataIds;
 using UnityEngine;
 
 namespace NonebNi.Core.Factions
@@ -28,7 +29,10 @@ namespace NonebNi.Core.Factions
 
         public string Id => id;
         public bool IsPlayerControlled => isPlayerControlled;
-        public List<string> Allies => allies;
+
+        public List<DataId<Faction>> Allies =>
+            // yes - I know it has to be serialized and this is an abomination of hell. But the world is bleak, I promise I will fix this later may god forgive me in my final days.
+            allies.Select(a => new DataId<Faction>(a)).ToList();
 
         public bool Equals(Faction other) => Id == other.Id &&
                                              IsPlayerControlled == other.IsPlayerControlled &&
