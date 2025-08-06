@@ -114,9 +114,10 @@ namespace NonebNi.Core.Actions
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
             1,
-            1,
-            Fan,
-            Enemy,
+            new[]
+            {
+                new TargetRequest(Occupied, Fan, new ConstantRange(1), true)
+            },
             true,
             "Swinging your zweihander to intimidate your enemy, does okay damage and knock back nearby enemies by one tile",
             new DamageEffect("swing", new StatBasedDamage(1f, StatId.Strength)),
