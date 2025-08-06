@@ -46,7 +46,7 @@ namespace NonebNi.Core.Actions
             Sprite icon,
             int fatigueCost,
             int actionPointCost,
-            IEnumerable<TargetRequest> targetRequirements,
+            IEnumerable<TargetRequest> targetRequests,
             IEnumerable<Effect> effects,
             bool isComboStarter,
             NonebLocString tooltip) :
@@ -59,7 +59,7 @@ namespace NonebNi.Core.Actions
                     new(StatId.Fatigue, fatigueCost),
                     new(StatId.ActionPoint, actionPointCost)
                 },
-                targetRequirements.ToArray(),
+                targetRequests.ToArray(),
                 effects.ToArray(),
                 isComboStarter,
                 tooltip
@@ -71,7 +71,7 @@ namespace NonebNi.Core.Actions
             Sprite icon,
             int fatigueCost,
             int actionPointCost,
-            IEnumerable<TargetRequest> targetRequirements,
+            IEnumerable<TargetRequest> targetRequests,
             bool isComboStarter,
             NonebLocString tooltip,
             params Effect[] effects) :
@@ -81,7 +81,7 @@ namespace NonebNi.Core.Actions
                 icon,
                 fatigueCost,
                 actionPointCost,
-                targetRequirements,
+                targetRequests,
                 effects.AsEnumerable(),
                 isComboStarter,
                 tooltip
