@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using Unity.Logging;
+using UnityEngine.Pool;
 using UnityUtils;
 
 namespace NonebNi.Core.Actions
@@ -21,19 +23,21 @@ namespace NonebNi.Core.Actions
 
         IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request);
 
-        IEnumerable<Coordinate> GetTargetedCoordinates(
+        IEnumerable<(bool isDangerous, Coordinate coordinate)> GetTargetedCoordinates(
             EntityData actor,
             Coordinate targetCoord,
-            TargetArea targetArea);
+            TargetRequest targetRequest);
     }
 
     public class TargetFinder : ITargetFinder
     {
+        private readonly IFactionService _factionService;
         private readonly IReadOnlyMap _map;
 
-        public TargetFinder(IReadOnlyMap map)
+        public TargetFinder(IReadOnlyMap map, IFactionService factionService)
         {
             _map = map;
+            _factionService = factionService;
         }
 
         public IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request)
@@ -262,12 +266,53 @@ namespace NonebNi.Core.Actions
             TargetArea targetArea,
             TargetRestriction restrictionFlags)
         {
+            /*
+             * Bug:
+             * Consider a fan area with "clear path" restriction, here we will be checking if there's a clear path, to everything targeted by a fan area.
+             * This is likely unintended by us. That said, it's not causing any issue either so we can deal with it later.
+             */
             foreach (var coord in GetTargetedCoordinates(actor, targetCoord, targetArea))
             foreach (var target in GetValidTargetsInCoordinate(actor, coord, restrictionFlags))
                 yield return target;
         }
 
-        public IEnumerable<Coordinate> GetTargetedCoordinates(
+        public IEnumerable<(bool isDangerous, Coordinate coordinate)> GetTargetedCoordinates(
+            EntityData actor,
+            Coordinate targetCoord,
+            TargetRequest targetRequest)
+        {
+            if (!targetRequest.IsDangerousToAlly)
+            {
+                foreach (var coordinate in GetTargetedCoordinates(actor, targetCoord, targetRequest.TargetArea)) yield return (false, coordinate);
+
+                yield break;
+            }
+
+
+            foreach (var coordinate in GetTargetedCoordinates(actor, targetCoord, targetRequest.TargetArea))
+                // This is called per frame, making a new list per frame is gross even in my standard.
+                using (ListPool<IActionTarget>.Get(out var targets))
+                {
+                    targets.AddRange(GetValidTargetsInCoordinate(actor, coordinate, targetRequest.TargetRestrictionFlags));
+                    if (!targets.Any())
+                        // so we have at least one coordinate
+                        targets.Add(coordinate);
+
+                    foreach (var target in targets)
+                    {
+                        if (target is not EntityData entity)
+                        {
+                            yield return (false, coordinate);
+                            continue;
+                        }
+
+                        var isAlly = _factionService.IsAlly(actor.FactionId, entity.FactionId);
+                        yield return (isAlly, coordinate);
+                    }
+                }
+        }
+
+        private IEnumerable<Coordinate> GetTargetedCoordinates(
             EntityData actor,
             Coordinate targetCoord,
             TargetArea targetArea)
