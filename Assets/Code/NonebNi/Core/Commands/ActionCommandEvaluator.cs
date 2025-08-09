@@ -90,6 +90,21 @@ namespace NonebNi.Core.FlowControl
 
         public EffectContext FindEffectContext(ActionCommand command)
         {
+            /*
+             * Note:
+             * There might be a day where we need to let our NonebAction define how the user's input for each request is "piped" into the effect evaluation.
+             * For example, Request[0] might be piping input to both Effect[0] and Effect[1], while Request[1] only pipes to Effect[2].
+             *
+             * With our current implementation, there's a fundamental issue where there's no way for an effect to know what they are working with,
+             * this plus the request also having no idea meaning trying to make all effect works all the time is virtually impossible.
+             *
+             * As the action is the only one who has the info on how each request is interacting with each effect, that's the only way to handle it somewhat elegantly.
+             * We might want a graph editor for this, as trying to input it as text makes me puke.
+             *
+             * A simpler approach is to hard code more effects, which can of course tailor to the action itself so we essentially always know what we are working with.
+             * which honestly, might not be a bad idea(perhaps easier on the animation handling as well?).
+             * The caveat is that there will be less code sharing and might be trouble later, we shall see what do we do down the line.
+             */
             var requests = command.Action.TargetRequests;
             var targetGroups = new List<EffectTargetGroup>();
             for (var i = 0; i < requests.Length; i++)
