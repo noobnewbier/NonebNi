@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.Animation;
@@ -50,7 +50,20 @@ namespace NonebNi.Ui.Animation.MannequinFighter
             await PlayAnimation("die", ct);
         }
 
-        public UniTask Play(KnockBackAnimSequence sequence, CancellationToken ct = default) => throw new NotImplementedException();
+        public UniTask Play(KnockBackAnimSequence sequence, CancellationToken ct = default)
+        {
+            IEnumerator Coroutine()
+            {
+                const float epsilon = 0.01f;
+                while (Vector3.Distance(transform.position, sequence.TargetPos) > epsilon)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, sequence.TargetPos, 1f);
+                    yield return null;
+                }
+            }
+
+            return Coroutine().ToUniTask(this);
+        }
 
         public async UniTask Play(MoveAnimSequence sequence, CancellationToken ct = default)
         {
@@ -62,7 +75,11 @@ namespace NonebNi.Ui.Animation.MannequinFighter
             await PlayAnimation("take-damage", ct);
         }
 
-        public UniTask Play(TeleportAnimSequence sequence, CancellationToken ct = default) => throw new NotImplementedException();
+        public UniTask Play(TeleportAnimSequence sequence, CancellationToken ct = default)
+        {
+            transform.position = sequence.TargetTilePosition;
+            return UniTask.CompletedTask;
+        }
 
         private async UniTask PlayAnimation(string animId, CancellationToken ct = default)
         {
