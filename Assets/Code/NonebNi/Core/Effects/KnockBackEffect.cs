@@ -41,7 +41,7 @@ namespace NonebNi.Core.Effects
                 {
                     if (target is not EntityData targetEntity)
                     {
-                        Log.Error($"[Effect] Unexpected target type({target.GetType()}), cannot resolve given parameter!");
+                        Log.Info($"[Effect] Trying to affect ({target.GetType()}), but it's not something we can move. Noop for now.");
                         continue;
                     }
 
