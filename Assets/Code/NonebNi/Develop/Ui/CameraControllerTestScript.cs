@@ -1,10 +1,12 @@
 ﻿using Moq;
+using Noneb.UI.InputSystems;
 using NonebNi.Core.Maps;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityUtils.Editor;
 
@@ -16,6 +18,8 @@ namespace NonebNi.Develop
         [FormerlySerializedAs("config"), SerializeField] private CameraControlSetting setting = null!;
         [SerializeField] private CinemachineCamera controlledCamera = null!;
         [SerializeField] private CinemachinePositionComposer composer = null!;
+        [SerializeField] private InputActionAsset inputActionAsset = null!;
+
 
         [SerializeField] private GameObject lookAtObj1 = null!;
         [SerializeField] private GameObject lookAtObj2 = null!;
@@ -26,7 +30,8 @@ namespace NonebNi.Develop
         {
             var (upBound, downBound, rightBound, leftBound) = GetCameraParameters();
             var config = new CameraConfig(setting, downBound, leftBound, rightBound, upBound);
-            _cameraController = new CameraController(config, controlledCamera, composer, Mock.Of<ICoordinateAndPositionService>(), Mock.Of<IReadOnlyMap>());
+            var inputSystem = new NonebInputSystem(inputActionAsset);
+            _cameraController = new CameraController(config, controlledCamera, composer, Mock.Of<ICoordinateAndPositionService>(), Mock.Of<IReadOnlyMap>(), inputSystem);
         }
 
         private void Update()

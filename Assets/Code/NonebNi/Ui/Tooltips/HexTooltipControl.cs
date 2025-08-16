@@ -4,6 +4,7 @@ using Noneb.UI.InputSystems;
 using Noneb.UI.View;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
+using NonebNi.Ui.Inputs;
 using NonebNi.Ui.Tooltips;
 using NonebNi.Ui.UIContexts;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
@@ -52,14 +53,14 @@ namespace NonebNi.Ui.ViewComponents.HexTooltip
         private async UniTask Run(CancellationToken ct)
         {
             var isShowing = false;
-            var lastCursorPos = _deps.InputSystem.MousePosition;
+            var lastCursorPos = _deps.InputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
             var lastCoord = _deps.WorldSpaceInputControl.FindHoveredCoordinate();
             var timer = 0f;
             while (!ct.IsCancellationRequested)
             {
                 await UniTask.Yield(ct, true);
 
-                var nextCursorPos = _deps.InputSystem.MousePosition;
+                var nextCursorPos = _deps.InputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
                 var nextCoord = _deps.WorldSpaceInputControl.FindHoveredCoordinate();
                 var dist = Vector3.Distance(lastCursorPos, nextCursorPos);
 

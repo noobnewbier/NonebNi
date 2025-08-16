@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using Noneb.UI.InputSystems;
 using Noneb.UI.View;
+using NonebNi.Ui.Inputs;
 using NonebNi.Ui.UIContexts;
 using UnityEngine;
 using UnityUtils.Pooling;
@@ -95,7 +96,7 @@ namespace NonebNi.Ui.Tooltips
             if (_currentRec == null) return;
 
             // prioritize top -> right, if we can't go left and bottom
-            var cursorPos = _deps.InputSystem.MousePosition;
+            var cursorPos = _deps.InputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
             _currentRec.TooltipInstance.transform.SetParent(transform);
             _currentRec.TooltipInstance.transform.position = cursorPos;
         }

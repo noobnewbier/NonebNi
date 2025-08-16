@@ -17,6 +17,7 @@ using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityUtils;
 
 namespace NonebNi.Develop
@@ -28,6 +29,8 @@ namespace NonebNi.Develop
         [SerializeField] private HexHighlightConfig highlightConfig = null!;
         [SerializeField] private GameObject fakeUnitObj = null!;
         [SerializeField] private GameObject fakeEnemyObj = null!;
+        [SerializeField] private InputActionAsset inputActionAsset = null!;
+
         private readonly Plane _plane = new(Vector3.up, Vector3.zero);
 
 
@@ -46,7 +49,7 @@ namespace NonebNi.Develop
         private void Awake()
         {
             _isInitialised = true;
-            var inputSystem = new NonebInputSystem();
+            var inputSystem = new NonebInputSystem(inputActionAsset);
             _coordService = new CoordinateAndPositionService(terrainConfig);
             _map = new Map(20, 20);
             _highlighter = new HexHighlighter(_coordService, highlightConfig, terrainConfig);

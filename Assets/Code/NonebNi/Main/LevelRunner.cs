@@ -6,6 +6,7 @@ using NonebNi.Ui.Grids;
 using NonebNi.Ui.Tooltips;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace NonebNi.Main
 {
@@ -22,6 +23,7 @@ namespace NonebNi.Main
         [SerializeField] private HexHighlightConfig hexHighlightConfig = new();
         [SerializeField] private TooltipCanvas tooltipCanvas = null!;
         [SerializeField] private CanvasRoot canvasRoot = null!;
+        [SerializeField] private InputActionAsset inputActionAsset = null!;
 
 
         [Header("Level Data"), SerializeField] private LevelDataSource levelDataSource = null!;
@@ -60,7 +62,8 @@ namespace NonebNi.Main
                 cameraControl.Camera,
                 hexHighlightConfig,
                 tooltipCanvas,
-                canvasRoot
+                canvasRoot,
+                inputActionAsset
             );
             var (levelFlowController, levelUi) = levelContainer.Resolve().Value;
             LevelFlowController = levelFlowController;

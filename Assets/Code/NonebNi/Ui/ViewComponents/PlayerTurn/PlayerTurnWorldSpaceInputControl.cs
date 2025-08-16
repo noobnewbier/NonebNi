@@ -12,6 +12,7 @@ using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
+using NonebNi.Ui.Inputs;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -68,7 +69,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             if (_inputSystem.IsMouseOverUi) return null;
 
             //TODO: it probably makes sense to put this input code into the input system - but then it's in game ony...
-            var point = _inputSystem.MousePosition;
+            var point = _inputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
             var ray = _playerViewCamera.ScreenPointToRay(point);
             if (!_gridPlane.Raycast(ray, out var distance)) return null;
 
@@ -113,7 +114,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     foreach (var (_, coordinate) in targetedStatuses) _hexHighlighter.RequestHighlight(coordinate, HighlightRequestId.TargetSelection, variation);
 
 
-                    if (!_inputSystem.LeftClick) continue;
+                    if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
 
                     if (!canBeValid)
                         //todo: signal invalid input - potentially audio and even a tooltip to explain why shit is wrong
@@ -212,7 +213,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
                         _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.Normal);
 
-                        if (!_inputSystem.LeftClick) continue;
+                        if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
 
                         inputEntity = _map.Get<EntityData>(coord);
                     }
@@ -262,7 +263,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                         _hexHighlighter.RequestHighlight(pathWithoutStartAndEnd, HighlightRequestId.MovementHint, HighlightVariation.AreaHint);
                         _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.Normal);
 
-                        if (!_inputSystem.LeftClick) continue;
+                        if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
                         inputCoord = coord;
                     }
 

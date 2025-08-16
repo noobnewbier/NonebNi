@@ -1,10 +1,11 @@
-﻿using NonebNi.Core.Coordinates;
+﻿using Noneb.UI.InputSystems;
+using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Terrain;
+using NonebNi.Ui.Inputs;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityUtils;
 
 namespace NonebNi.Ui.Cameras
@@ -29,6 +30,7 @@ namespace NonebNi.Ui.Cameras
         private readonly CinemachineCamera _camera;
         private readonly CameraConfig _config;
         private readonly ICoordinateAndPositionService _coordinateAndPositionService;
+        private readonly IInputSystem _inputSystem;
         private readonly IReadOnlyMap _map;
         private readonly CinemachinePositionComposer _positionComposer;
 
@@ -41,13 +43,15 @@ namespace NonebNi.Ui.Cameras
             CinemachineCamera controlledCamera,
             CinemachinePositionComposer positionComposer,
             ICoordinateAndPositionService coordinateAndPositionService,
-            IReadOnlyMap map)
+            IReadOnlyMap map,
+            IInputSystem inputSystem)
         {
             _config = config;
             _camera = controlledCamera;
             _positionComposer = positionComposer;
             _coordinateAndPositionService = coordinateAndPositionService;
             _map = map;
+            _inputSystem = inputSystem;
         }
 
         private Vector3 TargetPos
@@ -128,18 +132,17 @@ namespace NonebNi.Ui.Cameras
             var panningStrength = GetPanningStrength();
             if (panningStrength.NearlyEqual(0f)) return;
 
-            var mousePosition = Input.mousePosition;
+            var mousePosition = _inputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
 
-            var panningDirection = (mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f, 0)).normalized;
-            panningDirection.z = panningDirection.y;
-            panningDirection.y = 0;
+            var panningScreenDirection = (mousePosition - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
+            var panningDirection = new Vector3(panningScreenDirection.x, 0f, panningScreenDirection.y);
 
             Pan(panningDirection, GetPanningStrength(), Time.deltaTime);
         }
 
         private float GetPanningStrength()
         {
-            var mousePosition = Input.mousePosition;
+            var mousePosition = _inputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
 
             var yInverseLerp = Mathf.InverseLerp(0f, Screen.height, mousePosition.y);
             var xInverseLerp = Mathf.InverseLerp(0f, Screen.width, mousePosition.x);
@@ -189,7 +192,7 @@ namespace NonebNi.Ui.Cameras
         {
             //TODO: separate input and the movement code...?
             //TODO: was using old input system - when the time comes we need our own input wrapper.
-            var zoomInput = Mouse.current.scroll.ReadValue().normalized.y;
+            var zoomInput = _inputSystem.ReadValue<Vector2>(InputMaps.Level.Zoom).normalized.y;
 
             var inputStrength = Mathf.Abs(zoomInput);
             if (!zoomInput.NearlyEqual(0f))
