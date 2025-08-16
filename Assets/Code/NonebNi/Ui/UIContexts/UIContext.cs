@@ -26,6 +26,18 @@ namespace NonebNi.Ui.UIContexts
             Datas[type] = data;
         }
 
+        public static T? FindImmediate<T>()
+        {
+            var data = Datas.GetValueOrDefault(typeof(T));
+            if (data is not T typedData)
+            {
+                Log.Error("How the hell did you even end up here");
+                return default;
+            }
+
+            return typedData;
+        }
+
         public static async UniTask<T> Get<T>(CancellationToken ct = default)
         {
             while (true)
