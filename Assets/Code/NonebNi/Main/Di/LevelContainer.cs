@@ -13,6 +13,7 @@ using StrongInject;
 using StrongInject.Modules;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace NonebNi.Main.Di
 {
@@ -40,6 +41,7 @@ namespace NonebNi.Main.Di
         [Instance] private readonly CameraControlSetting _config;
         [Instance] private readonly HexHighlightConfig _hexHighlightConfig;
         [Instance] private readonly Hud _hud;
+        [Instance] private readonly InputActionAsset _inputAsset;
         [Instance] private readonly Camera _levelCamera; //todo: feels like it shouldn't be here
         [Instance] private readonly LevelData _levelData;
         [Instance] private readonly IPlayerTurnMenu _playerTurnMenu; //todo: need?
@@ -62,7 +64,8 @@ namespace NonebNi.Main.Di
             Camera levelCamera,
             HexHighlightConfig hexHighlightConfig,
             ITooltipCanvas tooltipCanvas,
-            CanvasRoot canvasRoot)
+            CanvasRoot canvasRoot,
+            InputActionAsset inputAsset)
         {
             _config = config;
             _levelData = levelData;
@@ -76,6 +79,7 @@ namespace NonebNi.Main.Di
             _hexHighlightConfig = hexHighlightConfig;
             _tooltipCanvas = tooltipCanvas;
             _canvasRoot = canvasRoot;
+            _inputAsset = inputAsset;
             _camera = camera;
             _composer = composer;
             _agents = _levelData.Factions.Select(
