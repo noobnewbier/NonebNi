@@ -128,7 +128,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &8826328454486414208
 CanvasRenderer:
@@ -211,8 +211,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5266851204745764947}
   m_HandleRect: {fileID: 1039959566390237191}
   m_Direction: 2
-  m_Value: 1.000003
-  m_Size: 0.79789674
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -308,7 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 6341156288347155784}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -446,6 +446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6341156288347155784}
   - component: {fileID: 9200085811039212345}
+  - component: {fileID: 5838691195341579185}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -471,7 +472,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -0.00020134376}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &9200085811039212345
 MonoBehaviour:
@@ -499,6 +500,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &5838691195341579185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6773339124895111140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &7784792176200504559
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,6 +612,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6341156288347155784}
     m_Modifications:
+    - target: {fileID: 535375326547664710, guid: 4b89d5ac821ef9547a1815a01b1a831f, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 917875528327978456, guid: 4b89d5ac821ef9547a1815a01b1a831f, type: 3}
       propertyPath: m_Name
       value: ActOrderButton
