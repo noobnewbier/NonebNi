@@ -102,6 +102,6 @@ namespace NonebNi.Ui.ViewComponents.HexTooltip
             if (isShowing) _deps.TooltipCanvas.HideCurrentTooltip();
         }
 
-        public record Dependencies(ITooltipCanvas TooltipCanvas, IInputSystem InputSystem, IPlayerTurnWorldSpaceInputControl WorldSpaceInputControl, IReadOnlyMap Map) : ISharedInContext;
+        public record Dependencies(ITooltipCanvas TooltipCanvas, IInputSystem InputSystem, IPlayerTurnWorldSpaceInputControl WorldSpaceInputControl, IReadOnlyMap Map);
     }
 }

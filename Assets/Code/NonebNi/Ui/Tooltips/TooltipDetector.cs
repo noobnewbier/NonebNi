@@ -97,6 +97,6 @@ namespace NonebNi.Ui.Tooltips
             _isShowingTooltip = false;
         }
 
-        public record Dependencies(ITooltipCanvas TooltipCanvas) : ISharedInContext;
+        public record Dependencies(ITooltipCanvas TooltipCanvas);
     }
 }

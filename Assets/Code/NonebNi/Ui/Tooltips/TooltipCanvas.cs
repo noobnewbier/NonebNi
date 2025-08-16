@@ -109,6 +109,6 @@ namespace NonebNi.Ui.Tooltips
         /// </summary>
         private record TooltipData(IDisposable PoolObj, TooltipBehaviour TooltipInstance);
 
-        public record Dependencies(IInputSystem InputSystem) : ISharedInContext;
+        public record Dependencies(IInputSystem InputSystem);
     }
 }
