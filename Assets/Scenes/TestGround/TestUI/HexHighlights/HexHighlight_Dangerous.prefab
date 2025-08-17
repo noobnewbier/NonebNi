@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &248451057264317478
+--- !u!1001 &3275422031148434987
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,19 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2391292408090677498, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
       propertyPath: m_Name
-      value: HexHighlight_AreaHint
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.ctime1
-      value: 65535
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.ctime2
-      value: 65535
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.ctime3
-      value: 65535
+      value: HexHighlight_Dangerous
       objectReference: {fileID: 0}
     - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.b
@@ -30,11 +18,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.g
-      value: 0.9780855
+      value: 0.54901963
       objectReference: {fileID: 0}
     - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
       propertyPath: m_Parameters.colorGradient.key0.r
-      value: 1
+      value: 0.9843138
       objectReference: {fileID: 0}
     - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
       propertyPath: m_Parameters.colorGradient.key1.b
@@ -42,31 +30,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
       propertyPath: m_Parameters.colorGradient.key1.g
-      value: 0.9764706
+      value: 0.54901963
       objectReference: {fileID: 0}
     - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.key2.g
-      value: 0.6609442
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.key2.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.key3.g
-      value: 0.6609442
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.key3.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5953220760782704744, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
-      propertyPath: m_Parameters.colorGradient.m_NumColorKeys
-      value: 2
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 0.9843138
       objectReference: {fileID: 0}
     - target: {fileID: 8236722063164172124, guid: 4f21fc71fbeaec74b9515c035759af9f, type: 3}
       propertyPath: m_LocalPosition.x
