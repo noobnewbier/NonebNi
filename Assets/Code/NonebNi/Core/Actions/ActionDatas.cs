@@ -195,7 +195,7 @@ namespace NonebNi.Core.Actions
             true,
             "Grabbing an enemy to a near by position",
             new MoveEntityEffect()
-        ); // todo: doesn't work.
+        );
 
         public static readonly NonebAction Rotate = new(
             "rotate",
@@ -209,7 +209,7 @@ namespace NonebNi.Core.Actions
             true,
             "Using your footwork to swap position with an ally",
             new SwapPositionEffect()
-        ); //todo: doesn't work
+        );
 
         public static NonebAction[] Actions =
         {
