@@ -7,6 +7,7 @@
             public const string Look = "Level/Look";
             public const string Zoom = "Level/Zoom";
             public const string Interact = "Level/Interact";
+            public const string Cancel = "Level/Cancel";
         }
 
         public static class UI

@@ -9,7 +9,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     public interface IActionDecisionFlowControl
     {
         UniTask<ActionDecision> WaitForUserInput(CancellationToken ct = default);
-        void UpdateActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit);
+        UniTask<bool> UpdateActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit);
     }
 
     //todo: this class seems weird, Idk what but sth is wronng...?
@@ -42,7 +42,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             return result;
         }
 
-        public void UpdateActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit)
+        public async UniTask<bool> UpdateActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit)
         {
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
@@ -50,7 +50,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             if (action == null || unit == null)
             {
                 InspectTileFlow(_cts.Token).Forget();
-                return;
+                return true;
             }
 
             var canOnlyInspect = action == ActionDatas.Move && unit.Speed <= 0;
@@ -58,23 +58,27 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             if (canOnlyInspect)
             {
                 InspectTileFlow(_cts.Token).Forget();
-                return;
+                return true;
             }
 
-            ActionInputFlow(unit, action, _cts.Token).Forget();
+            var result = await ActionInputFlow(unit, action, _cts.Token);
+            return result;
         }
 
         private async UniTask InspectTileFlow(CancellationToken ct = default) =>
             //todo: tile click -> inspect
             _inputControl.ToTileInspectionMode();
 
-        private async UniTask ActionInputFlow(UnitData unit, NonebAction action, CancellationToken ct = default)
+        private async UniTask<bool> ActionInputFlow(UnitData unit, NonebAction action, CancellationToken ct = default)
         {
-            var input = await _inputControl.GetInputForAction(unit, action, ct);
+            var (success, input) = await _inputControl.GetInputForAction(unit, action, ct);
             ct.ThrowIfCancellationRequested();
+            if (!success) return false;
 
             var decision = new ActionDecision(action, unit, input);
-            _tcs?.TrySetResult(decision);
+            if (_tcs?.TrySetResult(decision) != true) return false;
+
+            return true;
         }
     }
 }

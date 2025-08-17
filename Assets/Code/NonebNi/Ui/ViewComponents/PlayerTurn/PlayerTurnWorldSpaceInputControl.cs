@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -13,6 +14,7 @@ using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
 using NonebNi.Ui.Inputs;
+using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -22,7 +24,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     {
         Coordinate? FindHoveredCoordinate();
         void ToTileInspectionMode();
-        UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default);
+        UniTask<(bool success, IEnumerable<Coordinate>)> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default);
         UniTask<EntityData?> GetInputForInspection(CancellationToken ct = default);
     }
 
@@ -79,16 +81,21 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             return coord;
         }
 
-        public async UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default)
+        public async UniTask<(bool success, IEnumerable<Coordinate>)> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default)
         {
-            async UniTask<Coordinate?> GetUserInputForRequest(IReadOnlyList<Coordinate> inputForPreviousRequests, TargetRequest currentRequest, CancellationToken subCt)
+            async UniTask<(bool backRequest, Coordinate? input)> GetUserInputForRequest(IReadOnlyList<Coordinate> inputForPreviousRequests, TargetRequest currentRequest, CancellationToken subCt)
             {
                 Coordinate? inputCoord = null;
                 while (inputCoord == null)
                 {
                     await UniTask.NextFrame(subCt, true);
 
+                    // remove highlight first - don't want that to stick around
                     _hexHighlighter.RemoveRequest(HighlightRequestId.TargetSelection);
+
+                    // doesn't matter if we are hovering - if we get a back request we just back out
+                    if (_inputSystem.GetAction(InputMaps.Level.Cancel)) return (true, null);
+
                     var coord = FindHoveredCoordinate();
                     if (coord == null) continue;
 
@@ -124,30 +131,53 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     inputCoord = coord;
                 }
 
-                return inputCoord;
+                return (false, inputCoord);
             }
 
-            async UniTask<IEnumerable<Coordinate>> Do(CancellationToken subCt)
+            async UniTask<(bool, IEnumerable<Coordinate>)> Do(CancellationToken subCt)
             {
                 try
                 {
-                    var playerInputs = new List<Coordinate>();
-                    foreach (var request in action.TargetRequests)
+                    var playerInputs = new Queue<Coordinate>();
+                    for (var i = 0; i < action.TargetRequests.Length; i++)
                     {
+                        var request = action.TargetRequests[i];
                         var ranges = _targetFinder.FindRange(caster, request).ToArray();
 
                         _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
                         _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
 
-                        var input = await GetUserInputForRequest(playerInputs, request, subCt);
+                        var (backRequested, input) = await GetUserInputForRequest(playerInputs.ToList(), request, subCt);
                         subCt.ThrowIfCancellationRequested();
-
                         _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
 
-                        if (input != null) playerInputs.Add(input);
+                        if (backRequested)
+                        {
+                            if (i == 0)
+                                // Requested back at the root level -> stop the routine.
+                                return (false, Enumerable.Empty<Coordinate>());
+
+                            // take one step back -> need to offset the increment as well.
+                            i -= 2;
+                            _ = playerInputs.TryDequeue(out _);
+
+                            continue;
+                        }
+
+                        if (input == null)
+                        {
+                            Log.Error("You should, have really, not gotten here - the only reason it's null is we've got a cancellation request in which case we probably should have thrown");
+                            continue;
+                        }
+
+                        playerInputs.Enqueue(input);
                     }
 
-                    return playerInputs;
+                    return (true, playerInputs);
+                }
+                catch (OperationCanceledException)
+                {
+                    return (false, Enumerable.Empty<Coordinate>());
                 }
                 finally
                 {
@@ -159,17 +189,18 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             if (action == ActionDatas.Move)
             {
                 var inputForMovement = await GetInputForMovement(caster, ct);
-                if (inputForMovement != null) return new[] { inputForMovement };
+                if (inputForMovement != null) return (true, new[] { inputForMovement });
 
-                return Enumerable.Empty<Coordinate>();
+                return (false, Enumerable.Empty<Coordinate>());
             }
 
             //todo: we should, really, really wait till the cancellation is done before starting the next one.
             _cts?.Cancel();
             _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            var coordinates = await Do(_cts.Token);
+            var result = await Do(_cts.Token);
+            ct.ThrowIfCancellationRequested();
 
-            return coordinates;
+            return result;
         }
 
         public void ToTileInspectionMode()

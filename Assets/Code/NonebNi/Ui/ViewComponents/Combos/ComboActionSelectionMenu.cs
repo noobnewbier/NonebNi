@@ -82,8 +82,16 @@ namespace NonebNi.Ui.ViewComponents.Combos
 
         private void SelectAction(NonebAction? action)
         {
-            actionPanel.Select(action);
-            _deps.ActionDecisionFlowControl.UpdateActionContext(detailsPanel.ShownUnit, actionPanel.SelectedAction, true);
+            async UniTaskVoid Do()
+            {
+                actionPanel.Select(action);
+                if (await _deps.ActionDecisionFlowControl.UpdateActionContext(detailsPanel.ShownUnit, actionPanel.SelectedAction, true))
+                    return;
+
+                SelectAction(null);
+            }
+
+            Do().Forget();
         }
 
         private async UniTaskVoid WaitForUserInput(CancellationToken ct)

@@ -98,8 +98,16 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private void SelectAction(NonebAction? action)
         {
-            actionPanel.Select(action);
-            RefreshControlMode();
+            async UniTaskVoid Do()
+            {
+                actionPanel.Select(action);
+                if (await RefreshControlMode()) return;
+
+                // Request cancelled -> back off to movement instead
+                SelectAction(null);
+            }
+
+            Do().Forget();
         }
 
         private async UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default)
@@ -118,7 +126,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             await orderPanel.Show(unitsInOrder, linkedCts.Token);
         }
 
-        private void RefreshControlMode()
+        private UniTask<bool> RefreshControlMode()
         {
             var unitContext = detailsPanel.ShownUnit;
             var isActiveUnit = unitContext == _data?.ActiveUnit;
@@ -127,12 +135,12 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 if (isActiveUnit && unitContext?.Speed > 0)
                     actionContext = ActionDatas.Move;
 
-            _actionDecisionFlowControl.UpdateActionContext(unitContext, actionContext, isActiveUnit);
+            return _actionDecisionFlowControl.UpdateActionContext(unitContext, actionContext, isActiveUnit);
         }
 
         private void EndTurn()
         {
-            _cts?.Cancel();
+            _cts.Cancel();
             //todo: at some point we need noneb button, which prevent spam click from breaking the UI, I can't be asked to deal with it every single time.
             _agent.SetDecision(EndTurnDecision.Instance);
         }
