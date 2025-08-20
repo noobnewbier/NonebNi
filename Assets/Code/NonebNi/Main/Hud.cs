@@ -48,7 +48,7 @@ namespace NonebNi.Main
                 if (currentUnit.FactionId == _deps.Agent.Faction.Id)
                 {
                     var reader = new UIInputReader<IPlayerTurnMenu.UIInput>();
-                    await _stack.ReplaceCurrent(playerTurnMenu, new IPlayerTurnMenu.Data(currentUnit, reader));
+                    await _stack.ReplaceStack(playerTurnMenu, new IPlayerTurnMenu.Data(currentUnit, reader));
 
                     var input = await reader.Read();
                     _deps.Agent.SetDecision(input.Decision);
@@ -102,7 +102,7 @@ namespace NonebNi.Main
                 var possibleActionForSelectedUnit = availableCombos
                     .Where(c => c.ActorEntity == selectedUnit)
                     .Select(a => a.Action);
-                await _stack.ReplaceCurrent(comboActionSelectionMenu, new IComboActionSelectionMenu.Data(selectedUnit, possibleActionForSelectedUnit, reader));
+                await _stack.Push(comboActionSelectionMenu, new IComboActionSelectionMenu.Data(selectedUnit, possibleActionForSelectedUnit, reader));
                 var uiInput = await reader.Read();
 
                 return uiInput.Decision;
@@ -110,10 +110,9 @@ namespace NonebNi.Main
 
             async UniTask<IComboUnitSelectionMenu.UIInput> WaitForUnitSelection(UnitData[] possibleUnit)
             {
-                var reader = new UIInputReader<IComboUnitSelectionMenu.UIInput>();
-                await _stack.Push(comboUnitSelectionMenu, new IComboUnitSelectionMenu.Data(possibleUnit, reader));
+                if (!_stack.IsCurrentComponent(comboUnitSelectionMenu)) await _stack.Push(comboUnitSelectionMenu, new IComboUnitSelectionMenu.Data(possibleUnit));
 
-                var uiInput = await reader.Read();
+                var uiInput = await comboUnitSelectionMenu.Read();
                 return uiInput;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.UI.Element;
 using Noneb.UI.View;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Decisions;
@@ -17,19 +18,18 @@ namespace NonebNi.Ui.ViewComponents.Combos
         //todo: reenter same unit should not leave view
         //todo: when comboing https://privatebin.net/?11090be6f34f7d9d#ARRBfCgcANGSsTnrtNod9YpeLzyhNKtMNeRbVkLTEqxH
         //todo: when combo can infinite
-        //todo: path find -> walk around enemy
         //todo: need to figure out the awkwardness when the game start...
-        //todo: input get cancelled
 
         public record Data(UnitData ActiveUnit, IEnumerable<NonebAction> PossibleComboActions, UIInputReader<UIInput> InputReader);
 
-        public record UIInput(IDecision Decision);
+        public record UIInput(IDecision? Decision);
     }
 
     public class ComboActionSelectionMenu : MonoBehaviour, IComboActionSelectionMenu
     {
         [SerializeField] private UnitActionPanel actionPanel = null!;
         [SerializeField] private UnitDetailsPanel detailsPanel = null!;
+        [SerializeField] private NonebButton backButton = null!;
 
         private CancellationTokenSource _cts = new();
         private IComboActionSelectionMenu.Data? _data;
@@ -38,6 +38,9 @@ namespace NonebNi.Ui.ViewComponents.Combos
         public void Init(Dependencies dependencies)
         {
             _deps = dependencies;
+
+            backButton.Clicked += BackToUnitSelect;
+            actionPanel.ActionSelected += OnActionSelected;
         }
 
         public UniTask OnViewActivate(IComboActionSelectionMenu.Data? viewData)
@@ -45,7 +48,6 @@ namespace NonebNi.Ui.ViewComponents.Combos
             _data = viewData;
             _cts = new CancellationTokenSource();
 
-            actionPanel.ActionSelected += OnActionSelected;
             return UniTask.CompletedTask;
         }
 
@@ -60,9 +62,13 @@ namespace NonebNi.Ui.ViewComponents.Combos
         public UniTask OnViewDeactivate()
         {
             _cts.Cancel();
-            actionPanel.ActionSelected -= OnActionSelected;
 
             return UniTask.CompletedTask;
+        }
+
+        private void BackToUnitSelect()
+        {
+            _data?.InputReader.Write(new IComboActionSelectionMenu.UIInput(null));
         }
 
         private void OnActionSelected(NonebAction? action)

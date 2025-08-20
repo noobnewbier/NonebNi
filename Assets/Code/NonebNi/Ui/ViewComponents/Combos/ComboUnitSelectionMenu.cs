@@ -15,9 +15,11 @@ namespace NonebNi.Ui.ViewComponents.Combos
 {
     public interface IComboUnitSelectionMenu : IViewComponent<IComboUnitSelectionMenu.Data>
     {
+        public UniTask<UIInput> Read();
+
         public record UIInput(UnitData? Unit);
 
-        public record Data(IEnumerable<UnitData> PossibleComboTakers, UIInputReader<UIInput> UIInputReader);
+        public record Data(IEnumerable<UnitData> PossibleComboTakers);
     }
 
     //todo: wbn if we have a template for this paradigm
@@ -29,6 +31,7 @@ namespace NonebNi.Ui.ViewComponents.Combos
 
         private IComboUnitSelectionMenu.Data? _data;
         private Dependencies _deps = null!;
+        private UIInputReader<IComboUnitSelectionMenu.UIInput>? _inputReader;
 
         public void Init(Dependencies dependencies)
         {
@@ -42,6 +45,13 @@ namespace NonebNi.Ui.ViewComponents.Combos
             _data = viewData;
 
             return UniTask.CompletedTask;
+        }
+
+        public UniTask<IComboUnitSelectionMenu.UIInput> Read()
+        {
+            _inputReader?.Dispose();
+            _inputReader = new UIInputReader<IComboUnitSelectionMenu.UIInput>();
+            return _inputReader.Read();
         }
 
         public UniTask OnViewEnter(INonebView? previousView, INonebView currentView)
@@ -102,7 +112,7 @@ namespace NonebNi.Ui.ViewComponents.Combos
             if (unit != null) _deps.CameraController.LookAt(unit);
 
             var input = new IComboUnitSelectionMenu.UIInput(unit);
-            _data?.UIInputReader.Write(input);
+            _inputReader?.Write(input);
         }
 
         private void HighlightUnits(IEnumerable<UnitData> comboTakers)

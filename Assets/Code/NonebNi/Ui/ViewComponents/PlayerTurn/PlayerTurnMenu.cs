@@ -53,6 +53,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             _unitTurnOrderer = dependencies.UnitTurnOrderer;
 
             endTurnButton.onClick.AddListener(EndTurn);
+            actionPanel.ActionSelected += OnActionSelected;
+            orderPanel.UnitSelected += OnUnitSelected;
         }
 
         public UniTask OnViewActivate(IPlayerTurnMenu.Data? viewData)
@@ -60,8 +62,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             _data = viewData;
             _cts = new CancellationTokenSource();
 
-            actionPanel.ActionSelected += OnActionSelected;
-            orderPanel.UnitSelected += OnUnitSelected;
             return UniTask.CompletedTask;
         }
 
@@ -81,9 +81,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         public UniTask OnViewDeactivate()
         {
             _cts.Cancel();
-
-            actionPanel.ActionSelected -= OnActionSelected;
-            orderPanel.UnitSelected -= OnUnitSelected;
 
             return UniTask.CompletedTask;
         }
