@@ -1,13 +1,19 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 
 namespace Noneb.UI.View
 {
     /// <summary>
     /// Really just a wrapper of TCS, I can regret later though
     /// </summary>
-    public sealed class UIInputReader<T>
+    public sealed class UIInputReader<T> : IDisposable
     {
         private UniTaskCompletionSource<T>? _tcs;
+
+        public void Dispose()
+        {
+            _tcs?.TrySetCanceled();
+        }
 
         public void Write(T data)
         {
