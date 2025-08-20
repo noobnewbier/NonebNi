@@ -78,15 +78,7 @@ namespace Noneb.UI.View
             _cts.Cancel();
             _cts.Dispose();
 
-            while (_stack.Any())
-            {
-                var (view, _, _) = _stack.Pop();
-                await view.TearDown();
-            }
-
-            foreach (var (_, __, subStacks) in _stack)
-            foreach (var stack in subStacks.Values)
-                await stack.DisposeAsync();
+            await ClearViewStack();
         }
 
         private async UniTask RunRequests()
@@ -113,7 +105,6 @@ namespace Noneb.UI.View
 
             return GetSubStack(name, behaviour);
         }
-
 
         public UIStack GetSubStack(string name, MonoBehaviour monoBehaviour) => GetSubStack(name, monoBehaviour.gameObject);
 
@@ -187,6 +178,65 @@ namespace Noneb.UI.View
             _stack.Push(nextViewStack);
 
             var request = new TransitionRequest(() => Transition(currentViewStack, nextViewStack, true), new TransitionRequestInfo("ReplaceCurrent", nextView.Name));
+            await RequestTransition(request);
+        }
+
+        public async UniTask ReplaceStack(IViewComponent component, object? viewData = null)
+        {
+            var view = FindViewFromComponent(component);
+            if (view == null) return;
+
+            await ReplaceStack(view, viewData);
+        }
+
+        public async UniTask ReplaceStack(INonebView nextView, object? viewData = null)
+        {
+            if (!_stack.Any())
+            {
+                //Nice! You are new and the only one
+                await Push(nextView, viewData);
+                return;
+            }
+
+            if (_stack.Count == 1)
+            {
+                // There's no other stack to be cleaned up - so just replace the current one.
+                await ReplaceCurrent(nextView, viewData);
+                return;
+            }
+
+            // this is our current stack -> don't do the teardown shenanigans
+            var currentViewStack = _stack.Pop();
+
+            var toCleanUp = _stack.ToArray();
+            _stack.Clear();
+
+            // At this point, the stack is how it should look
+            var nextViewStack = new ViewStack(nextView, viewData, new Dictionary<string, UIStack>());
+            _stack.Push(nextViewStack);
+
+            var request = new TransitionRequest(
+                async () =>
+                {
+                    await Transition(currentViewStack, nextViewStack, true);
+
+                    // Clear all other histories
+                    foreach (var viewStack in toCleanUp)
+                    {
+                        if (viewStack.View == nextViewStack.View)
+                            /*
+                             * Don't tear it down
+                             * the user is trying to replace the stack with some that's already in the stack, and that's okay.
+                             *
+                             * Just do the transition and clear something else.
+                             */
+                            continue;
+
+                        await CleanUpStack(viewStack);
+                    }
+                },
+                new TransitionRequestInfo("ReplaceCurrent", nextView.Name)
+            );
             await RequestTransition(request);
         }
 
@@ -296,6 +346,22 @@ namespace Noneb.UI.View
             );
 
             await nextStack.View.Enter(previousStack?.View, nextStack.View);
+        }
+
+        private async UniTask ClearViewStack()
+        {
+            while (_stack.Any())
+            {
+                var viewStack = _stack.Pop();
+                await CleanUpStack(viewStack);
+            }
+        }
+
+        private static async UniTask CleanUpStack(ViewStack viewStack)
+        {
+            foreach (var stack in viewStack.SubStacks.Values) await stack.DisposeAsync();
+
+            await viewStack.View.TearDown();
         }
 
         private record TransitionRequest(Func<UniTask> Task, TransitionRequestInfo Info)
