@@ -113,8 +113,10 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
             _cameraController.LookAt(unit);
             detailsPanel.Show(unit);
-            await actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token);
+
+            //Goes before action panel to avoid this being one step slower than it needs be.
             SelectAction(null);
+            await actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token);
         }
 
         private async UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default)
