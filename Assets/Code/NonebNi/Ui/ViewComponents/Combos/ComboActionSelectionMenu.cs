@@ -91,7 +91,7 @@ namespace NonebNi.Ui.ViewComponents.Combos
             async UniTaskVoid Do()
             {
                 actionPanel.Select(action);
-                if (await _deps.ActionDecisionFlowControl.UpdateActionContext(detailsPanel.ShownUnit, actionPanel.SelectedAction, true))
+                if (await _deps.DecisionFlowControl.UpdateDecisionContext(detailsPanel.ShownUnit, actionPanel.SelectedAction, true))
                     return;
 
                 SelectAction(null);
@@ -102,12 +102,24 @@ namespace NonebNi.Ui.ViewComponents.Combos
 
         private async UniTaskVoid WaitForUserInput(CancellationToken ct)
         {
-            var decision = await _deps.ActionDecisionFlowControl.WaitForUserInput(ct);
-            ct.ThrowIfCancellationRequested();
+            while (true)
+            {
+                var decision = await _deps.DecisionFlowControl.WaitForUserInput(ct);
+                ct.ThrowIfCancellationRequested();
 
-            _data?.InputReader.Write(new IComboActionSelectionMenu.UIInput(decision));
+                if (decision is InspectDecision { ToInspect: UnitData unit })
+                {
+                    await ShowUnit(unit, unit == _data?.ActiveUnit, ct);
+                    continue;
+                }
+
+                if (decision is not ActionDecision actionDecision) continue;
+
+                _data?.InputReader.Write(new IComboActionSelectionMenu.UIInput(actionDecision));
+                break;
+            }
         }
 
-        public record Dependencies(ICameraController CameraController, IActionDecisionFlowControl ActionDecisionFlowControl);
+        public record Dependencies(ICameraController CameraController, IDecisionFlowControl DecisionFlowControl);
     }
 }

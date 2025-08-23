@@ -23,9 +23,41 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     public interface IPlayerTurnWorldSpaceInputControl
     {
         Coordinate? FindHoveredCoordinate();
-        void ToTileInspectionMode();
+
         UniTask<(bool success, IEnumerable<Coordinate>)> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default);
-        UniTask<EntityData?> GetInputForInspection(CancellationToken ct = default);
+
+        /// <summary>
+        /// This only works with unit atm only because the UI doesn't really have much to show for anything else, this can change
+        /// in the future though.
+        /// </summary>
+        UniTask<UnitData?> GetInputForInspection(CancellationToken ct = default);
+
+        UniTask<MovementInput> GetInputForMovement(UnitData mover, CancellationToken ct = default);
+
+        public abstract record MovementInput
+        {
+            public record Inspect : MovementInput
+            {
+                public readonly EntityData EntityData;
+
+                public Inspect(EntityData entityData)
+                {
+                    EntityData = entityData;
+                }
+            }
+
+            public record MoveTo : MovementInput
+            {
+                public readonly Coordinate Coordinate;
+
+                public MoveTo(Coordinate coordinate)
+                {
+                    Coordinate = coordinate;
+                }
+            }
+
+            public record Cancel : MovementInput;
+        }
     }
 
     public class PlayerTurnWorldSpaceInputControl : IPlayerTurnWorldSpaceInputControl
@@ -185,15 +217,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 }
             }
 
-
-            if (action == ActionDatas.Move)
-            {
-                var inputForMovement = await GetInputForMovement(caster, ct);
-                if (inputForMovement != null) return (true, new[] { inputForMovement });
-
-                return (false, Enumerable.Empty<Coordinate>());
-            }
-
             //todo: we should, really, really wait till the cancellation is done before starting the next one.
             _cts?.Cancel();
             _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
@@ -226,27 +249,31 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Do(_cts.Token).Forget();
         }
 
-        //todo: v.close to combo being executed... keep at it
-        public async UniTask<EntityData?> GetInputForInspection(CancellationToken ct = default)
+        public async UniTask<UnitData?> GetInputForInspection(CancellationToken ct = default)
         {
-            async UniTask<EntityData?> GetUserInputForRequest(CancellationToken subCt)
+            async UniTask<UnitData?> GetUserInputForRequest(CancellationToken subCt)
             {
                 try
                 {
-                    EntityData? inputEntity = null;
+                    UnitData? inputEntity = null;
                     while (inputEntity == null)
                     {
                         await UniTask.NextFrame(subCt, true);
 
                         _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
+
                         var coord = FindHoveredCoordinate();
                         if (coord == null) continue;
 
                         _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.Normal);
+                        var hoveredEntity = _map.Get<UnitData>(coord);
+                        if (hoveredEntity == null) continue;
+
+                        _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.ValidInput);
 
                         if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
 
-                        inputEntity = _map.Get<EntityData>(coord);
+                        inputEntity = hoveredEntity;
                     }
 
                     return inputEntity;
@@ -259,23 +286,19 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
             _cts?.Cancel();
             _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
-            var entity = await GetUserInputForRequest(_cts.Token);
+            var unit = await GetUserInputForRequest(_cts.Token);
 
-            return entity;
+            return unit;
         }
 
-        private async UniTask<Coordinate?> GetInputForMovement(UnitData mover, CancellationToken token = default)
+        public async UniTask<IPlayerTurnWorldSpaceInputControl.MovementInput> GetInputForMovement(UnitData mover, CancellationToken ct = default)
         {
-            /*
-             * In theory we can use GetInputForAction, just that the UI is slightly different so we want to have a variant anyway
-             */
-
-            async UniTask<Coordinate?> GetUserInputForRequest(CancellationToken ct)
+            async UniTask<IPlayerTurnWorldSpaceInputControl.MovementInput?> GetUserInputForRequest(CancellationToken subCt)
             {
                 try
                 {
-                    Coordinate? inputCoord = null;
-                    while (!ct.IsCancellationRequested && inputCoord == null)
+                    IPlayerTurnWorldSpaceInputControl.MovementInput? input = null;
+                    while (!subCt.IsCancellationRequested && input == null)
                     {
                         await UniTask.NextFrame();
 
@@ -286,7 +309,17 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                         var (isPathExist, path) = _pathfindingService.FindPath(mover, coord);
                         if (!isPathExist)
                         {
-                            _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.InvalidInput);
+                            var hoveredUnit = _map.Get<UnitData>(coord);
+                            if (hoveredUnit != null && hoveredUnit != mover)
+                            {
+                                _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.ValidInput);
+                                if (_inputSystem.GetAction(InputMaps.Level.Interact)) input = new IPlayerTurnWorldSpaceInputControl.MovementInput.Inspect(hoveredUnit);
+                            }
+                            else
+                            {
+                                _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.InvalidInput);
+                            }
+
                             continue;
                         }
 
@@ -295,10 +328,10 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                         _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.Normal);
 
                         if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
-                        inputCoord = coord;
+                        input = new IPlayerTurnWorldSpaceInputControl.MovementInput.MoveTo(coord);
                     }
 
-                    return inputCoord;
+                    return input;
                 }
                 finally
                 {
@@ -307,10 +340,11 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             }
 
             _cts?.Cancel();
-            _cts = CancellationTokenSource.CreateLinkedTokenSource(token);
-            var coordinate = await GetUserInputForRequest(_cts.Token);
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            var input = await GetUserInputForRequest(_cts.Token);
+            if (input == null) return new IPlayerTurnWorldSpaceInputControl.MovementInput.Cancel();
 
-            return coordinate;
+            return input;
         }
     }
 }

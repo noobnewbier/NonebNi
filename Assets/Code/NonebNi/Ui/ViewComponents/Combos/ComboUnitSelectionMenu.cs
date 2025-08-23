@@ -70,7 +70,13 @@ namespace NonebNi.Ui.ViewComponents.Combos
             return UniTask.CompletedTask;
         }
 
-        public UniTask OnViewDeactivate() => UniTask.CompletedTask;
+        public UniTask OnViewDeactivate()
+        {
+            _inputReader?.Dispose();
+            _inputReader = null;
+
+            return UniTask.CompletedTask;
+        }
 
         private void WaitForPlayerInput(IEnumerable<UnitData> comboTakers)
         {
@@ -85,10 +91,10 @@ namespace NonebNi.Ui.ViewComponents.Combos
                     var userInput = await _deps.InputControl.GetInputForInspection(ct);
                     ct.ThrowIfCancellationRequested();
 
-                    if (userInput is not UnitData unit) continue;
-                    if (!comboTakers.Contains(unit)) continue;
+                    if (userInput is null) continue;
+                    if (!comboTakers.Contains(userInput)) continue;
 
-                    inputFromInspection = unit;
+                    inputFromInspection = userInput;
                 }
 
                 ProcessOutput(inputFromInspection);

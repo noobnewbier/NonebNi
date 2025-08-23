@@ -36,18 +36,18 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         //TODO: at some point this might go somewhere but I am not too fuzzed about a testing UI
         [SerializeField] private Button endTurnButton = null!;
-        private IActionDecisionFlowControl _actionDecisionFlowControl = null!;
 
         private IPlayerAgent _agent = null!;
         private ICameraController _cameraController = null!;
         private CancellationTokenSource _cts = new();
 
         private IPlayerTurnMenu.Data? _data;
+        private IDecisionFlowControl _decisionFlowControl = null!;
         private IUnitTurnOrderer _unitTurnOrderer = null!;
 
         public void Init(Dependencies dependencies)
         {
-            _actionDecisionFlowControl = dependencies.ActionDecisionFlowControl;
+            _decisionFlowControl = dependencies.DecisionFlowControl;
             _cameraController = dependencies.CameraController;
             _agent = dependencies.Agent;
             _unitTurnOrderer = dependencies.UnitTurnOrderer;
@@ -87,10 +87,21 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private async UniTaskVoid WaitForUserInput(CancellationToken ct)
         {
-            var decision = await _actionDecisionFlowControl.WaitForUserInput(ct);
-            ct.ThrowIfCancellationRequested();
+            while (true)
+            {
+                var decision = await _decisionFlowControl.WaitForUserInput(ct);
+                ct.ThrowIfCancellationRequested();
 
-            _data?.InputReader.Write(new IPlayerTurnMenu.UIInput(decision));
+                if (decision is InspectDecision inspectDecision)
+                {
+                    if (inspectDecision.ToInspect is UnitData unit) await ShowUnit(unit, unit == _data?.ActiveUnit, ct);
+
+                    continue;
+                }
+
+                _data?.InputReader.Write(new IPlayerTurnMenu.UIInput(decision));
+                break;
+            }
         }
 
         private void SelectAction(NonebAction? action)
@@ -134,7 +145,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 if (isActiveUnit && unitContext?.Speed > 0)
                     actionContext = ActionDatas.Move;
 
-            return _actionDecisionFlowControl.UpdateActionContext(unitContext, actionContext, isActiveUnit);
+            return _decisionFlowControl.UpdateDecisionContext(unitContext, actionContext, isActiveUnit);
         }
 
         private void EndTurn()
@@ -160,6 +171,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Do().Forget();
         }
 
-        public record Dependencies(IActionDecisionFlowControl ActionDecisionFlowControl, ICameraController CameraController, IPlayerAgent Agent, IUnitTurnOrderer UnitTurnOrderer);
+        public record Dependencies(IDecisionFlowControl DecisionFlowControl, ICameraController CameraController, IPlayerAgent Agent, IUnitTurnOrderer UnitTurnOrderer);
     }
 }
