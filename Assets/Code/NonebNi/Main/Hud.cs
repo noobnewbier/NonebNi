@@ -110,10 +110,17 @@ namespace NonebNi.Main
 
             async UniTask<IComboUnitSelectionMenu.UIInput> WaitForUnitSelection(UnitData[] possibleUnit)
             {
+                /*
+                 * We start the reading process first, this prevents an issue where if user clicks too fast before we start reading and after the view is pushed
+                 * in which case the user is writing input before we starts reading, which fucks things up
+                 *
+                 * We can in theory change the Read() bit so it works better, but for now it's "good enough".
+                 */
+                var uiInput = comboUnitSelectionMenu.Read();
+
                 if (!_stack.IsCurrentComponent(comboUnitSelectionMenu)) await _stack.Push(comboUnitSelectionMenu, new IComboUnitSelectionMenu.Data(possibleUnit));
 
-                var uiInput = await comboUnitSelectionMenu.Read();
-                return uiInput;
+                return await uiInput;
             }
         }
 
