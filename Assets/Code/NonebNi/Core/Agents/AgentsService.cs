@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
 using Unity.Logging;
-using UnityEngine;
 
 namespace NonebNi.Core.Agents
 {
@@ -26,7 +25,7 @@ namespace NonebNi.Core.Agents
         public AgentsService(IReadOnlyList<IAgent> agents, IDecisionValidator validator)
         {
             if (agents.GroupBy(a => a.Faction).Any(g => g.Count() > 1))
-                Debug.LogError("More than one agent shares the same faction id - this is invalid");
+                Log.Error("More than one agent shares the same faction id - this is invalid");
 
             _agents = agents;
             _validator = validator;

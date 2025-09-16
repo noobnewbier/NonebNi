@@ -22,7 +22,10 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
+
+# make sure we only ignore stuffs with Obj when the folder name is debug 
+[Oo]bj/[Dd]ebug/
+
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
