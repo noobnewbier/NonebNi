@@ -130,5 +130,7 @@ namespace NonebNi.CustomInspector
             var sizeProperty = GetOrFindProperty(listProperty, "Array.size");
             EditorGUI.PropertyField(sizeRect, sizeProperty, GUIContent.none);
         }
+
+        public bool DrawToggle(string label, bool value) => EditorGUILayout.Toggle(label, value);
     }
 }
