@@ -7,7 +7,7 @@ using UnityEngine;
 namespace NonebNi.Core.Factions
 {
     [Serializable]
-    public class Faction : IEquatable<Faction>
+    public class Faction
     {
         [SerializeField] private string id;
         [SerializeField] private bool isPlayerControlled; //TODO: feels weird do we actually need this
@@ -33,13 +33,5 @@ namespace NonebNi.Core.Factions
         public List<DataId<Faction>> Allies =>
             // yes - I know it has to be serialized and this is an abomination of hell. But the world is bleak, I promise I will fix this later may god forgive me in my final days.
             allies.Select(a => new DataId<Faction>(a)).ToList();
-
-        public bool Equals(Faction other) => Id == other.Id &&
-                                             IsPlayerControlled == other.IsPlayerControlled &&
-                                             Allies.Intersect(other.Allies).Count() == Allies.Count;
-
-        public override bool Equals(object? obj) => obj is Faction other && Equals(other);
-
-        public override int GetHashCode() => HashCode.Combine(Id, IsPlayerControlled, Allies);
     }
 }
