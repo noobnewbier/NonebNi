@@ -9,6 +9,8 @@ namespace NonebNi.Terrain
     {
         [Range(0f, 10f)] [SerializeField] private float innerRadius;
         [SerializeField] private Vector3 mapStartingPosition = Vector3.zero;
+        [Range(0f, 1f), SerializeField]  private float solidFactor = 0.8f;
+
 
         private static TerrainConfigSource Create(float innerRadius, Vector3 mapStartingPosition)
         {
@@ -23,7 +25,7 @@ namespace NonebNi.Terrain
         public static TerrainConfigSource Create(TerrainConfigData data) =>
             Create(data.InnerRadius, data.MapStartingPosition);
 
-        public TerrainConfigData CreateData() => new(innerRadius, mapStartingPosition);
+        public TerrainConfigData CreateData() => new(innerRadius, mapStartingPosition, solidFactor);
 
         public void CopyFromData(TerrainConfigData terrainConfigData)
         {

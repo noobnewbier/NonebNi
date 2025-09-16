@@ -4,21 +4,15 @@ using UnityEngine;
 namespace NonebNi.Terrain
 {
     [Serializable]
-    public class TerrainConfigData
+    public record TerrainConfigData(float InnerRadius, Vector3 MapStartingPosition, float SolidFactor)
     {
-        [SerializeField] private Vector3 mapStartingPosition;
-        [SerializeField] private float innerRadius;
-
-        public TerrainConfigData(float innerRadius, Vector3 mapStartingPosition)
-        {
-            this.innerRadius = innerRadius;
-            this.mapStartingPosition = mapStartingPosition;
-        }
-
-        public Vector3 MapStartingPosition => mapStartingPosition;
-        public float InnerRadius => innerRadius;
         public float OuterRadius => HexMaths.ToOuterRadius(InnerRadius);
 
-        public Plane GridPlane => new(Vector3.up, mapStartingPosition);
+        /// <summary>
+        ///     Factor of the blending region inside a hex cell.
+        /// </summary>
+        public float BlendFactor => 1 - SolidFactor;
+
+        public Plane GridPlane => new(Vector3.up, MapStartingPosition);
     }
 }
