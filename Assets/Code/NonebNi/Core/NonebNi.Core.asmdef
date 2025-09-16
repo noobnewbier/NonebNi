@@ -1,24 +1,28 @@
 {
-  "name": "NonebNi.Core",
-  "rootNamespace": "",
-  "references": [
-    "GUID:acf43146c4364d2419bdbdeac67deb96",
-    "GUID:f51ebe6a0ceec4240a699833d6309b23",
-    "GUID:5c01796d064528144a599661eaab93a6",
-    "GUID:fd228c28e14f1a34cbe508676c914dd7",
-    "GUID:2665a8d13d1b3f18800f46e256720795",
-    "GUID:e0cd26848372d4e5c891c569017e11f1",
-    "GUID:0bb59190ac26341428311711f2ce1fd3"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": true,
-  "precompiledReferences": [
-    "PriorityQueue.dll"
-  ],
-  "autoReferenced": false,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "NonebNi.Core",
+    "rootNamespace": "",
+    "references": [
+        "GUID:acf43146c4364d2419bdbdeac67deb96",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:5c01796d064528144a599661eaab93a6",
+        "GUID:fd228c28e14f1a34cbe508676c914dd7",
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:e0cd26848372d4e5c891c569017e11f1",
+        "GUID:0bb59190ac26341428311711f2ce1fd3",
+        "GUID:73907d139b13f8a43b7e3e95c329d30a",
+        "GUID:aafa29ad88db1a4459832e633451d599"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "PriorityQueue.dll",
+        "Newtonsoft.Json.dll",
+        "StrongInject.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
