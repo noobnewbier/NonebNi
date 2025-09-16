@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NonebNi.DebugConsole.Commands;
 using NonebNi.DebugConsole.Expressions;
@@ -28,14 +29,31 @@ namespace NonebNi.DebugConsole
             foreach (var constructorInfo in data.CommandType.GetConstructors())
             {
                 var constructorArgTypes = constructorInfo.GetParameters().Select(p => p.ParameterType).ToArray();
-                var isConstructorMatchingArguments =
-                    constructorArgTypes.SequenceEqual(commandArgs.Select(a => a.ConvertableType));
-                if (isConstructorMatchingArguments)
-                    return (IConsoleCommand)constructorInfo.Invoke(commandArgs.Select(a => a.Value).ToArray());
+                var (isSuccess, arguments) = GetArguments(constructorArgTypes, commandArgs);
+
+                if (isSuccess)
+                    return (IConsoleCommand)constructorInfo.Invoke(arguments);
             }
 
             //can't find matching constructor - user provided non-matching arguments -> print help message to provide hint
             return new HelpCommand(commandName.StringValue);
+        }
+
+        private static (bool success, object[] arguments) GetArguments(Type[] constructorArgTypes, Expression[] expressions)
+        {
+            if (constructorArgTypes.Length != expressions.Length) return (false, Array.Empty<object>());
+
+            var toReturn = new object[constructorArgTypes.Length];
+            for (var i = 0; i < constructorArgTypes.Length; i++)
+            {
+                var requiredArgType = constructorArgTypes[i];
+                var expression = expressions[i];
+                if (!expression.ConvertableTypes.Contains(requiredArgType)) return (false, Array.Empty<object>());
+
+                toReturn[i] = expression.ConvertTo(requiredArgType);
+            }
+
+            return (true, toReturn);
         }
     }
 }

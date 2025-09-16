@@ -12,8 +12,15 @@ namespace NonebNi.DebugConsole.Expressions
             IntValue = value;
         }
 
-        public override Type ConvertableType => typeof(int);
-        public override object Value => IntValue;
+        public override Type[] ConvertableTypes => new[] { typeof(int) };
+
         public int IntValue { get; }
+
+        public override object ConvertTo(Type type)
+        {
+            if (type != typeof(int)) return 0;
+
+            return IntValue;
+        }
     }
 }

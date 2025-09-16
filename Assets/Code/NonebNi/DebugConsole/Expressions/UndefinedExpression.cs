@@ -6,10 +6,10 @@ namespace NonebNi.DebugConsole.Expressions
     {
         public UndefinedExpression(string stringRepresentation) : base(stringRepresentation) { }
 
-        public override Type ConvertableType =>
-            typeof(UndefinedType); //only convertable to UndefinedType - meaning any input with an unknown expression won't match any available command
+        public override Type[] ConvertableTypes =>
+            new[] { typeof(UndefinedType) }; //only convertable to UndefinedType - meaning any input with an unknown expression won't match any available command
 
-        public override object Value => new UndefinedType();
+        public override object ConvertTo(Type type) => throw new InvalidOperationException();
 
         private class UndefinedType { }
     }

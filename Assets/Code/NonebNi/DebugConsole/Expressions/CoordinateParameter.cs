@@ -10,13 +10,20 @@ namespace NonebNi.DebugConsole.Expressions
             @$"\( *{IntParameter.Pattern} *, *{IntParameter.Pattern} *\)"
         );
 
+        private readonly Coordinate _value;
+
         public CoordinateParameter(Coordinate coordinate, string input) : base(input)
         {
-            Value = coordinate;
+            _value = coordinate;
         }
 
-        public override object Value { get; }
+        public override Type[] ConvertableTypes => new[] { typeof(Coordinate) };
 
-        public override Type ConvertableType => typeof(Coordinate);
+        public override object ConvertTo(Type type)
+        {
+            if (type != typeof(Coordinate)) throw new InvalidOperationException();
+
+            return _value;
+        }
     }
 }
