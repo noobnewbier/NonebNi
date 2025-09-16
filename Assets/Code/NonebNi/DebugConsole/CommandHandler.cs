@@ -1,26 +1,22 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Cysharp.Threading.Tasks;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
-using NonebNi.Core.Decisions;
-using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
-using NonebNi.Core.Units;
 using NonebNi.DebugConsole.Commands;
-using NonebNi.DebugConsole.Commands.Attributes;
-using UnityUtils;
+using NonebNi.Ui.Debug;
 
 namespace NonebNi.DebugConsole
 {
-    public class CommandHandler
+    public partial class CommandHandler
     {
         private readonly IActionCommandEvaluator _actionCommandEvaluator;
         private readonly IActionRepository _actionRepository;
         private readonly IAgentsService _agentsService;
         private readonly ICommandsDataRepository _commandsDataRepository;
+        private readonly InfluenceMapVisualizer _influenceMapVisualizer;
         private readonly ILevelFlowController _levelFlowController;
         private readonly IReadOnlyMap _readOnlyMap;
         private readonly IUnitTurnOrderer _turnOrderer;
@@ -32,7 +28,8 @@ namespace NonebNi.DebugConsole
             IAgentsService agentsService,
             IUnitTurnOrderer turnOrderer,
             IActionRepository actionRepository,
-            ILevelFlowController levelFlowController)
+            ILevelFlowController levelFlowController,
+            InfluenceMapVisualizer influenceMapVisualizer)
         {
             _actionCommandEvaluator = actionCommandEvaluator;
             _readOnlyMap = readOnlyMap;
@@ -41,6 +38,7 @@ namespace NonebNi.DebugConsole
             _turnOrderer = turnOrderer;
             _actionRepository = actionRepository;
             _levelFlowController = levelFlowController;
+            _influenceMapVisualizer = influenceMapVisualizer;
         }
 
         public async UniTask Handle(IConsoleCommand command, StringBuilder outputBuffer)
