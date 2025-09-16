@@ -80,6 +80,8 @@ namespace NonebNi.Core.Coordinates
         /// </summary>
         public IEnumerable<Coordinate> WithinDistance(int distance)
         {
+            if (distance <= 0) yield break;
+
             var xInRangeStart = -distance;
             var xInRangeEnd = +distance;
 
