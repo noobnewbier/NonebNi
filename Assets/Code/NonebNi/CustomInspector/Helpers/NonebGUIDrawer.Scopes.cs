@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NonebNi.EditorHacks;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -31,6 +32,8 @@ namespace NonebNi.CustomInspector
         }
 
         public IDisposable VerticalScope() => new NVerticalScope(this);
+
+        public IDisposable FlowLayoutScope() => new FlowLayoutScope();
 
         public IDisposable BoxScope(string heading = "")
         {
