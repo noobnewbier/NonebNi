@@ -23,9 +23,6 @@ namespace NonebNi.Terrain
         private readonly IReadOnlyMap _map;
 
         private readonly TerrainMeshData _terrain;
-        private readonly Color _weights1 = Color.red;
-        private readonly Color _weights2 = Color.green;
-        private readonly Color _weights3 = Color.blue;
 
         public TerrainMeshCreator(
             TerrainMeshData terrain,
@@ -85,10 +82,8 @@ namespace NonebNi.Terrain
 
             TriangulateEdgeStrip(
                 e1,
-                _weights1,
                 _coordinates.IndexOf(coord),
                 e2,
-                _weights2,
                 _coordinates.IndexOf(neighbor)
             );
             var nextNeighbor = coord + direction.NextDirection();
@@ -125,7 +120,7 @@ namespace NonebNi.Terrain
                 _coordinates.IndexOf(leftCell),
                 _coordinates.IndexOf(rightCell)
             );
-            _terrain.AddTriangleCellData(indices, _weights1, _weights2, _weights3);
+            _terrain.AddTriangleCellData(indices);
         }
 
         private void TriangulateEdgeFan(Vector3 center, EdgeVertices edge, int index)
@@ -136,19 +131,16 @@ namespace NonebNi.Terrain
             _terrain.AddTriangle(center, edge.V4, edge.V5);
 
             var indices = Vector3.one * index;
-            var weights1 = Color.red; //TODO: wt is weight?
-            _terrain.AddTriangleCellData(indices, weights1);
-            _terrain.AddTriangleCellData(indices, weights1);
-            _terrain.AddTriangleCellData(indices, weights1);
-            _terrain.AddTriangleCellData(indices, weights1);
+            _terrain.AddTriangleCellData(indices);
+            _terrain.AddTriangleCellData(indices);
+            _terrain.AddTriangleCellData(indices);
+            _terrain.AddTriangleCellData(indices);
         }
 
         private void TriangulateEdgeStrip(
             EdgeVertices e1,
-            Color w1,
             float index1,
             EdgeVertices e2,
-            Color w2,
             float index2
         )
         {
@@ -160,10 +152,10 @@ namespace NonebNi.Terrain
             Vector3 indices;
             indices.x = indices.z = index1;
             indices.y = index2;
-            _terrain.AddQuadCellData(indices, w1, w2);
-            _terrain.AddQuadCellData(indices, w1, w2);
-            _terrain.AddQuadCellData(indices, w1, w2);
-            _terrain.AddQuadCellData(indices, w1, w2);
+            _terrain.AddQuadCellData(indices);
+            _terrain.AddQuadCellData(indices);
+            _terrain.AddQuadCellData(indices);
+            _terrain.AddQuadCellData(indices);
         }
     }
 }
