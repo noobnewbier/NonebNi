@@ -144,7 +144,9 @@ namespace NonebNi.Develop
             {
                 _testInputs = null;
 
-                var inputs = await _control.GetInputForAction(_unitData, action, ct);
+                var (success, inputs) = await _control.GetInputForAction(_unitData, action, ct);
+                if (!success) return;
+
                 _testInputs = inputs.ToArray();
             }
 

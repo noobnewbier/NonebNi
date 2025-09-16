@@ -114,12 +114,12 @@ namespace NonebNi.Develop
             public IEnumerable<UnitData> GetActOrderForTurns(int turn) => _buffer;
         }
 
-        private class MockInputControl : IActionDecisionFlowControl
+        private class MockInputControl : IDecisionFlowControl
         {
             public string mode;
-            public UniTask<ActionDecision> WaitForUserInput(CancellationToken ct = default) => throw new NotImplementedException();
+            public UniTask<IDecision> WaitForUserInput(CancellationToken ct = default) => throw new NotImplementedException();
 
-            public void UpdateActionContext(UnitData? unit, NonebAction? action, bool isActiveUnit) => throw new NotImplementedException();
+            public UniTask<bool> UpdateDecisionContext(UnitData? unit, NonebAction? action, bool isActiveUnit) => throw new NotImplementedException();
         }
 
         private class MockCameraController : ICameraController
