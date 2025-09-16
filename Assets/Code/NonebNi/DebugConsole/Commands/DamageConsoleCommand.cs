@@ -1,7 +1,13 @@
-﻿using JetBrains.Annotations;
+﻿using System.Text;
+using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Effects;
+using NonebNi.Core.Entities;
+using NonebNi.Core.Units;
+using NonebNi.DebugConsole.Commands;
 using NonebNi.DebugConsole.Commands.Attributes;
 
 namespace NonebNi.DebugConsole.Commands
@@ -34,6 +40,26 @@ namespace NonebNi.DebugConsole.Commands
                 string.Empty,
                 new DamageEffect("slash", _damage)
             );
+        }
+    }
+}
+
+namespace NonebNi.DebugConsole
+{
+    public partial class CommandHandler
+    {
+        private UniTask DoHandle(DamageConsoleCommand command, StringBuilder _)
+        {
+            if (_readOnlyMap.TryGet<UnitData>(command.Coordinate, out var __))
+                EvaluateSequence(
+                    new ActionCommand(
+                        command.GetAction(),
+                        SystemEntity.Instance,
+                        command.Coordinate
+                    )
+                );
+
+            return UniTask.CompletedTask;
         }
     }
 }

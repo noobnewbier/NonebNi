@@ -1,5 +1,10 @@
-﻿using JetBrains.Annotations;
+﻿using System.Text;
+using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
+using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Units;
+using NonebNi.DebugConsole.Commands;
 using NonebNi.DebugConsole.Commands.Attributes;
 
 namespace NonebNi.DebugConsole.Commands
@@ -38,6 +43,33 @@ namespace NonebNi.DebugConsole.Commands
             ActorCoord = actorCoord;
             TargetCoords = targetCoords;
             ActionId = actionId;
+        }
+    }
+}
+
+namespace NonebNi.DebugConsole
+{
+    public partial class CommandHandler
+    {
+        private UniTask DoHandle(ActionConsoleCommand command, StringBuilder outputBuffer)
+        {
+            var action = _actionRepository.GetAction(command.ActionId);
+            if (action == null)
+            {
+                outputBuffer.AppendLine(
+                    $"Unable to find action with matching action ID: {command.ActionId}"
+                );
+                return UniTask.CompletedTask;
+            }
+
+            UnitData? unit;
+            if (command.ActorCoord == null)
+                unit = _turnOrderer.CurrentUnit;
+            else if (!_readOnlyMap.TryGet(command.ActorCoord, out unit)) return UniTask.CompletedTask;
+
+            EvaluateSequence(new ActionCommand(action, unit, command.TargetCoords));
+
+            return UniTask.CompletedTask;
         }
     }
 }

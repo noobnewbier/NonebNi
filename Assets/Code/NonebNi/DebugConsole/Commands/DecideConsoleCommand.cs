@@ -1,5 +1,9 @@
-﻿using JetBrains.Annotations;
+﻿using System.Text;
+using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Decisions;
+using NonebNi.DebugConsole.Commands;
 using NonebNi.DebugConsole.Commands.Attributes;
 
 namespace NonebNi.DebugConsole.Commands
@@ -25,6 +29,34 @@ namespace NonebNi.DebugConsole.Commands
         {
             TargetCoords = targetCoords;
             ActionId = actionId;
+        }
+    }
+}
+
+namespace NonebNi.DebugConsole
+{
+    public partial class CommandHandler
+    {
+        private UniTask DoHandle(DecideConsoleCommand command, StringBuilder outputBuffer)
+        {
+            var actionId = command.ActionId;
+            var action = _actionRepository.GetAction(actionId);
+            if (action == null)
+            {
+                outputBuffer.AppendLine(
+                    $"Unable to find action with matching action ID: {actionId}"
+                );
+                return UniTask.CompletedTask;
+            }
+
+            _agentsService.OverrideDecision(
+                new ActionDecision(
+                    action,
+                    _turnOrderer.CurrentUnit,
+                    command.TargetCoords
+                )
+            );
+            return UniTask.CompletedTask;
         }
     }
 }
