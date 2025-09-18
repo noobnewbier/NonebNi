@@ -4,7 +4,7 @@ using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
 using StrongInject;
 
-namespace NonebNi.Main.Di
+namespace NonebNi.Main.Di.UI
 {
     [Register(typeof(CameraController), typeof(ICameraController))]
     public class CameraControllerModule

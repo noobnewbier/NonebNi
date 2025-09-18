@@ -2,7 +2,7 @@
 using StrongInject;
 using StrongInject.Modules;
 
-namespace NonebNi.Main.Di
+namespace NonebNi.Main.Di.Core
 {
     [
         RegisterModule(typeof(CollectionsModule)),

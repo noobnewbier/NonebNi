@@ -3,7 +3,7 @@ using NonebNi.Core.Decisions;
 using NonebNi.Core.FlowControl;
 using StrongInject;
 
-namespace NonebNi.Main.Di
+namespace NonebNi.Main.Di.Core
 {
     [RegisterModule(typeof(EffectEvaluatorsModule))]
     [Register(typeof(ActionCommandEvaluator), typeof(IActionCommandEvaluator))]

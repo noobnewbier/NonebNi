@@ -7,6 +7,7 @@ using StrongInject.Modules;
 
 namespace NonebNi.Main.Di
 {
+    //todo: what to do with this?
     [
         RegisterModule(typeof(CollectionsModule)),
         Register(typeof(SharedContextInitializer)),

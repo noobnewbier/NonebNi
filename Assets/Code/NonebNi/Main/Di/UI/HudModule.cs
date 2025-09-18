@@ -3,7 +3,7 @@ using NonebNi.Ui.ViewComponents.HexTooltip;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using StrongInject;
 
-namespace NonebNi.Main.Di
+namespace NonebNi.Main.Di.UI
 {
     [
         Register(typeof(Hud.Dependencies)),

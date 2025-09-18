@@ -1,11 +1,16 @@
 ﻿using System.Linq;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Factions;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
+using NonebNi.Main.Di.Core;
+using NonebNi.Main.Di.Debug;
+using NonebNi.Main.Di.UI;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
+using NonebNi.Ui.Debug;
 using NonebNi.Ui.Grids;
 using NonebNi.Ui.Tooltips;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
@@ -22,16 +27,11 @@ namespace NonebNi.Main.Di
     /// i got a feeling that I can just make it an IContainer of both core, ui and debug, this limits the amount of "fuck
     /// Editor needs Core's module for something"
     /// </summary>
-    [RegisterModule(typeof(AgentsModule))]
-    [RegisterModule(typeof(CameraControllerModule))]
-    [RegisterModule(typeof(CoordinateAndPositionServiceModule))]
-    [RegisterModule(typeof(LevelFlowControlModule))]
     [RegisterModule(typeof(UIModule))]
-    [RegisterModule(typeof(SharedContextModule))]
-    [Register(typeof(LevelUi), typeof(ILevelUi))]
-    [Register(typeof(TerrainMeshCreator), typeof(ITerrainMeshCreator))]
+    [RegisterModule(typeof(DebugModule))]
+    [RegisterModule(typeof(CoreModule))]
     [RegisterModule(typeof(ValueTupleModule))]
-    public partial class LevelContainer : IContainer<(ILevelFlowController, ILevelUi)>
+    public partial class LevelContainer : IAsyncContainer<(ILevelFlowController, ILevelUi, DebugTools)>
     {
         [Instance] private readonly IAgent[] _agents;
         [Instance] private readonly CinemachineCamera _camera;
@@ -40,7 +40,11 @@ namespace NonebNi.Main.Di
         [Instance] private readonly CinemachinePositionComposer _composer;
         [Instance] private readonly CameraControlSetting _config;
         [Instance] private readonly HexHighlightConfig _hexHighlightConfig;
+
         [Instance] private readonly Hud _hud;
+
+        //todo: put this into where they belong
+        [Instance] private readonly InfluenceHighlight _influenceHighlight;
         [Instance] private readonly InputActionAsset _inputAsset;
         [Instance] private readonly Camera _levelCamera; //todo: feels like it shouldn't be here
         [Instance] private readonly LevelData _levelData;
@@ -65,7 +69,8 @@ namespace NonebNi.Main.Di
             HexHighlightConfig hexHighlightConfig,
             ITooltipCanvas tooltipCanvas,
             CanvasRoot canvasRoot,
-            InputActionAsset inputAsset)
+            InputActionAsset inputAsset,
+            InfluenceHighlight influenceHighlight)
         {
             _config = config;
             _levelData = levelData;
@@ -80,6 +85,7 @@ namespace NonebNi.Main.Di
             _tooltipCanvas = tooltipCanvas;
             _canvasRoot = canvasRoot;
             _inputAsset = inputAsset;
+            _influenceHighlight = influenceHighlight;
             _camera = camera;
             _composer = composer;
             _agents = _levelData.Factions.Select(
@@ -93,6 +99,8 @@ namespace NonebNi.Main.Di
                 }
             ).ToArray();
         }
+
+        [Instance] private NonebAction[] Actions => ActionDatas.Actions;
 
         [Instance] private Faction[] Factions => _levelData.Factions;
         [Instance] private IMap Map => _levelData.Map;

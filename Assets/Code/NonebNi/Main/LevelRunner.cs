@@ -1,7 +1,9 @@
-﻿using NonebNi.Core.FlowControl;
+﻿using Cysharp.Threading.Tasks;
+using NonebNi.Core.FlowControl;
 using NonebNi.Core.Level;
 using NonebNi.Main.Di;
 using NonebNi.Terrain;
+using NonebNi.Ui.Debug;
 using NonebNi.Ui.Grids;
 using NonebNi.Ui.Tooltips;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
@@ -24,6 +26,7 @@ namespace NonebNi.Main
         [SerializeField] private TooltipCanvas tooltipCanvas = null!;
         [SerializeField] private CanvasRoot canvasRoot = null!;
         [SerializeField] private InputActionAsset inputActionAsset = null!;
+        [SerializeField] private InfluenceHighlight influenceHighlight = null!;
 
 
         [Header("Level Data"), SerializeField] private LevelDataSource levelDataSource = null!;
@@ -36,41 +39,50 @@ namespace NonebNi.Main
         public ILevelUi LevelUi { get; private set; } = null!;
         public LevelData? LevelData { get; private set; }
         public ILevelFlowController? LevelFlowController { get; private set; }
+        public DebugTools? DebugTools { get; private set; }
         public TerrainConfigData? TerrainConfig { get; private set; }
 
         private void Awake()
         {
-            LevelData = levelDataSource.GetData();
-            TerrainConfig = terrainConfig.CreateData();
+            Do().Forget();
+            return;
 
-            /*
-             * Note:
-             * this is all jank atm, we need to refactor this after we confirm ui works.
-             * either level container create level flow control which needs level UI
-             */
-            var levelContainer = new LevelContainer(
-                cameraControl.Config,
-                cameraControl,
-                cameraControl.Composer,
-                LevelData,
-                hud,
-                cameraControl.CinemachineCamera,
-                terrain,
-                TerrainConfig,
-                new TerrainMeshData(),
-                playerTurnMenu,
-                cameraControl.Camera,
-                hexHighlightConfig,
-                tooltipCanvas,
-                canvasRoot,
-                inputActionAsset
-            );
-            var (levelFlowController, levelUi) = levelContainer.Resolve().Value;
-            LevelFlowController = levelFlowController;
-            LevelUi = levelUi;
+            async UniTaskVoid Do()
+            {
+                LevelData = levelDataSource.GetData();
+                TerrainConfig = terrainConfig.CreateData();
 
-            levelFlowController.Run();
-            levelUi.Run();
+                /*
+                 * Note:
+                 * this is all jank atm, we need to refactor this after we confirm ui works.
+                 * either level container create level flow control which needs level UI
+                 */
+                var levelContainer = new LevelContainer(
+                    cameraControl.Config,
+                    cameraControl,
+                    cameraControl.Composer,
+                    LevelData,
+                    hud,
+                    cameraControl.CinemachineCamera,
+                    terrain,
+                    TerrainConfig,
+                    new TerrainMeshData(),
+                    playerTurnMenu,
+                    cameraControl.Camera,
+                    hexHighlightConfig,
+                    tooltipCanvas,
+                    canvasRoot,
+                    inputActionAsset,
+                    influenceHighlight
+                );
+                var (levelFlowController, levelUi, debugTools) = (await levelContainer.ResolveAsync()).Value;
+                DebugTools = debugTools;
+                LevelFlowController = levelFlowController;
+                LevelUi = levelUi;
+
+                levelFlowController.Run().Forget();
+                levelUi.Run();
+            }
         }
     }
 }
