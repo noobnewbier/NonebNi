@@ -12,7 +12,7 @@ namespace NonebNi.Core.FlowControl
 {
     public interface ILevelFlowController
     {
-        void Run();
+        UniTask Run();
         void ForcePlayEvent(LevelEvent levelEvent);
 
         #region Editor Console's dependencies
@@ -63,13 +63,7 @@ namespace NonebNi.Core.FlowControl
         private readonly IGameEventControl _gameEventControl;
         private readonly IActionOptionFinder _optionFinder;
 
-        public void Run()
-        {
-            //todo: at some point we need a way to kill it.
-            RunLevelFlow().Forget();
-        }
-
-        private async UniTask RunLevelFlow()
+        public async UniTask Run()
         {
             _gameEventControl.WriteEvent(new LevelEvent.GameStart());
 
@@ -90,7 +84,6 @@ namespace NonebNi.Core.FlowControl
                     var waitForUnitDecision = new LevelEvent.WaitForActiveUnitDecision(currentUnit);
                     _gameEventControl.WriteEvent(waitForUnitDecision);
 
-                    // ReSharper restore RedundantAssignment
                     var command = await AgentsService.GetAgentInput(currentUnit.FactionId);
                     var isDone = false;
                     var unitKeepActing = false;
