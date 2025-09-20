@@ -5,6 +5,7 @@ using UnityEngine.InputSystem.UI;
 
 namespace Noneb.UI.InputSystems
 {
+    //Note: the weird "event" system we had was to mimic the command stringly type button handling in frog, but make it typed.
     public class NonebInputSystem : IInputSystem
     {
         private readonly InputActionAsset _asset;
