@@ -1,10 +1,8 @@
-using NonebNi.Core.Actions;
 using NonebNi.DebugConsole;
 using NonebNi.Main;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
-using CommandHandler = NonebNi.DebugConsole.CommandHandler;
 
 namespace NonebNi.EditorScripting
 {
@@ -96,27 +94,8 @@ namespace NonebNi.EditorScripting
             var levelRunner = FindAnyObjectByType<LevelRunner>();
             if (levelRunner == null) return false;
 
-            var levelFlowController = levelRunner.LevelFlowController;
-            var levelData = levelRunner.LevelData;
-
-            if (levelFlowController == null || levelData == null) return false;
-
-            var commandsDataRepository = new CommandsDataRepository();
-            var actionRepository = new ActionRepository(ActionDatas.Actions);
-            var commandHandler = new CommandHandler(
-                levelFlowController.Evaluator,
-                levelData.Map,
-                commandsDataRepository,
-                levelFlowController.AgentsService,
-                levelFlowController.UnitTurnOrderer,
-                actionRepository,
-                levelFlowController
-            );
-            var parser = new ExpressionParser(commandsDataRepository);
-            var lexer = new TextLexer();
-            _console = new NonebDebugConsole(commandHandler, parser, lexer);
-
-            return true;
+            _console = levelRunner.DebugTools?.Console;
+            return _console != null;
         }
     }
 }
