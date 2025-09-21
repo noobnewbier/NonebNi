@@ -35,13 +35,25 @@ namespace NonebNi.Main
     ]
     public partial class LevelRunner : MonoBehaviour, IAsyncContainer<(ILevelFlowController, ILevelUi, DebugTools)>
     {
+        [Header("UI")]
+        [Instance, SerializeField] private Hud hud = null!;
+        [Instance, SerializeField] private Terrain terrain = null!;
+        [Instance(Options.AsImplementedInterfaces), SerializeField] private PlayerTurnMenu playerTurnMenu = null!;
+        [Instance, SerializeField] private HexHighlightConfig hexHighlightConfig = new();
+        [Instance(Options.AsImplementedInterfaces), SerializeField] private TooltipCanvas tooltipCanvas = null!;
+        [Instance, SerializeField] private CanvasRoot canvasRoot = null!;
+        [Instance, SerializeField] private InputActionAsset inputActionAsset = null!;
+        [Instance, SerializeField] private InfluenceHighlight influenceHighlight = null!;
+        [Instance, SerializeField] private CameraRunner cameraControl = null!;
+
+        [Header("Level Data")]
+        [Instance, SerializeField] private LevelDataSource levelDataSource = null!;
+        [Instance, SerializeField] private TerrainConfigSource terrainConfig = null!;
         [Instance] private LevelData _levelData = null!; //todo: do I need to this?
         [Instance] private TerrainConfigData? _terrainConfig;
 
         [Instance] private TerrainMeshData _terrainMeshData = null!;
-
-        [Instance]
-        private IAgent[] Agents =>
+        [Instance] private IAgent[] Agents =>
             _levelData.Factions.Select(f =>
                 {
                     IAgent agent = f.IsPlayerControlled ?
@@ -66,6 +78,7 @@ namespace NonebNi.Main
         private void Awake()
         {
             Do().Forget();
+
             return;
 
             async UniTaskVoid Do()
@@ -89,26 +102,5 @@ namespace NonebNi.Main
                 levelUi.Run();
             }
         }
-
-        #region Serialized Config
-
-        [Header("UI"), Instance, SerializeField]
-         private Hud hud = null!;
-
-        [Instance, SerializeField] private Terrain terrain = null!;
-        [Instance(Options.AsImplementedInterfaces), SerializeField] private PlayerTurnMenu playerTurnMenu = null!;
-        [Instance, SerializeField] private HexHighlightConfig hexHighlightConfig = new();
-        [Instance(Options.AsImplementedInterfaces), SerializeField] private TooltipCanvas tooltipCanvas = null!;
-        [Instance, SerializeField] private CanvasRoot canvasRoot = null!;
-        [Instance, SerializeField] private InputActionAsset inputActionAsset = null!;
-        [Instance, SerializeField] private InfluenceHighlight influenceHighlight = null!;
-        [Instance, SerializeField] private CameraRunner cameraControl = null!;
-
-        [Header("Level Data"), Instance, SerializeField]
-         private LevelDataSource levelDataSource = null!;
-
-        [Instance, SerializeField] private TerrainConfigSource terrainConfig = null!;
-
-        #endregion
     }
 }
