@@ -20,7 +20,7 @@ namespace Noneb.AI.Runtime
         //note: subgraph to group action planning, root node to return utility?
         //note: need an overall tactician/strategy for agent -> strategy decide what the team do -> agent does its part 
         private Node? _currentChild;
-        private UtilityFormula _utilityFormula;
+        private UtilityFormula _utilityFormula = null!;
 
         protected override Status OnStart()
         {
@@ -41,12 +41,10 @@ namespace Noneb.AI.Runtime
         {
             if (!Children.Any()) return null;
 
-            Dictionary<Node, float> nodeScores = new Dictionary<Node, float>();
+            var nodeScores = new Dictionary<Node, float>();
 
             foreach (var child in Children)
             {
-                if (child == null) continue;
-
                 if (child is not IUtilityNode utilityNode)
                 {
                     // negative 1 so any utility node is prioritized.
