@@ -36,7 +36,7 @@ namespace NonebNi.Core.AI
          * https://www.gdcvault.com/play/1018040/Architecture-Tricks-Managing-Behaviors-in
          * imap watch https://www.gdcvault.com/play/1025243/Spatial-Knowledge-Representation-through-Modular
          */
-        private readonly Dictionary<DataId<Faction>, HashSet<IInfluenceSource>> _influenceSources = new();
+        private readonly Dictionary<DataId<Faction>, HashSet<IInfluenceSource>> _influenceSources = new ();
         private readonly IReadOnlyMap _map;
 
         public InfluenceMap(IReadOnlyMap map)
@@ -59,7 +59,7 @@ namespace NonebNi.Core.AI
             var sources = _influenceSources.GetValueOrDefault(faction);
             if (sources?.Any() != true) return 0;
 
-            var maxScore = sources.Count; // we assume everything is normalized - i.e max score return by any source is 1.
+            var maxScore = sources.Count; // we assume everything is normalized - i.e. max score return by any source is 1.
             var score = sources.Sum(source => source.FindInfluence(coord));
 
             score /= maxScore;

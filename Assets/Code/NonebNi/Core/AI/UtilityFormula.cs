@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityUtils.Constants;
 using UnityUtils.Serialization;
 
-namespace Noneb.AI.Runtime
+namespace NonebNi.Core.AI
 {
     /// <summary>
     /// The sole reason that this is not in GraphToolkit is that I am too lazy.
@@ -24,7 +24,7 @@ namespace Noneb.AI.Runtime
 
         //todo: handle negative 1 -> where the choice should never be taken. or just a way to flag invalid choice.
         //Todo: something to flag that the tag isn't used by the code.
-        [SerializeField] private FormulaImp definitionRoot = new();
+        [SerializeField] private FormulaImp definitionRoot = new ();
 
         public float Calculate(Utility utility) => definitionRoot.Calculate(utility);
 
@@ -36,7 +36,7 @@ namespace Noneb.AI.Runtime
         private class FormulaImp
         {
             [SerializeField] private string tag = string.Empty;
-            [SerializeField] private SerializableDictionary<FormulaImp, float> childAndWeight = new();
+            [SerializeField] private SerializableDictionary<FormulaImp, float> childAndWeight = new ();
 
             public float Calculate(Utility utility)
             {
@@ -77,7 +77,7 @@ namespace Noneb.AI.Runtime
                 var label = string.IsNullOrWhiteSpace(tag) ?
                     "EMPTY" :
                     tag;
-                var child = childAndWeight.Select(pair => $"{pair.Key}_{pair.Value}");
+                var child = childAndWeight.Select(pair => $"{pair.Key.tag}_{pair.Value}");
                 var childString = string.Join("|", child);
                 return $"{label} - CHILD: {childString}";
             }

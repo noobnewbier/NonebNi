@@ -1,28 +1,40 @@
 ﻿using System.Collections.Generic;
 
-namespace Noneb.AI.Runtime
+namespace NonebNi.Core.AI
 {
     public class Utility
     {
+        public static readonly Utility Invalid = new ()
+        {
+            IsValid = false
+        };
         private readonly Dictionary<string, float> _scores;
 
         private Utility(Utility clone)
         {
-            _scores = new Dictionary<string, float>(clone.Scores);
+            _scores = new (clone.Scores);
         }
 
         public Utility()
         {
-            _scores = new Dictionary<string, float>();
+            _scores = new ();
         }
+
+        private bool IsValid { get; init; } = true;
 
         public IReadOnlyDictionary<string, float> Scores => _scores;
 
-
         public float this[string key]
         {
-            get => _scores.GetValueOrDefault(key);
-            set => _scores[key] = value;
+            get
+            {
+                if (!IsValid)
+                    // effectively turning an option to be so bad it would never be picked
+                    return -1;
+
+                return _scores.GetValueOrDefault(key);
+            }
+            private set => _scores[key] = value;
         }
 
         public static implicit operator Utility((string key, float value) tuple)
@@ -41,7 +53,6 @@ namespace Noneb.AI.Runtime
         public static Utility operator +(Utility left, Utility right)
         {
             var toReturn = new Utility(left);
-
 
             foreach (var (key, value) in right.Scores)
             {
