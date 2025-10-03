@@ -14,8 +14,7 @@ namespace NonebNi.Develop
         [SerializeField] private NonebViewBehaviour view = null!;
         [SerializeField] private GameObject stackRoot = null!;
 
-        private readonly Lazy<UnitData> _unitA = new(
-            () => new UnitData(
+        private readonly Lazy<UnitData> _unitA = new (() => new (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 Sprite.Create(Texture2D.blackTexture, Rect.zero, Vector2.zero),
@@ -36,8 +35,7 @@ namespace NonebNi.Develop
             )
         );
 
-        private readonly Lazy<UnitData> _unitB = new(
-            () => new UnitData(
+        private readonly Lazy<UnitData> _unitB = new (() => new (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 Sprite.Create(Texture2D.blackTexture, Rect.zero, Vector2.zero),
@@ -63,7 +61,7 @@ namespace NonebNi.Develop
         // ReSharper disable once Unity.IncorrectMethodSignature
         private async UniTaskVoid Start()
         {
-            _stack = new UIStack(stackRoot);
+            _stack = new (stackRoot);
             await _stack.Push(view);
         }
 

@@ -15,7 +15,7 @@ namespace NonebNi.Develop
     {
         [SerializeField] private TerrainConfigData terrainConfig = null!;
         [SerializeField] private HexHighlightConfig highlightConfig = null!;
-        private readonly List<Coordinate> _bulkingCoordinates = new();
+        private readonly List<Coordinate> _bulkingCoordinates = new ();
 
         private HexHighlighter _highlighter = null!;
         private bool _isBulkMode;
@@ -31,8 +31,8 @@ namespace NonebNi.Develop
         {
             _isInitialised = true;
 
-            _service = new CoordinateAndPositionService(terrainConfig);
-            _highlighter = new HexHighlighter(_service, highlightConfig, terrainConfig);
+            _service = new (terrainConfig);
+            _highlighter = new (_service, highlightConfig, terrainConfig);
             _map = new Map(10, 10);
         }
 
@@ -98,7 +98,7 @@ namespace NonebNi.Develop
             GUI.Label(rect, "Right Click to Remove");
             rect.y += 25;
 
-            GUI.Box(new Rect(startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
+            GUI.Box(new (startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
         }
 
         private void OnDrawGizmos()

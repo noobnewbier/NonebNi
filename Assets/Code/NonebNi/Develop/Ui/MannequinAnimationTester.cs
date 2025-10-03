@@ -50,7 +50,7 @@ namespace NonebNi.Develop
         private async UniTask WalkToTargetAndStop(Vector3 targetPos)
         {
             _cts?.Cancel();
-            _cts = new CancellationTokenSource();
+            _cts = new ();
             await control.WalkTo(_cts.Token, targetPos);
         }
 
@@ -59,7 +59,7 @@ namespace NonebNi.Develop
             var (success, pos) = TestScriptHelpers.FindMousePosInWorld(groundObject);
             if (!success) return (false, Vector3.zero);
 
-            return (true, new Vector3(pos.x, transform.position.y, pos.z));
+            return (true, new (pos.x, transform.position.y, pos.z));
         }
 
         private async UniTask PlayWrathStrikeAnimation()
@@ -79,7 +79,7 @@ namespace NonebNi.Develop
 
             private void OnEnable()
             {
-                _drawer = new NonebGUIDrawer(new SerializedObject(EditorData.instance));
+                _drawer = new (new (EditorData.instance));
                 _self = (MannequinAnimationTester)target;
             }
 

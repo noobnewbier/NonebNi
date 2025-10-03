@@ -34,9 +34,9 @@ namespace NonebNi.Develop
         [SerializeField] private GameObject stackRoot = null!;
         [SerializeField] private TerrainConfigData terrainConfigData = null!;
 
-        private readonly Lazy<UnitData> _unitA = new(() => CreateUnit("A"));
-        private readonly Lazy<UnitData> _unitB = new(() => CreateUnit("B"));
-        private readonly Lazy<UnitData> _unitC = new(() => CreateUnit("C"));
+        private readonly Lazy<UnitData> _unitA = new (() => CreateUnit("A"));
+        private readonly Lazy<UnitData> _unitB = new (() => CreateUnit("B"));
+        private readonly Lazy<UnitData> _unitC = new (() => CreateUnit("C"));
         private MockInputControl _control = null!;
         private UIStack _stack = null!;
 
@@ -45,7 +45,7 @@ namespace NonebNi.Develop
         private async UniTaskVoid Start()
         {
             var map = new MockMap(
-                new Dictionary<Coordinate, EntityData>
+                new()
                 {
                     [(3, 4)] = _unitA.Value,
                     [(1, 0)] = _unitB.Value,
@@ -55,12 +55,12 @@ namespace NonebNi.Develop
                 10
             );
             var orderer = new FakeUniTurnOrderer(_unitA.Value, _unitB.Value, _unitC.Value);
-            var playerAgent = new PlayerAgent(TestScriptHelpers.CreateFaction("fake-player"));
-            _control = new MockInputControl();
+            var playerAgent = new WaitForExternalInputAgent(TestScriptHelpers.CreateFaction("fake-player"));
+            _control = new ();
             var cameraController = new MockCameraController();
-            menu.Init(new PlayerTurnMenu.Dependencies(_control, cameraController, playerAgent, orderer));
+            menu.Init(new (_control, cameraController, new (playerAgent), orderer));
 
-            _stack = new UIStack(stackRoot);
+            _stack = new (stackRoot);
             await _stack.Push(view);
         }
 
@@ -73,7 +73,7 @@ namespace NonebNi.Develop
         }
 
         private static UnitData CreateUnit(string unitName) =>
-            new(
+            new (
                 Guid.NewGuid(),
                 new[] { ActionDatas.Bash, ActionDatas.Lure, ActionDatas.Shoot },
                 AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd"),
@@ -104,7 +104,7 @@ namespace NonebNi.Develop
 
             public FakeUniTurnOrderer(params UnitData[] unitsInOrder)
             {
-                _buffer = new CircularBuffer<UnitData>(unitsInOrder);
+                _buffer = new (unitsInOrder);
             }
 
             public IEnumerable<UnitData> UnitsInOrder => _buffer;
@@ -143,7 +143,7 @@ namespace NonebNi.Develop
                 _fakeMap = fakeMap;
                 _height = height;
                 _width = width;
-                _fakeReversedMap = new Dictionary<EntityData, Coordinate>();
+                _fakeReversedMap = new ();
                 foreach (var (key, value) in fakeMap) _fakeReversedMap[value] = key;
             }
 

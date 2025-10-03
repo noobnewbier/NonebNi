@@ -14,15 +14,15 @@ namespace NonebNi.Develop
         [SerializeField] private NonebViewBehaviour view = null!;
         [SerializeField] private GameObject stackRoot = null!;
 
-        private readonly Lazy<UnitData> _unitA = new(() => new UnitData("A"));
-        private readonly Lazy<UnitData> _unitB = new(() => new UnitData("B"));
-        private readonly Lazy<UnitData> _unitC = new(() => new UnitData("C"));
+        private readonly Lazy<UnitData> _unitA = new (() => new ("A"));
+        private readonly Lazy<UnitData> _unitB = new (() => new ("B"));
+        private readonly Lazy<UnitData> _unitC = new (() => new ("C"));
         private UIStack _stack;
 
         // ReSharper disable once Unity.IncorrectMethodSignature
         private async UniTaskVoid Start()
         {
-            _stack = new UIStack(stackRoot);
+            _stack = new (stackRoot);
             await _stack.Push(view);
         }
 

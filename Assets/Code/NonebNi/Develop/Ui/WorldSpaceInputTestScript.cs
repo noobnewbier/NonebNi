@@ -31,7 +31,7 @@ namespace NonebNi.Develop
         [SerializeField] private GameObject fakeEnemyObj = null!;
         [SerializeField] private InputActionAsset inputActionAsset = null!;
 
-        private readonly Plane _plane = new(Vector3.up, Vector3.zero);
+        private readonly Plane _plane = new (Vector3.up, Vector3.zero);
 
 
         private CircularBuffer<NonebAction> _actionBuffer = null!;
@@ -50,10 +50,10 @@ namespace NonebNi.Develop
         {
             _isInitialised = true;
             var inputSystem = new NonebInputSystem(inputActionAsset);
-            _coordService = new CoordinateAndPositionService(terrainConfig);
-            _map = new Map(20, 20);
-            _highlighter = new HexHighlighter(_coordService, highlightConfig, terrainConfig);
-            _actionBuffer = new CircularBuffer<NonebAction>(ActionDatas.Lure, ActionDatas.Shoot, ActionDatas.Bash);
+            _coordService = new (terrainConfig);
+            _map = new (20, 20);
+            _highlighter = new (_coordService, highlightConfig, terrainConfig);
+            _actionBuffer = new (ActionDatas.Lure, ActionDatas.Shoot, ActionDatas.Bash);
             var fakeFactionService = new FakeFactionService();
             var targetFinder = new TargetFinder(_map, fakeFactionService);
             var pathFindingService = new PathfindingService(_map, fakeFactionService);
@@ -67,7 +67,7 @@ namespace NonebNi.Develop
             var enemyCoord = _coordService.NearestCoordinateForPoint(fakeEnemyObj.transform.position);
             _map.Put(enemyCoord, enemy);
 
-            _control = new PlayerTurnWorldSpaceInputControl(inputSystem, _coordService, terrainConfig, viewCamera, _map, _highlighter, targetFinder, pathFindingService, fakeValidator);
+            _control = new (inputSystem, _coordService, terrainConfig, viewCamera, _map, _highlighter, targetFinder, pathFindingService, fakeValidator);
         }
 
         private void OnGUI()
@@ -112,7 +112,7 @@ namespace NonebNi.Develop
                 }
             }
 
-            GUI.Box(new Rect(startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
+            GUI.Box(new (startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
         }
 
         private void OnDrawGizmos()
@@ -179,7 +179,7 @@ namespace NonebNi.Develop
         {
             public bool IsAlly(DataId<Faction> a, DataId<Faction> b) => false;
 
-            public Faction FindFaction(DataId<Faction> factionId) => new(factionId, false);
+            public Faction FindFaction(DataId<Faction> factionId) => new (factionId, false);
         }
 
         #endregion

@@ -31,7 +31,7 @@ namespace NonebNi.Develop
             var (upBound, downBound, rightBound, leftBound) = GetCameraParameters();
             var config = new CameraConfig(setting, downBound, leftBound, rightBound, upBound);
             var inputSystem = new NonebInputSystem(inputActionAsset);
-            _cameraController = new CameraController(config, controlledCamera, composer, Mock.Of<ICoordinateAndPositionService>(), Mock.Of<IReadOnlyMap>(), inputSystem);
+            _cameraController = new (config, controlledCamera, composer, Mock.Of<ICoordinateAndPositionService>(), Mock.Of<IReadOnlyMap>(), inputSystem);
         }
 
         private void Update()

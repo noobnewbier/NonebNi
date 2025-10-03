@@ -20,7 +20,7 @@ namespace NonebNi.Develop
         {
             var element = panel.FindOwner();
             var view = element!.OwnerView;
-            _stack = new UIStack(stackRoot);
+            _stack = new (stackRoot);
 
             await _stack.Push(view!);
 
