@@ -14,6 +14,8 @@ namespace NonebNi.Core.Decisions
     public interface IActionOptionFinder
     {
         IEnumerable<ICommand> FindComboOptions(EffectContext context);
+        IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit);
+        IEnumerable<ICommand> FindOptionsForCommand(UnitData actorUnit, NonebAction action);
     }
 
     public class ActionOptionFinder : IActionOptionFinder
@@ -53,39 +55,42 @@ namespace NonebNi.Core.Decisions
             }
         }
 
-        private IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit)
+        public IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit)
         {
-            var actions = actorUnit.Actions;
-            var affordableActions = actions.Where(
-                a =>
-                {
-                    var cost = _commandEvaluator.FindActionCostInCurrentState(a);
-                    return actorUnit.CanPayCosts(cost);
-                }
-            );
-            var toReturn = new List<ICommand>();
-
-            // all possible action commands that an actor can do.
-            foreach (var action in affordableActions)
+            /*
+             * All options of an actor = All commands it can perform = All actions it can performs * where it can perform on
+             */
+            foreach (var action in actorUnit.Actions)
             {
-                var targetableRanges = action.TargetRequests
-                    .Select(request => _targetFinder.FindRange(actorUnit, request))
-                    .Select(range => range.Where(t => t.status is RangeStatus.Targetable))
-                    .Select(range => range.Select(t => t.coord))
-                    .Select(range => range.ToArray())
-                    .ToArray();
+                var validCommands = FindOptionsForCommand(actorUnit, action);
 
-                var rangeCombinations = targetableRanges.FindAllCombinations();
-                var decisions = rangeCombinations.Select(coords => new ActionDecision(action, actorUnit, coords));
-                var validCommands = decisions
-                    .Select(d => _decisionValidator.ValidateDecision(d))
-                    .Where(t => t.error == null)
-                    .Select(t => t.command);
-
-                toReturn.AddRange(validCommands);
+                foreach (var validCommand in validCommands)
+                {
+                    yield return validCommand;
+                }
             }
+        }
 
-            return toReturn;
+        public IEnumerable<ICommand> FindOptionsForCommand(UnitData actorUnit, NonebAction action)
+        {
+            var cost = _commandEvaluator.FindActionCostInCurrentState(action);
+            if (!actorUnit.CanPayCosts(cost)) return Enumerable.Empty<ICommand>();
+
+            var targetableRanges = action.TargetRequests
+                .Select(request => _targetFinder.FindRange(actorUnit, request))
+                .Select(range => range.Where(t => t.status is RangeStatus.Targetable))
+                .Select(range => range.Select(t => t.coord))
+                .Select(range => range.ToArray())
+                .ToArray();
+
+            var rangeCombinations = targetableRanges.FindAllCombinations();
+            var decisions = rangeCombinations.Select(coords => new ActionDecision(action, actorUnit, coords));
+            var validCommands = decisions
+                .Select(d => _decisionValidator.ValidateDecision(d))
+                .Where(t => t.error == null)
+                .Select(t => t.command);
+
+            return validCommands;
         }
 
         //todo: this is the sort of shit we need automated testing for 

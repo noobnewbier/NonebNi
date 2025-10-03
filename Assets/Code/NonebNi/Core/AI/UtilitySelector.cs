@@ -8,6 +8,7 @@ using NonebNi.Core.Decisions;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.GameContexts;
 using Unity.Behavior;
+using Unity.Logging;
 using Unity.Properties;
 using UnityEngine;
 using UnityUtils;
