@@ -1,5 +1,6 @@
-﻿namespace NonebNi.Ui.UIContexts
+﻿namespace NonebNi.Core.GameContexts
 {
+    //todo: keyed injection?
     /// <summary>
     /// This is weird, but I can't come up with a way to do this locator shenanigans easily
     /// </summary>
@@ -14,7 +15,7 @@
 
         public void Init()
         {
-            foreach (var context in _totInit) UIContext.Set(context.GetType(), context);
+            foreach (var context in _totInit) GameContext.Set(context.GetType(), context);
         }
     }
 }

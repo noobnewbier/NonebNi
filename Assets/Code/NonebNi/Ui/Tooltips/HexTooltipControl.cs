@@ -3,10 +3,10 @@ using Cysharp.Threading.Tasks;
 using Noneb.UI.InputSystems;
 using Noneb.UI.View;
 using NonebNi.Core.Entities;
+using NonebNi.Core.GameContexts;
 using NonebNi.Core.Maps;
 using NonebNi.Ui.Inputs;
 using NonebNi.Ui.Tooltips;
-using NonebNi.Ui.UIContexts;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ namespace NonebNi.Ui.ViewComponents.HexTooltip
         [SerializeField] private float interruptThreshold = 1f;
         [SerializeField] private float dismissThreshold = 1f;
         [SerializeField] private float delay = 0.75f;
-        private CancellationTokenSource _cts = new();
+        private CancellationTokenSource _cts = new ();
 
         private Dependencies _deps = null!;
 
@@ -33,7 +33,7 @@ namespace NonebNi.Ui.ViewComponents.HexTooltip
 
         public async UniTask OnViewInit()
         {
-            _deps = await UIContext.Get<Dependencies>();
+            _deps = await GameContext.Get<Dependencies>();
         }
 
         public UniTask OnViewEnter(INonebView? previousView, INonebView currentView)

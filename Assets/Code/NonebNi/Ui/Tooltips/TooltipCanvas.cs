@@ -2,8 +2,8 @@
 using Cysharp.Threading.Tasks;
 using Noneb.UI.InputSystems;
 using Noneb.UI.View;
+using NonebNi.Core.GameContexts;
 using NonebNi.Ui.Inputs;
-using NonebNi.Ui.UIContexts;
 using UnityEngine;
 using UnityUtils.Pooling;
 
@@ -32,7 +32,7 @@ namespace NonebNi.Ui.Tooltips
         public async UniTask OnViewInit()
         {
             _textTooltipPool = new BehaviourPool<TextTooltip>(textTooltipTemplate);
-            _deps = await UIContext.Get<Dependencies>();
+            _deps = await GameContext.Get<Dependencies>();
         }
 
         public UniTask OnViewTearDown()

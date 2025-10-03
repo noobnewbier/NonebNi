@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.Element;
+using NonebNi.Core.GameContexts;
 using NonebNi.Ui.Attributes;
-using NonebNi.Ui.UIContexts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -40,7 +40,7 @@ namespace NonebNi.Ui.Tooltips
 
         public async UniTask OnInit(CancellationToken ct)
         {
-            _deps = await UIContext.Get<Dependencies>(ct);
+            _deps = await GameContext.Get<Dependencies>(ct);
         }
 
         public void OnPointerClick(PointerEventData eventData)

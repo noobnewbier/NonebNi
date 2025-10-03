@@ -6,20 +6,16 @@ using Unity.Logging;
 
 namespace NonebNi.Core.Agents
 {
-    public interface IPlayerAgent : IAgent
-    {
-        //todo: eventually maybe there should be a "brain"(ai brain, vs player brain), and we can only have one type of agent which would be nice 
-        void SetDecision(IDecision decision);
-    }
-
+    //todo: reintroduce iplayeragent so the di works again, we cannot have ID based injection and for shit we know in compile time spending over an hour pondering about is too much,
+    //you need to get shit done if you want your game to be finished! Or just use a container if that makes you feel better so at least you don't have to change your inheritance hierarchy.
     /// <summary>
     ///     An <see cref="IAgent" /> that delegates its decision making to outside(e.g console, UI) input.
     /// </summary>
-    public class PlayerAgent : IPlayerAgent
+    public class WaitForExternalInputAgent : IWaitForExternalInputAgent
     {
         private UniTaskCompletionSource<IDecision?>? _tcs;
 
-        public PlayerAgent(Faction faction)
+        public WaitForExternalInputAgent(Faction faction)
         {
             Faction = faction;
         }
@@ -31,7 +27,7 @@ namespace NonebNi.Core.Agents
             //if it breaks, well you got what you deserved
             if (_tcs?.UnsafeGetStatus() == UniTaskStatus.Pending)
             {
-                // if we are already waiting, just use the same one dude.
+                // if we are already waiting, just use the same one dude. NOTE: we also did this in BehaviourTreeAgent
                 ct.Register(() => _tcs.TrySetResult(null)); // still make sure the ct is propagated though
                 return _tcs.Task;
             }

@@ -1,5 +1,5 @@
 ﻿using Noneb.UI.InputSystems;
-using NonebNi.Ui.UIContexts;
+using NonebNi.Core.GameContexts;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -31,7 +31,7 @@ namespace NonebNi.Ui.Inputs
 
         public override Vector2 Process(Vector2 value, InputControl control)
         {
-            var deps = UIContext.FindImmediate<Dependencies>();
+            var deps = GameContext.FindImmediate<Dependencies>();
             if (deps?.InputSystem == null) return value;
 
             if (deps.InputSystem.IsMouseOverUi) return Vector2.zero;

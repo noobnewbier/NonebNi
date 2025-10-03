@@ -7,6 +7,11 @@ using static NonebNi.Core.Actions.TargetRestriction;
 
 namespace NonebNi.Core.Actions
 {
+    //todo: back need to work
+    //todo: cancel action arming
+    //todo: indicate action step.
+    //todo: when no action point - grey out action, or maybe tooltip/sound
+    //todo: checkt not be working as intended. time to whip out our automatic test before it's too late.
     /*
      * TODO:
      * Future self - sort out the animation, find a way to test it, and move on.
@@ -31,7 +36,7 @@ namespace NonebNi.Core.Actions
         //TODO: remember - "likely" all actions, including the ones from the base game should go into the mods. i don't really want to make exceptions for stuffs like moving(base-gameplay)/debugging(utilities tool)...
         private static readonly Range WeaponBasedRange = new WeaponBasedRange();
 
-        public static readonly NonebAction Move = new(
+        public static readonly NonebAction Move = new (
             "move",
             "move",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -51,7 +56,7 @@ namespace NonebNi.Core.Actions
             "Moving to target position"
         );
 
-        public static readonly NonebAction Bash = new(
+        public static readonly NonebAction Bash = new (
             "bash",
             "bash",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -65,7 +70,7 @@ namespace NonebNi.Core.Actions
             new KnockBackEffect(1)
         );
 
-        public static readonly NonebAction Shoot = new(
+        public static readonly NonebAction Shoot = new (
             "shoot",
             "shoot",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -79,7 +84,7 @@ namespace NonebNi.Core.Actions
             new DamageEffect("shoot", new StatBasedDamage(1f, StatId.Focus))
         );
 
-        public static readonly NonebAction PowerShot = new(
+        public static readonly NonebAction PowerShot = new (
             "power-shot",
             "power-shot",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -94,7 +99,7 @@ namespace NonebNi.Core.Actions
             new KnockBackEffect(1)
         );
 
-        public static readonly NonebAction Strike = new(
+        public static readonly NonebAction Strike = new (
             "strike",
             "strike",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -108,7 +113,7 @@ namespace NonebNi.Core.Actions
             new DamageEffect("strike", new StatBasedDamage(1f, StatId.Strength))
         );
 
-        public static readonly NonebAction Swing = new(
+        public static readonly NonebAction Swing = new (
             "swing",
             "swing",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -124,7 +129,7 @@ namespace NonebNi.Core.Actions
             new KnockBackEffect(1)
         );
 
-        public static readonly NonebAction Slash = new(
+        public static readonly NonebAction Slash = new (
             "slash",
             "slash",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -138,7 +143,7 @@ namespace NonebNi.Core.Actions
             new DamageEffect("slash", new StatBasedDamage(1f, StatId.Focus))
         );
 
-        public static readonly NonebAction TacticalAdvance = new(
+        public static readonly NonebAction TacticalAdvance = new (
             "tactical-advance",
             "tactical-advance",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -152,8 +157,7 @@ namespace NonebNi.Core.Actions
             new MoveEntityEffect() //todo: path finding, and change how the range works?
         );
 
-        //todo: clear path might not be working as intended. time to whip out our automatic test before it's too late.
-        public static readonly NonebAction Lure = new(
+        public static readonly NonebAction Lure = new (
             "lure",
             "lure",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -167,7 +171,7 @@ namespace NonebNi.Core.Actions
             new PullEntityEffect()
         );
 
-        public static readonly NonebAction Vault = new(
+        public static readonly NonebAction Vault = new (
             "vault",
             "vault",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -181,7 +185,7 @@ namespace NonebNi.Core.Actions
             new MoveOverEffect()
         );
 
-        public static readonly NonebAction Grapple = new(
+        public static readonly NonebAction Grapple = new (
             "grapple",
             "grapple",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
@@ -197,7 +201,7 @@ namespace NonebNi.Core.Actions
             new MoveEntityEffect()
         );
 
-        public static readonly NonebAction Rotate = new(
+        public static readonly NonebAction Rotate = new (
             "rotate",
             "rotate",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),

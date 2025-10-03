@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NonebNi.Core.Actions;
+﻿using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Factions;
@@ -25,9 +24,5 @@ namespace NonebNi.Main.Di.Core
         Register(typeof(FactionService), typeof(IFactionService)),
         RegisterModule(typeof(CommandEvaluationModule))
     ]
-    public class LevelFlowControlModule
-    {
-        [Factory]
-        public static IPlayerAgent ProvidePlayerAgent(IAgent[] agents) => agents.OfType<IPlayerAgent>().First();
-    }
+    public class LevelFlowControlModule { }
 }

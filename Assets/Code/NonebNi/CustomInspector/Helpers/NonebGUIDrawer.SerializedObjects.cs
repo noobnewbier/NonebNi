@@ -8,9 +8,9 @@ namespace NonebNi.CustomInspector
 {
     public partial class NonebGUIDrawer
     {
-        private readonly Dictionary<SerializedProperty, Dictionary<string, SerializedProperty?>> _nestedPropertyCache = new();
-        private readonly Dictionary<string, SerializedProperty?> _propertyCache = new();
-        private readonly Dictionary<string, ReorderableList> _reorderableListCache = new();
+        private readonly Dictionary<SerializedProperty, Dictionary<string, SerializedProperty?>> _nestedPropertyCache = new ();
+        private readonly Dictionary<string, SerializedProperty?> _propertyCache = new ();
+        private readonly Dictionary<string, ReorderableList> _reorderableListCache = new ();
         private readonly SerializedObject _serializedObject;
 
         public void DrawProperty(string propertyPath, string label = "", bool isCompact = false)
@@ -58,6 +58,8 @@ namespace NonebNi.CustomInspector
             // I can/will regret later
             DrawNestedProperty("editorData", dataFieldName, label);
         }
+
+        public SerializedProperty? FindProperty(string propertyName) => GetOrFindProperty(propertyName);
 
         private SerializedProperty? GetOrFindProperty(string propertyName)
         {

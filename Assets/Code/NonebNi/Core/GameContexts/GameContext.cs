@@ -4,15 +4,15 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Logging;
 
-namespace NonebNi.Ui.UIContexts
+namespace NonebNi.Core.GameContexts
 {
     /// <summary>
     /// KISS - atm it provides dependencies globally(basically Locator),
     /// but we might move on to a more sophisticated approach later where context can be gameobject/scene independent.
     /// </summary>
-    public static class UIContext
+    public static class GameContext
     {
-        private static readonly Dictionary<Type, object> Datas = new();
+        private static readonly Dictionary<Type, object> Datas = new ();
 
         public static void Set<T>(T data) where T : class
         {
@@ -38,7 +38,9 @@ namespace NonebNi.Ui.UIContexts
             return typedData;
         }
 
-        public static async UniTask<T> Get<T>(CancellationToken ct = default)
+        public static async UniTask<T> Get<T>() => await Get<T>(CancellationToken.None);
+
+        public static async UniTask<T> Get<T>(CancellationToken ct)
         {
             while (true)
             {
