@@ -5,6 +5,7 @@ using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using Unity.Logging;
@@ -33,11 +34,13 @@ namespace NonebNi.Core.Actions
     {
         private readonly IFactionService _factionService;
         private readonly IReadOnlyMap _map;
+        private readonly IPathfindingService _pathfindingService;
 
-        public TargetFinder(IReadOnlyMap map, IFactionService factionService)
+        public TargetFinder(IReadOnlyMap map, IFactionService factionService, IPathfindingService pathfindingService)
         {
             _map = map;
             _factionService = factionService;
+            _pathfindingService = pathfindingService;
         }
 
         public IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request)
@@ -153,6 +156,13 @@ namespace NonebNi.Core.Actions
 
                     return (true, null);
                 }
+                case TargetRestriction.HasPath:
+                {
+                    var (isPathExist, _) = _pathfindingService.FindPath(caster, targetCoord);
+                    if (!isPathExist) return (false, new RestrictionCheckFailedReason.NoPath());
+
+                    return (true, null);
+                }
                 case TargetRestriction.ClearPath:
                 {
                     if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
@@ -255,10 +265,14 @@ namespace NonebNi.Core.Actions
             public record TargetNotOnMap : RestrictionCheckFailedReason;
 
             public record NotInMap : RestrictionCheckFailedReason;
+
+            public record NoPath : RestrictionCheckFailedReason;
         }
 
 
         #region Target finding
+
+        //todo: need to change find targets so it can deal with friendly damage while still warning player it's generally a bad idea?
 
         public IEnumerable<IActionTarget> FindTargets(
             EntityData actor,

@@ -46,7 +46,7 @@ namespace NonebNi.Core.Actions
             },
             new[]
             {
-                new TargetRequest(NonOccupied, Single, new StatBasedRange(1f, StatId.Speed))
+                new TargetRequest(NonOccupied | HasPath, Single, new StatBasedRange(1f, StatId.Speed))
             },
             new Effect[]
             {
