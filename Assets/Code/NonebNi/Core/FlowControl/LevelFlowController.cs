@@ -26,9 +26,6 @@ namespace NonebNi.Core.FlowControl
         #endregion
     }
 
-    //todo: next big work - combo
-    //todo: combo ui - might be able to reuse quite a bit.
-
     //todo: could use an error message panel/tooltip even just for debugging
     //todo: fatigue work upwards only in the ui - it's easier to keep the rest of the maths consistent(going downwards)
     //todo: action point system? make it play with speed or sth idk
@@ -42,6 +39,9 @@ namespace NonebNi.Core.FlowControl
     //todo: at some point a better logging system would be nice - but not necessary...?
     public class LevelFlowController : ILevelFlowController
     {
+        private readonly IGameEventControl _gameEventControl;
+        private readonly IActionOptionFinder _optionFinder;
+
         public LevelFlowController(
             IActionCommandEvaluator evaluator,
             IUnitTurnOrderer unitTurnOrderer,
@@ -59,9 +59,6 @@ namespace NonebNi.Core.FlowControl
         public IAgentsService AgentsService { get; }
         public IActionCommandEvaluator Evaluator { get; }
         public IUnitTurnOrderer UnitTurnOrderer { get; }
-
-        private readonly IGameEventControl _gameEventControl;
-        private readonly IActionOptionFinder _optionFinder;
 
         public async UniTask Run()
         {

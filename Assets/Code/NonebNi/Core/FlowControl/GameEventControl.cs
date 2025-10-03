@@ -50,6 +50,7 @@ namespace NonebNi.Core.FlowControl
 
         public IUniTaskAsyncEnumerable<LevelEvent> Subscribe(CancellationToken ct)
         {
+            //Note: consider supporting this by creating channels on demand. then we can have our debug ui component...?
             if (_isSubscribed) throw new InvalidOperationException("Already Subscribed - currently this can only handle one consumer");
 
             _isSubscribed = true;
