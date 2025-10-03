@@ -4,6 +4,7 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Factions;
 using NonebNi.Core.FlowControl;
+using NonebNi.Core.GameContexts;
 using NonebNi.Core.Level;
 using NonebNi.Core.Maps;
 using NonebNi.Main.Di.Core;
@@ -39,7 +40,7 @@ namespace NonebNi.Main
         [Instance, SerializeField] private Hud hud = null!;
         [Instance, SerializeField] private Terrain terrain = null!;
         [Instance(Options.AsImplementedInterfaces), SerializeField] private PlayerTurnMenu playerTurnMenu = null!;
-        [Instance, SerializeField] private HexHighlightConfig hexHighlightConfig = new();
+        [Instance, SerializeField] private HexHighlightConfig hexHighlightConfig = new ();
         [Instance(Options.AsImplementedInterfaces), SerializeField] private TooltipCanvas tooltipCanvas = null!;
         [Instance, SerializeField] private CanvasRoot canvasRoot = null!;
         [Instance, SerializeField] private InputActionAsset inputActionAsset = null!;
@@ -49,20 +50,13 @@ namespace NonebNi.Main
         [Header("Level Data")]
         [Instance, SerializeField] private LevelDataSource levelDataSource = null!;
         [Instance, SerializeField] private TerrainConfigSource terrainConfig = null!;
+
+        // Non serialized fields.
+        [Instance] private IAgent[] _agents = null!;
         [Instance] private LevelData _levelData = null!; //todo: do I need to this?
-        [Instance] private TerrainConfigData? _terrainConfig;
-
+        [Instance] private KeyedInject<DiKeys.PlayerAgent, IWaitForExternalInputAgent> _playerAgent = null!;
+        [Instance] private TerrainConfigData _terrainConfig = null!;
         [Instance] private TerrainMeshData _terrainMeshData = null!;
-        [Instance] private IAgent[] Agents =>
-            _levelData.Factions.Select(f =>
-                {
-                    IAgent agent = f.IsPlayerControlled ?
-                        new PlayerAgent(f) :
-                        new DummyAgent(f);
-
-                    return agent;
-                }
-            ).ToArray();
 
         //Note: camera stuffs - can/should I combine them?
         [Instance] private CinemachineCamera CinemachineCamera => cameraControl.CinemachineCamera;
@@ -86,6 +80,16 @@ namespace NonebNi.Main
                 _terrainMeshData = new TerrainMeshData();
                 _levelData = levelDataSource.GetData();
                 _terrainConfig = terrainConfig.CreateData();
+                _agents = _levelData.Factions.Select(f =>
+                    {
+                        IAgent agent = f.IsPlayerControlled ?
+                            new WaitForExternalInputAgent(f) :
+                            new DummyAgent(f);
+
+                        return agent;
+                    }
+                ).ToArray();
+                _playerAgent = new (_agents.OfType<IWaitForExternalInputAgent>().First(a => a.Faction.IsPlayerControlled));
 
                 /*
                  * Note:

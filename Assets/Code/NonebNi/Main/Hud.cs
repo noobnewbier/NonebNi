@@ -6,6 +6,7 @@ using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.FlowControl;
+using NonebNi.Core.GameContexts;
 using NonebNi.Core.Units;
 using NonebNi.Ui.Attributes;
 using NonebNi.Ui.ViewComponents.Combos;
@@ -124,12 +125,30 @@ namespace NonebNi.Main
             }
         }
 
-        public record Dependencies(
-            PlayerTurnMenu.Dependencies PlayerTurnMenuDeps,
-            ComboActionSelectionMenu.Dependencies ComboActionSelectionMenuDeps,
-            ComboUnitSelectionMenu.Dependencies ComboUnitSelectionMenuDeps,
-            IPlayerAgent Agent,
-            IUnitTurnOrderer UnitTurnOrderer,
-            HexTooltipControl.Dependencies HexTooltipControlDeps);
+        public record Dependencies
+        {
+            public Dependencies(
+                PlayerTurnMenu.Dependencies PlayerTurnMenuDeps,
+                ComboActionSelectionMenu.Dependencies ComboActionSelectionMenuDeps,
+                ComboUnitSelectionMenu.Dependencies ComboUnitSelectionMenuDeps,
+                KeyedInject<DiKeys.PlayerAgent, IWaitForExternalInputAgent> Agent,
+                IUnitTurnOrderer UnitTurnOrderer,
+                HexTooltipControl.Dependencies HexTooltipControlDeps)
+            {
+                this.PlayerTurnMenuDeps = PlayerTurnMenuDeps;
+                this.ComboActionSelectionMenuDeps = ComboActionSelectionMenuDeps;
+                this.ComboUnitSelectionMenuDeps = ComboUnitSelectionMenuDeps;
+                this.Agent = Agent.Value;
+                this.UnitTurnOrderer = UnitTurnOrderer;
+                this.HexTooltipControlDeps = HexTooltipControlDeps;
+            }
+
+            public PlayerTurnMenu.Dependencies PlayerTurnMenuDeps { get; init; }
+            public ComboActionSelectionMenu.Dependencies ComboActionSelectionMenuDeps { get; init; }
+            public ComboUnitSelectionMenu.Dependencies ComboUnitSelectionMenuDeps { get; init; }
+            public IWaitForExternalInputAgent Agent { get; init; }
+            public IUnitTurnOrderer UnitTurnOrderer { get; init; }
+            public HexTooltipControl.Dependencies HexTooltipControlDeps { get; init; }
+        }
     }
 }

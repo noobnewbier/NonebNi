@@ -6,6 +6,7 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.FlowControl;
+using NonebNi.Core.GameContexts;
 using NonebNi.Core.Units;
 using NonebNi.Ui.Cameras;
 using UnityEngine;
@@ -37,9 +38,9 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         //TODO: at some point this might go somewhere but I am not too fuzzed about a testing UI
         [SerializeField] private Button endTurnButton = null!;
 
-        private IPlayerAgent _agent = null!;
+        private IWaitForExternalInputAgent _agent = null!;
         private ICameraController _cameraController = null!;
-        private CancellationTokenSource _cts = new();
+        private CancellationTokenSource _cts = new ();
 
         private IPlayerTurnMenu.Data? _data;
         private IDecisionFlowControl _decisionFlowControl = null!;
@@ -49,7 +50,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         {
             _decisionFlowControl = dependencies.DecisionFlowControl;
             _cameraController = dependencies.CameraController;
-            _agent = dependencies.Agent;
+            _agent = dependencies.Agent.Value;
             _unitTurnOrderer = dependencies.UnitTurnOrderer;
 
             endTurnButton.onClick.AddListener(EndTurn);
@@ -171,6 +172,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             Do().Forget();
         }
 
-        public record Dependencies(IDecisionFlowControl DecisionFlowControl, ICameraController CameraController, IPlayerAgent Agent, IUnitTurnOrderer UnitTurnOrderer);
+        public record Dependencies(IDecisionFlowControl DecisionFlowControl, ICameraController CameraController, KeyedInject<DiKeys.PlayerAgent, IWaitForExternalInputAgent> Agent, IUnitTurnOrderer UnitTurnOrderer);
     }
 }
