@@ -55,8 +55,8 @@ namespace NonebNi.Develop
             _highlighter = new (_coordService, highlightConfig, terrainConfig);
             _actionBuffer = new (ActionDatas.Lure, ActionDatas.Shoot, ActionDatas.Bash);
             var fakeFactionService = new FakeFactionService();
-            var targetFinder = new TargetFinder(_map, fakeFactionService);
             var pathFindingService = new PathfindingService(_map, fakeFactionService);
+            var targetFinder = new TargetFinder(_map, fakeFactionService, pathFindingService);
             var fakeValidator = new FakeDecisionValidator();
 
             _unitData = TestScriptHelpers.CreateUnit("TestPlayer", "player");
