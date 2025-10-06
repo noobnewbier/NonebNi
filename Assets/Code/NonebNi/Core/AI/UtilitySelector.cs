@@ -21,9 +21,10 @@ namespace NonebNi.Core.AI
     /// - Way to extend blackboard editor - asmdef linking. Extend TypedVariableElement? Not sure if it's gonna work.
     /// </summary>
     [Serializable, GeneratePropertyBag, NodeDescription("UtilitySelector", story: "Pick child according to [utilityFormula]", category: "Flow", id: "9c02501079be008cffe3e53c73538a98")]
-    public class UtilitySelector : Composite
+    public partial class UtilitySelector : Composite
     {
         [SerializeReference] public BlackboardVariable<UtilityFormula> utilityFormula = new ();
+        private BehaviourTreeAgent.Context? _context;
         // only implementing highest for now. it's easiest to debug
 
         //todo:selector strategy - highest, weighted, weighted and trim
@@ -46,6 +47,9 @@ namespace NonebNi.Core.AI
 
         protected override Status OnUpdate()
         {
+            _context = this.GetContext();
+            if (_context == null) return Status.Running;
+
             {
                 var (success, value) = _dependenciesFetcher.GetResult();
                 if (!success) return Status.Running;
@@ -63,7 +67,8 @@ namespace NonebNi.Core.AI
                     new ActionDecision(actionCommand);
             }
 
-            _deps.Agent.SetDecision(decision);
+
+            _context.Agent.SetDecision(decision);
             return Status.Success;
         }
 
@@ -71,9 +76,9 @@ namespace NonebNi.Core.AI
         {
             var unit = _deps.UnitTurnOrderer.CurrentUnit;
 
-            if (unit.FactionId != _deps.Agent.Faction.Id)
+            if (unit.FactionId != _context!.Agent.Faction.Id)
             {
-                Log.Error($"This should've never happened, you are asking agent for {_deps.Agent.Faction.Id} to control unit({unit.Name}) from {_deps.Agent.Faction.Id}");
+                Log.Error($"This should've never happened, you are asking agent for {_context.Agent.Faction.Id} to control unit({unit.Name}) from {_context.Agent.Faction.Id}");
                 return null;
             }
 
@@ -146,6 +151,6 @@ namespace NonebNi.Core.AI
             }
         }
 
-        public record Dependencies(BehaviourTreeAgent Agent, IUnitTurnOrderer UnitTurnOrderer) { }
+        public record Dependencies(IUnitTurnOrderer UnitTurnOrderer);
     }
 }
