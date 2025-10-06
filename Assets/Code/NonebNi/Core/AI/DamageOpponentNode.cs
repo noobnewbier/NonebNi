@@ -25,6 +25,9 @@ namespace NonebNi.Core.AI
     {
         public async IAsyncEnumerable<(ActionCommand command, Utility utility)> FindActionAndUtility(UnitData controlledUnit)
         {
+            var agentContext = this.GetContext();
+            if (agentContext == null) yield break;
+
             var deps = await GameContext.Get<Dependencies>();
 
             //todo: in the future we want to be able to customize which action to use here.
@@ -33,14 +36,12 @@ namespace NonebNi.Core.AI
              * - Perhaps instead of just calculating damage we should aggregate actions output so it consider more than damage... Return the move to the selector with their associated utility?
              * - We can do this later, for now just make it work. Besides it might make tweaking more difficult...?
              */
-            var agentContext = this.GetContext();
-            if (agentContext == null) yield break;
 
             // finding the damage we can deal on all options
             var actions = controlledUnit.Actions;
             var commandDamages = FindCommandAndDamages(controlledUnit, actions, deps);
 
-            // normalize the damage against the highest damage we can deal, and return as utility 
+            // normalize the damage against the highest damage we can deal, and return as utility - the divide by highest damage bit kind of threw me off...?
             var highestDamage = commandDamages.Values.Max();
             foreach (var (command, damage) in commandDamages)
             {
