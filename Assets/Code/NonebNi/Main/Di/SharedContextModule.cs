@@ -16,7 +16,9 @@ namespace NonebNi.Main.Di
         Register(typeof(TooltipCanvas.Dependencies), typeof(object)),
         Register(typeof(HexTooltipControl.Dependencies), typeof(object)),
         Register(typeof(ZeroVector2IfOverUIProcessor.Dependencies), typeof(object)),
-        Register(typeof(DamageOpponentNode.Dependencies), typeof(object))
+        Register(typeof(DamageOpponentNode.Dependencies), typeof(object)),
+        Register(typeof(UtilitySelector.Dependencies), typeof(object)),
+        Register(typeof(EngageNode.Dependencies), typeof(object))
     ]
     public class SharedContextModule { }
 }
