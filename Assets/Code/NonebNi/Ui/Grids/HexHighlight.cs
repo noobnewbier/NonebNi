@@ -1,5 +1,5 @@
-﻿using NonebNi.Terrain;
-using NonebNi.Ui.Attributes;
+﻿using NonebNi.Core.Attributes;
+using NonebNi.Terrain;
 using UnityEngine;
 
 namespace NonebNi.Ui.Grids

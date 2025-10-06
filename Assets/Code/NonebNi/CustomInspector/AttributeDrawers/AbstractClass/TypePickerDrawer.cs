@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using NonebNi.Core.Attributes;
 using NonebNi.CustomInspector.AbstractClass;
-using NonebNi.Ui.Attributes;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -11,7 +11,7 @@ namespace NonebNi.CustomInspector.AttributeDrawers.AbstractClass
     [CustomPropertyDrawer(typeof(TypePickerAttribute))]
     public class TypePickerDrawer : PropertyDrawer
     {
-        private static readonly Dictionary<SerializedObject, Dictionary<string, TypePicker>> PickersCache = new();
+        private static readonly Dictionary<SerializedObject, Dictionary<string, TypePicker>> PickersCache = new ();
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {

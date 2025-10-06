@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.Element;
+using NonebNi.Core.Attributes;
 using NonebNi.Core.GameContexts;
-using NonebNi.Ui.Attributes;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

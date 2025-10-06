@@ -1,5 +1,5 @@
 ﻿using Noneb.UI.View;
-using NonebNi.Ui.Attributes;
+using NonebNi.Core.Attributes;
 using UnityEngine;
 
 namespace NonebNi.Main

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NonebNi.Ui.Attributes
+namespace NonebNi.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     public class CallOnEditorEnabled : Attribute

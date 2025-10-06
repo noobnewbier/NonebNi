@@ -1,5 +1,5 @@
-﻿using NonebNi.Core.Stats;
-using NonebNi.Ui.Attributes;
+﻿using NonebNi.Core.Attributes;
+using NonebNi.Core.Stats;
 using TMPro;
 using Unity.Logging;
 using UnityEngine;
