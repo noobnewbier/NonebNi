@@ -3,26 +3,26 @@ using System.Linq;
 using System.Reflection;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
-using NonebNi.Ui.Attributes;
+using NonebNi.Core.Attributes;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils;
 
 namespace NonebNi.CustomInspector
 {
-    [CustomEditor(typeof(MonoBehaviour), true, isFallback = true)]
+    [CustomEditor(typeof(Object), true, isFallback = true)]
     public class NonebUniversalInspector : Editor
     {
-        private IEnumerable<(MethodInfo method, CallOnEditorEnabled attribute)> _calledOnEnabledMethod = Enumerable.Empty<(MethodInfo method, CallOnEditorEnabled attribute)>();
+        private IEnumerable<(MethodInfo method, CallOnEditorEnabledAttribute attribute)> _calledOnEnabledMethod = Enumerable.Empty<(MethodInfo method, CallOnEditorEnabledAttribute attribute)>();
         private NonebGUIDrawer _editorDataDrawer = null!;
         private NonebGUIDrawer _mainDrawer = null!;
-        private MonoBehaviour _self = null!;
+        private Object _self = null!;
 
         private void OnEnable()
         {
-            _mainDrawer = new NonebGUIDrawer(serializedObject);
-            _editorDataDrawer = new NonebGUIDrawer(new SerializedObject(EditorData.instance));
-            _self = (MonoBehaviour)target;
+            _mainDrawer = new (serializedObject);
+            _editorDataDrawer = new (new (EditorData.instance));
+            _self = target;
 
             CallOnEditorEnabled();
         }
@@ -31,7 +31,7 @@ namespace NonebNi.CustomInspector
         {
             if (Application.isPlaying) return;
 
-            _calledOnEnabledMethod = ReflectionUtils.GetMethodsByAttribute<CallOnEditorEnabled>(target.GetType());
+            _calledOnEnabledMethod = ReflectionUtils.GetMethodsByAttribute<CallOnEditorEnabledAttribute>(target.GetType());
             foreach (var (method, attribute) in _calledOnEnabledMethod) method.Invoke(_self, attribute.Parameters);
         }
 
@@ -44,7 +44,7 @@ namespace NonebNi.CustomInspector
             }
 
             _mainDrawer.Update();
-            _mainDrawer.DrawDefaultInspector(this);
+            _mainDrawer.DrawNonebInspector(this);
             _mainDrawer.Apply();
 
             _editorDataDrawer.Update();

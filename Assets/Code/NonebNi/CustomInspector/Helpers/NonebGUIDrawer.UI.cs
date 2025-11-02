@@ -7,7 +7,7 @@ namespace NonebNi.CustomInspector
 {
     public partial class NonebGUIDrawer
     {
-        private readonly Dictionary<string, bool> _foldoutStates = new();
+        private readonly Dictionary<string, bool> _foldoutStates = new ();
 
         public NonebGUIDrawer(SerializedObject serializedObject)
         {
@@ -52,6 +52,33 @@ namespace NonebNi.CustomInspector
         {
             var rect = GetIndentedRect(label, NonebGUIStyle.Hint);
             GUI.Label(rect, label, NonebGUIStyle.Hint);
+        }
+
+        public bool DrawNonebInspector(Editor editor)
+        {
+            bool flag;
+            using (new LocalizationGroup(editor.target))
+            {
+                // Copied from DoDrawDefaultInspector and changed content of for loop
+                EditorGUI.BeginChangeCheck();
+                var serializedObj = editor.serializedObject;
+                serializedObj.UpdateIfRequiredOrScript();
+                var iterator = serializedObj.GetIterator();
+                for (var enterChildren = true; iterator.NextVisible(enterChildren); enterChildren = false)
+                {
+                    if (iterator.propertyPath.StartsWith("editorData")) continue;
+
+                    using (new EditorGUI.DisabledScope("m_Script" == iterator.propertyPath))
+                    {
+                        EditorGUILayout.PropertyField(iterator, true);
+                    }
+                }
+
+                serializedObj.ApplyModifiedProperties();
+                flag = EditorGUI.EndChangeCheck();
+            }
+
+            return flag;
         }
 
         public bool DrawDefaultInspector(Editor editor) => DoDrawDefaultInspector(editor);

@@ -9,7 +9,7 @@ namespace Noneb.UI.Editor.Animation
     [CustomPropertyDrawer(typeof(AnimationData))]
     public class AnimationDataDrawer : PropertyDrawer
     {
-        private static readonly Dictionary<string, AnyTypeAnimatorParameterPicker> PickersCache = new();
+        private static readonly Dictionary<string, AnyTypeAnimatorParameterPicker> PickersCache = new ();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -50,7 +50,7 @@ namespace Noneb.UI.Editor.Animation
                     foldoutRect.width = EditorGUIUtility.labelWidth;
                     property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, GUIContent.none);
 
-                    pickerRect = NonebEditorUtils.ShiftRect(pickerRect, NonebEditorUtils.FoldoutIconWidth);
+                    pickerRect = NonebEditorGUI.ShiftRect(pickerRect, NonebEditorGUI.FoldoutIconWidth);
                 }
 
                 parameterPicker.Draw(pickerRect, nameProperty, typeProperty);

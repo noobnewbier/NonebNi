@@ -35,7 +35,7 @@ namespace NonebNi.CustomInspector.CustomDrawers
                         .Where(a => a.Effects.OfType<DamageEffect>().Any())
                         .Select(a => a.Id);
                 },
-                "Apply Damage Anim Id",
+                new ("Apply Damage Anim Id"),
                 _animIdInput
             );
         }

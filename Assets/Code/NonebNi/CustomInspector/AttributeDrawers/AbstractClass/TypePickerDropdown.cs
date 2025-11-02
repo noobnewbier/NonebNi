@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Logging;
 using UnityEditor.IMGUI.Controls;
-using UnityEngine;
 using UnityUtils;
 
 namespace NonebNi.CustomInspector.AbstractClass
@@ -18,7 +17,7 @@ namespace NonebNi.CustomInspector.AbstractClass
         public TypePickerDropdown(Type rootType, AdvancedDropdownState state) : base(state)
         {
             _rootType = rootType;
-            minimumSize = new Vector2(200, 200);
+            minimumSize = new (200, 200);
         }
 
         public event Action<Type?>? NewTypeSelected;
@@ -35,7 +34,6 @@ namespace NonebNi.CustomInspector.AbstractClass
 
         private IEnumerable<AdvancedDropdownItem> CreateItem(TypeHierarchy hierarchy)
         {
-            //TODO: finish this so everything is typed and this is actually used
             var type = hierarchy.Value;
             var root = new TypePickerItem(type);
 

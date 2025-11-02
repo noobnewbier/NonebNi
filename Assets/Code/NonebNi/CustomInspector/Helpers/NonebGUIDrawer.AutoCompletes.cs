@@ -9,7 +9,7 @@ namespace NonebNi.CustomInspector
 {
     public partial class NonebGUIDrawer
     {
-        private readonly Dictionary<string, AutoCompleteField> _autoCompleteFieldsCache = new();
+        private readonly Dictionary<string, AutoCompleteField> _autoCompleteFieldsCache = new ();
 
         public void DrawAutoCompleteProperty(string propertyPath, Func<IEnumerable<string>> autoCompleteOptionsFactory, string label = "")
         {
@@ -72,11 +72,11 @@ namespace NonebNi.CustomInspector
             {
                 const string errorFieldKey = ",InvalidPropertyPath,";
                 if (!_autoCompleteFieldsCache.TryGetValue(errorFieldKey, out var errorField))
-                    _autoCompleteFieldsCache[errorFieldKey] = errorField = new AutoCompleteField(
+                    _autoCompleteFieldsCache[errorFieldKey] = errorField = new (
                         null,
                         null,
-                        () => Array.Empty<string>(),
-                        "ERROR_NO_PROPERTY",
+                        Array.Empty<string>,
+                        new ("ERROR_NO_PROPERTY"),
                         "cannot find property - should neve get here!"
                     );
 

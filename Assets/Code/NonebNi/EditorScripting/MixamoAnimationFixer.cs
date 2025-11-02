@@ -51,7 +51,7 @@ namespace NonebNi.EditorScripting
             try
             {
                 AssetDatabase.StartAssetEditing();
-                foreach (var clipAsSubAsset in NonebEditorUtils.LoadAllAssetsInFolder<AnimationClip>(_directory))
+                foreach (var clipAsSubAsset in NonebEditorGUI.LoadAllAssetsInFolder<AnimationClip>(_directory))
                 {
                     var mainAssetPath = AssetDatabase.GetAssetPath(clipAsSubAsset);
                     if (!AssetDatabase.IsSubAsset(clipAsSubAsset)) continue;
@@ -73,11 +73,11 @@ namespace NonebNi.EditorScripting
 
         private void ExtractAnimation()
         {
-            using (new NonebEditorUtils.AssetDatabaseEditingScope())
+            using (new NonebEditorGUI.AssetDatabaseEditingScope())
             {
                 if (!AssetDatabase.IsValidFolder(TargetFolder)) AssetDatabase.CreateFolder(_directory, "output");
 
-                foreach (var asset in NonebEditorUtils.LoadAllMainAssetsInFolder(_directory))
+                foreach (var asset in NonebEditorGUI.LoadAllMainAssetsInFolder(_directory))
                 {
                     var fbx = AssetDatabase.GetAssetPath(asset);
                     ExtractAnimFromFbx(fbx, $"{_directory}/output");

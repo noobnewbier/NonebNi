@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using NonebNi.Core.Attributes;
-using NonebNi.CustomInspector.AbstractClass;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.AttributeDrawers.AbstractClass
+namespace NonebNi.CustomInspector.AttributeDrawers
 {
-    [CustomPropertyDrawer(typeof(TypePickerAttribute))]
-    public class TypePickerDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(AutoCompleteFieldAttribute))]
+    public class AutoCompleteFieldDrawer : PropertyDrawer
     {
-        private static readonly Dictionary<SerializedObject, Dictionary<string, TypePicker>> PickersCache = new ();
+        //todo: finish this
+        private static readonly Dictionary<SerializedObject, Dictionary<SerializedProperty, AutoCompleteField>> DrawerCache = new ();
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -24,8 +24,8 @@ namespace NonebNi.CustomInspector.AttributeDrawers.AbstractClass
         {
             #region Init
 
-            var type = fieldInfo.FieldType;
-            var typePicker = GetOrCreatePicker(property, type, label);
+            var typedAttribute = attribute as AutoCompleteFieldAttribute;
+            var fieldDrawer = GetOrCreateField(property, typedAttribute, label);
 
             #endregion
 
@@ -44,8 +44,7 @@ namespace NonebNi.CustomInspector.AttributeDrawers.AbstractClass
                 property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, GUIContent.none);
             }
 
-            typePicker.Draw(pickerRect, property);
-
+            fieldDrawer.OnGUI(pickerRect);
 
             if (property.isExpanded)
                 using (new EditorGUI.IndentLevelScope())
@@ -57,13 +56,16 @@ namespace NonebNi.CustomInspector.AttributeDrawers.AbstractClass
                 }
         }
 
-        private static TypePicker GetOrCreatePicker(SerializedProperty property, Type type, GUIContent label)
+        //todo: this doesn't flag malformed input -> tag doesn't exist doesn't go red. 
+        private static AutoCompleteField GetOrCreateField(SerializedProperty property, AutoCompleteFieldAttribute? attribute, GUIContent label)
         {
-            if (!PickersCache.TryGetValue(property.serializedObject, out var cache)) PickersCache[property.serializedObject] = cache = new Dictionary<string, TypePicker>();
+            if (attribute == null) return new (_ => { }, _ => { }, Array.Empty<string>, new ("ERR: FAILED INIT"), "NOT FUNCTIONING");
 
-            if (!cache.TryGetValue(property.propertyPath, out var picker)) cache[property.propertyPath] = picker = new TypePicker(type, label);
+            if (!DrawerCache.TryGetValue(property.serializedObject, out var cache)) DrawerCache[property.serializedObject] = cache = new ();
 
-            return picker;
+            if (!cache.TryGetValue(property, out var field)) cache[property] = field = new (property, attribute.OptionsFactory, label: label);
+
+            return field;
         }
     }
 }

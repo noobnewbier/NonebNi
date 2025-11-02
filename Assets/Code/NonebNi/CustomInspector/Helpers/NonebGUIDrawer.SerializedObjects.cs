@@ -68,7 +68,7 @@ namespace NonebNi.CustomInspector
                 targetProperty = _serializedObject.FindProperty(propertyName);
                 if (targetProperty == null)
                 {
-                    var backingFieldPath = NonebEditorUtils.GetPropertyBindingPath(propertyName);
+                    var backingFieldPath = NonebEditorGUI.GetPropertyBindingPath(propertyName);
                     targetProperty = _serializedObject.FindProperty(backingFieldPath);
                 }
 
@@ -87,7 +87,7 @@ namespace NonebNi.CustomInspector
                 targetProperty = nestedProperty.FindPropertyRelative(propertyName);
                 if (targetProperty == null)
                 {
-                    var backingFieldPath = NonebEditorUtils.GetPropertyBindingPath(propertyName);
+                    var backingFieldPath = NonebEditorGUI.GetPropertyBindingPath(propertyName);
                     targetProperty = nestedProperty.FindPropertyRelative(backingFieldPath);
                 }
 

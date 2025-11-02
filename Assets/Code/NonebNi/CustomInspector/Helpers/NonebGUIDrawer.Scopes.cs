@@ -12,7 +12,7 @@ namespace NonebNi.CustomInspector
         /// <summary>
         /// Not/can't deal with flow layout atm.
         /// </summary>
-        private readonly Stack<LayoutGroupType> _layoutGroupStack = new();
+        private readonly Stack<LayoutGroupType> _layoutGroupStack = new ();
 
         private LayoutGroupType CurrentLayoutGroupType
         {
@@ -48,10 +48,10 @@ namespace NonebNi.CustomInspector
 
         public IDisposable DisabledScope(bool isDisabled) => new EditorGUI.DisabledScope(isDisabled);
         public IDisposable IndentScope(int indent = 1) => new EditorGUI.IndentLevelScope(indent);
-        public IDisposable HandlesColorScope(Color color) => new NonebEditorUtils.HandlesColorScope(color);
-        public IDisposable GizmosColorScope(Color color) => new NonebEditorUtils.GizmosColorScope(color);
-        public IDisposable EditorLabelWidthScope(string targetLabel) => new NonebEditorUtils.EditorLabelWidthScope(targetLabel);
-        public IDisposable AssetDatabaseEditingScope() => new NonebEditorUtils.AssetDatabaseEditingScope();
+        public IDisposable HandlesColorScope(Color color) => new NonebEditorGUI.HandlesColorScope(color);
+        public IDisposable GizmosColorScope(Color color) => new NonebEditorGUI.GizmosColorScope(color);
+        public IDisposable EditorLabelWidthScope(string targetLabel) => new NonebEditorGUI.EditorLabelWidthScope(targetLabel);
+        public IDisposable AssetDatabaseEditingScope() => new NonebEditorGUI.AssetDatabaseEditingScope();
 
         private enum LayoutGroupType
         {

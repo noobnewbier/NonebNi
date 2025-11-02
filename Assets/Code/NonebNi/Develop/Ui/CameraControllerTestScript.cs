@@ -52,7 +52,7 @@ namespace NonebNi.Develop
         private void OnDrawGizmos()
         {
             //Too lazy to do this properly but if we need to change this more than 3 times we will refactor: current count=0
-            using (new NonebEditorUtils.HandlesColorScope(Color.red))
+            using (new NonebEditorGUI.HandlesColorScope(Color.red))
             {
                 // with our approach the y-size doesn't mean much does it...?
                 var size = mapRadius * 2 - setting.BufferToClampingEdge * 2;

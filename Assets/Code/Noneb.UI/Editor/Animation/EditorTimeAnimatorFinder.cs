@@ -39,7 +39,7 @@ namespace Noneb.UI.Editor.Animation
                 }
                 else
                 {
-                    animator = NonebEditorUtils.FindPropertyObjectReferenceInSameDepth<Animator>(property, animatorName);
+                    animator = NonebEditorGUI.FindPropertyObjectReferenceInSameDepth<Animator>(property, animatorName);
                 }
             }
 
