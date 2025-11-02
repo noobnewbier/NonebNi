@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Unity.Logging;
 using UnityEngine;
 
 namespace Noneb.Tags.Runtime
@@ -16,17 +15,6 @@ namespace Noneb.Tags.Runtime
 
         internal NonebTag(string name)
         {
-            if (!IsNameValid(name, out var message))
-            {
-                /*
-                 * Note:
-                 * Ideally we would want to do the same for the inspector but this is good enough for now.
-                 * There's benefit doing here as well given we can create tags in runtime and this catches those cases where inspector validation cannot
-                 */
-                Log.Error($"Invalid name for tag \'{name}\': {message}");
-                name = string.Empty;
-            }
-
             Name = name;
         }
 
