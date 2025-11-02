@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Noneb.Tags.Runtime;
 
 namespace NonebNi.Core.AI
 {
@@ -8,7 +9,7 @@ namespace NonebNi.Core.AI
         {
             IsValid = false
         };
-        private readonly Dictionary<string, float> _scores;
+        private readonly Dictionary<NonebTag, float> _scores;
 
         private Utility(Utility clone)
         {
@@ -22,9 +23,9 @@ namespace NonebNi.Core.AI
 
         private bool IsValid { get; init; } = true;
 
-        public IReadOnlyDictionary<string, float> Scores => _scores;
+        public IReadOnlyDictionary<NonebTag, float> Scores => _scores;
 
-        public float this[string key]
+        public float this[NonebTag key]
         {
             get
             {
@@ -37,7 +38,7 @@ namespace NonebNi.Core.AI
             private set => _scores[key] = value;
         }
 
-        public static implicit operator Utility((string key, float value) tuple)
+        public static implicit operator Utility((NonebTag key, float value) tuple)
         {
             var toReturn = new Utility
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Tags.Runtime;
 using Unity.Logging;
 using UnityEngine;
 using UnityUtils.Constants;
@@ -35,7 +36,7 @@ namespace NonebNi.Core.AI
         [Serializable]
         private class FormulaImp
         {
-            [SerializeField] private string tag = string.Empty;
+            [SerializeField] private NonebTag tag = string.Empty;
             [SerializeField] private SerializableDictionary<FormulaImp, float> childAndWeight = new ();
 
             public float Calculate(Utility utility)
@@ -75,7 +76,7 @@ namespace NonebNi.Core.AI
             public override string ToString()
             {
                 var label = string.IsNullOrWhiteSpace(tag) ?
-                    "EMPTY" :
+                    NonebTag.None :
                     tag;
                 var child = childAndWeight.Select(pair => $"{pair.Key.tag}_{pair.Value}");
                 var childString = string.Join("|", child);
