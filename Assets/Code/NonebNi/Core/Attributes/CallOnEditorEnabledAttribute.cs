@@ -3,11 +3,11 @@
 namespace NonebNi.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public class CallOnEditorEnabled : Attribute
+    public class CallOnEditorEnabledAttribute : Attribute
     {
         public readonly object[] Parameters;
 
-        public CallOnEditorEnabled(params object[] parameters)
+        public CallOnEditorEnabledAttribute(params object[] parameters)
         {
             Parameters = parameters;
         }
