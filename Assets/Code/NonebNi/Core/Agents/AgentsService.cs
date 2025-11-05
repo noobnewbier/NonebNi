@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -8,7 +9,7 @@ using Unity.Logging;
 
 namespace NonebNi.Core.Agents
 {
-    public interface IAgentsService
+    public interface IAgentsService : IDisposable
     {
         void OverrideDecision(IDecision decision);
         UniTask<ICommand> GetAgentInput(string factionId);
@@ -59,6 +60,12 @@ namespace NonebNi.Core.Agents
 
             _overridingDecision = decision;
             _getDecisionCts.Cancel();
+        }
+
+        public void Dispose()
+        {
+            _getDecisionCts?.Dispose();
+            foreach (var agent in _agents) agent.Dispose();
         }
 
         private async UniTask<IDecision?> GetAgentDecision(string factionId)
