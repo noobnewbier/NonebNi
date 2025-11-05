@@ -18,6 +18,7 @@ using NonebNi.Ui.Tooltips;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using StrongInject;
 using StrongInject.Modules;
+using Unity.Behavior;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -50,6 +51,7 @@ namespace NonebNi.Main
         [Header("Level Data")]
         [Instance, SerializeField] private LevelDataSource levelDataSource = null!;
         [Instance, SerializeField] private TerrainConfigSource terrainConfig = null!;
+        [Instance, SerializeField] private BehaviorGraph aiBehaviourGraph = null!;
 
         // Non serialized fields.
         [Instance] private IAgent[] _agents = null!;
@@ -84,7 +86,7 @@ namespace NonebNi.Main
                     {
                         IAgent agent = f.IsPlayerControlled ?
                             new WaitForExternalInputAgent(f) :
-                            new DummyAgent(f);
+                            new BehaviourTreeAgent(f, aiBehaviourGraph);
 
                         return agent;
                     }
