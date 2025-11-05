@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Logging;
+using UnityEngine;
 
 namespace NonebNi.Core.GameContexts
 {
@@ -12,7 +13,14 @@ namespace NonebNi.Core.GameContexts
     /// </summary>
     public static class GameContext
     {
-        private static readonly Dictionary<Type, object> Datas = new ();
+        private static Dictionary<Type, object> Datas = new ();
+
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void Init()
+        {
+            Datas = new ();
+        }
 
         public static void Set<T>(T data) where T : class
         {
