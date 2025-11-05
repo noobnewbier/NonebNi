@@ -7,6 +7,8 @@ using NonebNi.Core.Effects;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.GameContexts;
 using NonebNi.Core.Units;
+using Unity.Behavior;
+using Unity.Properties;
 using Action = Unity.Behavior.Action;
 
 namespace NonebNi.Core.AI
@@ -21,6 +23,7 @@ namespace NonebNi.Core.AI
     /// affected.
     /// If you want to take killing blow into account go combine with other nodes and use formula's tag to achieve this.
     /// </summary>
+    [Serializable, GeneratePropertyBag, NodeDescription(nameof(DamageOpponentNode), story: "Damage Opponent", category: "Action", id: "a24d459035a78eb983a32c0ed565744d")]
     public class DamageOpponentNode : Action, IUtilityNode
     {
         public async IAsyncEnumerable<(ActionCommand command, Utility utility)> FindActionAndUtility(UnitData controlledUnit)
