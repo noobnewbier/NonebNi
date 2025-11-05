@@ -12,7 +12,7 @@ namespace Noneb.Tags.Editor
 
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        public static void Init()
+        private static void Init()
         {
             _context = new ();
         }

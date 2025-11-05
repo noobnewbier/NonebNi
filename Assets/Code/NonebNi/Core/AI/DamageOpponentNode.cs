@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
@@ -49,7 +50,7 @@ namespace NonebNi.Core.AI
             foreach (var (command, damage) in commandDamages)
             {
                 var normalizedDamage = damage / highestDamage;
-                yield return (command, ("total-damage", normalizedDamage));
+                yield return (command, (UtilityTag.TotalDamage, normalizedDamage));
             }
         }
 
