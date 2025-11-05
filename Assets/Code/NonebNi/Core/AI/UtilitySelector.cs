@@ -42,20 +42,21 @@ namespace NonebNi.Core.AI
             _selectTaskRunner = new (SelectBestAction);
             _dependenciesFetcher = new (GameContext.Get<Dependencies>);
 
-            return Status.Success;
+            return Status.Running; //todo: second decision getting reset and never breaks through -> ended up stucking in start.
         }
 
         protected override Status OnUpdate()
         {
             _context = this.GetContext();
             if (_context == null) return Status.Running;
-
             {
                 var (success, value) = _dependenciesFetcher.GetResult();
                 if (!success) return Status.Running;
 
                 _deps = value!;
             }
+
+            if (!_context.Agent.IsWaitingDecision) return Status.Running;
 
             IDecision decision;
             {
