@@ -35,7 +35,19 @@ namespace NonebNi.Core.AI
 
                 return _scores.GetValueOrDefault(key);
             }
-            private set => _scores[key] = value;
+
+            /*
+             * Note:
+             * NaN is treated as 0, it's okay most of the time, as we can get a NaN when:
+             * - 0/0 -> in which case treating it as nothing is a safe bet
+             * - 0 mult/div with infinity -> which we can still treat it as zero
+             * - any num +-NaN -> in which case we want to take whatever the non-NaN amount and work with it.
+             *
+             * So it's really just more of an empirically okay kind of situation, I can regret later if me not logging a warning is a wrong decision
+             */
+            private set => _scores[key] = float.IsNaN(value) ?
+                0 :
+                value;
         }
 
         public static implicit operator Utility((NonebTag key, float value) tuple)
