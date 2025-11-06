@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
+using NonebNi.Core.Coordinates;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Effects;
+using NonebNi.Core.Factions;
 using NonebNi.Core.GameContexts;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Units;
@@ -44,22 +46,25 @@ namespace NonebNi.Core.AI
 
             // finding the damage we can deal on all options
             var actions = controlledUnit.Actions;
-            var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, actions, deps);
+            var enemyCoords = deps.Map.GetAllUnits()
+                                  .Where(u => !deps.FactionService.IsAlly(controlledUnit.FactionId, u.FactionId))
+                                  .Select(u => deps.Map.Find(u))
+                                  .ToArray();
+            var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, enemyCoords, actions, deps);
 
             var minDistDiff = commandDistances.Values.Min();
             var maxDistDiff = commandDistances.Values.Max();
             foreach (var (command, distDiff) in commandDistances)
             {
                 var score = 1 - Mathf.InverseLerp(minDistDiff, maxDistDiff, distDiff);
-                yield return (command, (UtilityTag.DistanceEngagement, score));
+                yield return (command, (UtilityTag.DistanceEngagement, score)); //todo: sth is wrong here.
             }
         }
 
-        private Dictionary<ActionCommand, int> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, NonebAction[] actions, Dependencies deps)
+        private Dictionary<ActionCommand, int> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, Coordinate[] enemyCoords, NonebAction[] actions, Dependencies deps)
         {
             var actionDistanceDiff = new Dictionary<ActionCommand, int>();
 
-            var actorCoord = deps.Map.Find(controlledUnit);
             foreach (var action in actions)
             {
                 //ignoring MoveOver/Swap for now - those are a bit too complicated and unnecessary for prototype 
@@ -71,7 +76,7 @@ namespace NonebNi.Core.AI
                 {
                     //This doesn't care about obstacles atm, feels off... We will add the complexity when we need to.
                     var targetCoord = command.TargetCoords.First(); // can't work without this, if we don't have one something else is buggered.
-                    var dist = targetCoord.DistanceTo(actorCoord);
+                    var dist = enemyCoords.Select(c => targetCoord.DistanceTo(c)).Min();
                     actionDistanceDiff[command] = Mathf.Abs(preferredDistance.Value - dist);
                 }
             }
@@ -79,6 +84,6 @@ namespace NonebNi.Core.AI
             return actionDistanceDiff;
         }
 
-        public record Dependencies(IReadOnlyMap Map, IActionOptionFinder OptionFinder);
+        public record Dependencies(IReadOnlyMap Map, IActionOptionFinder OptionFinder, IFactionService FactionService);
     }
 }
