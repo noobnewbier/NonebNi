@@ -39,11 +39,20 @@ namespace NonebNi.Core.GameContexts
             var data = Datas.GetValueOrDefault(typeof(T));
             if (data is not T typedData)
             {
-                Log.Error("How the hell did you even end up here");
+                Log.Error($"How the hell did you even end up here, we got a {data.GetType()} instead");
                 return default;
             }
 
             return typedData;
+        }
+
+        public static T GetImmediate<T>()
+        {
+            var result = FindImmediate<T>();
+            if (result == null) Log.Error("Got null when looking for {type}, this is why you get a NRE", typeof(T));
+
+            // if a user get a null - he asked for it.
+            return result!;
         }
 
         public static async UniTask<T> Get<T>() => await Get<T>(CancellationToken.None);
