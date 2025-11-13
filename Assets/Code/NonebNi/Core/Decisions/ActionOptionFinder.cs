@@ -73,22 +73,19 @@ namespace NonebNi.Core.Decisions
 
         public IEnumerable<ICommand> FindOptionsForCommand(UnitData actorUnit, NonebAction action)
         {
-            var cost = _commandEvaluator.FindActionCostInCurrentState(action);
-            if (!actorUnit.CanPayCosts(cost)) return Enumerable.Empty<ICommand>();
-
             var targetableRanges = action.TargetRequests
-                .Select(request => _targetFinder.FindRange(actorUnit, request))
-                .Select(range => range.Where(t => t.status is RangeStatus.Targetable))
-                .Select(range => range.Select(t => t.coord))
-                .Select(range => range.ToArray())
-                .ToArray();
+                                         .Select(request => _targetFinder.FindRange(actorUnit, request))
+                                         .Select(range => range.Where(t => t.status is RangeStatus.Targetable))
+                                         .Select(range => range.Select(t => t.coord))
+                                         .Select(range => range.ToArray())
+                                         .ToArray();
 
             var rangeCombinations = targetableRanges.FindAllCombinations();
             var decisions = rangeCombinations.Select(coords => new ActionDecision(action, actorUnit, coords));
             var validCommands = decisions
-                .Select(d => _decisionValidator.ValidateDecision(d))
-                .Where(t => t.error == null)
-                .Select(t => t.command);
+                                .Select(d => _decisionValidator.ValidateDecision(d))
+                                .Where(t => t.error == null)
+                                .Select(t => t.command);
 
             return validCommands;
         }

@@ -48,7 +48,7 @@ namespace NonebNi.Core.Decisions
                 Description = description;
             }
 
-            public static Error Unknown { get; } = new(ErrorType.Unknown, "Failed for an undefined reason");
+            public static Error Unknown { get; } = new (ErrorType.Unknown, "Failed for an undefined reason");
         }
     }
 
@@ -75,10 +75,11 @@ namespace NonebNi.Core.Decisions
                     return (null, new EndTurnCommand());
                 case ActionDecision ad:
                 {
-                    var cost = _commandEvaluator.FindActionCostInCurrentState(ad.Action);
+                    var cost = _commandEvaluator.FindActionCostInCurrentState(ad);
                     if (!ad.ActorEntity.CanPayCosts(cost))
                         return (
-                            new IDecisionValidator.Error(
+                            new IDecisionValidator.Error
+                            (
                                 IDecisionValidator.ErrorType.CannotPayCost,
                                 $"{ad.Action.Name} cost more than what the {ad.ActorEntity} can pay for"
                             ),
@@ -88,7 +89,8 @@ namespace NonebNi.Core.Decisions
                     if (!IsTargetingValid(ad))
                     {
                         return (
-                            new IDecisionValidator.Error(
+                            new IDecisionValidator.Error
+                            (
                                 IDecisionValidator.ErrorType.InvalidTarget,
                                 $"action {ad.Action.Name} cannot be targeted at {ad.TargetCoords}"
                             ),
@@ -99,14 +101,15 @@ namespace NonebNi.Core.Decisions
                     if (_gameEventControl.ActiveActionResult.CanCombo)
                         if (!IsTargetingComboTarget(ad) && !IsStartingFromComboCarrier(ad))
                             return (
-                                new IDecisionValidator.Error(
+                                new IDecisionValidator.Error
+                                (
                                     IDecisionValidator.ErrorType.InvalidTarget,
                                     "You must be targeting the combo target or start with the combo carrier"
                                 ),
                                 NullCommand.Instance
                             );
 
-                    return (null, new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords));
+                    return (null, new ActionCommand(ad));
                 }
                 default:
                     return (IDecisionValidator.Error.Unknown, NullCommand.Instance);
@@ -235,7 +238,7 @@ namespace NonebNi.Core.Decisions
                 if (distanceToTarget > rangeLimit) return (false, new List<IActionTarget[]>());
 
                 var validTargets = _targetFinder.FindTargets(actor, coord, request.TargetArea, request.TargetRestrictionFlags)
-                    .ToArray();
+                                                .ToArray();
 
                 //every targeted coordinate must have at least one valid target - otherwise it is an invalid command(can't target a coordinate without a target!).
                 if (!validTargets.Any()) return (false, new List<IActionTarget[]>());

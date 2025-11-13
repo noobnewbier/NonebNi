@@ -14,7 +14,7 @@ namespace NonebNi.Core.FlowControl
     {
         EffectResult Evaluate(ActionCommand command);
         EffectContext FindEffectContext(ActionCommand command);
-        IEnumerable<StatCost> FindActionCostInCurrentState(NonebAction action);
+        IEnumerable<StatCost> FindActionCostInCurrentState(ActionCommand command);
     }
 
     public class ActionCommandEvaluator : IActionCommandEvaluator
@@ -33,11 +33,11 @@ namespace NonebNi.Core.FlowControl
             _gameEventControl = gameEventControl;
         }
 
-        public IEnumerable<StatCost> FindActionCostInCurrentState(NonebAction action)
+        public IEnumerable<StatCost> FindActionCostInCurrentState(ActionCommand command)
         {
-            foreach (var c in action.Costs)
+            foreach (var req in command.Action.StatRequirements)
             {
-                var cost = c;
+                var cost = req.CalculateCost(command, _map);
                 if (_gameEventControl.ActiveActionResult.CanCombo)
                     switch (cost.StatId)
                     {
@@ -59,30 +59,31 @@ namespace NonebNi.Core.FlowControl
         public EffectResult Evaluate(ActionCommand command)
         {
             //todo: wbn if decision validator can be baked into this?
-            if (command.Action.Costs.Any())
+            if (command.Action.StatRequirements.Any())
             {
                 if (command.ActorEntity is not UnitData unitData)
                     Log.Warning($"{command.ActorEntity} is not an unit - cannot pay cost for {command.Action} - we are still doing it though");
                 else
                 {
-                    foreach (var cost in FindActionCostInCurrentState(command.Action))
+                    foreach (var cost in FindActionCostInCurrentState(command))
                     {
                         unitData.Stats.PayCost(cost);
                     }
                 }
             }
 
-            var results = command.Action.Effects.Select(
-                e =>
-                {
-                    var context = FindEffectContext(command);
+            var results = command.Action.Effects.Select
+                                 (e =>
+                                     {
+                                         var context = FindEffectContext(command);
 
-                    var (isSuccess, result) = Evaluate(e, context);
-                    if (!isSuccess) Log.Error($"Cannot find evaluator that can handle ({e.GetType()})");
+                                         var (isSuccess, result) = Evaluate(e, context);
+                                         if (!isSuccess) Log.Error($"Cannot find evaluator that can handle ({e.GetType()})");
 
-                    return result;
-                }
-            ).ToArray();
+                                         return result;
+                                     }
+                                 )
+                                 .ToArray();
 
             var resultAggregate = results.Aggregate((a, b) => a.Concat(b));
             return resultAggregate;

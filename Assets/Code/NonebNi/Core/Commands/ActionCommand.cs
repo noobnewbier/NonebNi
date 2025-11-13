@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.Entities;
 
 namespace NonebNi.Core.Commands
@@ -21,6 +22,8 @@ namespace NonebNi.Core.Commands
             ActorEntity = actorEntity;
             TargetCoords = targetCoords;
         }
+
+        public ActionCommand(ActionDecision decision) : this(decision.Action, decision.ActorEntity, decision.TargetCoords) { }
 
         public virtual bool Equals(ActionCommand? other)
         {
@@ -41,5 +44,13 @@ namespace NonebNi.Core.Commands
 
             return hash.ToHashCode();
         }
+
+        /// <summary>
+        /// Decision is just a command that might not be valid gameplay logic wise(player might not be able to afford the cost,
+        /// etc)
+        /// Most of the time, the two are interchangeable, so here we go.
+        /// I might regret later
+        /// </summary>
+        public static implicit operator ActionCommand(ActionDecision decision) => new (decision);
     }
 }
