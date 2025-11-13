@@ -19,7 +19,8 @@ namespace NonebNi.Main.Di
         Register(typeof(ZeroVector2IfOverUIProcessor.Dependencies), typeof(object)),
         Register(typeof(DamageOpponentNode.Dependencies), typeof(object)),
         Register(typeof(UtilitySelector.Dependencies), typeof(object)),
-        Register(typeof(EngageNode.Dependencies), typeof(object))
+        Register(typeof(EngageNode.Dependencies), typeof(object)),
+        Register(typeof(PathDistanceBasedStatRequirement.Dependencies), typeof(object))
     ]
     public class SharedContextModule { }
 }

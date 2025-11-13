@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Noneb.Tags.Runtime;
 
 namespace NonebNi.Core.AI
 {
+    [DebuggerDisplay("{ToString(),nq}")]
     public class Utility
     {
         public static readonly Utility Invalid = new ()
@@ -74,6 +77,11 @@ namespace NonebNi.Core.AI
             }
 
             return toReturn;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(",", _scores.Select(kv => $"{kv.Key}: {kv.Value}"));
         }
     }
 }
