@@ -25,7 +25,7 @@ namespace NonebNi.Core.Effects
                 MoveEffect effect,
                 EffectContext context)
             {
-                return new EffectResult(FindSequences());
+                return new (FindSequences());
 
                 IEnumerable<ISequence> FindSequences()
                 {
@@ -38,7 +38,8 @@ namespace NonebNi.Core.Effects
 
                     if (targetParam is not Coordinate targetCoord)
                     {
-                        Log.Error(
+                        Log.Error
+                        (
                             "{targetParam} is not a Coordinate - MoveEffect must takes one coordinate as parameter!",
                             targetParam
                         );
@@ -53,9 +54,6 @@ namespace NonebNi.Core.Effects
                     }
 
                     var result = context.Map.Move(context.ActionCaster, targetCoord);
-
-                    //TODO: access to path finding service.
-
                     if (result == MoveResult.Success) yield return new MoveSequence(context.ActionCaster, path);
                 }
             }
