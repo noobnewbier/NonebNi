@@ -1,4 +1,5 @@
-﻿using Noneb.Tags.Runtime;
+﻿using System.Linq;
+using Noneb.Tags.Runtime;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -26,7 +27,12 @@ namespace Noneb.Tags.Editor.TagPickers
             pickerPos.height = EditorGUIUtility.singleLineHeight;
             if (label == GUIContent.none || !string.IsNullOrEmpty(label.text) && label.image == null) pickerPos = EditorGUI.PrefixLabel(position, label);
 
-            if (GUI.Button(pickerPos, tag.DisplayName)) _dropdown.Show(position);
+
+            var hasError = !EditorNonebTagManager.GetAllTags().Contains(_currentTag);
+            using (new NonebEditorGUI.ErrorColorScope(hasError))
+            {
+                if (GUI.Button(pickerPos, tag.DisplayName)) _dropdown.Show(position);
+            }
 
             var changed = false;
             if (_currentTag != _newTag)

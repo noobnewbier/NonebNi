@@ -32,7 +32,7 @@ namespace Noneb.Tags.Editor
             return description;
         }
 
-        public static IEnumerable<NonebTag> GetAllTags() => _context.GetAllTags();
+        public static IEnumerable<NonebTag> GetAllTags() => _context.GetAllTags().Append(NonebTag.None);
 
         public static bool IsDirectParent(NonebTag parent, NonebTag child) => parent.IsParentOf(child) && child.HierarchyLevel - parent.HierarchyLevel == 1;
 
