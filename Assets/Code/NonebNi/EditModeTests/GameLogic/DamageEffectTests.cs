@@ -10,8 +10,10 @@ namespace NonebNi.EditModeTests.GameLogic
     [TestFixture]
     public class DamageEffectTests
     {
-        private readonly DamageEffect _damageEffect = new("none", 0);
+        private readonly DamageEffect _damageEffect = new ("none", 0);
+        private readonly DamageEffect.Evaluator _evaluator = new ();
 
+        //todo: commit what you have fix the tests,
         [Test]
         public void Evaluate_TargetHasNoHealth_UnitsAreRemovedFromMap()
         {
@@ -19,8 +21,8 @@ namespace NonebNi.EditModeTests.GameLogic
             var deadUnit = TestData.CreateDeadUnit();
             mockMap.Setup(m => m.Remove(deadUnit)).Returns(true);
 
-            _damageEffect
-                .Evaluate(mockMap.Object, SystemEntity.Instance, new[] { deadUnit })
+            _evaluator
+                .Evaluate(_damageEffect, mockMap.Object, SystemEntity.Instance, deadUnit)
                 .EvaluateEnumerable();
 
             mockMap.Verify(m => m.Remove(deadUnit), Times.Once);
@@ -33,9 +35,9 @@ namespace NonebNi.EditModeTests.GameLogic
             var deadUnit = TestData.CreateDeadUnit();
             mockMap.Setup(m => m.Remove(deadUnit)).Returns(false);
 
-            using var enumerator = _damageEffect
-                .Evaluate(mockMap.Object, SystemEntity.Instance, new[] { deadUnit })
-                .GetEnumerator();
+            using var enumerator = _evaluator
+                                   .Evaluate(_damageEffect, mockMap.Object, SystemEntity.Instance, deadUnit)
+                                   .GetEnumerator();
             Assert.Throws<InvalidOperationException>(() => enumerator.MoveNext());
 
             mockMap.Verify(m => m.Remove(deadUnit), Times.Once);
@@ -47,8 +49,8 @@ namespace NonebNi.EditModeTests.GameLogic
             var mockMap = new Mock<IMap>();
             var livingUnit = TestData.CreateLivingUnit();
 
-            _damageEffect
-                .Evaluate(mockMap.Object, SystemEntity.Instance, new[] { livingUnit })
+            _evaluator
+                .Evaluate(_damageEffect, mockMap.Object, SystemEntity.Instance, livingUnit)
                 .EvaluateEnumerable();
 
             mockMap.Verify(m => m.Remove(livingUnit), Times.Never);

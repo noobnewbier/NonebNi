@@ -15,7 +15,7 @@ namespace NonebNi.Core.Effects
     {
         (bool isSuccess, EffectResult result) IEffectEvaluator.Evaluate(Effect effect, EffectContext context)
         {
-            if (effect is not T typedEffect) return (false, new EffectResult(Enumerable.Empty<ISequence>(), new HashSet<IActionTarget>(), new HashSet<EntityData>()));
+            if (effect is not T typedEffect) return (false, new (Enumerable.Empty<ISequence>(), new HashSet<IActionTarget>(), new HashSet<EntityData>()));
 
             return (true, Evaluate(typedEffect, context));
         }

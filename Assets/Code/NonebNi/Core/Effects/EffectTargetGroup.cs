@@ -4,7 +4,7 @@ using Unity.Logging;
 
 namespace NonebNi.Core.Effects
 {
-    public record EffectTargetGroup(IActionTarget[] Targets)
+    public record EffectTargetGroup(params IActionTarget[] Targets)
     {
         public IActionTarget? AsSingleTarget
         {

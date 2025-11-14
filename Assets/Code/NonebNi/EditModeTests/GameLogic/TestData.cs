@@ -1,5 +1,6 @@
 ﻿using System;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Effects;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
 using UnityEditor;
@@ -11,11 +12,23 @@ namespace NonebNi.EditModeTests.GameLogic
     {
         private const string TestFactionId = "TestFaction";
 
-        public static readonly TileData Road = new("Road", 1, false);
-        public static readonly TileData Wall = new("Wall", TileData.ObstacleWeight, true);
+        public static readonly TileData Road = new ("Road", 1, false);
+        public static readonly TileData Wall = new ("Wall", TileData.ObstacleWeight, true);
+        public static readonly NonebAction Action = new
+        (
+            "null-action-for-test",
+            string.Empty,
+            Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            Array.Empty<StatRequirement>(),
+            Array.Empty<TargetRequest>(),
+            Array.Empty<Effect>(),
+            false,
+            string.Empty
+        );
 
         public static TileModifierData CreateWallObject() =>
-            new(
+            new
+            (
                 "Wall",
                 Guid.NewGuid(),
                 TestFactionId,
@@ -24,7 +37,8 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateDeadUnit() =>
-            new(
+            new
+            (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 GetDefaultSprite(),
@@ -45,7 +59,8 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateLivingUnit() =>
-            new(
+            new
+            (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 GetDefaultSprite(),
@@ -66,7 +81,8 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateSlowUnit() =>
-            new(
+            new
+            (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 GetDefaultSprite(),
@@ -87,7 +103,8 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateHighPriorityUnit() =>
-            new(
+            new
+            (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 GetDefaultSprite(),
@@ -108,7 +125,8 @@ namespace NonebNi.EditModeTests.GameLogic
             );
 
         public static UnitData CreateLowPriorityUnit() =>
-            new(
+            new
+            (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 GetDefaultSprite(),
