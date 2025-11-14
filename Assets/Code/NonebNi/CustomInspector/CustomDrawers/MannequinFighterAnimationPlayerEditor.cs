@@ -20,7 +20,8 @@ namespace NonebNi.CustomInspector.CustomDrawers
 
         private void OnEnable()
         {
-            _animIdField = new AutoCompleteField(
+            _animIdField = new AutoCompleteField
+            (
                 s => _animIdInput = s,
                 _ => { },
                 () =>
@@ -32,8 +33,8 @@ namespace NonebNi.CustomInspector.CustomDrawers
                      * good enough for now and can fix later.
                      */
                     return ActionDatas.Actions
-                        .Where(a => a.Effects.OfType<DamageEffect>().Any())
-                        .Select(a => a.Id);
+                                      .Where(a => a.Effects.OfType<DamageEffect>().Any())
+                                      .Select(a => a.Id);
                 },
                 new ("Apply Damage Anim Id"),
                 _animIdInput
@@ -51,8 +52,8 @@ namespace NonebNi.CustomInspector.CustomDrawers
 
                 using (new FlowLayoutScope())
                 {
-                    if (GUILayout.Button(nameof(DieSequence), GUILayout.ExpandWidth(false))) typedTarget.Play(new DieAnimSequence());
-                    if (GUILayout.Button(nameof(DamageSequence), GUILayout.ExpandWidth(false))) typedTarget.Play(new ReceivedDamageAnimSequence());
+                    if (GUILayout.Button(nameof(DieSequence))) typedTarget.Play(new DieAnimSequence()).Forget();
+                    if (GUILayout.Button(nameof(DamageSequence))) typedTarget.Play(new ReceivedDamageAnimSequence()).Forget();
                 }
 
                 using (new GUILayout.HorizontalScope())
