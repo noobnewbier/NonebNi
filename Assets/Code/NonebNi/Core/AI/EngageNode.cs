@@ -44,13 +44,13 @@ namespace NonebNi.Core.AI
             var agentContext = this.GetContext();
             if (agentContext == null) yield break;
 
-            // finding the damage we can deal on all options
             var actions = controlledUnit.Actions;
             var enemyCoords = deps.Map.GetAllUnits()
                                   .Where(u => !deps.FactionService.IsAlly(controlledUnit.FactionId, u.FactionId))
                                   .Select(u => deps.Map.Find(u))
                                   .ToArray();
             var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, enemyCoords, actions, deps);
+            if (!commandDistances.Any()) yield break;
 
             var minDistDiff = commandDistances.Values.Min();
             var maxDistDiff = commandDistances.Values.Max();

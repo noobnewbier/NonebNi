@@ -108,6 +108,8 @@ namespace NonebNi.Core.AI
                 }
             }
 
+            if (!actionUtility.Any()) return null;
+
             var bestAction = actionUtility.MaxBy(t => utilityFormula.Value.Calculate(t.Value)).Key;
             return bestAction;
         }

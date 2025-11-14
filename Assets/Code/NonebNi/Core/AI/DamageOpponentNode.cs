@@ -44,6 +44,7 @@ namespace NonebNi.Core.AI
             // finding the damage we can deal on all options
             var actions = controlledUnit.Actions;
             var commandDamages = FindCommandAndDamages(controlledUnit, actions, deps);
+            if (!commandDamages.Any()) yield break;
 
             // normalize the damage against the highest damage we can deal, and return as utility - the divide by highest damage bit kind of threw me off...?
             var highestDamage = commandDamages.Values.Max();
