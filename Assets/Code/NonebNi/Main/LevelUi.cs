@@ -111,7 +111,7 @@ namespace NonebNi.Main
                         break;
 
                     case LevelEvent.SequenceOccured sequenceOccured:
-                        _sequencePlayer.Play(sequenceOccured.Result.Sequences);
+                        await _sequencePlayer.Play(sequenceOccured.Result.Sequences);
                         break;
 
                     case LevelEvent.WaitForComboDecision waitForComboDecision:
@@ -190,8 +190,10 @@ namespace NonebNi.Main
         {
             var cameraTransform = camera.transform;
             var frustumCorners = new Vector3[4];
-            camera.CalculateFrustumCorners(
-                new Rect(
+            camera.CalculateFrustumCorners
+            (
+                new Rect
+                (
                     0,
                     0,
                     1,
