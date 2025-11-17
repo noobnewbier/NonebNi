@@ -1,11 +1,25 @@
 {
   "dependencies": {
+    "com.cysharp.csprojmodifier": {
+      "version": "https://github.com/Cysharp/CsprojModifier.git?path=src/CsprojModifier/Assets/CsprojModifier",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "dcb90c5ff6d81da7a940f1fca198128636abbda3"
+    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
       "source": "git",
       "dependencies": {},
       "hash": "8042b29ff87dd5506d7aad72bd6d8d7405985f27"
+    },
+    "com.cysharp.zlogger": {
+      "version": "https://github.com/Cysharp/ZLogger.git?path=src/ZLogger.Unity/Assets/ZLogger.Unity",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "d1c4a1c5c713832cc85a1c72dca62262d72fee82"
     },
     "com.github-glitchenzo.nugetforunity": {
       "version": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
@@ -131,7 +145,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.34",
+      "version": "3.0.38",
       "depth": 0,
       "source": "registry",
       "dependencies": {
