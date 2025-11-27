@@ -22,8 +22,7 @@
     "precompiledReferences": [
         "PriorityQueue.dll",
         "Newtonsoft.Json.dll",
-        "StrongInject.dll",
-        "Microsoft.Extensions.Logging.Abstractions.dll"
+        "StrongInject.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [],
