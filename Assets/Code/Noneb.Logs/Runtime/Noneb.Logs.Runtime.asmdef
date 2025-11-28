@@ -1,5 +1,5 @@
 {
-  "name": "Noneb.Log.Runtime",
+  "name": "Noneb.Logs.Runtime",
   "rootNamespace": "",
   "references": [
     "GUID:2b78dc61ba35e42c39ba2aabce11b6c4"
