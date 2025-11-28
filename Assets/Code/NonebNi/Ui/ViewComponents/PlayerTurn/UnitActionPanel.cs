@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.Animation;
 using Noneb.UI.Element;
 using NonebNi.Core.Actions;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -38,7 +38,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                 var (isSuccess, actionButton) = await NonebElement.CreateElementFromPrefab(actionOptionPrefab, actionsRoot.transform);
                 if (!isSuccess)
                 {
-                    Log.Error("Failed element creation");
+                    Log.Error("UI", "Failed element creation");
                     continue;
                 }
 

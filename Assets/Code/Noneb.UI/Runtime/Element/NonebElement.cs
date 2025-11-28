@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.View;
-using Unity.Logging;
 using UnityEngine;
 
 namespace Noneb.UI.Element
@@ -61,7 +61,7 @@ namespace Noneb.UI.Element
             INonebView? ownerView = createdElement.OwnerView;
             if (ownerView == null)
             {
-                Log.Error("You really should instantiate me under a NonebView");
+                Log.Error("UI", "You really should instantiate me under a NonebView");
                 return (false, createdElement);
             }
 
@@ -84,13 +84,13 @@ namespace Noneb.UI.Element
         {
             if (elementPrefab is not MonoBehaviour monoBehaviour)
             {
-                Log.Error($"I expected all IElementComponent is a MonoBehaviour and this({typeof(T).FullName}) is not, I couldn't find a way to express this in code and this might change, but you should at least not do this as if T is not a MonoBehaviour how can I instantiate a prefab");
+                Log.Error("UI", $"I expected all IElementComponent is a MonoBehaviour and this({typeof(T).FullName}) is not, I couldn't find a way to express this in code and this might change, but you should at least not do this as if T is not a MonoBehaviour how can I instantiate a prefab");
                 return (false, default);
             }
 
             if (!monoBehaviour.TryGetComponent(out NonebElement nonebElement))
             {
-                Log.Error($"You need a NonebElement for this({monoBehaviour.gameObject.name}) to work mate");
+                Log.Error("UI", $"You need a NonebElement for this({monoBehaviour.gameObject.name}) to work mate");
                 return (false, default);
             }
 

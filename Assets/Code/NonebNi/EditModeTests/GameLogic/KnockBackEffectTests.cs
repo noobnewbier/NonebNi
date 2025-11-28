@@ -8,38 +8,17 @@ using NonebNi.Core.Effects;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
 using NUnit.Framework;
-using Unity.Logging;
-using Unity.Logging.Sinks;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Logger = Unity.Logging.Logger;
 
 namespace NonebNi.EditModeTests.GameLogic
 {
     [TestFixture]
     public class KnockBackEffectTests
     {
-        [SetUp]
-        public void SetUp()
-        {
-            _currentLogger = Log.Logger;
-            var debugLogger = new LoggerConfig()
-                              .SyncMode.FullSync()
-                              .WriteTo.UnityDebugLog()
-                              .CreateLogger();
-            Log.Logger = debugLogger;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            Log.Logger = _currentLogger;
-        }
-
         private readonly Regex _any = new (".*");
         private readonly KnockBackEffect _effect = new (2);
         private readonly KnockBackEffect.Evaluator _evaluator = new ();
-        private Logger _currentLogger = null!;
 
         [Test]
         public void Evaluate_CasterNotOnMap_ErrorLogReceived()

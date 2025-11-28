@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using Noneb.Tags.Runtime;
 using NonebNi.Core.Attributes;
-using Unity.Logging;
 using UnityEngine;
 using UnityUtils.Constants;
 using UnityUtils.Serialization;
@@ -54,7 +54,7 @@ namespace NonebNi.Core.AI
                     if (weight == 0) continue;
 
                     var score = formula.Calculate(utility);
-                    scoreAndWeight.Add((score, weight));
+                    scoreAndWeight.Add((score, weight)); //todo: something here is wrong
                 }
 
                 var totalWeight = scoreAndWeight.Select(i => i.weight).Sum();
@@ -68,7 +68,7 @@ namespace NonebNi.Core.AI
 
                 if (utility[tag] > 0)
                 {
-                    Log.Error("This doesn't really make sense, the formula work by having the action giving context for the leaf node, and we reconstruct the weight up the tree. I don't know what is happening but I will try to play along here");
+                    Log.Error("AI", "This doesn't really make sense, the formula work by having the action giving context for the leaf node, and we reconstruct the weight up the tree. I don't know what is happening but I will try to play along here");
                     toReturn += utility[tag];
                 }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Factions;
@@ -8,7 +9,6 @@ using NonebNi.Core.Maps;
 using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine.Pool;
 using UnityUtils;
 
@@ -115,7 +115,8 @@ namespace NonebNi.Core.Actions
                 Coordinate targetAsCoord => targetAsCoord,
                 EntityData entityData when _map.TryFind(entityData, out Coordinate coordinate) => coordinate,
 
-                _ => throw new ArgumentOutOfRangeException(
+                _ => throw new ArgumentOutOfRangeException
+                (
                     nameof(target),
                     target,
                     "Unexpected Target! Is target even on the board, or did you implement new type but didn't add it here?"
@@ -347,17 +348,17 @@ namespace NonebNi.Core.Actions
                     case TargetArea.Fan:
                         if (actor.IsSystem)
                         {
-                            Log.Error($"{TargetArea.Fan} is not supported for System Entity");
+                            Log.Error("Action", $"{TargetArea.Fan} is not supported for System Entity");
                             yield break;
                         }
 
                         if (!_map.TryFind(actor, out Coordinate actorCoord))
                         {
-                            Log.Error("{actor} is not found on the map. We can't figure out the direction of the fan!", actor);
+                            Log.Error("Action", $"{actor} is not found on the map. We can't figure out the direction of the fan!");
                             yield break;
                         }
 
-                        if (actorCoord.DistanceTo(targetCoord) > 1) Log.Error($"{TargetArea.Fan} cannot deal with anything that's not right next to the actor! This might change later but for now it's unecessarily complicated");
+                        if (actorCoord.DistanceTo(targetCoord) > 1) Log.Error("Action", $"{TargetArea.Fan} cannot deal with anything that's not right next to the actor! This might change later but for now it's unecessarily complicated");
 
                         var relativeCoord = (targetCoord - actorCoord).Normalized();
                         yield return targetCoord;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using Noneb.Tags.Runtime;
-using Unity.Logging;
 using UnityUtils;
 using UnityUtils.Editor;
 
@@ -40,7 +40,7 @@ namespace Noneb.Tags.Editor
         {
             if (!NonebTag.IsNameValid(tag, out var errorMessage))
             {
-                Log.Error($"Failed to register gameplay tag \"{tag}\": {errorMessage} (Source: {source.Name})");
+                Log.Error("Editor", $"Failed to register gameplay tag \"{tag}\": {errorMessage} (Source: {source.Name})");
                 return;
             }
 

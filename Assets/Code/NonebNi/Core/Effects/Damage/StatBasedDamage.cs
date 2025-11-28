@@ -1,7 +1,7 @@
 ﻿using System;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Effects
@@ -22,7 +22,7 @@ namespace NonebNi.Core.Effects
         {
             if (actionCaster is not UnitData unitData)
             {
-                Log.Error("Only unit has stats! Damage is always 0.");
+                Log.Error("Level", "Only unit has stats! Damage is always 0.");
                 return 0;
             }
 
@@ -35,7 +35,9 @@ namespace NonebNi.Core.Effects
             var rawDamage = stat * ratio;
             if (target is not UnitData targetUnit)
             {
-                Log.Error(
+                Log.Error
+                (
+                    "Level",
                     $"Currently we aren't taking stuffs that isn't an unit but also have health into account! We probably need to restructure {nameof(UnitData)} and {nameof(EntityData)} for that to happen"
                 );
                 return Mathf.RoundToInt(rawDamage);

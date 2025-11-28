@@ -1,5 +1,5 @@
-﻿using Unity.Behavior.GraphFramework;
-using Unity.Logging;
+﻿using Noneb.Logs.Runtime;
+using Unity.Behavior.GraphFramework;
 using UnityEditor;
 
 namespace NonebNi.EditorScripting
@@ -16,7 +16,7 @@ namespace NonebNi.EditorScripting
              */
             var guid = SerializableGUID.Generate().ToString();
             EditorGUIUtility.systemCopyBuffer = guid;
-            Log.Info($"{guid} is now in your clipboard!");
+            Log.Info("Editor", $"{guid} is now in your clipboard!");
         }
     }
 }

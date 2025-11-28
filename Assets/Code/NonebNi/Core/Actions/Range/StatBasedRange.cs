@@ -1,7 +1,7 @@
 ﻿using System;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Actions
@@ -22,7 +22,7 @@ namespace NonebNi.Core.Actions
         {
             if (actionCaster is not UnitData unitData)
             {
-                Log.Error("Only unit has stats! Range is always 0.");
+                Log.Error("Action", "Only unit has stats! Range is always 0.");
                 return 0;
             }
 

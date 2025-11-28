@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Unity.Logging;
+using Noneb.Logs.Runtime;
 using UnityEngine;
 
 namespace Noneb.UI.View
@@ -21,7 +21,7 @@ namespace Noneb.UI.View
     /// </summary>
     public class UIStack : IAsyncDisposable //TODO: let stack handles game object as well
     {
-        private readonly CancellationTokenSource _cts = new();
+        private readonly CancellationTokenSource _cts = new ();
 
         /// <summary>
         /// Push/pop/replace's animation transition works asynchronously using channel, this happens they always work in sequence,
@@ -35,7 +35,7 @@ namespace Noneb.UI.View
         /// This field exists purely for debugging purposes, maybe we should put it in a good old ifdef but for now I can live with
         /// it.
         /// </summary>
-        private readonly Queue<TransitionRequestInfo> _requestInfos = new();
+        private readonly Queue<TransitionRequestInfo> _requestInfos = new ();
 
         private readonly GameObject _root;
 
@@ -44,7 +44,7 @@ namespace Noneb.UI.View
         //TODO: we probs want to log everything that happens in a UI stack
         //TODO: could be useful for ui stack to have a name for debug purposes.
 
-        private readonly Stack<ViewStack> _stack = new();
+        private readonly Stack<ViewStack> _stack = new ();
 
         public UIStack(MonoBehaviour monoBehaviour) : this(monoBehaviour.gameObject) { }
 
@@ -88,10 +88,10 @@ namespace Noneb.UI.View
                 //todo: not sure why but this is inconsistent.
                 //my guess is that the previous request is still running before the next one hit... we might need to split transition and the logic
                 await request.Task.Invoke();
-                if (!request.DoneTrigger.TrySetResult() && request.DoneTrigger.UnsafeGetStatus() != UniTaskStatus.Canceled) Log.Error("How did you get here, ever");
+                if (!request.DoneTrigger.TrySetResult() && request.DoneTrigger.UnsafeGetStatus() != UniTaskStatus.Canceled) Log.Error("UI", "How did you get here, ever");
 
                 var info = _requestInfos.Dequeue();
-                if (request.Info != info) Log.Error("Something went wrong, logically you should not get here as the queue should be parallel with the channel");
+                if (request.Info != info) Log.Error("UI", "Something went wrong, logically you should not get here as the queue should be parallel with the channel");
             }
         }
 
@@ -99,7 +99,7 @@ namespace Noneb.UI.View
         {
             if (component is not MonoBehaviour behaviour)
             {
-                Log.Error("Unexpected typed - I can't work with non-concept-view component!");
+                Log.Error("UI", "Unexpected typed - I can't work with non-concept-view component!");
                 return GetSubStack(name);
             }
 
@@ -215,7 +215,8 @@ namespace Noneb.UI.View
             var nextViewStack = new ViewStack(nextView, viewData, new Dictionary<string, UIStack>());
             _stack.Push(nextViewStack);
 
-            var request = new TransitionRequest(
+            var request = new TransitionRequest
+            (
                 async () =>
                 {
                     await Transition(currentViewStack, nextViewStack, true);
@@ -244,7 +245,7 @@ namespace Noneb.UI.View
         {
             if (!_stack.Any())
             {
-                Log.Warning($"You are popping from {_root.name} when there's nothing around for you to pop");
+                Log.Warn("UI", $"You are popping from {_root.name} when there's nothing around for you to pop");
                 return;
             }
 
@@ -258,7 +259,7 @@ namespace Noneb.UI.View
 
         private async UniTask Transition(ViewStack? currentViewStack, ViewStack? nextViewStack, bool isCurrentStackRemoved)
         {
-            if (currentViewStack == null && nextViewStack == null) Log.Warning("This is an noop and likely not what you wanted");
+            if (currentViewStack == null && nextViewStack == null) Log.Warn("UI", "This is an noop and likely not what you wanted");
 
             if (currentViewStack != null) await LeaveCurrentView(currentViewStack, nextViewStack, isCurrentStackRemoved);
 
@@ -272,13 +273,13 @@ namespace Noneb.UI.View
         {
             if (component is not MonoBehaviour behaviour)
             {
-                Log.Error("Unexpected typed - I can't work with non-concept-view component!");
+                Log.Error("UI", "Unexpected typed - I can't work with non-concept-view component!");
                 return null;
             }
 
             if (!behaviour.TryGetComponent<INonebView>(out var view))
             {
-                Log.Error("Behaviour View can't work without a INonebView in the sibling components!");
+                Log.Error("UI", "Behaviour View can't work without a INonebView in the sibling components!");
                 return null;
             }
 
@@ -296,7 +297,7 @@ namespace Noneb.UI.View
         private UniTask RequestTransition(TransitionRequest transitionRequest)
         {
             _requestInfos.Enqueue(transitionRequest.Info);
-            if (!_requestChannel.Writer.TryWrite(transitionRequest)) Log.Error("Why is this happening?");
+            if (!_requestChannel.Writer.TryWrite(transitionRequest)) Log.Error("UI", "Why is this happening?");
 
             _cts.Token.Register(() => transitionRequest.DoneTrigger.TrySetCanceled());
             return transitionRequest.DoneTrigger.Task;
@@ -305,12 +306,15 @@ namespace Noneb.UI.View
         private async UniTask LeaveCurrentView(ViewStack currentStack, ViewStack? nextStack, bool isCurrentStackRemoved)
         {
             // substacks get deactivated
-            await UniTask.WhenAll(
-                    currentStack.SubStacks.Values
-                        .Select(s => s.CurrentView).Where(e => e != null).Select(e => e!)
-                        .Select(v => v.Deactivate())
-                )
-                .SuppressCancellationThrow();
+            await UniTask.WhenAll
+                         (
+                             currentStack.SubStacks.Values
+                                         .Select(s => s.CurrentView)
+                                         .Where(e => e != null)
+                                         .Select(e => e!)
+                                         .Select(v => v.Deactivate())
+                         )
+                         .SuppressCancellationThrow();
 
             // deactivate the root as well
             await currentStack.View.Deactivate().SuppressCancellationThrow();
@@ -333,16 +337,18 @@ namespace Noneb.UI.View
             await nextStack.View.Activate(viewData);
 
             // substacks get activated after root is online
-            await UniTask.WhenAll(
+            await UniTask.WhenAll
+            (
                 nextStack.SubStacks.Values
-                    .Select(
-                        s =>
-                        {
-                            if (s.CurrentViewStack?.View == null) return UniTask.CompletedTask;
+                         .Select
+                         (
+                             s =>
+                             {
+                                 if (s.CurrentViewStack?.View == null) return UniTask.CompletedTask;
 
-                            return s.CurrentViewStack.View.Activate(s.CurrentViewStack.ViewData);
-                        }
-                    )
+                                 return s.CurrentViewStack.View.Activate(s.CurrentViewStack.ViewData);
+                             }
+                         )
             );
 
             await nextStack.View.Enter(previousStack?.View, nextStack.View);
@@ -366,7 +372,7 @@ namespace Noneb.UI.View
 
         private record TransitionRequest(Func<UniTask> Task, TransitionRequestInfo Info)
         {
-            public UniTaskCompletionSource DoneTrigger { get; } = new();
+            public UniTaskCompletionSource DoneTrigger { get; } = new ();
         }
 
         /// <summary>

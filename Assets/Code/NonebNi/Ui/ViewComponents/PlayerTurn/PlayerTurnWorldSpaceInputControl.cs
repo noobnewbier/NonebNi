@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.InputSystems;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
@@ -14,7 +15,6 @@ using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
 using NonebNi.Ui.Inputs;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -113,6 +113,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             return coord;
         }
 
+        //todo: show invalid tooltip - it helps with debugging as well.
         public async UniTask<(bool success, IEnumerable<Coordinate>)> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default)
         {
             async UniTask<(bool backRequest, Coordinate? input)> GetUserInputForRequest(IReadOnlyList<Coordinate> inputForPreviousRequests, TargetRequest currentRequest, CancellationToken subCt)
@@ -198,7 +199,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
                         if (input == null)
                         {
-                            Log.Error("You should, have really, not gotten here - the only reason it's null is we've got a cancellation request in which case we probably should have thrown");
+                            Log.Error("UI", "You should, have really, not gotten here - the only reason it's null is we've got a cancellation request in which case we probably should have thrown");
                             continue;
                         }
 
@@ -224,29 +225,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             ct.ThrowIfCancellationRequested();
 
             return result;
-        }
-
-        public void ToTileInspectionMode()
-        {
-            async UniTaskVoid Do(CancellationToken ct)
-            {
-                while (!ct.IsCancellationRequested)
-                {
-                    _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
-
-                    var coord = FindHoveredCoordinate();
-                    if (coord != null) _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.Normal);
-
-                    await UniTask.NextFrame();
-                }
-
-                _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
-            }
-
-            _cts?.Cancel();
-            _cts = new CancellationTokenSource();
-
-            Do(_cts.Token).Forget();
         }
 
         public async UniTask<UnitData?> GetInputForInspection(CancellationToken ct = default)
@@ -345,6 +323,29 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             if (input == null) return new IPlayerTurnWorldSpaceInputControl.MovementInput.Cancel();
 
             return input;
+        }
+
+        public void ToTileInspectionMode()
+        {
+            async UniTaskVoid Do(CancellationToken ct)
+            {
+                while (!ct.IsCancellationRequested)
+                {
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
+
+                    var coord = FindHoveredCoordinate();
+                    if (coord != null) _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.Normal);
+
+                    await UniTask.NextFrame();
+                }
+
+                _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
+            }
+
+            _cts?.Cancel();
+            _cts = new CancellationTokenSource();
+
+            Do(_cts.Token).Forget();
         }
     }
 }

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.GameContexts;
 using Unity.Behavior;
-using Unity.Logging;
 using Unity.Properties;
 using UnityEngine;
 using UnityUtils;
@@ -79,13 +79,13 @@ namespace NonebNi.Core.AI
 
             if (unit.FactionId != _context!.Agent.Faction.Id)
             {
-                Log.Error($"This should've never happened, you are asking agent for {_context.Agent.Faction.Id} to control unit({unit.Name}) from {_context.Agent.Faction.Id}");
+                Log.Error("AI", $"This should've never happened, you are asking agent for {_context.Agent.Faction.Id} to control unit({unit.Name}) from {_context.Agent.Faction.Id}");
                 return null;
             }
 
             if (!Children.Any())
             {
-                Log.Warning("This utility selector has no options to pick from.");
+                Log.Warn("AI", "This utility selector has no options to pick from.");
                 return null;
             }
 
@@ -95,7 +95,7 @@ namespace NonebNi.Core.AI
             {
                 if (child is not IUtilityNode utilityNode)
                 {
-                    Log.Error($"Found a node({child.GetType()}) that's not IUtilityNode - likely misconfigured?");
+                    Log.Error("AI", $"Found a node({child.GetType()}) that's not IUtilityNode - likely misconfigured?");
                     continue;
                 }
 

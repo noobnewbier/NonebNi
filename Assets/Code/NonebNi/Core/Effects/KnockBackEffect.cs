@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Effects
@@ -33,7 +33,7 @@ namespace NonebNi.Core.Effects
 
                 if (!context.Map.TryFind(context.ActionCaster, out Coordinate casterCoord))
                 {
-                    Log.Error($"[Effect] {context.ActionCaster} does not exist in the map!");
+                    Log.Error("Effect", $"{context.ActionCaster} does not exist in the map!");
                     return new EffectResult(sequences);
                 }
 
@@ -41,21 +41,23 @@ namespace NonebNi.Core.Effects
                 {
                     if (target is not EntityData targetEntity)
                     {
-                        Log.Info($"[Effect] Trying to affect ({target.GetType()}), but it's not something we can move. Noop for now.");
+                        Log.Info("Effect", $"Trying to affect ({target.GetType()}), but it's not something we can move. Noop for now.");
                         continue;
                     }
 
                     if (!context.Map.TryFind(targetEntity, out IEnumerable<Coordinate> targetCoords))
                     {
-                        Log.Error($"[Effect] Target({targetEntity}) does not exist in the map!");
+                        Log.Error("Effect", $"Target({targetEntity}) does not exist in the map!");
                         continue;
                     }
 
                     targetCoords = targetCoords.ToArray();
                     if (targetCoords.Count() > 1)
                     {
-                        Log.Error(
-                            $"[Effect] Target({targetEntity}) spans across more than one tile! This is not supported at the moment"
+                        Log.Error
+                        (
+                            "Effect",
+                            $"Target({targetEntity}) spans across more than one tile! This is not supported at the moment"
                         );
                         continue;
                     }
@@ -78,7 +80,7 @@ namespace NonebNi.Core.Effects
                             break;
 
                         case MoveResult.ErrorEntityIsNotOnBoard:
-                            Log.Error($"[Effect] Target({targetEntity}) does not exist in the map!");
+                            Log.Error("Effect", $"Target({targetEntity}) does not exist in the map!");
                             break;
 
                         default:

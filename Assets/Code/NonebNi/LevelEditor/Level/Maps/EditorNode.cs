@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.EditorComponent.Entities;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.LevelEditor.Level.Maps
@@ -39,7 +39,9 @@ namespace NonebNi.LevelEditor.Level.Maps
                 var existingTileOccupier = CurrentOccupier;
                 if (existingTileOccupier != null)
                 {
-                    Log.Error(
+                    Log.Error
+                    (
+                        "Editor",
                         $"Attempting to add {data.Name} into this node when another occupier already exist - this is invalid, operation ignored"
                     );
                     return;

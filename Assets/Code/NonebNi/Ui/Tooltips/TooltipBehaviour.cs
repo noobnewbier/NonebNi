@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.Animation;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.Tooltips
@@ -43,7 +43,7 @@ namespace NonebNi.Ui.Tooltips
         {
             if (request is not TRequest typedRequest)
             {
-                Log.Error($"Failed to populate tooltip request - expected {typeof(TRequest).Name} but got {request.GetType().Name}");
+                Log.Error("UI", $"Failed to populate tooltip request - expected {typeof(TRequest).Name} but got {request.GetType().Name}");
                 return;
             }
 

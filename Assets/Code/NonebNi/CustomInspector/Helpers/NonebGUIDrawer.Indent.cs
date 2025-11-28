@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using Unity.Logging;
+using Noneb.Logs.Runtime;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,7 +8,8 @@ namespace NonebNi.CustomInspector
 {
     public partial class NonebGUIDrawer
     {
-        private static readonly Lazy<PropertyInfo> IndentMethod = new(
+        private static readonly Lazy<PropertyInfo> IndentMethod = new
+        (
             () =>
             {
                 var method = typeof(EditorGUI).GetProperty("indent", BindingFlags.Static | BindingFlags.NonPublic);
@@ -23,7 +24,7 @@ namespace NonebNi.CustomInspector
                 var getValue = IndentMethod.Value.GetValue(null);
                 if (getValue is not float indent)
                 {
-                    Log.Error("Unity update probably broke this - it's written in 6000.0.35f1");
+                    Log.Error("Editor", "Unity update probably broke this - it's written in 6000.0.35f1");
                     return EditorGUI.indentLevel * 15;
                 }
 

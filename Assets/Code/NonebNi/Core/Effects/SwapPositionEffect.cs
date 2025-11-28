@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Sequences;
-using Unity.Logging;
 
 namespace NonebNi.Core.Effects
 {
@@ -21,19 +21,19 @@ namespace NonebNi.Core.Effects
                 var targetParam = context.TargetGroups.FirstOrDefault()?.AsSingleTarget;
                 if (targetParam is not EntityData targetEntity)
                 {
-                    Log.Error($"{nameof(SwapPositionEffect)} without an Entity parameter makes no sense!");
+                    Log.Error("Effect", $"{nameof(SwapPositionEffect)} without an Entity parameter makes no sense!");
                     return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(context.ActionCaster, out Coordinate actorCoord))
                 {
-                    Log.Error($"{context.ActionCaster.Name} is not on the map!");
+                    Log.Error("Effect", $"{context.ActionCaster.Name} is not on the map!");
                     return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(targetEntity, out Coordinate targetCoord))
                 {
-                    Log.Error($"{targetEntity.Name} is not on the map!");
+                    Log.Error("Effect", $"{targetEntity.Name} is not on the map!");
                     return EffectResult.Empty;
                 }
 
@@ -51,8 +51,10 @@ namespace NonebNi.Core.Effects
                 else
                     receivers.Add(targetEntity);
 
-                sequences.Add(
-                    new AggregateSequence(
+                sequences.Add
+                (
+                    new AggregateSequence
+                    (
                         new MoveSequence(targetEntity, actorCoord),
                         new MoveSequence(context.ActionCaster, targetCoord)
                     )

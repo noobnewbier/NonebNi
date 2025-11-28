@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Logging;
+using Noneb.Logs.Runtime;
 using UnityEditor.IMGUI.Controls;
 using UnityUtils;
 
@@ -52,7 +52,7 @@ namespace NonebNi.CustomInspector.AbstractClass
             if (item is not TypePickerItem pickerItem)
             {
                 var defaultType = _rootType.GetTypeHierarchy().Flatten().FirstOrDefault(t => t.IsConcrete());
-                if (defaultType == null) Log.Error("No default type can be found, is it all abstract?");
+                if (defaultType == null) Log.Error("Editor", "No default type can be found, is it all abstract?");
 
                 NewTypeSelected?.Invoke(defaultType);
                 return;

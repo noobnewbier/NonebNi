@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Effects;
 using NonebNi.Core.Units;
-using Unity.Logging;
 
 namespace NonebNi.Core.FlowControl
 {
@@ -70,7 +70,7 @@ namespace NonebNi.Core.FlowControl
             while (true)
             {
                 var currentUnit = UnitTurnOrderer.CurrentUnit;
-                Log.Info($"[Level] Turn {turnNum}, {currentUnit.Name}'s turn");
+                Log.Info("Level", $"Turn {turnNum}, {currentUnit.Name}'s turn");
 
                 currentUnit.RestoreMovement();
                 currentUnit.RestoreActionPoint();

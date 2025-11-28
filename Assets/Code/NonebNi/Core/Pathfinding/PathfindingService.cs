@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.DataIds;
 using NonebNi.Core.Entities;
@@ -7,7 +8,6 @@ using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine;
 using UnityUtils;
 
@@ -37,7 +37,9 @@ namespace NonebNi.Core.Pathfinding
             var isOnMap = _map.TryFind(entity, out Coordinate entityPos);
             if (!isOnMap)
             {
-                Log.Warning(
+                Log.Warn
+                (
+                    "Path",
                     "Trying to find a path from an entity that doesn't exist on the map - something went wrong?"
                 );
                 return (false, Enumerable.Empty<Coordinate>());

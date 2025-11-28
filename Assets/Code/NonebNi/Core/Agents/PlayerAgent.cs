@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Factions;
-using Unity.Logging;
 
 namespace NonebNi.Core.Agents
 {
@@ -46,7 +46,7 @@ namespace NonebNi.Core.Agents
             var tcs = _tcs;
             _tcs = null; // we want to set this to null before setting the result, that way if there's other chap trying to get decision as the code go on we aren't resetting them
 
-            if (!tcs.TrySetResult(decision)) Log.Error("woah dude this should not have happened");
+            if (!tcs.TrySetResult(decision)) Log.Error("AI", "woah dude this should not have happened");
         }
     }
 }

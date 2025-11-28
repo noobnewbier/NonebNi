@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Sequences;
 using NonebNi.Terrain;
 using NonebNi.Ui.Animation;
 using NonebNi.Ui.Animation.Sequence;
 using NonebNi.Ui.Entities;
-using Unity.Logging;
 
 namespace NonebNi.Ui.Sequences
 {
@@ -123,7 +123,7 @@ namespace NonebNi.Ui.Sequences
             var animControl = entity.GetAnimationControl<T>();
             if (animControl == null)
             {
-                Log.Error("Failed to find component of {type} in {entity}", $"{nameof(IPlayAnimation)}<{typeof(T).Name}", entity.name);
+                Log.Error("Level", $"Failed to find component of {nameof(IPlayAnimation)}<{typeof(T).Name} in {entity.name}");
                 return UniTask.CompletedTask;
             }
 

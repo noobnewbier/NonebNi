@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.DataIds;
-using Unity.Logging;
 
 namespace NonebNi.Core.Factions
 {
@@ -36,7 +36,7 @@ namespace NonebNi.Core.Factions
         {
             if (!_factions.TryGetValue(factionId, out var faction))
             {
-                Log.Warning($"You are trying to look for {factionId} which doesn't exist, this seems weird but we are rolling with it by creating a dummy faction");
+                Log.Warn("Faction", $"You are trying to look for {factionId} which doesn't exist, this seems weird but we are rolling with it by creating a dummy faction");
                 _factions[factionId] = faction = new Faction(factionId, false);
             }
 

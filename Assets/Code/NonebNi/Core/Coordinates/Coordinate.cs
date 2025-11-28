@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Maps;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Coordinates
@@ -16,7 +16,7 @@ namespace NonebNi.Core.Coordinates
     [Serializable]
     public record Coordinate : IActionTarget
     {
-        public static readonly Coordinate Zero = new(0, 0);
+        public static readonly Coordinate Zero = new (0, 0);
         [SerializeField] private int x;
         [SerializeField] private int z;
 
@@ -44,9 +44,9 @@ namespace NonebNi.Core.Coordinates
             this + HexDirection.SouthWest
         };
 
-        public Coordinate RotateRight() => new(-Y, -x);
+        public Coordinate RotateRight() => new (-Y, -x);
 
-        public Coordinate RotateLeft() => new(-z, -Y);
+        public Coordinate RotateLeft() => new (-z, -Y);
 
         public Coordinate Normalized()
         {
@@ -57,7 +57,8 @@ namespace NonebNi.Core.Coordinates
         public int DistanceTo(Coordinate coordinate)
         {
             //Ref: https://www.redblobgames.com/grids/hexagons/#distances
-            var subtractedCoordinate = new Coordinate(
+            var subtractedCoordinate = new Coordinate
+            (
                 X - coordinate.X,
                 Z - coordinate.Z
             );
@@ -100,7 +101,7 @@ namespace NonebNi.Core.Coordinates
         {
             if (!IsOnSameLineWith(coordinate))
             {
-                Log.Error("This method only support coordinates on a straight line at the moment!");
+                Log.Error("Map", "This method only support coordinates on a straight line at the moment!");
                 yield break;
             }
 
@@ -143,10 +144,10 @@ namespace NonebNi.Core.Coordinates
 
         public override string ToString() => $"({X}, {Y}, {Z})";
 
-        public static Coordinate operator +(Coordinate a, Coordinate b) => new(a.X + b.X, a.Z + b.Z);
-        public static Coordinate operator -(Coordinate a, Coordinate b) => new(a.X - b.X, a.Z - b.Z);
-        public static Coordinate operator *(Coordinate a, int i) => new(a.X * i, a.Z * i);
-        public static Coordinate operator -(Coordinate c) => new(-c.X, -c.Z);
+        public static Coordinate operator +(Coordinate a, Coordinate b) => new (a.X + b.X, a.Z + b.Z);
+        public static Coordinate operator -(Coordinate a, Coordinate b) => new (a.X - b.X, a.Z - b.Z);
+        public static Coordinate operator *(Coordinate a, int i) => new (a.X * i, a.Z * i);
+        public static Coordinate operator -(Coordinate c) => new (-c.X, -c.Z);
 
         [PublicAPI]
         public void Deconstruct(out int outX, out int outZ)
@@ -155,6 +156,6 @@ namespace NonebNi.Core.Coordinates
             outZ = z;
         }
 
-        public static implicit operator Coordinate((int x, int z) tuple) => new(tuple.x, tuple.z);
+        public static implicit operator Coordinate((int x, int z) tuple) => new (tuple.x, tuple.z);
     }
 }

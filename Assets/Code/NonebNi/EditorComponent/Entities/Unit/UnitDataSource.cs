@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine;
 using UnityUtils.Constants;
 
@@ -34,16 +34,18 @@ namespace NonebNi.EditorComponent.Entities.Unit
             {
                 if (a == null)
                 {
-                    Log.Error($"Failed to find action with id: {a}");
+                    Log.Error("Editor", $"Failed to find action with id: {a}");
                     continue;
                 }
 
                 actions.Add(a);
             }
 
-            return new EditorEntityData<UnitData>(
+            return new EditorEntityData<UnitData>
+            (
                 guid,
-                new UnitData(
+                new UnitData
+                (
                     guid,
                     actions,
                     icon,

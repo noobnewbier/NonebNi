@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Unity.Logging;
+using Noneb.Logs.Runtime;
 using UnityEngine;
 
 namespace NonebNi.Core.GameContexts
@@ -29,7 +29,7 @@ namespace NonebNi.Core.GameContexts
 
         public static void Set(Type type, object data)
         {
-            if (Datas.ContainsKey(type)) Log.Warning("You are overwriting existing context, likely not what you want to do?");
+            if (Datas.ContainsKey(type)) Log.Warn("Context", "You are overwriting existing context, likely not what you want to do?");
 
             Datas[type] = data;
         }
@@ -39,7 +39,7 @@ namespace NonebNi.Core.GameContexts
             var data = Datas.GetValueOrDefault(typeof(T));
             if (data is not T typedData)
             {
-                Log.Error($"How the hell did you even end up here, we got a {data.GetType()} instead");
+                Log.Error("Context", $"How the hell did you even end up here, we got a {data.GetType()} instead");
                 return default;
             }
 
@@ -49,7 +49,7 @@ namespace NonebNi.Core.GameContexts
         public static T GetImmediate<T>()
         {
             var result = FindImmediate<T>();
-            if (result == null) Log.Error("Got null when looking for {type}, this is why you get a NRE", typeof(T));
+            if (result == null) Log.Error("Context", $"Got null when looking for {typeof(T)}, this is why you get a NRE");
 
             // if a user get a null - he asked for it.
             return result!;
@@ -73,7 +73,7 @@ namespace NonebNi.Core.GameContexts
 
                 if (data is not T typedData)
                 {
-                    Log.Error("How the hell did you even end up here");
+                    Log.Error("Context", "How the hell did you even end up here");
                     return default;
                 }
 

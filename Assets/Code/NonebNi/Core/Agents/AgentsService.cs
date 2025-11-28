@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
-using Unity.Logging;
 
 namespace NonebNi.Core.Agents
 {
@@ -26,7 +26,7 @@ namespace NonebNi.Core.Agents
         public AgentsService(IReadOnlyList<IAgent> agents, IDecisionValidator validator)
         {
             if (agents.GroupBy(a => a.Faction).Any(g => g.Count() > 1))
-                Log.Error("More than one agent shares the same faction id - this is invalid");
+                Log.Error("AI", "More than one agent shares the same faction id - this is invalid");
 
             _agents = agents;
             _validator = validator;
@@ -39,14 +39,14 @@ namespace NonebNi.Core.Agents
             do
             {
                 var decision = await GetAgentDecision(factionId);
-                Log.Info($"[Level] Received Decision: {decision?.GetType()}");
+                Log.Info("AI", $"Received Decision: {decision?.GetType()}");
 
                 (err, command) = _validator.ValidateDecision(decision);
 
-                if (err != null) Log.Info($"[Level] Decision Error: {err.Type}, {err.Description}");
+                if (err != null) Log.Info("AI", $"Decision Error: {err.Type}, {err.Description}");
             } while (err != null);
 
-            Log.Info($"[Level] Evaluate Command: {command.GetType()}");
+            Log.Info("AI", $"Evaluate Command: {command.GetType()}");
 
             //TODO: preferrably there is an auto end turn button which ends turn when there's absolutely nothing you can do, hard to implement without being annoying though
             return command;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Unity.Logging;
+using Noneb.Logs.Runtime;
 using UnityUtils;
 
 namespace Noneb.Tags.Runtime
@@ -18,13 +18,13 @@ namespace Noneb.Tags.Runtime
                 var value = field.GetValue(null);
                 if (value is not string stringValue)
                 {
-                    Log.Error($"TagSource '{Name}': Field '{field.Name}' has no value");
+                    Log.Error("Tag", $"TagSource '{Name}': Field '{field.Name}' has no value");
                     continue;
                 }
 
                 if (attribute is not NonebTagAttribute tagAttribute)
                 {
-                    Log.Error("How are you even getting here - unexpected type {type}", attribute.GetType());
+                    Log.Error("Tag", $"How are you even getting here - unexpected type {attribute.GetType()}");
                     continue;
                 }
 

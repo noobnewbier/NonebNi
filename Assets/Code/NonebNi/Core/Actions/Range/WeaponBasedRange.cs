@@ -1,7 +1,7 @@
 ﻿using System;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Units;
-using Unity.Logging;
 
 namespace NonebNi.Core.Actions
 {
@@ -12,7 +12,7 @@ namespace NonebNi.Core.Actions
         {
             if (actionCaster is not UnitData unitData)
             {
-                Log.Error("Unexpected argument, only unit is expected to have equipment!");
+                Log.Error("Action", "Unexpected argument, only unit is expected to have equipment!");
                 return 0;
             }
 

@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Decisions;
 using NonebNi.Core.Factions;
 using Unity.Behavior;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Agents
@@ -45,8 +45,6 @@ namespace NonebNi.Core.Agents
 
         public UniTask<IDecision?> GetDecision(CancellationToken ct)
         {
-            // _graph.Restart();
-
             //if it breaks, well you got what you deserved
             if (_decisionTcs?.UnsafeGetStatus() == UniTaskStatus.Pending)
             {
@@ -69,7 +67,7 @@ namespace NonebNi.Core.Agents
             var tcs = _decisionTcs;
             _decisionTcs = null; // we want to set this to null before setting the result, that way if there's other chap trying to get decision as the code go on we aren't resetting them
 
-            if (!tcs.TrySetResult(decision)) Log.Error("woah dude this should not have happened");
+            if (!tcs.TrySetResult(decision)) Log.Error("AI", "woah dude this should not have happened");
         }
 
         /// <summary>

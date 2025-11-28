@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.Animation;
 using NonebNi.Ui.Animation.Common;
 using NonebNi.Ui.Animation.Sequence;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.Animation.MannequinFighter
@@ -27,8 +27,8 @@ namespace NonebNi.Ui.Animation.MannequinFighter
         [SerializeField] private Animator animator = null!;
         [SerializeField] private PrototypeMeleeWeaponAnimationControl meleeWeaponAnimControl = null!;
         [SerializeField] private MovementAnimationControl movementControl = null!;
-        [SerializeField] private AnimationDataTable animTable = new();
-        [SerializeField] private AnimationData fallbackAnim = new();
+        [SerializeField] private AnimationDataTable animTable = new ();
+        [SerializeField] private AnimationData fallbackAnim = new ();
 
 
         [ContextMenu(nameof(Play))]
@@ -39,7 +39,8 @@ namespace NonebNi.Ui.Animation.MannequinFighter
                 UniTask.CompletedTask :
                 meleeWeaponAnimControl.WaitTillHitEntity(sequence.DamageReceiver, ct);
 
-            await UniTask.WhenAny(
+            await UniTask.WhenAny
+            (
                 animTask,
                 waitForHitTask
             );
@@ -86,11 +87,12 @@ namespace NonebNi.Ui.Animation.MannequinFighter
             var data = animTable.FindAnim(animId);
             if (data == null)
             {
-                Log.Error($@"Cannot find animation with Id ""{animId}"", using fallback animation");
+                Log.Error("Editor", $@"Cannot find animation with Id ""{animId}"", using fallback animation");
                 data = fallbackAnim;
             }
 
-            await UniTask.WhenAny(
+            await UniTask.WhenAny
+            (
                 UniTask.WaitForSeconds(10, cancellationToken: ct),
                 animator.PlayAnimation(data, ct)
             );

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
-using Unity.Logging;
 
 namespace NonebNi.Core.Effects
 {
@@ -13,10 +13,10 @@ namespace NonebNi.Core.Effects
                 switch (Targets.Length)
                 {
                     case > 1:
-                        Log.Warning("Multiple targets found when the code really just wanted one target, something went wrong");
+                        Log.Warn("Effects", "Multiple targets found when the code really just wanted one target, something went wrong");
                         break;
                     case 0:
-                        Log.Warning("My gut feeling is that you should never be here, I can't really fathom why would this be a valid case right now, but maybe I was wrong, future me glhf");
+                        Log.Warn("Effects", "My gut feeling is that you should never be here, I can't really fathom why would this be a valid case right now, but maybe I was wrong, future me glhf");
                         break;
                 }
 

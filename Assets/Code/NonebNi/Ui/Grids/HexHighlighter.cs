@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Coordinates;
 using NonebNi.Terrain;
 using Priority_Queue;
-using Unity.Logging;
 using UnityEngine;
 using UnityUtils.Pooling;
 #if UNITY_EDITOR
@@ -37,7 +37,7 @@ namespace NonebNi.Ui.Grids
     //TODO: use some vfx so visually stuffs looks appealing
     public class HexHighlighter : IHexHighlighter
     {
-        private static readonly Dictionary<string, int> RequestPriority = new()
+        private static readonly Dictionary<string, int> RequestPriority = new ()
         {
             [HighlightRequestId.TargetSelection] = 0,
             [HighlightRequestId.TileInspection] = 1,
@@ -53,9 +53,9 @@ namespace NonebNi.Ui.Grids
         /// 1. duplicated highlight on the same hex when there's multiple req with different id
         /// 2. inefficient iteration although it's probably not that bad
         /// </summary>
-        private readonly Dictionary<Coordinate, ResponseRequest> _highlightMappings = new();
+        private readonly Dictionary<Coordinate, ResponseRequest> _highlightMappings = new ();
 
-        private readonly Dictionary<HighlightVariation, BehaviourPool<HexHighlight>> _highlightPools = new();
+        private readonly Dictionary<HighlightVariation, BehaviourPool<HexHighlight>> _highlightPools = new ();
         private readonly TerrainConfigData _terrainConfig;
 
         public HexHighlighter(ICoordinateAndPositionService coordinateAndPositionService, HexHighlightConfig highlightConfig, TerrainConfigData terrainConfig)
@@ -197,7 +197,7 @@ namespace NonebNi.Ui.Grids
                 var prefab = _highlightConfig.FindHighlightPrefab(variation);
                 if (prefab == null)
                 {
-                    Log.Error($"Cannot find {variation}, your config messed up");
+                    Log.Error("UI", $"Cannot find {variation}, your config messed up");
                     prefab = new GameObject("Error_HexHighlight").AddComponent<HexHighlight>();
                     // setting to inactive - this way at least we can hide the "prefab" from the active scene and the game looks a bit less jarring
                     prefab.gameObject.SetActive(false);
@@ -212,7 +212,7 @@ namespace NonebNi.Ui.Grids
         private record ResponseRequest
         {
             public HighlightResponse? Response { get; set; }
-            public SimplePriorityQueue<HighlightRequest> Requests { get; } = new();
+            public SimplePriorityQueue<HighlightRequest> Requests { get; } = new ();
         }
 
         private class HighlightRequest

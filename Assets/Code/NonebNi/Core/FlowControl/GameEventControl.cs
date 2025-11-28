@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Effects;
-using Unity.Logging;
 
 namespace NonebNi.Core.FlowControl
 {
@@ -45,7 +45,7 @@ namespace NonebNi.Core.FlowControl
             Current = value;
             UpdateComboSequence();
 
-            if (!_channel.Writer.TryWrite(value)) Log.Error("[Level] You should really, never have got here");
+            if (!_channel.Writer.TryWrite(value)) Log.Error("Level", "You should really, never have got here");
         }
 
         public IUniTaskAsyncEnumerable<LevelEvent> Subscribe(CancellationToken ct)

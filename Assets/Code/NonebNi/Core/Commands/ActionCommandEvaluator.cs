@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Effects;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Stats;
 using NonebNi.Core.Units;
-using Unity.Logging;
 
 namespace NonebNi.Core.FlowControl
 {
@@ -62,7 +62,7 @@ namespace NonebNi.Core.FlowControl
             if (command.Action.StatRequirements.Any())
             {
                 if (command.ActorEntity is not UnitData unitData)
-                    Log.Warning($"{command.ActorEntity} is not an unit - cannot pay cost for {command.Action} - we are still doing it though");
+                    Log.Warn("Action", $"{command.ActorEntity} is not an unit - cannot pay cost for {command.Action} - we are still doing it though");
                 else
                 {
                     foreach (var cost in FindActionCostInCurrentState(command))
@@ -73,12 +73,13 @@ namespace NonebNi.Core.FlowControl
             }
 
             var results = command.Action.Effects.Select
-                                 (e =>
+                                 (
+                                     e =>
                                      {
                                          var context = FindEffectContext(command);
 
                                          var (isSuccess, result) = Evaluate(e, context);
-                                         if (!isSuccess) Log.Error($"Cannot find evaluator that can handle ({e.GetType()})");
+                                         if (!isSuccess) Log.Error("Action", $"Cannot find evaluator that can handle ({e.GetType()})");
 
                                          return result;
                                      }

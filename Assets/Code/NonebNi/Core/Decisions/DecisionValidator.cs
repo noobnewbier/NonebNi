@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Noneb.Localization.Runtime;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
-using Unity.Logging;
 
 namespace NonebNi.Core.Decisions
 {
@@ -176,7 +176,7 @@ namespace NonebNi.Core.Decisions
                     }
 
                     default:
-                        Log.Error($"Unhandled type {status}");
+                        Log.Error("Level", $"Unhandled type {status}");
                         return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.InvalidTarget, status.GetType().Name));
                 }
             }

@@ -1,7 +1,7 @@
-﻿using NonebNi.Core.Attributes;
+﻿using Noneb.Logs.Runtime;
+using NonebNi.Core.Attributes;
 using NonebNi.Core.Stats;
 using TMPro;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -23,7 +23,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public void Show(Stat stat)
         {
-            if (stat == Stat.Invalid) Log.Error("Trying to show invalid stat - something went wrong upstream");
+            if (stat == Stat.Invalid) Log.Error("UI", "Trying to show invalid stat - something went wrong upstream");
 
             if (stat.HasMaxLimit)
                 Show(stat.CurrentValue, stat.MaxValue);

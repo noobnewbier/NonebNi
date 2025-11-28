@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
-using Unity.Logging;
 
 namespace NonebNi.Core.Effects
 {
@@ -22,25 +22,27 @@ namespace NonebNi.Core.Effects
                 var targetParam = context.TargetGroups.FirstOrDefault()?.AsSingleTarget;
                 if (targetParam is not EntityData targetEntity)
                 {
-                    Log.Error($"{nameof(PullEntityEffect)} without an Entity parameter makes no sense!");
+                    Log.Error("Effect", $"{nameof(PullEntityEffect)} without an Entity parameter makes no sense!");
                     return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(context.ActionCaster, out Coordinate actorCoord))
                 {
-                    Log.Error($"{context.ActionCaster.Name} is not on the map!");
+                    Log.Error("Effect", $"{context.ActionCaster.Name} is not on the map!");
                     return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(targetEntity, out Coordinate targetCoord))
                 {
-                    Log.Error($"{targetEntity.Name} is not on the map!");
+                    Log.Error("Effect", $"{targetEntity.Name} is not on the map!");
                     return EffectResult.Empty;
                 }
 
                 if (!actorCoord.IsOnSameLineWith(targetCoord))
                 {
-                    Log.Error(
+                    Log.Error
+                    (
+                        "Effect",
                         $"{targetEntity.Name} is not on the same line with {context.ActionCaster.Name} - effect is undefined!"
                     );
                     return EffectResult.Empty;
@@ -51,7 +53,7 @@ namespace NonebNi.Core.Effects
                 var result = context.Map.Move(targetEntity, pulledToCoord);
                 if (result != MoveResult.Success)
                 {
-                    Log.Warning($"Failed movement! Reason: {result}.");
+                    Log.Warn("Effect", $"Failed movement! Reason: {result}.");
                     return EffectResult.Empty;
                 }
 

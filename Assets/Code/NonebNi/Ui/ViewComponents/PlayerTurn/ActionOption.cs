@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.Animation;
 using Noneb.UI.Element;
 using NonebNi.Core.Actions;
 using NonebNi.Ui.Tooltips;
 using TMPro;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -17,8 +17,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private NonebButton button = null!;
         [SerializeField] private TooltipDetector tooltipDetector = null!;
 
-        [SerializeField] private AnimationData highlightOnAnim = new();
-        [SerializeField] private AnimationData highlightOffAnim = new();
+        [SerializeField] private AnimationData highlightOnAnim = new ();
+        [SerializeField] private AnimationData highlightOffAnim = new ();
 
         public NonebAction? Action { get; private set; }
 
@@ -41,7 +41,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         {
             if (Action == null)
             {
-                Log.Error("Clicked before showing anything -> probably unintended sequence");
+                Log.Error("UI", "Clicked before showing anything -> probably unintended sequence");
                 return;
             }
 
