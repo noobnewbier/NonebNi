@@ -65,7 +65,7 @@ namespace NonebNi.Core.AI
 
                 if (!damageEffects.Any()) continue;
 
-                foreach (var command in deps.OptionFinder.FindOptionsForActor(controlledUnit).OfType<ActionCommand>())
+                foreach (var command in deps.OptionFinder.FindOptionsForAction(controlledUnit, action).OfType<ActionCommand>())
                 {
                     //todo: think - is it better if we feed in tag externally, I don't know man.
                     var damageSum = 0f;
