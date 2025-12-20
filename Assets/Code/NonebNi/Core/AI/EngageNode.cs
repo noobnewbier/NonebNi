@@ -49,6 +49,16 @@ namespace NonebNi.Core.AI
                                   .Where(u => !deps.FactionService.IsAlly(controlledUnit.FactionId, u.FactionId))
                                   .Select(u => deps.Map.Find(u))
                                   .ToArray();
+
+            // if we are already in that distance, although there might be a better position else where, we don't do anything for now
+            var currentCoord = deps.Map.Find(controlledUnit);
+            var currentDistToEnemies = enemyCoords.Select(c => currentCoord.DistanceTo(c)).Min();
+            if (currentDistToEnemies == preferredDistance.Value) yield break;
+
+            /*
+             * find all the possible movement, use the one that matches the preferred distance the most - doesn't care if we have more than one enemy for now
+             * we can add possibility using influence map later
+             */
             var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, enemyCoords, actions, deps);
             if (!commandDistances.Any()) yield break;
 
