@@ -7,9 +7,11 @@ namespace Noneb.Tags.Editor.TagPickers
     {
         public readonly NonebTag Tag;
 
-        public TagPickerItem(NonebTag tag) : base(tag.DisplayName)
+        public TagPickerItem(NonebTag tag, string displayName) : base(displayName)
         {
             Tag = tag;
         }
+
+        public TagPickerItem(NonebTag tag) : this(tag, tag) { }
     }
 }

@@ -34,8 +34,8 @@ namespace Noneb.Tags.Editor.TagPickers
              * I did think of going the reflection route - it felt overkill so hey here we go.
              */
             var itemAndUncommitedChildren = EditorNonebTagManager.GetAllTags()
-                .Select(t => new TagPickerItem(t))
-                .ToDictionary(tag => tag, _ => new List<TagPickerItem>());
+                                                                 .Select(t => new TagPickerItem(t))
+                                                                 .ToDictionary(tag => tag, _ => new List<TagPickerItem>());
 
             // add child relationship for the foldout like structure
             foreach (var a in itemAndUncommitedChildren.Keys)
@@ -46,7 +46,7 @@ namespace Noneb.Tags.Editor.TagPickers
             foreach (var item in itemAndUncommitedChildren.Keys.ToArray())
                 if (itemAndUncommitedChildren[item].Any())
                 {
-                    var optionForSelf = new TagPickerItem(item.Tag);
+                    var optionForSelf = new TagPickerItem(item.Tag, $"{item.Tag} (as is)");
                     itemAndUncommitedChildren[item].Add(optionForSelf);
 
                     itemAndUncommitedChildren[optionForSelf] = new ();
@@ -54,7 +54,9 @@ namespace Noneb.Tags.Editor.TagPickers
 
             // sort those children into something human friendly
             foreach (var (item, children) in itemAndUncommitedChildren)
-                children.Sort((a, b) =>
+                children.Sort
+                (
+                    (a, b) =>
                     {
                         // folder goes in first
                         if (itemAndUncommitedChildren[a].Any() && !itemAndUncommitedChildren[b].Any()) return -1;
