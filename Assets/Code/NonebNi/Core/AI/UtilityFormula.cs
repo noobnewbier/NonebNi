@@ -39,6 +39,15 @@ namespace NonebNi.Core.AI
         private class FormulaImp
         {
             [SerializeField] private NonebTag tag = string.Empty;
+
+            /// <summary>
+            /// Note:
+            /// ----
+            /// Now I think more about this, it really don't need to be stored like a tree like structure.
+            /// The tree structure is already represented by the tag's string structure (i.e "root.branch.leaf" naming convention),
+            /// we can construct the tree by inspecting the tag themselves, and thus the storage can remain a list.
+            /// Fuck I was dumb.
+            /// </summary>
             [SerializeField] private SerializableDictionary<FormulaImp, float> childAndWeight = new ();
 
             public float Calculate(Utility utility)
