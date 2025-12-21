@@ -10,7 +10,7 @@ namespace Noneb.Tags.Editor.TagPickers
     {
         private readonly TagPickerDropdown _dropdown;
         private NonebTag _currentTag = NonebTag.None;
-        private NonebTag _newTag = NonebTag.None;
+        private NonebTag? _newTag;
 
         public TagPicker()
         {
@@ -21,6 +21,8 @@ namespace Noneb.Tags.Editor.TagPickers
         public (bool changed, NonebTag tag) Draw(Rect position, GUIContent label, NonebTag tag)
         {
             _currentTag = tag;
+            _newTag ??= _currentTag;
+
             if (!string.IsNullOrEmpty(label.text)) label.text = $"{label.text}";
 
             var pickerPos = position;
@@ -35,7 +37,7 @@ namespace Noneb.Tags.Editor.TagPickers
             }
 
             var changed = false;
-            if (_currentTag != _newTag)
+            if (_newTag != null && _currentTag != _newTag)
             {
                 _currentTag = _newTag;
                 changed = true;

@@ -4,6 +4,7 @@ using UnityUtils.Editor;
 
 namespace Noneb.Tags.Editor.TagPickers
 {
+    //todo: why the fuck do I even have this
     public abstract class TagPickerDrawer<T> : PropertyDrawer
     {
         private readonly TagPicker _tagPicker = new ();
