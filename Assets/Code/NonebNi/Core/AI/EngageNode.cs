@@ -13,6 +13,7 @@ using NonebNi.Core.Units;
 using Unity.Behavior;
 using Unity.Properties;
 using UnityEngine;
+using UnityUtils;
 using Action = Unity.Behavior.Action;
 
 namespace NonebNi.Core.AI
@@ -30,7 +31,6 @@ namespace NonebNi.Core.AI
             Value = 1
         };
 
-        //todo: act -> if enemy in range -> engage, else find heat and approach heat.
         public async IAsyncEnumerable<(ActionCommand command, Utility utility)> FindActionAndUtility(UnitData controlledUnit)
         {
             /*
@@ -55,25 +55,27 @@ namespace NonebNi.Core.AI
             var currentDistToEnemies = enemyCoords.Select(c => currentCoord.DistanceTo(c)).Min();
             if (currentDistToEnemies == preferredDistance.Value) yield break;
 
-            /*
-             * find all the possible movement, use the one that matches the preferred distance the most - doesn't care if we have more than one enemy for now
-             * we can add possibility using influence map later
-             */
-            var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, enemyCoords, actions, deps);
+            var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, currentCoord, enemyCoords, actions, deps);
             if (!commandDistances.Any()) yield break;
 
             var minDistDiff = commandDistances.Values.Min();
             var maxDistDiff = commandDistances.Values.Max();
             foreach (var (command, distDiff) in commandDistances)
             {
-                var score = 1 - Mathf.InverseLerp(minDistDiff, maxDistDiff, distDiff);
-                yield return (command, (UtilityTag.DistanceEngagement, score)); //todo: sth is wrong here.
+                var targetCoord = command.TargetCoords.First();
+                var distFromSelf = currentCoord.DistanceTo(targetCoord);
+                var distancePenalty = distFromSelf * 0.001f; //minor penalty to prioritize closest tile
+                var score = 1 - Mathf.InverseLerp(minDistDiff, maxDistDiff, distDiff) - distancePenalty;
+                yield return (command, (UtilityTag.DistanceEngagement, score));
             }
         }
 
-        private Dictionary<ActionCommand, int> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, Coordinate[] enemyCoords, NonebAction[] actions, Dependencies deps)
+        private Dictionary<ActionCommand, int> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, Coordinate unitCoord, Coordinate[] enemyCoords, NonebAction[] actions, Dependencies deps)
         {
             var actionDistanceDiff = new Dictionary<ActionCommand, int>();
+
+            // prioritize going to the closest bunch.
+            enemyCoords = enemyCoords.GroupBy(unitCoord.DistanceTo).MinBy(g => g.Key).ToArray();
 
             foreach (var action in actions)
             {
@@ -86,8 +88,8 @@ namespace NonebNi.Core.AI
                 {
                     //This doesn't care about obstacles atm, feels off... We will add the complexity when we need to.
                     var targetCoord = command.TargetCoords.First(); // can't work without this, if we don't have one something else is buggered.
-                    var dist = enemyCoords.Select(c => targetCoord.DistanceTo(c)).Min();
-                    actionDistanceDiff[command] = Mathf.Abs(preferredDistance.Value - dist);
+                    var distToTarget = enemyCoords.Select(c => targetCoord.DistanceTo(c)).Min();
+                    actionDistanceDiff[command] = Mathf.Abs(preferredDistance.Value - distToTarget);
                 }
             }
 
