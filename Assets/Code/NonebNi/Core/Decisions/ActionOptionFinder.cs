@@ -15,7 +15,7 @@ namespace NonebNi.Core.Decisions
     {
         IEnumerable<ICommand> FindComboOptions(EffectContext context);
         IEnumerable<ICommand> FindOptionsForActor(UnitData actorUnit);
-        IEnumerable<ICommand> FindOptionsForCommand(UnitData actorUnit, NonebAction action);
+        IEnumerable<ICommand> FindOptionsForAction(UnitData actorUnit, NonebAction action);
     }
 
     public class ActionOptionFinder : IActionOptionFinder
@@ -62,7 +62,7 @@ namespace NonebNi.Core.Decisions
              */
             foreach (var action in actorUnit.Actions)
             {
-                var validCommands = FindOptionsForCommand(actorUnit, action);
+                var validCommands = FindOptionsForAction(actorUnit, action);
 
                 foreach (var validCommand in validCommands)
                 {
@@ -71,7 +71,7 @@ namespace NonebNi.Core.Decisions
             }
         }
 
-        public IEnumerable<ICommand> FindOptionsForCommand(UnitData actorUnit, NonebAction action)
+        public IEnumerable<ICommand> FindOptionsForAction(UnitData actorUnit, NonebAction action)
         {
             var targetableRanges = action.TargetRequests
                                          .Select(request => _targetFinder.FindRange(actorUnit, request))
