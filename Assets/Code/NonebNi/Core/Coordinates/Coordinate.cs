@@ -108,6 +108,15 @@ namespace NonebNi.Core.Coordinates
         /// Given distance to coordinate, is there are way to move the same distance but zig zagging more.
         /// 1 for max zigzaggy, 0 for stuffs that's on same axis.
         /// </summary>
+        public float ZigZagnessWithinRange(Coordinate coordinate)
+        {
+            var dist = DistanceTo(coordinate);
+            var ceilHalf = Mathf.CeilToInt(dist / 2f);
+            var minDiffInAxis = MinDiffInAxis(coordinate);
+
+            return Mathf.InverseLerp(0, ceilHalf, minDiffInAxis);
+        }
+
         public IEnumerable<Coordinate> GetCoordinatesBetween(Coordinate coordinate)
         {
             //https://www.redblobgames.com/grids/hexagons/#line-drawing
