@@ -166,7 +166,7 @@ namespace NonebNi.Core.Actions
                 }
                 case TargetRestriction.ClearPath:
                 {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+                    if (!casterCoord.IsOnSameAxisWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
                     if (casterCoord.GetCoordinatesBetween(targetCoord).Any(_map.IsOccupied)) return (false, new RestrictionCheckFailedReason.NotClearPath());
 
                     return (true, null);
@@ -187,7 +187,7 @@ namespace NonebNi.Core.Actions
                 }
                 case TargetRestriction.FirstTileToTargetDirectionIsEmpty:
                 {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+                    if (!casterCoord.IsOnSameAxisWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
 
                     var direction = (targetCoord - casterCoord).Normalized();
                     var firstTileToTargetDirection = casterCoord + direction;
@@ -200,7 +200,7 @@ namespace NonebNi.Core.Actions
                 }
                 case TargetRestriction.TargetCoordPlusDirectionToTargetIsEmpty:
                 {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+                    if (!casterCoord.IsOnSameAxisWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
 
                     var direction = (targetCoord - casterCoord).Normalized();
                     var targetCoordPlusDirection = targetCoord + direction;

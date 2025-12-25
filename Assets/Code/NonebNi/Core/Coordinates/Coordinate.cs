@@ -94,7 +94,7 @@ namespace NonebNi.Core.Coordinates
             }
         }
 
-        public bool IsOnSameLineWith(Coordinate coordinate) =>
+        public bool IsOnSameAxisWith(Coordinate coordinate) =>
             X == coordinate.X || Y == coordinate.Y || Z == coordinate.Z;
 
         public IEnumerable<Coordinate> GetCoordinatesBetween(Coordinate coordinate)
