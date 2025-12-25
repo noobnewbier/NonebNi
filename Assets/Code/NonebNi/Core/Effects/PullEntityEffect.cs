@@ -38,7 +38,7 @@ namespace NonebNi.Core.Effects
                     return EffectResult.Empty;
                 }
 
-                if (!actorCoord.IsOnSameLineWith(targetCoord))
+                if (!actorCoord.IsOnSameAxisWith(targetCoord))
                 {
                     Log.Error
                     (

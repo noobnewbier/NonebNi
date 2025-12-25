@@ -33,7 +33,7 @@ namespace NonebNi.Core.Effects
                         yield break;
                     }
 
-                    if (!actorCoord.IsOnSameLineWith(targetCoord))
+                    if (!actorCoord.IsOnSameAxisWith(targetCoord))
                     {
                         Log.Error
                         (
