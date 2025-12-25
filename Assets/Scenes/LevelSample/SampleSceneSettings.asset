@@ -27,116 +27,7 @@ MonoBehaviour:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas:
-      - serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
-        entityData:
-          name:
-            debugString: Enemy1
-          serializableGuid:
-            serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
-          <FactionId>k__BackingField: EnemyNpc
-          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-          actions:
-          - <Id>k__BackingField: bash
-            <Name>k__BackingField:
-              debugString: bash
-            <Tooltip>k__BackingField:
-              debugString: Use your shield to knock back enemy for one tile, does
-                little damage
-            <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
-            <TargetRequests>k__BackingField:
-            - <TargetRestrictionFlags>k__BackingField: 2
-              <TargetArea>k__BackingField: 0
-              <Range>k__BackingField:
-                rid: 8598466130961236158
-            <Effects>k__BackingField:
-            - rid: 8598466130961236159
-            <IsComboStarter>k__BackingField: 1
-          - <Id>k__BackingField: shoot
-            <Name>k__BackingField:
-              debugString: shoot
-            <Tooltip>k__BackingField:
-              debugString: Shoot an enemy at range, does good damage
-            <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
-            <TargetRequests>k__BackingField:
-            - <TargetRestrictionFlags>k__BackingField: 2
-              <TargetArea>k__BackingField: 0
-              <Range>k__BackingField:
-                rid: 8598466130961236160
-            <Effects>k__BackingField:
-            - rid: 8598466130961236161
-            <IsComboStarter>k__BackingField: 0
-          - <Id>k__BackingField: lure
-            <Name>k__BackingField:
-              debugString: lure
-            <Tooltip>k__BackingField:
-              debugString: Faking an opening and draw enemy towards you
-            <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
-            <TargetRequests>k__BackingField:
-            - <TargetRestrictionFlags>k__BackingField: 138
-              <TargetArea>k__BackingField: 0
-              <Range>k__BackingField:
-                rid: 8598466130961236162
-            <Effects>k__BackingField:
-            - rid: 8598466130961236163
-            <IsComboStarter>k__BackingField: 1
-          <Stats>k__BackingField:
-            stats:
-            - <ID>k__BackingField: health
-              currentValue: 100
-              <MinValue>k__BackingField: 0
-              <MaxValue>k__BackingField: 100
-            - <ID>k__BackingField: initiative
-              currentValue: 0
-              <MinValue>k__BackingField: 0
-              <MaxValue>k__BackingField: 100
-            - <ID>k__BackingField: speed
-              currentValue: 5
-              <MinValue>k__BackingField: 0
-              <MaxValue>k__BackingField: 5
-            - <ID>k__BackingField: focus
-              currentValue: 5
-              <MinValue>k__BackingField: -1
-              <MaxValue>k__BackingField: -1
-            - <ID>k__BackingField: strength
-              currentValue: 5
-              <MinValue>k__BackingField: -1
-              <MaxValue>k__BackingField: -1
-            - <ID>k__BackingField: armor
-              currentValue: 5
-              <MinValue>k__BackingField: -1
-              <MaxValue>k__BackingField: -1
-            - <ID>k__BackingField: weapon-range
-              currentValue: 5
-              <MinValue>k__BackingField: -1
-              <MaxValue>k__BackingField: -1
-            - <ID>k__BackingField: fatigue
-              currentValue: 100
-              <MinValue>k__BackingField: 0
-              <MaxValue>k__BackingField: 100
-            - <ID>k__BackingField: action-point
-              currentValue: 1
-              <MinValue>k__BackingField: 0
-              <MaxValue>k__BackingField: 1
-            - <ID>k__BackingField: fatigue-recovery
-              currentValue: 0
-              <MinValue>k__BackingField: -1
-              <MaxValue>k__BackingField: -1
+      serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
@@ -258,18 +149,17 @@ MonoBehaviour:
               debugString: Use your shield to knock back enemy for one tile, does
                 little damage
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040110
+            - rid: 9157298550658040111
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236158
+                rid: 9157298550658040112
             <Effects>k__BackingField:
-            - rid: 8598466130961236159
+            - rid: 9157298550658040113
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
@@ -277,18 +167,17 @@ MonoBehaviour:
             <Tooltip>k__BackingField:
               debugString: Shoot an enemy at range, does good damage
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040114
+            - rid: 9157298550658040115
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236160
+                rid: 9157298550658040116
             <Effects>k__BackingField:
-            - rid: 8598466130961236161
+            - rid: 9157298550658040117
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
@@ -296,19 +185,178 @@ MonoBehaviour:
             <Tooltip>k__BackingField:
               debugString: Faking an opening and draw enemy towards you
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040118
+            - rid: 9157298550658040119
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236162
+                rid: 9157298550658040120
             <Effects>k__BackingField:
-            - rid: 8598466130961236163
+            - rid: 9157298550658040121
             <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: grapple
+            <Name>k__BackingField:
+              debugString: grapple
+            <Tooltip>k__BackingField:
+              debugString: Grabbing an enemy to a near by position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040122
+            - rid: 9157298550658040123
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040124
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040125
+            <Effects>k__BackingField:
+            - rid: 9157298550658040126
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: tactical-advance
+            <Name>k__BackingField:
+              debugString: tactical-advance
+            <Tooltip>k__BackingField:
+              debugString: Commanding another friendly unit to move to another position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040127
+            - rid: 9157298550658040128
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            <Effects>k__BackingField:
+            - rid: 9157298550658040130
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: rotate
+            <Name>k__BackingField:
+              debugString: rotate
+            <Tooltip>k__BackingField:
+              debugString: Using your footwork to swap position with an ally
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040131
+            - rid: 9157298550658040132
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2049
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040133
+            <Effects>k__BackingField:
+            - rid: 9157298550658040134
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: power-shot
+            <Name>k__BackingField:
+              debugString: power-shot
+            <Tooltip>k__BackingField:
+              debugString: Shoot at a clear target on a straight line, the arrow
+                is so powerful it knockbacks the target by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040140
+            - rid: 9157298550658040141
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 10
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040142
+            - rid: 9157298550658040143
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: vault
+            <Name>k__BackingField:
+              debugString: vault
+            <Tooltip>k__BackingField:
+              debugString: Jumping over an obstacle and land in front of it
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040148
+            - rid: 9157298550658040149
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1792
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040150
+            <Effects>k__BackingField:
+            - rid: 9157298550658040151
+            <IsComboStarter>k__BackingField: 0
           <Stats>k__BackingField:
             stats:
             - <ID>k__BackingField: health
@@ -351,51 +399,6 @@ MonoBehaviour:
               currentValue: 0
               <MinValue>k__BackingField: -1
               <MaxValue>k__BackingField: -1
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
@@ -417,18 +420,17 @@ MonoBehaviour:
               debugString: Use your shield to knock back enemy for one tile, does
                 little damage
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040110
+            - rid: 9157298550658040111
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236158
+                rid: 9157298550658040112
             <Effects>k__BackingField:
-            - rid: 8598466130961236159
+            - rid: 9157298550658040113
             <IsComboStarter>k__BackingField: 1
           - <Id>k__BackingField: shoot
             <Name>k__BackingField:
@@ -436,18 +438,17 @@ MonoBehaviour:
             <Tooltip>k__BackingField:
               debugString: Shoot an enemy at range, does good damage
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040114
+            - rid: 9157298550658040115
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236160
+                rid: 9157298550658040116
             <Effects>k__BackingField:
-            - rid: 8598466130961236161
+            - rid: 9157298550658040117
             <IsComboStarter>k__BackingField: 0
           - <Id>k__BackingField: lure
             <Name>k__BackingField:
@@ -455,19 +456,178 @@ MonoBehaviour:
             <Tooltip>k__BackingField:
               debugString: Faking an opening and draw enemy towards you
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040118
+            - rid: 9157298550658040119
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 138
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236162
+                rid: 9157298550658040120
             <Effects>k__BackingField:
-            - rid: 8598466130961236163
+            - rid: 9157298550658040121
             <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: grapple
+            <Name>k__BackingField:
+              debugString: grapple
+            <Tooltip>k__BackingField:
+              debugString: Grabbing an enemy to a near by position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040122
+            - rid: 9157298550658040123
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040124
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040125
+            <Effects>k__BackingField:
+            - rid: 9157298550658040126
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: tactical-advance
+            <Name>k__BackingField:
+              debugString: tactical-advance
+            <Tooltip>k__BackingField:
+              debugString: Commanding another friendly unit to move to another position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040127
+            - rid: 9157298550658040128
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            <Effects>k__BackingField:
+            - rid: 9157298550658040130
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: rotate
+            <Name>k__BackingField:
+              debugString: rotate
+            <Tooltip>k__BackingField:
+              debugString: Using your footwork to swap position with an ally
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040131
+            - rid: 9157298550658040132
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2049
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040133
+            <Effects>k__BackingField:
+            - rid: 9157298550658040134
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: power-shot
+            <Name>k__BackingField:
+              debugString: power-shot
+            <Tooltip>k__BackingField:
+              debugString: Shoot at a clear target on a straight line, the arrow
+                is so powerful it knockbacks the target by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040140
+            - rid: 9157298550658040141
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 10
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040142
+            - rid: 9157298550658040143
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: vault
+            <Name>k__BackingField:
+              debugString: vault
+            <Tooltip>k__BackingField:
+              debugString: Jumping over an obstacle and land in front of it
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040148
+            - rid: 9157298550658040149
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1792
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040150
+            <Effects>k__BackingField:
+            - rid: 9157298550658040151
+            <IsComboStarter>k__BackingField: 0
           <Stats>k__BackingField:
             stats:
             - <ID>k__BackingField: health
@@ -510,6 +670,1054 @@ MonoBehaviour:
               currentValue: 0
               <MinValue>k__BackingField: -1
               <MaxValue>k__BackingField: -1
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas:
+      - serializedGuid: 9f7a9fe111922b4b9a0d74805b6bc2d6
+        entityData:
+          name:
+            debugString: Friendly2
+          serializableGuid:
+            serializedGuid: 9f7a9fe111922b4b9a0d74805b6bc2d6
+          <FactionId>k__BackingField: Player
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: bash
+            <Name>k__BackingField:
+              debugString: bash
+            <Tooltip>k__BackingField:
+              debugString: Use your shield to knock back enemy for one tile, does
+                little damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040110
+            - rid: 9157298550658040111
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040112
+            <Effects>k__BackingField:
+            - rid: 9157298550658040113
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: shoot
+            <Name>k__BackingField:
+              debugString: shoot
+            <Tooltip>k__BackingField:
+              debugString: Shoot an enemy at range, does good damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040114
+            - rid: 9157298550658040115
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040117
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: lure
+            <Name>k__BackingField:
+              debugString: lure
+            <Tooltip>k__BackingField:
+              debugString: Faking an opening and draw enemy towards you
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040118
+            - rid: 9157298550658040119
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 138
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040120
+            <Effects>k__BackingField:
+            - rid: 9157298550658040121
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: grapple
+            <Name>k__BackingField:
+              debugString: grapple
+            <Tooltip>k__BackingField:
+              debugString: Grabbing an enemy to a near by position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040122
+            - rid: 9157298550658040123
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040124
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040125
+            <Effects>k__BackingField:
+            - rid: 9157298550658040126
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: tactical-advance
+            <Name>k__BackingField:
+              debugString: tactical-advance
+            <Tooltip>k__BackingField:
+              debugString: Commanding another friendly unit to move to another position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040127
+            - rid: 9157298550658040128
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            <Effects>k__BackingField:
+            - rid: 9157298550658040130
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: rotate
+            <Name>k__BackingField:
+              debugString: rotate
+            <Tooltip>k__BackingField:
+              debugString: Using your footwork to swap position with an ally
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040131
+            - rid: 9157298550658040132
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2049
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040133
+            <Effects>k__BackingField:
+            - rid: 9157298550658040134
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: power-shot
+            <Name>k__BackingField:
+              debugString: power-shot
+            <Tooltip>k__BackingField:
+              debugString: Shoot at a clear target on a straight line, the arrow
+                is so powerful it knockbacks the target by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040140
+            - rid: 9157298550658040141
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 10
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040142
+            - rid: 9157298550658040143
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: vault
+            <Name>k__BackingField:
+              debugString: vault
+            <Tooltip>k__BackingField:
+              debugString: Jumping over an obstacle and land in front of it
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040148
+            - rid: 9157298550658040149
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1792
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040150
+            <Effects>k__BackingField:
+            - rid: 9157298550658040151
+            <IsComboStarter>k__BackingField: 0
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas:
+      - serializedGuid: 4e6140e65237924397d319170f0e5d79
+        entityData:
+          name:
+            debugString: Friendly2
+          serializableGuid:
+            serializedGuid: 4e6140e65237924397d319170f0e5d79
+          <FactionId>k__BackingField: Player
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: bash
+            <Name>k__BackingField:
+              debugString: bash
+            <Tooltip>k__BackingField:
+              debugString: Use your shield to knock back enemy for one tile, does
+                little damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040110
+            - rid: 9157298550658040111
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040112
+            <Effects>k__BackingField:
+            - rid: 9157298550658040113
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: shoot
+            <Name>k__BackingField:
+              debugString: shoot
+            <Tooltip>k__BackingField:
+              debugString: Shoot an enemy at range, does good damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040114
+            - rid: 9157298550658040115
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040117
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: lure
+            <Name>k__BackingField:
+              debugString: lure
+            <Tooltip>k__BackingField:
+              debugString: Faking an opening and draw enemy towards you
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040118
+            - rid: 9157298550658040119
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 138
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040120
+            <Effects>k__BackingField:
+            - rid: 9157298550658040121
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: grapple
+            <Name>k__BackingField:
+              debugString: grapple
+            <Tooltip>k__BackingField:
+              debugString: Grabbing an enemy to a near by position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040122
+            - rid: 9157298550658040123
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040124
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040125
+            <Effects>k__BackingField:
+            - rid: 9157298550658040126
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: tactical-advance
+            <Name>k__BackingField:
+              debugString: tactical-advance
+            <Tooltip>k__BackingField:
+              debugString: Commanding another friendly unit to move to another position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040127
+            - rid: 9157298550658040128
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            <Effects>k__BackingField:
+            - rid: 9157298550658040130
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: rotate
+            <Name>k__BackingField:
+              debugString: rotate
+            <Tooltip>k__BackingField:
+              debugString: Using your footwork to swap position with an ally
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040131
+            - rid: 9157298550658040132
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2049
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040133
+            <Effects>k__BackingField:
+            - rid: 9157298550658040134
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: power-shot
+            <Name>k__BackingField:
+              debugString: power-shot
+            <Tooltip>k__BackingField:
+              debugString: Shoot at a clear target on a straight line, the arrow
+                is so powerful it knockbacks the target by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040140
+            - rid: 9157298550658040141
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 10
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040142
+            - rid: 9157298550658040143
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: vault
+            <Name>k__BackingField:
+              debugString: vault
+            <Tooltip>k__BackingField:
+              debugString: Jumping over an obstacle and land in front of it
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040148
+            - rid: 9157298550658040149
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1792
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040150
+            <Effects>k__BackingField:
+            - rid: 9157298550658040151
+            <IsComboStarter>k__BackingField: 0
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas:
+      - serializedGuid: 661a0bb5c02fce4da93b7ff66a382761
+        entityData:
+          name:
+            debugString: Friendly2
+          serializableGuid:
+            serializedGuid: 661a0bb5c02fce4da93b7ff66a382761
+          <FactionId>k__BackingField: Player
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: bash
+            <Name>k__BackingField:
+              debugString: bash
+            <Tooltip>k__BackingField:
+              debugString: Use your shield to knock back enemy for one tile, does
+                little damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040110
+            - rid: 9157298550658040111
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040112
+            <Effects>k__BackingField:
+            - rid: 9157298550658040113
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: shoot
+            <Name>k__BackingField:
+              debugString: shoot
+            <Tooltip>k__BackingField:
+              debugString: Shoot an enemy at range, does good damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040114
+            - rid: 9157298550658040115
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040117
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: lure
+            <Name>k__BackingField:
+              debugString: lure
+            <Tooltip>k__BackingField:
+              debugString: Faking an opening and draw enemy towards you
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040118
+            - rid: 9157298550658040119
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 138
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040120
+            <Effects>k__BackingField:
+            - rid: 9157298550658040121
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: grapple
+            <Name>k__BackingField:
+              debugString: grapple
+            <Tooltip>k__BackingField:
+              debugString: Grabbing an enemy to a near by position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040122
+            - rid: 9157298550658040123
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040124
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040125
+            <Effects>k__BackingField:
+            - rid: 9157298550658040126
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: tactical-advance
+            <Name>k__BackingField:
+              debugString: tactical-advance
+            <Tooltip>k__BackingField:
+              debugString: Commanding another friendly unit to move to another position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040127
+            - rid: 9157298550658040128
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            - <TargetRestrictionFlags>k__BackingField: 4
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040129
+            <Effects>k__BackingField:
+            - rid: 9157298550658040130
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: rotate
+            <Name>k__BackingField:
+              debugString: rotate
+            <Tooltip>k__BackingField:
+              debugString: Using your footwork to swap position with an ally
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040131
+            - rid: 9157298550658040132
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2049
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040133
+            <Effects>k__BackingField:
+            - rid: 9157298550658040134
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: power-shot
+            <Name>k__BackingField:
+              debugString: power-shot
+            <Tooltip>k__BackingField:
+              debugString: Shoot at a clear target on a straight line, the arrow
+                is so powerful it knockbacks the target by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040140
+            - rid: 9157298550658040141
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 10
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040116
+            <Effects>k__BackingField:
+            - rid: 9157298550658040142
+            - rid: 9157298550658040143
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: swing
+            <Name>k__BackingField:
+              debugString: swing
+            <Tooltip>k__BackingField:
+              debugString: Swinging your zweihander to intimidate your enemy, does
+                okay damage and knock back nearby enemies by one tile
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040135
+            - rid: 9157298550658040136
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 512
+              <TargetArea>k__BackingField: 1
+              <IsDangerousToAlly>k__BackingField: 1
+              <Range>k__BackingField:
+                rid: 9157298550658040137
+            <Effects>k__BackingField:
+            - rid: 9157298550658040138
+            - rid: 9157298550658040139
+            <IsComboStarter>k__BackingField: 1
+          - <Id>k__BackingField: vault
+            <Name>k__BackingField:
+              debugString: vault
+            <Tooltip>k__BackingField:
+              debugString: Jumping over an obstacle and land in front of it
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040148
+            - rid: 9157298550658040149
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 1792
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040150
+            <Effects>k__BackingField:
+            - rid: 9157298550658040151
+            <IsComboStarter>k__BackingField: 0
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
+    - tileData:
+        weight: 1
+        name: 
+        <IsWall>k__BackingField: 0
+      serializedUnitDatas: []
     - tileData:
         weight: 1
         name: 
@@ -555,73 +1763,50 @@ MonoBehaviour:
         name: 
         <IsWall>k__BackingField: 0
       serializedUnitDatas:
-      - serializedGuid: 4bacf6ed5fd09549bc888283d8e1a8af
+      - serializedGuid: 0b0b0f63414bca4c9a844473978a5dad
         entityData:
           name:
             debugString: Enemy2
           serializableGuid:
-            serializedGuid: 4bacf6ed5fd09549bc888283d8e1a8af
+            serializedGuid: 0b0b0f63414bca4c9a844473978a5dad
           <FactionId>k__BackingField: EnemyNpc
           icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
           actions:
-          - <Id>k__BackingField: bash
+          - <Id>k__BackingField: strike
             <Name>k__BackingField:
-              debugString: bash
+              debugString: strike
             <Tooltip>k__BackingField:
-              debugString: Use your shield to knock back enemy for one tile, does
-                little damage
+              debugString: An overhead strike that does ok damage
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
             <TargetRequests>k__BackingField:
             - <TargetRestrictionFlags>k__BackingField: 2
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236158
+                rid: 9157298550658040146
             <Effects>k__BackingField:
-            - rid: 8598466130961236159
-            <IsComboStarter>k__BackingField: 1
-          - <Id>k__BackingField: shoot
-            <Name>k__BackingField:
-              debugString: shoot
-            <Tooltip>k__BackingField:
-              debugString: Shoot an enemy at range, does good damage
-            <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
-            <TargetRequests>k__BackingField:
-            - <TargetRestrictionFlags>k__BackingField: 2
-              <TargetArea>k__BackingField: 0
-              <Range>k__BackingField:
-                rid: 8598466130961236160
-            <Effects>k__BackingField:
-            - rid: 8598466130961236161
+            - rid: 9157298550658040147
             <IsComboStarter>k__BackingField: 0
-          - <Id>k__BackingField: lure
+          - <Id>k__BackingField: move
             <Name>k__BackingField:
-              debugString: lure
+              debugString: move
             <Tooltip>k__BackingField:
-              debugString: Faking an opening and draw enemy towards you
+              debugString: Moving to target position
             <Icon>k__BackingField: {fileID: 0}
-            <Costs>k__BackingField:
-            - <StatId>k__BackingField: fatigue
-              <Cost>k__BackingField: 1
-            - <StatId>k__BackingField: action-point
-              <Cost>k__BackingField: 1
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040152
             <TargetRequests>k__BackingField:
-            - <TargetRestrictionFlags>k__BackingField: 138
+            - <TargetRestrictionFlags>k__BackingField: 4100
               <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
               <Range>k__BackingField:
-                rid: 8598466130961236162
+                rid: 9157298550658040153
             <Effects>k__BackingField:
-            - rid: 8598466130961236163
-            <IsComboStarter>k__BackingField: 1
+            - rid: 9157298550658040154
+            <IsComboStarter>k__BackingField: 0
           <Stats>k__BackingField:
             stats:
             - <ID>k__BackingField: health
@@ -668,227 +1853,366 @@ MonoBehaviour:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
+      serializedUnitDatas:
+      - serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
+        entityData:
+          name:
+            debugString: Enemy1
+          serializableGuid:
+            serializedGuid: 52fc53557b687e4da0b5dbf1eb3924d3
+          <FactionId>k__BackingField: EnemyNpc
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: move
+            <Name>k__BackingField:
+              debugString: move
+            <Tooltip>k__BackingField:
+              debugString: Moving to target position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040152
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 4100
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040153
+            <Effects>k__BackingField:
+            - rid: 9157298550658040154
+            <IsComboStarter>k__BackingField: 0
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
     - tileData:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
+      serializedUnitDatas:
+      - serializedGuid: 2e3560fac353d84994ab0b3e99a97ca7
+        entityData:
+          name:
+            debugString: Enemy2
+          serializableGuid:
+            serializedGuid: 2e3560fac353d84994ab0b3e99a97ca7
+          <FactionId>k__BackingField: EnemyNpc
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: move
+            <Name>k__BackingField:
+              debugString: move
+            <Tooltip>k__BackingField:
+              debugString: Moving to target position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040152
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 4100
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040153
+            <Effects>k__BackingField:
+            - rid: 9157298550658040154
+            <IsComboStarter>k__BackingField: 0
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
     - tileData:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
+      serializedUnitDatas:
+      - serializedGuid: 946328faf9a81c4caa8dfc5831541682
+        entityData:
+          name:
+            debugString: Enemy2
+          serializableGuid:
+            serializedGuid: 946328faf9a81c4caa8dfc5831541682
+          <FactionId>k__BackingField: EnemyNpc
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: move
+            <Name>k__BackingField:
+              debugString: move
+            <Tooltip>k__BackingField:
+              debugString: Moving to target position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040152
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 4100
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040153
+            <Effects>k__BackingField:
+            - rid: 9157298550658040154
+            <IsComboStarter>k__BackingField: 0
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
     - tileData:
         weight: 1
         name: 
         <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
-    - tileData:
-        weight: 1
-        name: 
-        <IsWall>k__BackingField: 0
-      serializedUnitDatas: []
+      serializedUnitDatas:
+      - serializedGuid: 4bacf6ed5fd09549bc888283d8e1a8af
+        entityData:
+          name:
+            debugString: Enemy2
+          serializableGuid:
+            serializedGuid: 4bacf6ed5fd09549bc888283d8e1a8af
+          <FactionId>k__BackingField: EnemyNpc
+          icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+          actions:
+          - <Id>k__BackingField: strike
+            <Name>k__BackingField:
+              debugString: strike
+            <Tooltip>k__BackingField:
+              debugString: An overhead strike that does ok damage
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040144
+            - rid: 9157298550658040145
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 2
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040146
+            <Effects>k__BackingField:
+            - rid: 9157298550658040147
+            <IsComboStarter>k__BackingField: 0
+          - <Id>k__BackingField: move
+            <Name>k__BackingField:
+              debugString: move
+            <Tooltip>k__BackingField:
+              debugString: Moving to target position
+            <Icon>k__BackingField: {fileID: 0}
+            <StatRequirements>k__BackingField:
+            - rid: 9157298550658040152
+            <TargetRequests>k__BackingField:
+            - <TargetRestrictionFlags>k__BackingField: 4100
+              <TargetArea>k__BackingField: 0
+              <IsDangerousToAlly>k__BackingField: 0
+              <Range>k__BackingField:
+                rid: 9157298550658040153
+            <Effects>k__BackingField:
+            - rid: 9157298550658040154
+            <IsComboStarter>k__BackingField: 0
+          <Stats>k__BackingField:
+            stats:
+            - <ID>k__BackingField: health
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: initiative
+              currentValue: 0
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: speed
+              currentValue: 5
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 5
+            - <ID>k__BackingField: focus
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: strength
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: armor
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: weapon-range
+              currentValue: 5
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
+            - <ID>k__BackingField: fatigue
+              currentValue: 100
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 100
+            - <ID>k__BackingField: action-point
+              currentValue: 1
+              <MinValue>k__BackingField: 0
+              <MaxValue>k__BackingField: 1
+            - <ID>k__BackingField: fatigue-recovery
+              currentValue: 0
+              <MinValue>k__BackingField: -1
+              <MaxValue>k__BackingField: -1
     - tileData:
         weight: 1
         name: 
@@ -960,33 +2284,249 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8598466130961236158
+    - rid: 9157298550658040110
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040111
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040112
       type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data:
         range: 1
-    - rid: 8598466130961236159
+    - rid: 9157298550658040113
       type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         distance: 1
-    - rid: 8598466130961236160
+    - rid: 9157298550658040114
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040115
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040116
       type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data: 
-    - rid: 8598466130961236161
+    - rid: 9157298550658040117
       type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         _animId: shoot
         _damages:
-        - rid: 8598466130961236164
-    - rid: 8598466130961236162
+        - rid: 9157298550658040155
+    - rid: 9157298550658040118
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040119
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040120
       type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
       data:
         ratio: 1
         statId: focus
-    - rid: 8598466130961236163
+    - rid: 9157298550658040121
       type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data: 
-    - rid: 8598466130961236164
+    - rid: 9157298550658040122
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040123
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040124
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 2
+    - rid: 9157298550658040125
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 9157298550658040126
+      type: {class: MoveEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 9157298550658040127
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040128
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040129
+      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 9157298550658040130
+      type: {class: MoveEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 9157298550658040131
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040132
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040133
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 9157298550658040134
+      type: {class: SwapPositionEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 9157298550658040135
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040136
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040137
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 9157298550658040138
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: swing
+        _damages:
+        - rid: 9157298550658040156
+    - rid: 9157298550658040139
+      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        distance: 1
+    - rid: 9157298550658040140
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040141
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040142
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: power-shot
+        _damages:
+        - rid: 9157298550658040157
+    - rid: 9157298550658040143
+      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        distance: 1
+    - rid: 9157298550658040144
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040145
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040146
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 9157298550658040147
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: strike
+        _damages:
+        - rid: 9157298550658040158
+    - rid: 9157298550658040148
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040149
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040150
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 9157298550658040151
+      type: {class: MoveOverEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 9157298550658040152
+      type: {class: PathDistanceBasedStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        costPerHex:
+          <StatId>k__BackingField: speed
+          <Cost>k__BackingField: 1
+    - rid: 9157298550658040153
+      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: speed
+    - rid: 9157298550658040154
+      type: {class: MoveEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 9157298550658040155
       type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
       data:
         ratio: 1
         statId: focus
+    - rid: 9157298550658040156
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: strength
+    - rid: 9157298550658040157
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 9157298550658040158
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: strength
