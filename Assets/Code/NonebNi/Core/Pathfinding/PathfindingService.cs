@@ -18,6 +18,8 @@ namespace NonebNi.Core.Pathfinding
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(EntityData entity, Coordinate goal);
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(UnitData unit, Coordinate goal);
         (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal);
+        (bool isPathExist, int distance) FindDistance(Coordinate start, Coordinate goal, DataId<Faction>? factionId = null);
+        (bool isPathExist, int distance) FindDistance(UnitData unit, Coordinate goal);
     }
 
     public class PathfindingService : IPathfindingService
@@ -63,6 +65,24 @@ namespace NonebNi.Core.Pathfinding
         }
 
         public (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal) => FindPath(start, goal, string.Empty);
+
+        public (bool isPathExist, int distance) FindDistance(Coordinate start, Coordinate goal, DataId<Faction>? factionId = null)
+        {
+            factionId ??= string.Empty;
+
+            var (isPathExist, path) = FindPath(start, goal, factionId);
+            if (!isPathExist) return (false, int.MaxValue);
+
+            return (true, path.Count());
+        }
+
+        public (bool isPathExist, int distance) FindDistance(UnitData unit, Coordinate goal)
+        {
+            var (isPathExist, path) = FindPath(unit, goal);
+            if (!isPathExist) return (false, int.MaxValue);
+
+            return (true, path.Count());
+        }
 
         // ReSharper disable once CognitiveComplexity - it's just an A* implementation we copy from wiki, no need to fix.
         private (bool isPathExist, IEnumerable<Coordinate> path) FindPath(Coordinate start, Coordinate goal, DataId<Faction> factionId)
