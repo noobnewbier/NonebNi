@@ -31,7 +31,7 @@ namespace NonebNi.Develop
             if (!Physics.Raycast(ray, out var hit)) return default;
             if (hit.collider.gameObject != groundObject) return default;
 
-            return (true, new Vector3(hit.point.x, groundObject.transform.position.y, hit.point.z));
+            return (true, new (hit.point.x, groundObject.transform.position.y, hit.point.z));
         }
 
         public static (bool success, Vector3 pos) FindMousePosInWorld(Plane plane)
@@ -68,7 +68,7 @@ namespace NonebNi.Develop
             Handles.zTest = originalZTest;
         }
 
-        public static UnitData CreateUnit(string unitName, string factionName = "fake-faction") => new(
+        public static UnitData CreateUnit(string unitName, string factionName = "fake-faction") => new (
             Guid.NewGuid(),
             new[] { ActionDatas.Bash, ActionDatas.Lure, ActionDatas.Shoot },
             AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd"),
@@ -83,18 +83,20 @@ namespace NonebNi.Develop
             10,
             3,
             10,
-            50
+            50,
+            15,
+            1
         );
 
         public static Faction CreateFaction(string id) => Cache.GetFaction(id);
 
         private static class Cache
         {
-            private static readonly Dictionary<string, Faction> Factions = new();
+            private static readonly Dictionary<string, Faction> Factions = new ();
 
             public static Faction GetFaction(string id)
             {
-                if (!Factions.TryGetValue(id, out var faction)) Factions[id] = faction = new Faction(id, false);
+                if (!Factions.TryGetValue(id, out var faction)) Factions[id] = faction = new (id, false);
 
                 return faction;
             }

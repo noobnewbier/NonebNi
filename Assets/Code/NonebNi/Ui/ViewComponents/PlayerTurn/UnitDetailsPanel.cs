@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Cysharp.Threading.Tasks;
+﻿using NonebNi.Core.Stats;
 using NonebNi.Core.Units;
 using TMPro;
 using UnityEngine;
@@ -12,19 +11,43 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         [SerializeField] private StatWidget fatigueWidget = null!;
         [SerializeField] private StatWidget initWidget = null!;
         [SerializeField] private StatWidget speedWidget = null!;
+        [SerializeField] private StatWidget actionPointWidget = null!;
         [SerializeField] private TextMeshProUGUI nameLabel = null!;
+        [SerializeField] private TextMeshProUGUI factionLabel = null!;
 
-        public async UniTask Show(UnitData data, CancellationToken ct = default)
+        public UnitData? ShownUnit { get; private set; }
+
+        public void Show(UnitData data)
         {
-            var (_, health) = data.Stats.FindStat("health");
-            var (_, fatigue) = data.Stats.FindStat("fatigue");
-            var (_, initiative) = data.Stats.FindStat("initiative");
-            var (_, speed) = data.Stats.FindStat("speed");
+            //TODO: need unsubscribe before exiting
+            if (ShownUnit != null) ShownUnit.Stats.StatUpdated -= OnStatUpdated;
 
-            nameLabel.text = data.Name;
+            ShownUnit = data;
+            ShownUnit.Stats.StatUpdated += OnStatUpdated;
+            Refresh();
+        }
+
+        private void OnStatUpdated(Stat stat)
+        {
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            if (ShownUnit == null) return;
+
+            var (_, health) = ShownUnit.Stats.FindStat(StatId.Health);
+            var (_, fatigue) = ShownUnit.Stats.FindStat(StatId.Fatigue);
+            var (_, initiative) = ShownUnit.Stats.FindStat(StatId.Initiative);
+            var (_, speed) = ShownUnit.Stats.FindStat(StatId.Speed);
+            var (_, actionPoint) = ShownUnit.Stats.FindStat(StatId.ActionPoint);
+
+            nameLabel.text = ShownUnit.Name.GetLocalized();
+            factionLabel.text = ShownUnit.FactionId;
             healthWidget.Show(health);
             fatigueWidget.Show(fatigue);
             initWidget.Show(initiative);
+            actionPointWidget.Show(actionPoint);
             speedWidget.Show(speed);
         }
     }

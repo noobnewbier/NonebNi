@@ -9,6 +9,7 @@ namespace NonebNi.Ui.Grids
         AreaHint,
         InvalidInput,
         ValidInput,
+        DangerousInput,
 
         None
     }

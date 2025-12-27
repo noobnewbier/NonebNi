@@ -31,7 +31,7 @@ namespace Noneb.UI.Editor.Animation
                 var paramTable = AnimatorInfoCache.GetParamTable(animatorRuntimeAnimatorController);
                 var targetLayer = typedAttribute.TargetLayerName == null ?
                     0 :
-                    NonebEditorUtils.FindPropertyIntInSameDepth(property, typedAttribute.TargetLayerName);
+                    NonebEditorGUI.FindPropertyIntInSameDepth(property, typedAttribute.TargetLayerName);
                 var states = paramTable.GetStates(targetLayer);
                 NonebEditorGUI.ShowStringPopup(
                     position,

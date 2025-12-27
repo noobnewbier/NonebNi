@@ -42,19 +42,14 @@ namespace NonebNi.Terrain
 
     /// <summary>
     ///     Given the <see cref="TerrainConfigData" />, convert between coordinate and position
+    ///
+    ///     TODO: if everything here can be derived from what we have in TerrainConfigData, then it really doesn't have to be a new class.
+    ///     We can squash the two together to save myself some headache...?
+    ///
+    ///     Note: consider getting rid of this, I am not sure it's worth keeping this around, everytime I need to get a position(which is very often) I need to summon this when 
     /// </summary>
     public class CoordinateAndPositionService : ICoordinateAndPositionService
     {
-        /// <summary>
-        ///     Factor of the solid uniform region inside a hex cell.
-        /// </summary>
-        public const float SolidFactor = 0.8f;
-
-        /// <summary>
-        ///     Factor of the blending region inside a hex cell.
-        /// </summary>
-        public const float BlendFactor = 1f - SolidFactor;
-
         private readonly TerrainConfigData _terrainConfig;
 
 
@@ -91,7 +86,8 @@ namespace NonebNi.Terrain
 
             var sideOffset = FindSideOffsetForZ(coordinate.Z);
 
-            return new Vector3(
+            return new Vector3
+                   (
                        coordinate.X * SideDistanceOfHex + sideOffset,
                        _terrainConfig.MapStartingPosition.y,
                        coordinate.Z * UpDistanceOfHex
@@ -149,7 +145,7 @@ namespace NonebNi.Terrain
             var firstCorner = _tileCornersOffset[direction.GetVerticesWindingOrderIndex()];
             var secondCorner = _tileCornersOffset[direction.NextDirection().GetVerticesWindingOrderIndex()];
 
-            return (firstCorner + secondCorner) * BlendFactor;
+            return (firstCorner + secondCorner) * _terrainConfig.BlendFactor;
         }
 
         /// <summary>
@@ -162,7 +158,7 @@ namespace NonebNi.Terrain
         {
             var coordinatePos = FindPosition(coordinate);
 
-            return coordinatePos + _tileCornersOffset[direction.GetVerticesWindingOrderIndex()] * SolidFactor;
+            return coordinatePos + _tileCornersOffset[direction.GetVerticesWindingOrderIndex()] * _terrainConfig.SolidFactor;
         }
 
         /// <summary>
@@ -176,7 +172,7 @@ namespace NonebNi.Terrain
             var coordinatePos = FindPosition(coordinate);
 
             return coordinatePos +
-                   _tileCornersOffset[direction.NextDirection().GetVerticesWindingOrderIndex()] * SolidFactor;
+                   _tileCornersOffset[direction.NextDirection().GetVerticesWindingOrderIndex()] * _terrainConfig.SolidFactor;
         }
     }
 }

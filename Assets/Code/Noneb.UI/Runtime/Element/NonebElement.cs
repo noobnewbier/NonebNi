@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.View;
-using Unity.Logging;
 using UnityEngine;
 
 namespace Noneb.UI.Element
 {
     public sealed class NonebElement : MonoBehaviour
     {
-        public async UniTask Init()
+        public async UniTask Init(CancellationToken ct = default)
         {
             var eventComponents = FindComponents(transform).ToList();
-            var initTasks = eventComponents.Select(c => c.OnInit());
+            var initTasks = eventComponents.Select(c => c.OnInit(ct));
 
             await UniTask.WhenAll(initTasks);
         }
@@ -54,22 +55,22 @@ namespace Noneb.UI.Element
 
         //TODO: unit test this.
         //TODO: we really need to unify this into one place, this is disaster waiting to happen.
-        public static async UniTask<(bool isSuccess, NonebElement element)> CreateElementFromPrefab(NonebElement elementPrefab, Transform elementHolder)
+        public static async UniTask<(bool isSuccess, NonebElement element)> CreateElementFromPrefab(NonebElement elementPrefab, Transform elementHolder, CancellationToken ct = default)
         {
             var createdElement = Instantiate(elementPrefab, elementHolder);
             INonebView? ownerView = createdElement.OwnerView;
             if (ownerView == null)
             {
-                Log.Error("You really should instantiate me under a NonebView");
+                Log.Error("UI", "You really should instantiate me under a NonebView");
                 return (false, createdElement);
             }
 
             if (ownerView.InitState == INonebView.InitializationState.PreInitialize) return (true, createdElement);
 
-            if (ownerView.InitState == INonebView.InitializationState.Initializing) await UniTask.WaitUntil(() => ownerView.InitState == INonebView.InitializationState.Initialized);
+            if (ownerView.InitState == INonebView.InitializationState.Initializing) await UniTask.WaitUntil(() => ownerView.InitState == INonebView.InitializationState.Initialized, cancellationToken: ct);
 
             createdElement.transform.SetParent(elementHolder.transform);
-            await createdElement.Init();
+            await createdElement.Init(ct);
 
             if (!ownerView.IsViewActive) return (true, createdElement);
 
@@ -83,13 +84,13 @@ namespace Noneb.UI.Element
         {
             if (elementPrefab is not MonoBehaviour monoBehaviour)
             {
-                Log.Error($"I expected all IElementComponent is a MonoBehaviour and this({typeof(T).FullName}) is not, I couldn't find a way to express this in code and this might change, but you should at least not do this as if T is not a MonoBehaviour how can I instantiate a prefab");
+                Log.Error("UI", $"I expected all IElementComponent is a MonoBehaviour and this({typeof(T).FullName}) is not, I couldn't find a way to express this in code and this might change, but you should at least not do this as if T is not a MonoBehaviour how can I instantiate a prefab");
                 return (false, default);
             }
 
             if (!monoBehaviour.TryGetComponent(out NonebElement nonebElement))
             {
-                Log.Error($"You need a NonebElement for this({monoBehaviour.gameObject.name}) to work mate");
+                Log.Error("UI", $"You need a NonebElement for this({monoBehaviour.gameObject.name}) to work mate");
                 return (false, default);
             }
 

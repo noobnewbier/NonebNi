@@ -10,5 +10,6 @@
         public const string TargetSelection = "target-selection";
         public const string AreaHint = "area-hint";
         public const string MovementHint = "movement-hint";
+        public const string UnitSelectionHint = "unit-selection-hint";
     }
 }

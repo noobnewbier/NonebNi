@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.View;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Agents;
+using NonebNi.Core.Decisions;
+using NonebNi.Core.FlowControl;
+using NonebNi.Core.GameContexts;
 using NonebNi.Core.Units;
 using NonebNi.Ui.Cameras;
 using UnityEngine;
@@ -11,19 +14,21 @@ using UnityEngine.UI;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
 {
+    //todo: making player turn works. focus on that.
+    //todo: next step would be sorting out movement
+    //todo: and then we would need a "rest/end turn action" for doing nothing.
+
     //TODO: root handle
     //TODO: someone to init/inject dependencies
     //TODO: clear up folder structure -> make assets feature based as it's confusing the crap out of me, code can stay where it is though. 
-    public interface IPlayerTurnMenu
+    public interface IPlayerTurnMenu : IViewComponent<IPlayerTurnMenu.Data>
     {
-        public event Action<NonebAction?>? ActionSelected;
-        public event Action<UnitData?>? UnitSelected;
-        UniTask SelectAction(NonebAction? action);
-        UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default);
-        UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default);
+        public record Data(UnitData ActiveUnit, UIInputReader<UIInput> InputReader);
+
+        public record UIInput(IDecision Decision);
     }
 
-    public class PlayerTurnMenu : MonoBehaviour, IViewComponent, IPlayerTurnMenu
+    public class PlayerTurnMenu : MonoBehaviour, IPlayerTurnMenu
     {
         [SerializeField] private GameObject subStackRoot = null!;
         [SerializeField] private UnitActionPanel actionPanel = null!;
@@ -33,91 +38,140 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         //TODO: at some point this might go somewhere but I am not too fuzzed about a testing UI
         [SerializeField] private Button endTurnButton = null!;
 
+        private IWaitForExternalInputAgent _agent = null!;
         private ICameraController _cameraController = null!;
-        private CancellationTokenSource? _executeActionFlowCts;
+        private CancellationTokenSource _cts = new ();
 
-        private IPlayerTurnPresenter _presenter = null!;
-        private UIStack _stack = null!;
-        private IPlayerTurnWorldSpaceInputControl _worldSpaceInputControl = null!;
+        private IPlayerTurnMenu.Data? _data;
+        private IDecisionFlowControl _decisionFlowControl = null!;
+        private IUnitTurnOrderer _unitTurnOrderer = null!;
 
-        public void Init(IPlayerTurnPresenter presenter, IPlayerTurnWorldSpaceInputControl worldSpaceInputControl, ICameraController cameraController)
+        public void Init(Dependencies dependencies)
         {
-            _presenter = presenter;
-            _stack = new UIStack(subStackRoot); //todo: may not need stack afterall...?
-            _worldSpaceInputControl = worldSpaceInputControl;
-            _cameraController = cameraController;
+            _decisionFlowControl = dependencies.DecisionFlowControl;
+            _cameraController = dependencies.CameraController;
+            _agent = dependencies.Agent.Value;
+            _unitTurnOrderer = dependencies.UnitTurnOrderer;
 
-            endTurnButton.onClick.AddListener(presenter.EndTurn);
+            endTurnButton.onClick.AddListener(EndTurn);
+            actionPanel.ActionSelected += OnActionSelected;
+            orderPanel.UnitSelected += OnUnitSelected;
         }
 
-        public event Action<NonebAction?>? ActionSelected;
-        public event Action<UnitData?>? UnitSelected;
-
-        public async UniTask SelectAction(NonebAction? action)
+        public UniTask OnViewActivate(IPlayerTurnMenu.Data? viewData)
         {
-            RefreshControlMode();
-            await actionPanel.Highlight(action);
+            _data = viewData;
+            _cts = new CancellationTokenSource();
+
+            return UniTask.CompletedTask;
         }
 
-        public async UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default)
+        public async UniTask OnViewEnter(INonebView? previousView, INonebView currentView)
+        {
+            if (_data == null) return;
+
+            //todo: current unit timing issue -> we need to pass in data as the push pop happens
+            await UniTask.WhenAll(
+                ShowUnit(_data.ActiveUnit, true),
+                ShowActOrder(_unitTurnOrderer.GetActOrderForTurns(10))
+            );
+
+            WaitForUserInput(_cts.Token).Forget();
+        }
+
+        public UniTask OnViewDeactivate()
+        {
+            _cts.Cancel();
+
+            return UniTask.CompletedTask;
+        }
+
+        private async UniTaskVoid WaitForUserInput(CancellationToken ct)
+        {
+            while (true)
+            {
+                var decision = await _decisionFlowControl.WaitForUserInput(ct);
+                ct.ThrowIfCancellationRequested();
+
+                if (decision is InspectDecision inspectDecision)
+                {
+                    if (inspectDecision.ToInspect is UnitData unit) await ShowUnit(unit, unit == _data?.ActiveUnit, ct);
+
+                    continue;
+                }
+
+                _data?.InputReader.Write(new IPlayerTurnMenu.UIInput(decision));
+                break;
+            }
+        }
+
+        private void SelectAction(NonebAction? action)
+        {
+            async UniTaskVoid Do()
+            {
+                actionPanel.Select(action);
+                if (await RefreshControlMode()) return;
+
+                // Request cancelled -> back off to movement instead
+                SelectAction(null);
+            }
+
+            Do().Forget();
+        }
+
+        private async UniTask ShowUnit(UnitData unit, bool isUnitActive, CancellationToken ct = default)
         {
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
 
-            var targetUnitPos = _presenter.FindUnitPosition(unit);
-            _cameraController.LookAt(targetUnitPos);
-            await UniTask.WhenAll(
-                actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token),
-                detailsPanel.Show(unit, linkedCts.Token)
-            );
+            _cameraController.LookAt(unit);
+            detailsPanel.Show(unit);
+
+            //Goes before action panel to avoid this being one step slower than it needs be.
+            SelectAction(null);
+            await actionPanel.Show(unit.Actions, !isUnitActive, linkedCts.Token);
         }
 
-        public async UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default)
+        private async UniTask ShowActOrder(IEnumerable<UnitData> unitsInOrder, CancellationToken ct = default)
         {
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
             await orderPanel.Show(unitsInOrder, linkedCts.Token);
         }
 
-        public async UniTask OnViewEnter(INonebView? previousView)
+        private UniTask<bool> RefreshControlMode()
         {
-            await _presenter.EnterView();
-            actionPanel.ActionSelected += ActionSelected;
-            orderPanel.UnitSelected += UnitSelected;
+            var unitContext = detailsPanel.ShownUnit;
+            var isActiveUnit = unitContext == _data?.ActiveUnit;
+            var actionContext = actionPanel.SelectedAction;
+            if (actionContext == null)
+                if (isActiveUnit && unitContext?.Speed > 0)
+                    actionContext = ActionDatas.Move;
+
+            return _decisionFlowControl.UpdateDecisionContext(unitContext, actionContext, isActiveUnit);
         }
 
-        public UniTask OnViewLeave(INonebView? nextView)
+        private void EndTurn()
         {
-            actionPanel.ActionSelected -= ActionSelected;
-            orderPanel.UnitSelected -= UnitSelected;
-
-            return UniTask.CompletedTask;
+            _cts.Cancel();
+            //todo: at some point we need noneb button, which prevent spam click from breaking the UI, I can't be asked to deal with it every single time.
+            _agent.SetDecision(EndTurnDecision.Instance);
         }
 
-        private void RefreshControlMode()
+        private void OnActionSelected(NonebAction? action)
         {
-            _executeActionFlowCts?.Cancel();
-            if (_presenter.SelectedAction == null)
+            SelectAction(action);
+        }
+
+        private void OnUnitSelected(UnitData unit)
+        {
+            async UniTaskVoid Do()
             {
-                if (_presenter.InspectingUnit.Speed > 0)
-                    _worldSpaceInputControl.ToMovementMode(_presenter.InspectingUnit);
-                else
-                    _worldSpaceInputControl.ToTileInspectionMode();
+                var isActiveUnit = detailsPanel.ShownUnit == _data?.ActiveUnit;
+                await ShowUnit(unit, isActiveUnit);
             }
-            else
-            {
-                _executeActionFlowCts = new CancellationTokenSource();
-                ExecuteActionFlow(_executeActionFlowCts.Token).Forget();
-            }
+
+            Do().Forget();
         }
 
-        private async UniTask ExecuteActionFlow(CancellationToken ct = default)
-        {
-            if (_presenter.SelectedAction == null) return;
-
-            var input = await _worldSpaceInputControl.GetInputForAction(_presenter.InspectingUnit, _presenter.SelectedAction, ct);
-            _presenter.MakeActionDecision(input);
-            //todo: do something with that input mate.
-        }
-
-        //TODO: work out the inject process with strong ioc.
+        public record Dependencies(IDecisionFlowControl DecisionFlowControl, ICameraController CameraController, KeyedInject<DiKeys.PlayerAgent, IWaitForExternalInputAgent> Agent, IUnitTurnOrderer UnitTurnOrderer);
     }
 }

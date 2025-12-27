@@ -1,6 +1,11 @@
-﻿using Unity.Cinemachine;
+﻿using Noneb.UI.InputSystems;
+using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
+using NonebNi.Core.Maps;
+using NonebNi.Terrain;
+using NonebNi.Ui.Inputs;
+using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityUtils;
 
 namespace NonebNi.Ui.Cameras
@@ -9,8 +14,9 @@ namespace NonebNi.Ui.Cameras
     {
         void LookAt(Vector3 position);
         void UpdateCamera();
+        void LookAt(EntityData entity);
     }
-    //todo: need to write gizmos drawer to aid testing debuging long term...
+    //todo: need to allow gizmos filtering otherwise this is suicidal
 
     /// <summary>
     /// Note:
@@ -23,6 +29,9 @@ namespace NonebNi.Ui.Cameras
     {
         private readonly CinemachineCamera _camera;
         private readonly CameraConfig _config;
+        private readonly ICoordinateAndPositionService _coordinateAndPositionService;
+        private readonly IInputSystem _inputSystem;
+        private readonly IReadOnlyMap _map;
         private readonly CinemachinePositionComposer _positionComposer;
 
         private float _accumulatedZoomingDecelerationValue;
@@ -32,11 +41,17 @@ namespace NonebNi.Ui.Cameras
         public CameraController(
             CameraConfig config,
             CinemachineCamera controlledCamera,
-            CinemachinePositionComposer positionComposer)
+            CinemachinePositionComposer positionComposer,
+            ICoordinateAndPositionService coordinateAndPositionService,
+            IReadOnlyMap map,
+            IInputSystem inputSystem)
         {
             _config = config;
             _camera = controlledCamera;
             _positionComposer = positionComposer;
+            _coordinateAndPositionService = coordinateAndPositionService;
+            _map = map;
+            _inputSystem = inputSystem;
         }
 
         private Vector3 TargetPos
@@ -45,10 +60,10 @@ namespace NonebNi.Ui.Cameras
             set => _camera.Target.TrackingTarget.transform.position = value;
         }
 
-        private float UpBound => _config.UpBound - Mathf.Sign(_config.UpBound) * _config.Setting.BufferToClampingEdge;
-        private float DownBound => _config.DownBound - Mathf.Sign(_config.DownBound) * _config.Setting.BufferToClampingEdge;
-        private float RightBound => _config.RightBound - Mathf.Sign(_config.RightBound) * _config.Setting.BufferToClampingEdge;
-        private float LeftBound => _config.LeftBound - Mathf.Sign(_config.LeftBound) * _config.Setting.BufferToClampingEdge;
+        private float UpBound => _config.UpBound - _config.Setting.BufferToClampingEdge;
+        private float DownBound => _config.DownBound + _config.Setting.BufferToClampingEdge;
+        private float RightBound => _config.RightBound - _config.Setting.BufferToClampingEdge;
+        private float LeftBound => _config.LeftBound + _config.Setting.BufferToClampingEdge;
 
         public void LookAt(Vector3 position)
         {
@@ -56,8 +71,20 @@ namespace NonebNi.Ui.Cameras
             TargetPos = position;
         }
 
+        public void LookAt(EntityData entity)
+        {
+            var pos = FindEntityPosition(entity);
+            LookAt(pos);
+        }
+
         public void UpdateCamera()
         {
+            GizmosDrawer.DrawLine(new Vector3(LeftBound, 0f, DownBound), new Vector3(RightBound, 0f, DownBound));
+            GizmosDrawer.DrawLine(new Vector3(LeftBound, 0f, UpBound), new Vector3(RightBound, 0f, UpBound));
+            GizmosDrawer.DrawLine(new Vector3(LeftBound, 0f, UpBound), new Vector3(LeftBound, 0f, DownBound));
+            GizmosDrawer.DrawLine(new Vector3(RightBound, 0f, UpBound), new Vector3(RightBound, 0f, DownBound));
+            GizmosDrawer.DrawSphere(TargetPos, 0.25f);
+
             Panning();
             Zooming();
         }
@@ -88,6 +115,14 @@ namespace NonebNi.Ui.Cameras
             _positionComposer.CameraDistance = newZoom;
         }
 
+        private Vector3 FindEntityPosition(EntityData entity)
+        {
+            if (!_map.TryFind(entity, out Coordinate coord)) return default;
+
+            var pos = _coordinateAndPositionService.FindPosition(coord);
+            return pos;
+        }
+
         #region Panning
 
         private void Panning() //consider adding panning with middle mouse button
@@ -97,35 +132,37 @@ namespace NonebNi.Ui.Cameras
             var panningStrength = GetPanningStrength();
             if (panningStrength.NearlyEqual(0f)) return;
 
-            var mousePosition = Input.mousePosition;
+            var mousePosition = _inputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
 
-            var panningDirection = (mousePosition - new Vector3(Screen.width / 2f, Screen.height / 2f, 0)).normalized;
-            panningDirection.z = panningDirection.y;
-            panningDirection.y = 0;
+            var panningScreenDirection = (mousePosition - new Vector2(Screen.width / 2f, Screen.height / 2f)).normalized;
+            var panningDirection = new Vector3(panningScreenDirection.x, 0f, panningScreenDirection.y);
 
             Pan(panningDirection, GetPanningStrength(), Time.deltaTime);
         }
 
         private float GetPanningStrength()
         {
-            var mousePosition = Input.mousePosition;
-            var yDistancePercentage = 1f -
-                                      Mathf.Min(
-                                          mousePosition.y,                //to bottom
-                                          Screen.height - mousePosition.y //to top
-                                      ) /
-                                      (Screen.height / 2f);
-            var xDistancePercentage = 1f -
-                                      Mathf.Min(
-                                          mousePosition.x,               //to left
-                                          Screen.width - mousePosition.x //to right
-                                      ) /
-                                      (Screen.width / 2f);
+            var mousePosition = _inputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
 
+            var yInverseLerp = Mathf.InverseLerp(0f, Screen.height, mousePosition.y);
+            var xInverseLerp = Mathf.InverseLerp(0f, Screen.width, mousePosition.x);
+            var yDistancePercentage =
+                Mathf.Min(
+                    yInverseLerp,    //to bottom
+                    1 - yInverseLerp //to top
+                );
+            var xDistancePercentage =
+                Mathf.Min(
+                    xInverseLerp,    //to left
+                    1 - xInverseLerp //to right
+                );
 
-            if (yDistancePercentage < _config.Setting.EdgePercentageToPan && xDistancePercentage < _config.Setting.EdgePercentageToPan ||
-                yDistancePercentage > 1f ||
-                xDistancePercentage > 1f) // prevent panning when mouse is outside of windows
+            // Too far away from edge -> no need to scroll
+            if (yDistancePercentage > _config.Setting.EdgePercentageToPan && xDistancePercentage > _config.Setting.EdgePercentageToPan)
+                return 0;
+
+            // Don't want to run in background it's annoying to play and debug
+            if (!Application.isFocused)
                 return 0;
 
             var center = new Vector3(Screen.width / 2f, Screen.height / 2f, 0);
@@ -155,7 +192,7 @@ namespace NonebNi.Ui.Cameras
         {
             //TODO: separate input and the movement code...?
             //TODO: was using old input system - when the time comes we need our own input wrapper.
-            var zoomInput = Mouse.current.scroll.ReadValue().normalized.y;
+            var zoomInput = _inputSystem.ReadValue<Vector2>(InputMaps.Level.Zoom).normalized.y;
 
             var inputStrength = Mathf.Abs(zoomInput);
             if (!zoomInput.NearlyEqual(0f))

@@ -39,6 +39,8 @@ namespace Noneb.UI.View
     //TODO: maybe view itself is a poco and we need a container for it.
     public class NonebViewBehaviour : MonoBehaviour, INonebView
     {
+        Dictionary<IViewComponent, bool> INonebView.IsComponentWaked { get; set; } = new();
+
         public bool IsViewActive { get; private set; }
 
         public string Name => gameObject.name;
@@ -48,7 +50,6 @@ namespace Noneb.UI.View
         void INonebView.SetActive(bool isActive)
         {
             IsViewActive = isActive;
-            gameObject.SetActive(isActive);
         }
 
         IEnumerable<IViewComponent> INonebView.FindViewComponents() => GetComponents<IViewComponent>();

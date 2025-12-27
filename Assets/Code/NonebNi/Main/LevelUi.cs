@@ -1,10 +1,15 @@
-﻿using System.Linq;
-using NonebNi.Core.Agents;
-using NonebNi.Core.Level;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
+using Noneb.UI.View;
+using NonebNi.Core.FlowControl;
+using NonebNi.Core.GameContexts;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Sequences;
 using NonebNi.Terrain;
 using NonebNi.Ui.Cameras;
-using NonebNi.Ui.ViewComponents.PlayerTurn;
+using NonebNi.Ui.Tooltips;
 using UnityEngine;
 using UnityUtils;
 
@@ -13,41 +18,110 @@ namespace NonebNi.Main
     //todo: we need to organize our modules, possibly in a notion diagram, atm it's a fucking mess.
     //I suspect a-lot of our factories aren't necessary and can be reduced down to a level module/container and an ui module
     //sort this out and you can use your main sample scene to test gameplay, you are close fucker, you are v.close to something testable, keep the pressure up babe.
-    public interface ILevelUi
+    public interface ILevelUi : IDisposable
     {
         void Run();
     }
 
+    /// <summary>
+    /// Note:
+    /// wbn if we have all the GO dependencies into one single class, atm it's so tangled with LevelContainer it's a mess
+    /// </summary>
     public class LevelUi : ILevelUi
     {
         private readonly CameraRunner _cameraControl;
+        private readonly ICameraController _cameraController;
+        private readonly SharedContextInitializer _contextInitializer;
+        private readonly CancellationTokenSource _cts;
+        private readonly IGameEventControl _gameEventControl;
         private readonly Hud _hud;
+
+        private readonly Hud.Dependencies _hudDeps;
+        private readonly ITerrainMeshCreator _meshCreator;
+        private readonly ISequencePlayer _sequencePlayer;
+        private readonly UIStack _stack;
         private readonly Terrain _terrain;
+        private readonly ITooltipCanvas _tooltipCanvas;
 
         public LevelUi(
+            CanvasRoot canvasRoot,
             CameraRunner cameraControl,
             Hud hud,
             Terrain terrain,
             ICameraController cameraController,
-            LevelData levelData,
-            IPlayerAgent playerAgent,
             ITerrainMeshCreator meshCreator,
-            IPlayerTurnPresenter presenter,
-            IPlayerTurnWorldSpaceInputControl worldSpaceInputControl)
+            ISequencePlayer sequencePlayer,
+            IGameEventControl gameEventControl,
+            Hud.Dependencies hudDeps,
+            ITooltipCanvas tooltipCanvas,
+            SharedContextInitializer contextInitializer
+        )
         {
+            _meshCreator = meshCreator;
             _cameraControl = cameraControl;
             _hud = hud;
             _terrain = terrain;
+            _cameraController = cameraController;
+            _sequencePlayer = sequencePlayer;
+            _gameEventControl = gameEventControl;
+            _hudDeps = hudDeps;
+            _tooltipCanvas = tooltipCanvas;
+            _contextInitializer = contextInitializer;
 
-            _cameraControl.Init(cameraController);
             //todo: change our DI, it's confusing now.
-            _hud.Init(presenter, worldSpaceInputControl, cameraController);
-            _terrain.Init(meshCreator);
+            _cts = new CancellationTokenSource();
+            _stack = canvasRoot.GetStack();
         }
 
         public void Run()
         {
+            _contextInitializer.Init();
+            _cameraControl.Init(_cameraController);
+
+            var hudStack = _stack.GetSubStack("Hud", _hud);
+            _hud.Init(_hudDeps, hudStack);
+
+            var tooltipStack = _stack.GetSubStack("Tooltip", _tooltipCanvas);
+            tooltipStack.Push(_tooltipCanvas).Forget();
+
+            _terrain.Init(_meshCreator);
             _cameraControl.Run();
+
+            ProcessLevelEvents(_cts.Token).Forget();
+        }
+
+        public void Dispose()
+        {
+            _cts.Cancel();
+        }
+
+        private async UniTaskVoid ProcessLevelEvents(CancellationToken ct)
+        {
+            await foreach (var @event in _gameEventControl.Subscribe(ct))
+            {
+                ct.ThrowIfCancellationRequested();
+                switch (@event)
+                {
+                    case LevelEvent.GameStart:
+                    case LevelEvent.None:
+                        break;
+
+                    case LevelEvent.WaitForActiveUnitDecision newTurn:
+                        _hud.ActiveUnitControlFlow(newTurn.Unit);
+                        break;
+
+                    case LevelEvent.SequenceOccured sequenceOccured:
+                        await _sequencePlayer.Play(sequenceOccured.Result.Sequences);
+                        break;
+
+                    case LevelEvent.WaitForComboDecision waitForComboDecision:
+                        _hud.ComboUIFlow(waitForComboDecision.PossibleCombos);
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(@event));
+                }
+            }
         }
 
         #region Camera Initialization
@@ -92,7 +166,7 @@ namespace NonebNi.Main
         ///     Finding 4 intersection point of controlledCamera frustum on the infinite plane(at mapTransform's height).
         ///     Returning the maximum size of a rect that it can be bounded within the 4 intersection point.
         /// </summary>
-        public (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace(TerrainConfigData terrainConfigData, Camera camera)
+        private (float minWidth, float distanceToTop, float distanceToBottom) GetViewDistanceToFrustumOnPlaneInWorldSpace(TerrainConfigData terrainConfigData, Camera camera)
         {
             var cameraFrustumCorners = GetCameraFrustumCorners(camera);
             var cameraPosition = camera.transform.position;
@@ -116,8 +190,10 @@ namespace NonebNi.Main
         {
             var cameraTransform = camera.transform;
             var frustumCorners = new Vector3[4];
-            camera.CalculateFrustumCorners(
-                new Rect(
+            camera.CalculateFrustumCorners
+            (
+                new Rect
+                (
                     0,
                     0,
                     1,

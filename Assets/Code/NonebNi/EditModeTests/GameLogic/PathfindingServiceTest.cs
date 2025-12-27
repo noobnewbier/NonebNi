@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using Moq;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Tiles;
@@ -12,6 +13,7 @@ namespace NonebNi.EditModeTests.GameLogic
     [UsedImplicitly]
     public class PathfindingServiceTest
     {
+        private Mock<IFactionService> _mockFactionService = null!;
         private Mock<IReadOnlyMap> _mockMap = null!;
         private PathfindingService _pathfindingService = null!;
 
@@ -19,7 +21,8 @@ namespace NonebNi.EditModeTests.GameLogic
         public void SetUp()
         {
             _mockMap = new Mock<IReadOnlyMap>();
-            _pathfindingService = new PathfindingService(_mockMap.Object);
+            _mockFactionService = new Mock<IFactionService>();
+            _pathfindingService = new PathfindingService(_mockMap.Object, _mockFactionService.Object);
         }
 
         [Test]
@@ -133,8 +136,8 @@ namespace NonebNi.EditModeTests.GameLogic
             _mockMap.Setup(m => m.GetAllCoordinates()).Returns(allCoordinates);
 
 
-            TileData? _ = default;
-            _mockMap.Setup(m => m.TryGet(It.IsNotIn(allCoordinates.ToArray()), out _)).Returns(false);
+            TileData? notUsed = null;
+            _mockMap.Setup(m => m.TryGet(It.IsNotIn(allCoordinates.ToArray()), out notUsed)).Returns(false);
         }
     }
 }

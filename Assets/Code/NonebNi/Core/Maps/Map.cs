@@ -94,7 +94,7 @@ namespace NonebNi.Core.Maps
         private Node GetNodeFromAxialCoordinate(Coordinate coordinate)
         {
             if (!TryGetNodeFromAxialCoordinate(coordinate, out var node))
-                throw new ArgumentOutOfRangeException(nameof(coordinate), "is out of range!");
+                throw new ArgumentOutOfRangeException(nameof(coordinate), $"is out of range({coordinate})!");
 
             return node;
         }

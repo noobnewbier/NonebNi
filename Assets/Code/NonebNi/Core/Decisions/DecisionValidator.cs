@@ -1,9 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Noneb.Localization.Runtime;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Entities;
+using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
-using Unity.Logging;
 
 namespace NonebNi.Core.Decisions
 {
@@ -17,37 +21,50 @@ namespace NonebNi.Core.Decisions
     /// </summary>
     public interface IDecisionValidator
     {
+        public enum ErrorType
+        {
+            Unknown,
+            CannotPayCost,
+            InvalidTarget,
+            OutOfRange
+        }
+
         (Error? error, ICommand command) ValidateDecision(IDecision? decision);
+
+        (bool canBeValid, Error? error) ValidateDecisionConstructionInput(NonebAction action, EntityData caster, IReadOnlyList<Coordinate> existingInput, Coordinate newInput);
 
         /// <summary>
         ///     Describe why a decision is invalid.
         /// </summary>
         public class Error
         {
-            public const string UnknownId = "unknown";
+            public readonly NonebLocString Description;
 
-            public Error(string id, string description)
+            public readonly ErrorType Type;
+
+            public Error(ErrorType type, NonebLocString description)
             {
-                Id = id;
+                Type = type;
                 Description = description;
             }
 
-            public string Id { get; }
-            public string Description { get; }
-
-            public static Error Unknown { get; } = new(UnknownId, "Failed for an undefined reason");
+            public static Error Unknown { get; } = new (ErrorType.Unknown, "Failed for an undefined reason");
         }
     }
 
     public class DecisionValidator : IDecisionValidator
     {
-        private readonly IReadOnlyMap _map; //TODO: PathFinding
+        private readonly IActionCommandEvaluator _commandEvaluator;
+        private readonly IGameEventControl _gameEventControl;
+        private readonly IReadOnlyMap _map;
         private readonly ITargetFinder _targetFinder;
 
-        public DecisionValidator(IReadOnlyMap map, ITargetFinder targetFinder)
+        public DecisionValidator(IReadOnlyMap map, ITargetFinder targetFinder, IActionCommandEvaluator commandEvaluator, IGameEventControl gameEventControl)
         {
             _map = map;
             _targetFinder = targetFinder;
+            _commandEvaluator = commandEvaluator;
+            _gameEventControl = gameEventControl;
         }
 
         public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision? decision)
@@ -57,78 +74,179 @@ namespace NonebNi.Core.Decisions
                 case EndTurnDecision:
                     return (null, new EndTurnCommand());
                 case ActionDecision ad:
-                    if (!IsValidActionDecision(ad))
+                {
+                    var cost = _commandEvaluator.FindActionCostInCurrentState(ad);
+                    if (!ad.ActorEntity.CanPayCosts(cost))
+                        return (
+                            new IDecisionValidator.Error
+                            (
+                                IDecisionValidator.ErrorType.CannotPayCost,
+                                $"{ad.Action.Name} cost more than what the {ad.ActorEntity} can pay for"
+                            ),
+                            NullCommand.Instance
+                        );
+
+                    if (!IsTargetingValid(ad))
                     {
                         return (
-                            new IDecisionValidator.Error(
-                                "invalid-target",
-                                $"action {ad.Action} cannot be targeted at {ad.TargetCoords}"
-                            ), new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords)); //TODO: validate    
+                            new IDecisionValidator.Error
+                            (
+                                IDecisionValidator.ErrorType.InvalidTarget,
+                                $"action {ad.Action.Name} cannot be targeted at {ad.TargetCoords}"
+                            ),
+                            NullCommand.Instance
+                        );
                     }
 
-                    return (null, new ActionCommand(ad.Action, ad.ActorEntity, ad.TargetCoords));
+                    if (_gameEventControl.ActiveActionResult.CanCombo)
+                        if (!IsTargetingComboTarget(ad) && !IsStartingFromComboCarrier(ad))
+                            return (
+                                new IDecisionValidator.Error
+                                (
+                                    IDecisionValidator.ErrorType.InvalidTarget,
+                                    "You must be targeting the combo target or start with the combo carrier"
+                                ),
+                                NullCommand.Instance
+                            );
+
+                    return (null, new ActionCommand(ad));
+                }
                 default:
                     return (IDecisionValidator.Error.Unknown, NullCommand.Instance);
             }
         }
 
-        private bool IsValidActionDecision(ActionDecision ad)
+        //todo: instead of checking an input, it might be easier to check in bulk, that way we don't have to rework our code. the front cost might be expensive but hopefully ain't too bad.
+        //we can also you know, just cache the fucker?
+        public (bool canBeValid, IDecisionValidator.Error? error) ValidateDecisionConstructionInput(NonebAction action, EntityData caster, IReadOnlyList<Coordinate> existingInput, Coordinate newInput)
+        {
+            /*
+             * Note:
+             * Since this method is, quite literally, probably going to be called every frame,
+             * we probably want to improve the efficiency by caching *something*.
+             *
+             * We can in theory turn this in to an async func that slowly takes more input(or just make it a separate class dude, we need to handle backing in UI as well).
+             *
+             * But hey we also shouldn't optimize without profiling so fuck it future me it's your job.
+             */
+            var requests = action.TargetRequests;
+            var request = requests[existingInput.Count];
+
+            var (canBeValid, error) = RangeCheck();
+            if (existingInput.Count < requests.Length - 1)
+                // normally we only check for range
+                return (canBeValid, error);
+
+            // but at the last step we want to check for combo constraint as well
+            if (!canBeValid)
+                // don't even check for combo - we are invalid just for the range
+                return (false, error);
+
+            // construct a decision, and do a usual rundown to check everything(include combos), not the most efficient but will do for now.
+            var decision = new ActionDecision(action, caster, existingInput.Append(newInput));
+            var (decisionError, _) = ValidateDecision(decision);
+            if (decisionError != null) return (false, decisionError);
+
+            return (true, null);
+
+            (bool canBeValid, IDecisionValidator.Error? error) RangeCheck()
+            {
+                var ranges = _targetFinder.FindRange(caster, request).ToArray();
+                var (status, _) = ranges.FirstOrDefault(t => t.coord == newInput);
+                if (status == null)
+                    // it's so far out the target finder don't even think it should be in the list it returns -> is there a more elegant way?
+                    return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.OutOfRange, nameof(RangeStatus.OutOfRange)));
+
+                switch (status)
+                {
+                    case RangeStatus.Targetable:
+                        return (true, null);
+
+                    case RangeStatus.OutOfRange:
+                        return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.OutOfRange, status.GetType().Name));
+
+                    case RangeStatus.InRangeButNoTarget:
+                    case RangeStatus.NotTargetable:
+                    {
+                        // make sure we did check the area of effect as well.
+                        var targets = _targetFinder.FindTargets(caster, newInput, request.TargetArea, request.TargetRestrictionFlags);
+                        if (!targets.Any()) return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.InvalidTarget, status.GetType().Name));
+
+                        return (true, null);
+                    }
+
+                    default:
+                        Log.Error("Level", $"Unhandled type {status}");
+                        return (false, new IDecisionValidator.Error(IDecisionValidator.ErrorType.InvalidTarget, status.GetType().Name));
+                }
+            }
+        }
+
+        private bool IsStartingFromComboCarrier(ActionDecision ad)
+        {
+            return _gameEventControl.ActiveActionResult.ValidComboCarrier.Any(c => c == ad.ActorEntity);
+        }
+
+        private bool IsTargetingComboTarget(ActionDecision ad)
+        {
+            if (!_gameEventControl.ActiveActionResult.ValidComboReceiver.Any()) return false;
+
+            var (isValidTargets, actionTargetGroups) = FindTargetFromInput(ad);
+            if (!isValidTargets) return false;
+
+            foreach (var targets in actionTargetGroups)
+            {
+                var targetGroupContainsReceiver = _gameEventControl.ActiveActionResult.ValidComboReceiver.Intersect(targets).Any();
+                if (targetGroupContainsReceiver) return true;
+            }
+
+            return false;
+        }
+
+        private bool IsTargetingValid(ActionDecision ad)
+        {
+            var (isValidTargets, _) = FindTargetFromInput(ad);
+
+            return isValidTargets;
+        }
+
+        private (bool isValidTargets, List<IActionTarget[]> toReturn) FindTargetFromInput(ActionDecision ad)
         {
             var action = ad.Action;
-            var requirements = action.TargetRequests;
+            var requests = action.TargetRequests;
             var targetCoords = ad.TargetCoords;
 
             //targeted coordinates length must match restrictions length - otherwise we couldn't construct a valid command.
             //each targeted coordinate is validated against the restriction in the same index, so C0 -> R0, C1 -> R1 etc.
             //this is why the length must match, otherwise it doesn't make sense.
             //Before you ask, this is an arbitrary decision past you made, and another past you deduced, if you don't like it, well invent time machine.
-            if (targetCoords.Length != requirements.Length) return false;
+            if (targetCoords.Length != requests.Length) return (false, new List<IActionTarget[]>());
 
             //if actor is not on the map -> wtf are you doing.
             var actor = ad.ActorEntity;
-            if (!_map.TryFind(actor, out Coordinate actorCoord)) return false;
+            if (!_map.TryFind(actor, out Coordinate actorCoord)) return (false, new List<IActionTarget[]>());
 
-            //if any of the target coords is out of range -> this is invalid.
-            var rangeLimitations = requirements.Select(r => r.Range.CalculateRange(actor)).ToArray();
-            for (var i = 0; i < rangeLimitations.Length; i++)
-            {
-                var targetCoord = targetCoords[i];
-                var rangeLimit = rangeLimitations[i];
-                var distanceToTarget = actorCoord.DistanceTo(targetCoord);
-                if (distanceToTarget > rangeLimit) return false;
-            }
-
-            //every targeted coordinate must have at least one valid target - otherwise it is an invalid command(can't target a coordinate without a target!).
+            var toReturn = new List<IActionTarget[]>();
             for (var i = 0; i < targetCoords.Length; i++)
             {
+                var request = requests[i];
                 var coord = targetCoords[i];
-                var requirement = requirements[i];
-                var validTargets = _targetFinder.FindTargets(actor, coord, requirement.TargetArea, requirement.TargetRestrictionFlags)
-                    .ToArray();
+                var rangeLimit = request.Range.CalculateRange(actor);
+                var distanceToTarget = actorCoord.DistanceTo(coord);
 
-                if (!validTargets.Any()) return false;
+                // must meet all range limit for this to be valid
+                if (distanceToTarget > rangeLimit) return (false, new List<IActionTarget[]>());
 
-                if (validTargets.Length > 1)
-                    /*
-                     * NOTE:
-                     * At the moment, there's a risk where if:
-                     * 1. a coordinate have multiple valid target
-                     * 2. the action is only valid for a single target - imagine if you a "slashing" a single entity
-                     *
-                     * The current check won't suffice as in this case having more than one valid target becomes invalid.
-                     * What I really want to do, I think, is to have the input give me a list of the actual target instead of giving me a bunch of coordinate?
-                     * Hard to tell but for now this suffice.
-                     * ---
-                     * Had another think when I came back to this the a few days later.
-                     * I have a feeling that the core of the issue is that we are changing our "core" to work with the user interface,
-                     * maybe this is why we are taking a coordinate as an input instead of an IActionTarget, which led to this weird gymnastic...
-                     */
-                    Log.Warning(
-                        "More than one valid targets, it's most likely not what you expect when you are writing this - you were taking shortcuts and decided not to fix this issue right now, refer to the comment for more details"
-                    );
+                var validTargets = _targetFinder.FindTargets(actor, coord, request.TargetArea, request.TargetRestrictionFlags)
+                                                .ToArray();
+
+                //every targeted coordinate must have at least one valid target - otherwise it is an invalid command(can't target a coordinate without a target!).
+                if (!validTargets.Any()) return (false, new List<IActionTarget[]>());
+
+                toReturn.Add(validTargets);
             }
 
-            return true;
+            return (true, toReturn);
         }
     }
 }

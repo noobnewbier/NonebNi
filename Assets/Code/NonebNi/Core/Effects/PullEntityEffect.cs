@@ -1,46 +1,51 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
+using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
-using Unity.Logging;
 
 namespace NonebNi.Core.Effects
 {
+    [Serializable]
     public class PullEntityEffect : Effect
     {
         public class Evaluator : Evaluator<PullEntityEffect>
         {
-            protected override IEnumerable<ISequence> OnEvaluate(
+            protected override EffectResult OnEvaluate(
                 PullEntityEffect effect,
                 EffectContext context)
             {
                 var targetParam = context.TargetGroups.FirstOrDefault()?.AsSingleTarget;
                 if (targetParam is not EntityData targetEntity)
                 {
-                    Log.Error($"{nameof(PullEntityEffect)} without an Entity parameter makes no sense!");
-                    yield break;
+                    Log.Error("Effect", $"{nameof(PullEntityEffect)} without an Entity parameter makes no sense!");
+                    return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(context.ActionCaster, out Coordinate actorCoord))
                 {
-                    Log.Error($"{context.ActionCaster.Name} is not on the map!");
-                    yield break;
+                    Log.Error("Effect", $"{context.ActionCaster.Name} is not on the map!");
+                    return EffectResult.Empty;
                 }
 
                 if (!context.Map.TryFind(targetEntity, out Coordinate targetCoord))
                 {
-                    Log.Error($"{targetEntity.Name} is not on the map!");
-                    yield break;
+                    Log.Error("Effect", $"{targetEntity.Name} is not on the map!");
+                    return EffectResult.Empty;
                 }
 
-                if (!actorCoord.IsOnSameLineWith(targetCoord))
+                if (!actorCoord.IsOnSameAxisWith(targetCoord))
                 {
-                    Log.Error(
+                    Log.Error
+                    (
+                        "Effect",
                         $"{targetEntity.Name} is not on the same line with {context.ActionCaster.Name} - effect is undefined!"
                     );
-                    yield break;
+                    return EffectResult.Empty;
                 }
 
                 var direction = (targetCoord - actorCoord).Normalized();
@@ -48,11 +53,20 @@ namespace NonebNi.Core.Effects
                 var result = context.Map.Move(targetEntity, pulledToCoord);
                 if (result != MoveResult.Success)
                 {
-                    Log.Warning($"Failed movement! Reason: {result}.");
-                    yield break;
+                    Log.Warn("Effect", $"Failed movement! Reason: {result}.");
+                    return EffectResult.Empty;
                 }
 
-                yield return new MoveSequence(targetEntity, pulledToCoord);
+                var sequences = new List<ISequence>();
+                var receivers = new HashSet<IActionTarget>();
+                var carriers = new HashSet<EntityData>();
+                if (targetEntity.FactionId == context.ActionCaster.FactionId)
+                    carriers.Add(targetEntity);
+                else
+                    receivers.Add(targetEntity);
+
+                sequences.Add(new MoveSequence(targetEntity, pulledToCoord));
+                return new EffectResult(sequences, receivers, carriers);
             }
         }
     }

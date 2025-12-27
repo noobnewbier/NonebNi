@@ -42,15 +42,10 @@ namespace NonebNi.LevelEditor.Inspectors
             _levelInspector = null;
 
             var levelRunner = Object.FindObjectOfType<LevelRunner>();
-            if (levelRunner == null) return;
+            if (levelRunner is not { DebugTools: not null }) return;
 
-            var levelData = levelRunner.LevelData;
-            if (levelData == null) return;
-
-            var terrainConfig = levelRunner.TerrainConfig;
-            if (terrainConfig == null) return;
-
-            _levelInspector = new RuntimeInspectorContainer(terrainConfig, levelData.Map).Resolve();
+            // Note: would be nice if we can let the main container handles everything.
+            _levelInspector = new RuntimeInspectorContainer(levelRunner.DebugTools.TerrainConfig, levelRunner.DebugTools.Map).Resolve();
         }
 
         private void CleanUp()

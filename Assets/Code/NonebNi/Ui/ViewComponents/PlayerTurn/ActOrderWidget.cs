@@ -15,7 +15,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         private UnitData? _unitData;
 
-        public UniTask OnInit()
+        public UniTask OnInit(CancellationToken ct)
         {
             button.Clicked += OnButtonClicked;
             return UniTask.CompletedTask;
@@ -23,10 +23,10 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public event Action<UnitData>? Clicked;
 
-        public async UniTask Show(UnitData unitData, CancellationToken ct = default)
+        public async UniTask Show(int order, UnitData unitData, CancellationToken ct = default)
         {
             _unitData = unitData;
-            unitName.text = unitData.Name;
+            unitName.text = $"{order}. {unitData.Name}";
         }
 
         private void OnButtonClicked()

@@ -1,84 +1,164 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Decisions;
-using NonebNi.Core.Sequences;
-using UnityEngine;
+using NonebNi.Core.Effects;
+using NonebNi.Core.Units;
 
 namespace NonebNi.Core.FlowControl
 {
     public interface ILevelFlowController
     {
-        IAgentsService AgentsService { get; }
-        ICommandEvaluationService EvaluationService { get; }
-        ISequencePlayer SequencePlayer { get; }
-        IUnitTurnOrderer UnitTurnOrderer { get; }
         UniTask Run();
+        void ForcePlayEvent(LevelEvent levelEvent);
+
+        #region Editor Console's dependencies
+
+        //todo: at some point, it would be brill if we can get rid of these, for now though.
+
+        IAgentsService AgentsService { get; }
+        IActionCommandEvaluator Evaluator { get; }
+        IUnitTurnOrderer UnitTurnOrderer { get; }
+
+        #endregion
     }
 
+    //todo: could use an error message panel/tooltip even just for debugging
+    //todo: fatigue work upwards only in the ui - it's easier to keep the rest of the maths consistent(going downwards)
+    //todo: action point system? make it play with speed or sth idk
+    //todo: fix I can unintentionally control enemy - (or maybe keep it but make sure it's debug view)
+    //todo: fix order panel
+    //todo: fix starting unit
+    //todo: fix initiative - or leave it as is and be happy with it.
+    //todo: enemy ai, it can be simple raider/wolf ai
+    //todo: at some point we need save/load test.
+    //todo: show cost of an action, either tooltip whatever easiest solution you can come up with.
+    //todo: at some point a better logging system would be nice - but not necessary...?
     public class LevelFlowController : ILevelFlowController
     {
+        private readonly IGameEventControl _gameEventControl;
+        private readonly IActionOptionFinder _optionFinder;
+
         public LevelFlowController(
-            ICommandEvaluationService evaluationService,
+            IActionCommandEvaluator evaluator,
             IUnitTurnOrderer unitTurnOrderer,
             IAgentsService agentService,
-            ISequencePlayer sequencePlayer,
-            IDecisionValidator decisionValidator)
+            IGameEventControl gameEventControl,
+            IActionOptionFinder optionFinder)
         {
-            EvaluationService = evaluationService;
+            Evaluator = evaluator;
             UnitTurnOrderer = unitTurnOrderer;
             AgentsService = agentService;
-            SequencePlayer = sequencePlayer;
-            DecisionValidator = decisionValidator;
+            _gameEventControl = gameEventControl;
+            _optionFinder = optionFinder;
         }
 
-        public IDecisionValidator DecisionValidator { get; }
-
         public IAgentsService AgentsService { get; }
-
-        public ICommandEvaluationService EvaluationService { get; }
-
-        public ISequencePlayer SequencePlayer { get; }
-
+        public IActionCommandEvaluator Evaluator { get; }
         public IUnitTurnOrderer UnitTurnOrderer { get; }
 
         public async UniTask Run()
         {
+            _gameEventControl.WriteEvent(new LevelEvent.GameStart());
+
             //TODO: replace all these logging w/ a Decorator using StrongInject.
 
             var turnNum = 0; //Mostly for debug purposes - but probably necessary for UI at some point
             while (true)
             {
                 var currentUnit = UnitTurnOrderer.CurrentUnit;
-                Debug.Log($"[Level] Turn {turnNum}, {currentUnit.Name}'s turn");
+                Log.Info("Level", $"Turn {turnNum}, {currentUnit.Name}'s turn");
 
                 currentUnit.RestoreMovement();
+                currentUnit.RestoreActionPoint();
+                currentUnit.RecoverFatigue();
 
-                // ReSharper disable RedundantAssignment - Can't declare value tuple without assigning
-                (IDecisionValidator.Error? err, var command) = (null, NullCommand.Instance);
-                // ReSharper restore RedundantAssignment
-                do
+                while (true)
                 {
-                    var decision = await AgentsService.GetAgentDecision(currentUnit.FactionId);
-                    Debug.Log($"[Level] Received Decision: {decision?.GetType()}");
+                    var waitForUnitDecision = new LevelEvent.WaitForActiveUnitDecision(currentUnit);
+                    _gameEventControl.WriteEvent(waitForUnitDecision);
 
-                    (err, command) = DecisionValidator.ValidateDecision(decision);
+                    var command = await AgentsService.GetAgentInput(currentUnit.FactionId);
+                    var isDone = false;
+                    var unitKeepActing = false;
+                    switch (command)
+                    {
+                        case ActionCommand actionCommand:
+                            await ActionEvaluationFlow(actionCommand, currentUnit);
+                            unitKeepActing = true;
+                            break;
+                        case EndTurnCommand:
+                        case NullCommand:
+                            isDone = true;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(command));
+                    }
 
-                    if (err != null) Debug.Log($"[Level] Decision Error: {err.Id}, {err.Description}");
-                } while (err != null);
-
-
-                Debug.Log($"[Level] Evaluate Command: {command.GetType()}");
-                var sequences = EvaluationService.Evaluate(command);
-                await SequencePlayer.Play(sequences);
+                    if (unitKeepActing) continue;
+                    if (isDone) break;
+                }
 
                 turnNum++;
                 UnitTurnOrderer.ToNextUnit();
-                Debug.Log("[Level] Finished Evaluation");
             }
 
             // Expected, this should just run forever, until we have a exit/win/lose condition
             // ReSharper disable once FunctionNeverReturns
+        }
+
+        public void ForcePlayEvent(LevelEvent levelEvent)
+        {
+            _gameEventControl.WriteEvent(levelEvent);
+        }
+
+        private async UniTask ActionEvaluationFlow(ActionCommand command, UnitData currentUnit)
+        {
+            var context = EvaluateCommand(command);
+            await ComboFlow(context, currentUnit);
+        }
+
+        private EffectContext EvaluateCommand(ActionCommand command)
+        {
+            var context = Evaluator.FindEffectContext(command);
+            var result = Evaluator.Evaluate(command);
+            var sequenceEvent = new LevelEvent.SequenceOccured(result);
+            _gameEventControl.WriteEvent(sequenceEvent);
+
+            return context;
+        }
+
+        private async UniTask ComboFlow(EffectContext comboContext, UnitData comboStarter)
+        {
+            /*
+             * Note:
+             * - I am convinced there's no way we can make it completely type safe and work for ability that may or may not exist in this world
+             * - we need to pick our poison
+             * - my guess is that we can make evaluator spits out isequence, and not necessary carry out what the sequence does until later point.
+             * - that way effect context can stays within whatever action is doing, and any ai/ui work can use the sequence THAT IS YET TO BE EXECUTED to find out what the fuck will happen
+             *
+             * At some point, I left this comment:
+             * "this should, really, not be how we do it."
+             * Yet reading it breifly I have no idea what's wrong so I am just gonna leave this as is and future me can ponder about it.
+             */
+            // no combo -> nothing to do we can just bugger off
+            var possibleCombos = _optionFinder.FindComboOptions(comboContext).ToArray();
+            if (!possibleCombos.Any()) return;
+
+            // wait till the agent give us to something to work on 
+            var comboDecisionEvent = new LevelEvent.WaitForComboDecision(possibleCombos);
+            _gameEventControl.WriteEvent(comboDecisionEvent);
+            if (await AgentsService.GetAgentInput(comboStarter.FactionId) is not ActionCommand actionCommand) return;
+
+            // work on that something
+            var nextComboContext = EvaluateCommand(actionCommand);
+
+            // check if we can actually keep comboing -> combo till heat death if necessary
+            if (actionCommand.ActorEntity is not UnitData comboTaker) return;
+            await ComboFlow(nextComboContext, comboTaker);
         }
     }
 }

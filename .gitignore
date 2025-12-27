@@ -22,7 +22,10 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
+
+# make sure we only ignore stuffs with Obj when the folder name is debug 
+[Oo]bj/[Dd]ebug/
+
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
@@ -84,6 +87,7 @@ StyleCopReport.xml
 *.pgc
 *.pgd
 *.rsp
+!Assets/**/csc.rsp
 *.sbr
 *.tlb
 *.tli
@@ -458,6 +462,7 @@ fabric.properties
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
+!Assets/Code/Noneb.Log/
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*

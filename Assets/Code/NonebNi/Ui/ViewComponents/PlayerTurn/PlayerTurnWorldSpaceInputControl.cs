@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.InputSystems;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Decisions;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Units;
 using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
+using NonebNi.Ui.Inputs;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -18,10 +23,41 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     public interface IPlayerTurnWorldSpaceInputControl
     {
         Coordinate? FindHoveredCoordinate();
-        void ToTileInspectionMode();
-        void ToMovementMode(UnitData mover);
-        UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default);
-        void UpdateTargetSelection();
+
+        UniTask<(bool success, IEnumerable<Coordinate>)> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default);
+
+        /// <summary>
+        /// This only works with unit atm only because the UI doesn't really have much to show for anything else, this can change
+        /// in the future though.
+        /// </summary>
+        UniTask<UnitData?> GetInputForInspection(CancellationToken ct = default);
+
+        UniTask<MovementInput> GetInputForMovement(UnitData mover, CancellationToken ct = default);
+
+        public abstract record MovementInput
+        {
+            public record Inspect : MovementInput
+            {
+                public readonly EntityData EntityData;
+
+                public Inspect(EntityData entityData)
+                {
+                    EntityData = entityData;
+                }
+            }
+
+            public record MoveTo : MovementInput
+            {
+                public readonly Coordinate Coordinate;
+
+                public MoveTo(Coordinate coordinate)
+                {
+                    Coordinate = coordinate;
+                }
+            }
+
+            public record Cancel : MovementInput;
+        }
     }
 
     public class PlayerTurnWorldSpaceInputControl : IPlayerTurnWorldSpaceInputControl
@@ -35,6 +71,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         private readonly IPathfindingService _pathfindingService;
         private readonly Camera _playerViewCamera;
         private readonly ITargetFinder _targetFinder;
+        private readonly IDecisionValidator _validator;
 
         private CancellationTokenSource? _cts;
 
@@ -47,7 +84,8 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             IReadOnlyMap map,
             IHexHighlighter hexHighlighter,
             ITargetFinder targetFinder,
-            IPathfindingService pathfindingService)
+            IPathfindingService pathfindingService,
+            IDecisionValidator validator)
         {
             _inputSystem = inputSystem;
             _coordinateAndPositionService = coordinateAndPositionService;
@@ -56,13 +94,16 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             _hexHighlighter = hexHighlighter;
             _targetFinder = targetFinder;
             _pathfindingService = pathfindingService;
+            _validator = validator;
             _gridPlane = terrainConfigData.GridPlane;
         }
 
         public Coordinate? FindHoveredCoordinate()
         {
+            if (_inputSystem.IsMouseOverUi) return null;
+
             //TODO: it probably makes sense to put this input code into the input system - but then it's in game ony...
-            var point = _inputSystem.MousePosition;
+            var point = _inputSystem.ReadValue<Vector2>(InputMaps.UI.Point);
             var ray = _playerViewCamera.ScreenPointToRay(point);
             if (!_gridPlane.Raycast(ray, out var distance)) return null;
 
@@ -72,30 +113,50 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             return coord;
         }
 
-        public async UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default)
+        //todo: show invalid tooltip - it helps with debugging as well.
+        public async UniTask<(bool success, IEnumerable<Coordinate>)> GetInputForAction(UnitData caster, NonebAction action, CancellationToken ct = default)
         {
-            async UniTask<Coordinate?> GetUserInputForRequest((RangeStatus status, Coordinate coord)[] ranges, CancellationToken ct)
+            async UniTask<(bool backRequest, Coordinate? input)> GetUserInputForRequest(IReadOnlyList<Coordinate> inputForPreviousRequests, TargetRequest currentRequest, CancellationToken subCt)
             {
                 Coordinate? inputCoord = null;
-                while (!ct.IsCancellationRequested && inputCoord == null)
+                while (inputCoord == null)
                 {
-                    await UniTask.NextFrame();
+                    await UniTask.NextFrame(subCt, true);
 
+                    // remove highlight first - don't want that to stick around
                     _hexHighlighter.RemoveRequest(HighlightRequestId.TargetSelection);
+
+                    // doesn't matter if we are hovering - if we get a back request we just back out
+                    if (_inputSystem.GetAction(InputMaps.Level.Cancel)) return (true, null);
+
                     var coord = FindHoveredCoordinate();
                     if (coord == null) continue;
 
                     // Keep showing the highlight - we are good
-                    (RangeStatus status, Coordinate _)? matchingRangeStatus = ranges.FirstOrDefault(t => t.coord == coord);
-                    var isValidInput = matchingRangeStatus is { status: RangeStatus.Targetable };
-                    var variation = isValidInput ?
-                        HighlightVariation.ValidInput :
-                        HighlightVariation.InvalidInput;
-                    _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, variation);
+                    var (canBeValid, error) = _validator.ValidateDecisionConstructionInput(action, caster, inputForPreviousRequests, coord);
+                    if (!canBeValid && error?.Type == IDecisionValidator.ErrorType.OutOfRange)
+                    {
+                        _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, HighlightVariation.InvalidInput);
+                        continue;
+                    }
 
-                    if (!_inputSystem.LeftClick) continue;
 
-                    if (!isValidInput)
+                    //todo: more sophisticated logic is needed here - the variation might need to change depending if we are hitting enemy/allies
+                    var targetedStatuses = _targetFinder.GetTargetedCoordinates(caster, coord, currentRequest).ToArray();
+                    var isAnyDangerous = targetedStatuses.Any(s => s.isDangerous);
+                    var variation = canBeValid switch
+                    {
+                        true when isAnyDangerous => HighlightVariation.DangerousInput,
+                        true => HighlightVariation.ValidInput,
+                        _ => HighlightVariation.InvalidInput
+                    };
+
+                    foreach (var (_, coordinate) in targetedStatuses) _hexHighlighter.RequestHighlight(coordinate, HighlightRequestId.TargetSelection, variation);
+
+
+                    if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
+
+                    if (!canBeValid)
                         //todo: signal invalid input - potentially audio and even a tooltip to explain why shit is wrong
                         continue;
 
@@ -103,81 +164,171 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
                     inputCoord = coord;
                 }
 
-                _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
-                return inputCoord;
+                return (false, inputCoord);
             }
 
-            async UniTask<IEnumerable<Coordinate>> Do(CancellationToken ct)
+            async UniTask<(bool, IEnumerable<Coordinate>)> Do(CancellationToken subCt)
             {
-                _hexHighlighter.ClearAll();
-
-                var playerInputs = new List<Coordinate>();
-                foreach (var request in action.TargetRequests)
+                try
                 {
-                    ct.ThrowIfCancellationRequested();
-
-                    var ranges = _targetFinder.FindRange(caster, request).ToArray();
-                    _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
-                    _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
-
-                    var input = await GetUserInputForRequest(ranges, ct);
-                    if (input != null) playerInputs.Add(input);
-                }
-
-                _hexHighlighter.RemoveRequest(HighlightRequestId.TargetSelection, HighlightRequestId.AreaHint);
-
-                return playerInputs;
-            }
-
-            _cts?.Cancel();
-            _cts = CancellationTokenSource.CreateLinkedTokenSource(token);
-            var coordinates = await Do(_cts.Token);
-
-            return coordinates;
-        }
-
-        public void ToMovementMode(UnitData mover)
-        {
-            async UniTaskVoid Do(CancellationToken ct)
-            {
-                _hexHighlighter.ClearAll();
-                while (!ct.IsCancellationRequested)
-                {
-                    _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
-
-                    var targetCoord = FindHoveredCoordinate();
-                    if (targetCoord != null)
+                    var playerInputs = new Queue<Coordinate>();
+                    for (var i = 0; i < action.TargetRequests.Length; i++)
                     {
-                        var (isPathExist, path) = _pathfindingService.FindPath(mover, targetCoord);
-                        if (isPathExist)
+                        var request = action.TargetRequests[i];
+                        var ranges = _targetFinder.FindRange(caster, request).ToArray();
+
+                        _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
+                        _hexHighlighter.RequestHighlight(ranges.Select(r => r.coord), HighlightRequestId.AreaHint, HighlightVariation.AreaHint);
+
+                        var (backRequested, input) = await GetUserInputForRequest(playerInputs.ToList(), request, subCt);
+                        subCt.ThrowIfCancellationRequested();
+                        _hexHighlighter.RemoveRequest(HighlightRequestId.AreaHint);
+
+                        if (backRequested)
                         {
-                            var pathWithoutStartAndEnd = path.Except(new[] { _map.Find(mover), targetCoord });
-                            _hexHighlighter.RequestHighlight(pathWithoutStartAndEnd, HighlightRequestId.MovementHint, HighlightVariation.AreaHint);
-                            _hexHighlighter.RequestHighlight(targetCoord, HighlightRequestId.MovementHint, HighlightVariation.Normal);
+                            if (i == 0)
+                                // Requested back at the root level -> stop the routine.
+                                return (false, Enumerable.Empty<Coordinate>());
+
+                            // take one step back -> need to offset the increment as well.
+                            i -= 2;
+                            _ = playerInputs.TryDequeue(out _);
+
+                            continue;
                         }
-                        else
+
+                        if (input == null)
                         {
-                            _hexHighlighter.RequestHighlight(targetCoord, HighlightRequestId.MovementHint, HighlightVariation.InvalidInput);
+                            Log.Error("UI", "You should, have really, not gotten here - the only reason it's null is we've got a cancellation request in which case we probably should have thrown");
+                            continue;
                         }
+
+                        playerInputs.Enqueue(input);
                     }
 
-                    await UniTask.NextFrame();
+                    return (true, playerInputs);
                 }
+                catch (OperationCanceledException)
+                {
+                    return (false, Enumerable.Empty<Coordinate>());
+                }
+                finally
+                {
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.TargetSelection, HighlightRequestId.AreaHint);
+                }
+            }
 
-                _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
+            //todo: we should, really, really wait till the cancellation is done before starting the next one.
+            _cts?.Cancel();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            var result = await Do(_cts.Token);
+            ct.ThrowIfCancellationRequested();
+
+            return result;
+        }
+
+        public async UniTask<UnitData?> GetInputForInspection(CancellationToken ct = default)
+        {
+            async UniTask<UnitData?> GetUserInputForRequest(CancellationToken subCt)
+            {
+                try
+                {
+                    UnitData? inputEntity = null;
+                    while (inputEntity == null)
+                    {
+                        await UniTask.NextFrame(subCt, true);
+
+                        _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
+
+                        var coord = FindHoveredCoordinate();
+                        if (coord == null) continue;
+
+                        _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.Normal);
+                        var hoveredEntity = _map.Get<UnitData>(coord);
+                        if (hoveredEntity == null) continue;
+
+                        _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TileInspection, HighlightVariation.ValidInput);
+
+                        if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
+
+                        inputEntity = hoveredEntity;
+                    }
+
+                    return inputEntity;
+                }
+                finally
+                {
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
+                }
             }
 
             _cts?.Cancel();
-            _cts = new CancellationTokenSource();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            var unit = await GetUserInputForRequest(_cts.Token);
 
-            Do(_cts.Token).Forget();
+            return unit;
+        }
+
+        public async UniTask<IPlayerTurnWorldSpaceInputControl.MovementInput> GetInputForMovement(UnitData mover, CancellationToken ct = default)
+        {
+            async UniTask<IPlayerTurnWorldSpaceInputControl.MovementInput?> GetUserInputForRequest(CancellationToken subCt)
+            {
+                try
+                {
+                    IPlayerTurnWorldSpaceInputControl.MovementInput? input = null;
+                    while (!subCt.IsCancellationRequested && input == null)
+                    {
+                        await UniTask.NextFrame();
+
+                        _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
+                        var coord = FindHoveredCoordinate();
+                        if (coord == null) continue;
+
+                        var (isPathExist, path) = _pathfindingService.FindPath(mover, coord);
+                        if (!isPathExist)
+                        {
+                            var hoveredUnit = _map.Get<UnitData>(coord);
+                            if (hoveredUnit != null && hoveredUnit != mover)
+                            {
+                                _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.ValidInput);
+                                if (_inputSystem.GetAction(InputMaps.Level.Interact)) input = new IPlayerTurnWorldSpaceInputControl.MovementInput.Inspect(hoveredUnit);
+                            }
+                            else
+                            {
+                                _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.InvalidInput);
+                            }
+
+                            continue;
+                        }
+
+                        var pathWithoutStartAndEnd = path.Except(new[] { _map.Find(mover), coord });
+                        _hexHighlighter.RequestHighlight(pathWithoutStartAndEnd, HighlightRequestId.MovementHint, HighlightVariation.AreaHint);
+                        _hexHighlighter.RequestHighlight(coord, HighlightRequestId.MovementHint, HighlightVariation.Normal);
+
+                        if (!_inputSystem.GetAction(InputMaps.Level.Interact)) continue;
+                        input = new IPlayerTurnWorldSpaceInputControl.MovementInput.MoveTo(coord);
+                    }
+
+                    return input;
+                }
+                finally
+                {
+                    _hexHighlighter.RemoveRequest(HighlightRequestId.MovementHint);
+                }
+            }
+
+            _cts?.Cancel();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+            var input = await GetUserInputForRequest(_cts.Token);
+            if (input == null) return new IPlayerTurnWorldSpaceInputControl.MovementInput.Cancel();
+
+            return input;
         }
 
         public void ToTileInspectionMode()
         {
             async UniTaskVoid Do(CancellationToken ct)
             {
-                _hexHighlighter.ClearAll();
                 while (!ct.IsCancellationRequested)
                 {
                     _hexHighlighter.RemoveRequest(HighlightRequestId.TileInspection);
@@ -195,17 +346,6 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
             _cts = new CancellationTokenSource();
 
             Do(_cts.Token).Forget();
-        }
-
-        //TODO: what is this for...?
-        public void UpdateTargetSelection()
-        {
-            _hexHighlighter.RemoveRequest(HighlightRequestId.TargetSelection);
-
-            var coord = FindHoveredCoordinate();
-            if (coord == null) return;
-
-            _hexHighlighter.RequestHighlight(coord, HighlightRequestId.TargetSelection, HighlightVariation.Normal);
         }
     }
 }

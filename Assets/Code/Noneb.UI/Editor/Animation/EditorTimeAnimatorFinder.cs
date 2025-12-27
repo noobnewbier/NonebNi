@@ -1,4 +1,4 @@
-﻿using Unity.Logging;
+﻿using Noneb.Logs.Runtime;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
@@ -33,13 +33,15 @@ namespace Noneb.UI.Editor.Animation
                 if (string.IsNullOrEmpty(animatorName))
                 {
                     animator = null;
-                    Log.Error(
+                    Log.Error
+                    (
+                        "Editor",
                         "We cannot find animator automatically when you are not referencing the root type, you must define animator name before I decide to implement this."
                     );
                 }
                 else
                 {
-                    animator = NonebEditorUtils.FindPropertyObjectReferenceInSameDepth<Animator>(property, animatorName);
+                    animator = NonebEditorGUI.FindPropertyObjectReferenceInSameDepth<Animator>(property, animatorName);
                 }
             }
 

@@ -2,40 +2,61 @@
 
 namespace Noneb.UI.View
 {
-    //TODO: work out editor/inspector -> you will need it for debugging.
-    //TODO: next question -> handle GO instantiation/loadin and management
     public interface IViewComponent
     {
         /// <summary>
-        /// This is where you gather dependencies, load permanent(for the duration of the entire game) resources etc
+        /// This thing only get called once - how nice! It's always called before init as well, use it in place of Unity's Awake as
+        /// it will be called before the GO is awaked.
+        /// </summary>
+        public UniTask OnViewAwake() => UniTask.CompletedTask;
+
+        /// <summary>
+        /// This is where you gather dependencies, load temporary(for the lifetime of the view stack) resources etc
         /// </summary>
         public UniTask OnViewInit() => UniTask.CompletedTask; //TODO: maybe I should get rid of this and let main-ish/entry point handle it.
 
         /// <summary>
         /// You are about to die now -> say your last word
+        /// I mean, releasing temporary resources.
         /// </summary>
         public UniTask OnViewTearDown() => UniTask.CompletedTask;
 
         /// <summary>
         /// Animation/transition, preferrably nothing logic related
         /// </summary>
-        public UniTask OnViewEnter(INonebView? previousView) => UniTask.CompletedTask;
+        public UniTask OnViewEnter(INonebView? previousView, INonebView currentView) => UniTask.CompletedTask;
 
         /// <summary>
         /// Animation/transition, preferably nothing logic related
         /// </summary>
-        public UniTask OnViewLeave(INonebView? nextView) => UniTask.CompletedTask;
+        public UniTask OnViewLeave(INonebView currentView, INonebView? nextView) => UniTask.CompletedTask;
+
+        /// <summary>
+        /// Tearing down input handler and event hook.
+        /// Note UI can/perhaps should still be visible at this point, whether you want to do it is up to the component's discrete
+        /// </summary>
+        public UniTask OnViewDeactivate() => UniTask.CompletedTask;
+
+        /// <summary>
+        /// Generic shenanigans to let implementer be type safe
+        /// </summary>
+        internal UniTask OnViewActivate(object? viewData) => UniTask.CompletedTask;
+    }
+
+    //TODO: work out editor/inspector -> you will need it for debugging.
+    //TODO: next question -> handle GO instantiation/loadin and management
+    public interface IViewComponent<in TViewData> : IViewComponent where TViewData : class
+    {
+        async UniTask IViewComponent.OnViewActivate(object? viewData)
+        {
+            var typedData = viewData as TViewData;
+            await OnViewActivate(typedData);
+        }
 
         /// <summary>
         /// Logic for initializing, so setting up input handler and hooking up events
         /// Temporary resources might also be loaded here.
         /// </summary>
-        public UniTask OnViewActivate() => UniTask.CompletedTask;
-
-        /// <summary>
-        /// Tearing down input handler and event hook.
-        /// Releasing temporary resources.
-        /// </summary>
-        public UniTask OnViewDeactivate() => UniTask.CompletedTask;
+        public UniTask OnViewActivate(TViewData? viewData) => UniTask.CompletedTask;
     }
 }

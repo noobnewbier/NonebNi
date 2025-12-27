@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Tiles;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Maps
@@ -61,7 +61,9 @@ namespace NonebNi.Core.Maps
                 var existingTileOccupier = CurrentOccupier;
                 if (existingTileOccupier != null)
                 {
-                    Log.Error(
+                    Log.Error
+                    (
+                        "Map",
                         $"Attempting to add {entityData.Name} into this node when another occupier already exist - this is invalid, operation ignored"
                     );
                     return;

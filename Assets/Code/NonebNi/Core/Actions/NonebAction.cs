@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Noneb.Localization.Runtime;
 using NonebNi.Core.Effects;
+using NonebNi.Core.Stats;
 using UnityEngine;
 
 namespace NonebNi.Core.Actions
@@ -11,26 +12,31 @@ namespace NonebNi.Core.Actions
     public class NonebAction
     {
         [field: SerializeField] public string Id { get; private set; }
-        [field: SerializeField] public int FatigueCost { get; private set; }
-        [field: SerializeField] public Sprite Icon { get; private set; }
         [field: SerializeField] public NonebLocString Name { get; private set; }
-        [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; } = Array.Empty<TargetRequest>();
-        [field: SerializeReference] public Effect[] Effects { get; private set; } = Array.Empty<Effect>(); //todo:...?
+        [field: SerializeField] public NonebLocString Tooltip { get; private set; }
+        [field: SerializeField] public Sprite Icon { get; private set; }
+        [field: SerializeReference] public StatRequirement[] StatRequirements { get; private set; }
+        [field: SerializeField] public TargetRequest[] TargetRequests { get; private set; }
 
-        public NonebAction(
-            string id,
-            NonebLocString name,
-            Sprite icon,
-            int fatigueCost,
-            IEnumerable<TargetRequest> targetRequirements,
-            IEnumerable<Effect> effects)
+        /// <summary>
+        /// Note the order here is important,
+        /// e.g knock back before damage is applied means the damage might not be applied if the unit is now not in its original
+        /// position.
+        /// </summary>
+        [field: SerializeReference] public Effect[] Effects { get; private set; }
+
+        [field: SerializeField] public bool IsComboStarter { get; private set; }
+
+        public NonebAction(string id, NonebLocString name, Sprite icon, StatRequirement[] statRequirements, TargetRequest[] targetRequests, Effect[] effects, bool isComboStarter, NonebLocString tooltip)
         {
             Id = id;
-            FatigueCost = fatigueCost;
+            StatRequirements = statRequirements;
             Icon = icon;
             Name = name;
-            TargetRequests = targetRequirements.ToArray();
-            Effects = effects.ToArray();
+            TargetRequests = targetRequests;
+            Effects = effects;
+            IsComboStarter = isComboStarter;
+            Tooltip = tooltip;
         }
 
         public NonebAction(
@@ -38,15 +44,25 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
-            IEnumerable<TargetRequest> targetRequirements,
-            params Effect[] effects) :
-            this(
+            int actionPointCost,
+            IEnumerable<TargetRequest> targetRequests,
+            IEnumerable<Effect> effects,
+            bool isComboStarter,
+            NonebLocString tooltip) :
+            this
+            (
                 id,
                 name,
                 icon,
-                fatigueCost,
-                targetRequirements,
-                effects.AsEnumerable()
+                new StatRequirement[]
+                {
+                    new StatCost(StatId.Fatigue, fatigueCost),
+                    new StatCost(StatId.ActionPoint, actionPointCost)
+                },
+                targetRequests.ToArray(),
+                effects.ToArray(),
+                isComboStarter,
+                tooltip
             ) { }
 
         public NonebAction(
@@ -54,15 +70,45 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
+            IEnumerable<TargetRequest> targetRequests,
+            bool isComboStarter,
+            NonebLocString tooltip,
+            params Effect[] effects) :
+            this
+            (
+                id,
+                name,
+                icon,
+                fatigueCost,
+                actionPointCost,
+                targetRequests,
+                effects.AsEnumerable(),
+                isComboStarter,
+                tooltip
+            ) { }
+
+        public NonebAction(
+            string id,
+            NonebLocString name,
+            Sprite icon,
+            int fatigueCost,
+            int actionPointCost,
             TargetRequest targetRequest,
+            bool isComboStarter,
+            NonebLocString tooltip,
             params Effect[] effects) :
-            this(
+            this
+            (
                 id,
                 name,
                 icon,
                 fatigueCost,
+                actionPointCost,
                 new[] { targetRequest },
-                effects.AsEnumerable()
+                effects.AsEnumerable(),
+                isComboStarter,
+                tooltip
             ) { }
 
         public NonebAction(
@@ -70,16 +116,23 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             Range range,
             TargetArea targetArea,
             IEnumerable<TargetRestriction> targetRestrictions,
+            bool isComboStarter,
+            NonebLocString tooltip,
             params Effect[] effects) :
-            this(
+            this
+            (
                 id,
                 name,
                 icon,
                 fatigueCost,
+                actionPointCost,
                 targetRestrictions.Select(r => new TargetRequest(r, targetArea, range)),
+                isComboStarter,
+                tooltip,
                 effects
             ) { }
 
@@ -88,19 +141,26 @@ namespace NonebNi.Core.Actions
             NonebLocString name,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             Range range,
             TargetArea targetArea,
             TargetRestriction targetRestriction,
+            bool isComboStarter,
+            NonebLocString tooltip,
             params Effect[] effects)
-            : this(
+            : this
+            (
                 id,
                 name,
                 icon,
                 fatigueCost,
+                actionPointCost,
                 new[]
                 {
                     new TargetRequest(targetRestriction, targetArea, range)
                 },
+                isComboStarter,
+                tooltip,
                 effects
             ) { }
 
@@ -108,25 +168,37 @@ namespace NonebNi.Core.Actions
             string id,
             Sprite icon,
             int fatigueCost,
+            int actionPointCost,
             TargetRequest targetRequest,
-            params Effect[] effects) : this(
+            bool isComboStarter,
+            NonebLocString tooltip,
+            params Effect[] effects) : this
+        (
             id,
             $"NAMELESS_{id}",
             icon,
             fatigueCost,
+            actionPointCost,
             new[] { targetRequest },
+            isComboStarter,
+            tooltip,
             effects
         ) { }
 
-        public NonebAction(string id, int fatigueCost, Range range, TargetArea area, TargetRestriction restriction, params Effect[] effects) : this(
+        public NonebAction(string id, int fatigueCost, int actionPointCost, Range range, TargetArea area, TargetRestriction restriction, bool isComboStarter, NonebLocString tooltip, params Effect[] effects) : this
+        (
             id,
             Sprite.Create(Texture2D.blackTexture, Rect.zero, Vector2.zero),
             fatigueCost,
-            new TargetRequest(
+            actionPointCost,
+            new TargetRequest
+            (
                 restriction,
                 area,
                 range
             ),
+            isComboStarter,
+            tooltip,
             effects
         ) { }
 

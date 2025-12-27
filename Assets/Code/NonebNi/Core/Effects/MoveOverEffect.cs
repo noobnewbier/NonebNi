@@ -1,51 +1,60 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Sequences;
-using Unity.Logging;
 
 namespace NonebNi.Core.Effects
 {
+    [Serializable]
     public class MoveOverEffect : Effect
     {
         public class Evaluator : Evaluator<MoveOverEffect>
         {
-            protected override IEnumerable<ISequence> OnEvaluate(
+            protected override EffectResult OnEvaluate(
                 MoveOverEffect effect,
                 EffectContext context)
             {
-                if (context.TargetGroups.FirstOrDefault()?.AsSingleTarget is not Coordinate targetCoord)
-                {
-                    Log.Error($"{nameof(MoveOverEffect)} without a coordinate parameter makes no sense!");
-                    yield break;
-                }
+                return new EffectResult(FindSequences());
 
-                if (!context.Map.TryFind(context.ActionCaster, out Coordinate actorCoord))
+                IEnumerable<ISequence> FindSequences()
                 {
-                    Log.Error($"{context.ActionCaster.Name} is not on the map!");
-                    yield break;
-                }
+                    if (context.TargetGroups.FirstOrDefault()?.AsSingleTarget is not Coordinate targetCoord)
+                    {
+                        Log.Error("Effect", $"{nameof(MoveOverEffect)} without a coordinate parameter makes no sense!");
+                        yield break;
+                    }
 
-                if (!actorCoord.IsOnSameLineWith(targetCoord))
-                {
-                    Log.Error(
-                        $"{targetCoord} is not on the same line with {context.ActionCaster.Name} - effect is undefined!"
-                    );
-                    yield break;
-                }
+                    if (!context.Map.TryFind(context.ActionCaster, out Coordinate actorCoord))
+                    {
+                        Log.Error("Effect", $"{context.ActionCaster.Name} is not on the map!");
+                        yield break;
+                    }
 
-                var direction = (targetCoord - actorCoord).Normalized();
-                var actorGoalCoord = targetCoord + direction;
-                var result = context.Map.Move(context.ActionCaster, actorGoalCoord);
-                if (result != MoveResult.Success)
-                {
-                    Log.Warning($"Failed movement! Reason: {result}.");
-                    yield break;
-                }
+                    if (!actorCoord.IsOnSameAxisWith(targetCoord))
+                    {
+                        Log.Error
+                        (
+                            "Effect",
+                            $"{targetCoord} is not on the same line with {context.ActionCaster.Name} - effect is undefined!"
+                        );
+                        yield break;
+                    }
 
-                //TODO: we need a proper pathing? with this one, but for now this suffice
-                yield return new MoveSequence(context.ActionCaster, new[] { actorCoord, actorGoalCoord });
+                    var direction = (targetCoord - actorCoord).Normalized();
+                    var actorGoalCoord = targetCoord + direction;
+                    var result = context.Map.Move(context.ActionCaster, actorGoalCoord);
+                    if (result != MoveResult.Success)
+                    {
+                        Log.Warn("Effect", $"Failed movement! Reason: {result}.");
+                        yield break;
+                    }
+
+                    //TODO: we need a proper pathing? with this one, but for now this suffice
+                    yield return new MoveSequence(context.ActionCaster, new[] { actorCoord, actorGoalCoord });
+                }
             }
         }
     }

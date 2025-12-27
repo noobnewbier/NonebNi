@@ -1,11 +1,17 @@
 ﻿using System.Linq;
 using NonebNi.Core.Effects;
+using NonebNi.Core.Stats;
 using UnityEngine;
 using static NonebNi.Core.Actions.TargetArea;
 using static NonebNi.Core.Actions.TargetRestriction;
 
 namespace NonebNi.Core.Actions
 {
+    //todo: back need to work
+    //todo: cancel action arming
+    //todo: indicate action step.
+    //todo: when no action point - grey out action, or maybe tooltip/sound
+    //todo: checkt not be working as intended. time to whip out our automatic test before it's too late.
     /*
      * TODO:
      * Future self - sort out the animation, find a way to test it, and move on.
@@ -19,6 +25,9 @@ namespace NonebNi.Core.Actions
      * 3. move
      */
 
+    //todo: make sure, all actions, fucking work, including combos
+    //todo: ai after that should be "trivial"
+    //todo: ui seems bugged
 
     //TODO: this is temporary before we figure out how do we store action/effects, most likely through SO w/ potential to transition to Json
     //TODO: there's no way we can collect all(mod included) dependencies at compile, as some of them don't even exist, we will need to collect them via some form of reflection...? 
@@ -27,139 +36,194 @@ namespace NonebNi.Core.Actions
         //TODO: remember - "likely" all actions, including the ones from the base game should go into the mods. i don't really want to make exceptions for stuffs like moving(base-gameplay)/debugging(utilities tool)...
         private static readonly Range WeaponBasedRange = new WeaponBasedRange();
 
-        public static readonly NonebAction Move = new(
+        public static readonly NonebAction Move = new
+        (
             "move",
             "move",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
-            0,
-            new StatBasedRange(1f, StatBasedRange.StatType.Speed),
-            Single,
-            NonOccupied,
-            new MoveEffect()
+            new StatRequirement[]
+            {
+                new PathDistanceBasedStatRequirement(new (StatId.Speed, 1))
+            },
+            new[]
+            {
+                new TargetRequest(NonOccupied | HasPath, Single, new StatBasedRange(1f, StatId.Speed))
+            },
+            new Effect[]
+            {
+                new MoveEffect()
+            },
+            false,
+            "Moving to target position"
         );
 
-        public static readonly NonebAction Bash = new(
+        public static readonly NonebAction Bash = new
+        (
             "bash",
             "bash",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            1,
             1,
             1,
             Single,
             Enemy,
+            true,
+            "Use your shield to knock back enemy for one tile, does little damage",
             new KnockBackEffect(1)
         );
 
-        public static readonly NonebAction Shoot = new(
+        public static readonly NonebAction Shoot = new
+        (
             "shoot",
             "shoot",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            1,
             1,
             WeaponBasedRange,
             Single,
             Enemy,
-            new DamageEffect("shoot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
+            false,
+            "Shoot an enemy at range, does good damage",
+            new DamageEffect("shoot", new StatBasedDamage(1f, StatId.Focus))
         );
 
-        public static readonly NonebAction PowerShot = new(
+        public static readonly NonebAction PowerShot = new
+        (
             "power-shot",
             "power-shot",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            1,
             1,
             WeaponBasedRange,
             Single,
             Enemy | ClearPath,
-            new DamageEffect("power-shot", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus)),
+            true,
+            "Shoot at a clear target on a straight line, the arrow is so powerful it knockbacks the target by one tile",
+            new DamageEffect("power-shot", new StatBasedDamage(1f, StatId.Focus)),
             new KnockBackEffect(1)
         );
 
-        public static readonly NonebAction Strike = new(
+        public static readonly NonebAction Strike = new
+        (
             "strike",
             "strike",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
             1,
+            1,
             Single,
             Enemy,
-            new DamageEffect("strike", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength))
+            false,
+            "An overhead strike that does ok damage",
+            new DamageEffect("strike", new StatBasedDamage(1f, StatId.Strength))
         );
 
-        public static readonly NonebAction Swing = new(
+        public static readonly NonebAction Swing = new
+        (
             "swing",
             "swing",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
             1,
-            Fan,
-            Enemy,
-            new DamageEffect("swing", new StatBasedDamage(1f, StatBasedDamage.StatType.Strength)),
+            new[]
+            {
+                new TargetRequest(Occupied, Fan, new ConstantRange(1), true)
+            },
+            true,
+            "Swinging your zweihander to intimidate your enemy, does okay damage and knock back nearby enemies by one tile",
+            new DamageEffect("swing", new StatBasedDamage(1f, StatId.Strength)),
             new KnockBackEffect(1)
         );
 
-        public static readonly NonebAction Slash = new(
+        public static readonly NonebAction Slash = new
+        (
             "slash",
             "slash",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            1,
             1,
             1,
             Single,
             Enemy,
-            new DamageEffect("slash", new StatBasedDamage(1f, StatBasedDamage.StatType.Focus))
+            false,
+            "A quick slash with your short sword, dealing okay damage",
+            new DamageEffect("slash", new StatBasedDamage(1f, StatId.Focus))
         );
 
-        public static readonly NonebAction TacticalAdvance = new(
+        public static readonly NonebAction TacticalAdvance = new
+        (
             "tactical-advance",
             "tactical-advance",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            1,
+            new StatBasedRange(1, StatId.Focus),
             Single,
             new[] { Friendly, NonOccupied },
-            new MoveEntityEffect()
+            true,
+            "Commanding another friendly unit to move to another position",
+            new MoveEntityEffect() //todo: path finding, and change how the range works?
         );
 
-        public static readonly NonebAction Lure = new(
+        public static readonly NonebAction Lure = new
+        (
             "lure",
             "lure",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
-            new StatBasedRange(1, StatBasedRange.StatType.Focus),
+            1,
+            new StatBasedRange(1, StatId.Focus),
             Single,
             Enemy | ClearPath | FirstTileToTargetDirectionIsEmpty,
+            true,
+            "Faking an opening and draw enemy towards you",
             new PullEntityEffect()
         );
 
-        public static readonly NonebAction Vault = new(
+        public static readonly NonebAction Vault = new
+        (
             "vault",
             "vault",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            1,
             1,
             1,
             Single,
             Occupied | TargetCoordPlusDirectionToTargetIsEmpty | IsCoordinate,
+            false,
+            "Jumping over an obstacle and land in front of it",
             new MoveOverEffect()
         );
 
-        public static readonly NonebAction Grapple = new(
+        public static readonly NonebAction Grapple = new
+        (
             "grapple",
             "grapple",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
+            1,
             1,
             new[]
             {
                 new TargetRequest(Enemy, Single, 2),
-                new TargetRequest(Enemy, Single, 1)
+                new TargetRequest(NonOccupied, Single, 1)
             },
+            true,
+            "Grabbing an enemy to a near by position",
             new MoveEntityEffect()
         );
 
-        public static readonly NonebAction Rotate = new(
+        public static readonly NonebAction Rotate = new
+        (
             "rotate",
             "rotate",
             Sprite.Create(Texture2D.whiteTexture, Rect.zero, Vector2.zero),
             1,
             1,
+            1,
             Single,
             Friendly | NotSelf,
+            true,
+            "Using your footwork to swap position with an ally",
             new SwapPositionEffect()
         );
 

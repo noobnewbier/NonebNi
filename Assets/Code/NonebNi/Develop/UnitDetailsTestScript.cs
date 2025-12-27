@@ -14,8 +14,7 @@ namespace NonebNi.Develop
         [SerializeField] private NonebViewBehaviour view = null!;
         [SerializeField] private GameObject stackRoot = null!;
 
-        private readonly Lazy<UnitData> _unitA = new(
-            () => new UnitData(
+        private readonly Lazy<UnitData> _unitA = new (() => new (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 Sprite.Create(Texture2D.blackTexture, Rect.zero, Vector2.zero),
@@ -30,12 +29,13 @@ namespace NonebNi.Develop
                 3,
                 3,
                 0,
-                10
+                10,
+                15,
+                1
             )
         );
 
-        private readonly Lazy<UnitData> _unitB = new(
-            () => new UnitData(
+        private readonly Lazy<UnitData> _unitB = new (() => new (
                 Guid.NewGuid(),
                 Array.Empty<NonebAction>(),
                 Sprite.Create(Texture2D.blackTexture, Rect.zero, Vector2.zero),
@@ -50,7 +50,9 @@ namespace NonebNi.Develop
                 3,
                 3,
                 0,
-                10
+                10,
+                15,
+                1
             )
         );
 
@@ -59,23 +61,23 @@ namespace NonebNi.Develop
         // ReSharper disable once Unity.IncorrectMethodSignature
         private async UniTaskVoid Start()
         {
-            _stack = new UIStack(stackRoot);
+            _stack = new (stackRoot);
             await _stack.Push(view);
         }
 
         private void OnGUI()
         {
             var rect = new Rect(10, 10, 150, 25);
-            if (GUI.Button(rect, "Show A")) ShowPattern(_unitA.Value).Forget();
+            if (GUI.Button(rect, "Show A")) ShowPattern(_unitA.Value);
             rect.y += 25;
 
-            if (GUI.Button(rect, "Show B")) ShowPattern(_unitB.Value).Forget();
+            if (GUI.Button(rect, "Show B")) ShowPattern(_unitB.Value);
             rect.y += 25;
         }
 
-        private async UniTask ShowPattern(UnitData unit)
+        private void ShowPattern(UnitData unit)
         {
-            await panel.Show(unit);
+            panel.Show(unit);
         }
     }
 }

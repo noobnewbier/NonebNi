@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NonebNi.Core.Entities;
 using NonebNi.Core.Sequences;
 using NonebNi.Core.Units;
+using UnityEngine;
 
 namespace NonebNi.Core.Effects
 {
-    //TODO: implement all those effecto
+    [Serializable]
     public class DamageEffect : Effect
     {
-        private readonly string _animId;
+        [SerializeField] private string _animId;
 
         //https://www.notion.so/Action-System-eda1779accf74f97906f1cf9047f9506?pvs=4
-        private readonly Damage[] _damages;
+        [SerializeReference] private Damage[] _damages;
 
         public DamageEffect(string animId, params Damage[] damages)
         {
@@ -22,32 +24,53 @@ namespace NonebNi.Core.Effects
 
         public class Evaluator : Evaluator<DamageEffect>
         {
-            protected override IEnumerable<ISequence> OnEvaluate(
-                DamageEffect effect,
-                EffectContext context)
+            protected override EffectResult OnEvaluate(DamageEffect effect, EffectContext context)
             {
-                foreach (var target in context.TargetGroups.SelectMany(g => g.Targets))
+                return new (FindSequences());
+
+                IEnumerable<ISequence> FindSequences()
                 {
-                    if (target is not UnitData damageReceiver) continue;
-
-                    var damageAmount = effect._damages
-                        .Select(d => d.CalculateDamage(context.ActionCaster, damageReceiver))
-                        .Sum();
-                    damageReceiver.Health -= damageAmount;
-
-                    if (damageReceiver.Health <= 0)
+                    foreach (var damageReceiver in FindDamageReceivers(context))
                     {
-                        if (!context.Map.Remove(damageReceiver))
-                            throw new InvalidOperationException(
-                                "Shouldn't be able to evaluate command with targets that's ain't even on the map"
-                            );
+                        var damageAmount = GetDamage(effect, context.ActionCaster, damageReceiver);
+                        damageReceiver.Health -= damageAmount;
 
-                        yield return new DieSequence(damageReceiver);
+                        if (damageReceiver.Health <= 0)
+                        {
+                            if (!context.Map.Remove(damageReceiver))
+                                throw new InvalidOperationException(
+                                    "Shouldn't be able to evaluate command with targets that's ain't even on the map"
+                                );
+
+                            yield return new DieSequence(damageReceiver);
+                        }
+                        else
+                        {
+                            yield return new DamageSequence(context.ActionCaster, damageReceiver, damageAmount, effect._animId);
+                        }
                     }
-                    else
-                    {
-                        yield return new DamageSequence(context.ActionCaster, damageReceiver, damageAmount, effect._animId);
-                    }
+                }
+            }
+
+            private IEnumerable<UnitData> FindDamageReceivers(EffectContext context)
+            {
+                return context.TargetGroups.SelectMany(g => g.Targets).OfType<UnitData>();
+            }
+
+            private int GetDamage(DamageEffect effect, EntityData actionCaster, UnitData damageReceiver)
+            {
+                return effect._damages
+                    .Select(d => d.CalculateDamage(actionCaster, damageReceiver))
+                    .Sum();
+            }
+
+            public IEnumerable<(float damage, bool isKill, UnitData damageReceiver)> GetEffectPreview(DamageEffect effect, EffectContext context)
+            {
+                foreach (var damageReceiver in FindDamageReceivers(context))
+                {
+                    var damageAmount = GetDamage(effect, context.ActionCaster, damageReceiver);
+                    var isKill = damageReceiver.Health > damageAmount;
+                    yield return (damageAmount, isKill, damageReceiver);
                 }
             }
         }

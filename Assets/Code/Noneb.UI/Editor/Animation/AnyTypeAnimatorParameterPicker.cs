@@ -75,7 +75,11 @@ namespace Noneb.UI.Editor.Animation
         public void Draw(Rect position, SerializedProperty nameProperty, SerializedProperty? typeProperty = null)
         {
             var isExpectedPropertyType = CheckIsPropertyTypeExpected();
-            if (!isExpectedPropertyType) GUI.Label(position, "Unexpected type getting thrown in.", NonebGUIStyle.Error);
+            if (!isExpectedPropertyType)
+            {
+                GUI.Label(position, "Unexpected type getting thrown in.", NonebGUIStyle.Error);
+                return;
+            }
 
             using var changeCheck = new EditorGUI.ChangeCheckScope();
             var result = Draw(position, nameProperty.stringValue, null);
@@ -121,7 +125,7 @@ namespace Noneb.UI.Editor.Animation
             bool CheckIsPropertyTypeExpected()
             {
                 if (nameProperty.propertyType != SerializedPropertyType.String) return false;
-                if (typeProperty?.propertyType != SerializedPropertyType.Enum) return false;
+                if (typeProperty != null && typeProperty.propertyType != SerializedPropertyType.Enum) return false;
 
                 return true;
             }

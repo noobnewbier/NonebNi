@@ -1,5 +1,6 @@
 ﻿using NonebNi.Core.Agents;
 using NonebNi.Core.Decisions;
+using NonebNi.Core.GameContexts;
 using NonebNi.Core.Level;
 using TMPro;
 using UnityEngine;
@@ -16,10 +17,10 @@ namespace NonebNi.Ui.Huds
         [SerializeField] private Button endTurnButton = null!;
 
 
-        public void Init(LevelData levelData, IPlayerAgent playerAgent)
+        public void Init(LevelData levelData, KeyedInject<DiKeys.PlayerAgent, IWaitForExternalInputAgent> playerAgent)
         {
             levelNameTextMesh.text = levelData.LevelName;
-            endTurnButton.onClick.AddListener(() => playerAgent.SetDecision(EndTurnDecision.Instance));
+            endTurnButton.onClick.AddListener(() => playerAgent.Value.SetDecision(EndTurnDecision.Instance));
         }
     }
 }

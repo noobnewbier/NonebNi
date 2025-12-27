@@ -13,9 +13,10 @@ namespace NonebNi.Develop
 {
     public class HighlighterTestScript : MonoBehaviour
     {
-        [SerializeField] private TerrainConfigData terrainConfig = null!;
+        [SerializeField] private TerrainConfigSource terrainConfig = null!;
         [SerializeField] private HexHighlightConfig highlightConfig = null!;
-        private readonly List<Coordinate> _bulkingCoordinates = new();
+        private readonly List<Coordinate> _bulkingCoordinates = new ();
+        private TerrainConfigData _configData;
 
         private HexHighlighter _highlighter = null!;
         private bool _isBulkMode;
@@ -31,8 +32,9 @@ namespace NonebNi.Develop
         {
             _isInitialised = true;
 
-            _service = new CoordinateAndPositionService(terrainConfig);
-            _highlighter = new HexHighlighter(_service, highlightConfig, terrainConfig);
+            _configData = terrainConfig.CreateData();
+            _service = new (_configData);
+            _highlighter = new (_service, highlightConfig, _configData);
             _map = new Map(10, 10);
         }
 
@@ -98,7 +100,7 @@ namespace NonebNi.Develop
             GUI.Label(rect, "Right Click to Remove");
             rect.y += 25;
 
-            GUI.Box(new Rect(startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
+            GUI.Box(new (startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
         }
 
         private void OnDrawGizmos()
@@ -110,7 +112,7 @@ namespace NonebNi.Develop
 
         private void ProcessInput()
         {
-            var (success, pos) = FindMousePosInWorld(terrainConfig.GridPlane);
+            var (success, pos) = FindMousePosInWorld(_configData.GridPlane);
             if (!success) return;
 
             if (Mouse.current.leftButton.wasReleasedThisFrame) SetHighlight(pos, true);

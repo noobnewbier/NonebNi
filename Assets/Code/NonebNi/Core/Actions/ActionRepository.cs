@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using UnityEngine;
+using Noneb.Logs.Runtime;
 
 namespace NonebNi.Core.Actions
 {
@@ -16,7 +16,7 @@ namespace NonebNi.Core.Actions
         {
             if (actions.Distinct().Count() != actions.Length)
             {
-                Debug.LogError("Multiple actions with the same ID - this is invalid");
+                Log.Error("Action", "Multiple actions with the same ID - this is invalid");
             }
 
             _actions = actions;

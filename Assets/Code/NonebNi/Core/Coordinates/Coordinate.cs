@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Maps;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Coordinates
@@ -16,7 +15,7 @@ namespace NonebNi.Core.Coordinates
     [Serializable]
     public record Coordinate : IActionTarget
     {
-        public static readonly Coordinate Zero = new(0, 0);
+        public static readonly Coordinate Zero = new (0, 0);
         [SerializeField] private int x;
         [SerializeField] private int z;
 
@@ -44,20 +43,21 @@ namespace NonebNi.Core.Coordinates
             this + HexDirection.SouthWest
         };
 
-        public Coordinate RotateRight() => new(-Y, -x);
+        public Coordinate RotateRight() => new (-Y, -x);
 
-        public Coordinate RotateLeft() => new(-z, -Y);
+        public Coordinate RotateLeft() => new (-z, -Y);
 
         public Coordinate Normalized()
         {
-            var normalizedCoordInVec = Vector3.Normalize(new Vector3(x, Y, z));
-            return new Coordinate(Mathf.RoundToInt(normalizedCoordInVec.x), Mathf.RoundToInt(normalizedCoordInVec.z));
+            var normalizedCoordInVec = Vector3.Normalize(new (x, Y, z));
+            return new (Mathf.RoundToInt(normalizedCoordInVec.x), Mathf.RoundToInt(normalizedCoordInVec.z));
         }
 
         public int DistanceTo(Coordinate coordinate)
         {
             //Ref: https://www.redblobgames.com/grids/hexagons/#distances
-            var subtractedCoordinate = new Coordinate(
+            var subtractedCoordinate = new Coordinate
+            (
                 X - coordinate.X,
                 Z - coordinate.Z
             );
@@ -80,6 +80,8 @@ namespace NonebNi.Core.Coordinates
         /// </summary>
         public IEnumerable<Coordinate> WithinDistance(int distance)
         {
+            if (distance <= 0) yield break;
+
             var xInRangeStart = -distance;
             var xInRangeEnd = +distance;
 
@@ -91,45 +93,61 @@ namespace NonebNi.Core.Coordinates
             }
         }
 
-        public bool IsOnSameLineWith(Coordinate coordinate) =>
+        public bool IsOnSameAxisWith(Coordinate coordinate) =>
             X == coordinate.X || Y == coordinate.Y || Z == coordinate.Z;
+
+        public int MinDiffInAxis(Coordinate coordinate) =>
+            Mathf.Min
+            (
+                Mathf.Abs(X - coordinate.X),
+                Mathf.Abs(Y - coordinate.Y),
+                Mathf.Abs(Z - coordinate.Z)
+            );
+
+        /// <summary>
+        /// Given distance to coordinate, is there are way to move the same distance but zig zagging more.
+        /// 1 for max zigzaggy, 0 for stuffs that's on same axis.
+        /// </summary>
+        public float ZigZagnessWithinRange(Coordinate coordinate)
+        {
+            var dist = DistanceTo(coordinate);
+            var ceilHalf = Mathf.CeilToInt(dist / 2f);
+            var minDiffInAxis = MinDiffInAxis(coordinate);
+
+            return Mathf.InverseLerp(0, ceilHalf, minDiffInAxis);
+        }
 
         public IEnumerable<Coordinate> GetCoordinatesBetween(Coordinate coordinate)
         {
-            if (!IsOnSameLineWith(coordinate))
+            //https://www.redblobgames.com/grids/hexagons/#line-drawing
+            var dist = DistanceTo(coordinate);
+            const float xNudge = 1e-6f;
+            const float zNudge = -3e-6f;
+            for (var i = 1; i < dist; i++)
             {
-                Log.Error("This method only support coordinates on a straight line at the moment!");
-                yield break;
+                var t = (float)i / dist;
+                var lerpX = Mathf.Lerp(X + xNudge, coordinate.X + xNudge, t);
+                var lerpZ = Mathf.Lerp(Z + zNudge, coordinate.Z + zNudge, t);
+                yield return Round(lerpX, lerpZ);
             }
 
-            if (Z == coordinate.Z)
-            {
-                var minX = Math.Min(X, coordinate.X);
-                var maxX = Math.Max(X, coordinate.X);
-                for (var xInBetween = minX + 1; xInBetween < maxX; xInBetween++)
-                    yield return new Coordinate(xInBetween, Z);
-            }
-            else if (Z == coordinate.Z)
-            {
-                var minZ = Math.Min(Z, coordinate.Z);
-                var maxZ = Math.Max(Z, coordinate.Z);
-                for (var zInBetween = minZ + 1; zInBetween < maxZ; zInBetween++)
-                    yield return new Coordinate(X, zInBetween);
-            }
-            else if (Y == coordinate.Y)
-            {
-                var minZ = Math.Min(Z, coordinate.Z);
-                var maxZ = Math.Max(Z, coordinate.Z);
-                var maxX = Math.Max(X, coordinate.X);
-                for (var i = 1; i < maxZ - minZ; i++)
-                {
-                    var xInBetween = maxX - i;
-                    var zInBetween = minZ + i;
+            yield break;
 
-                    yield return new Coordinate(xInBetween, zInBetween);
-                }
+
+            Coordinate Round(float floatX, float floatZ)
+            {
+                var roundedX = Mathf.RoundToInt(floatX);
+                var roundedZ = Mathf.RoundToInt(floatZ);
+
+                var diffX = floatX - roundedX;
+                var diffZ = floatZ - roundedZ;
+
+                return diffX >= diffZ ?
+                    new (roundedX + Mathf.RoundToInt(diffX + diffZ * 0.5f), roundedZ) :
+                    new (roundedX, roundedZ + Mathf.RoundToInt(diffZ + diffX * 0.5f));
             }
         }
+
 
         public override int GetHashCode()
         {
@@ -141,10 +159,10 @@ namespace NonebNi.Core.Coordinates
 
         public override string ToString() => $"({X}, {Y}, {Z})";
 
-        public static Coordinate operator +(Coordinate a, Coordinate b) => new(a.X + b.X, a.Z + b.Z);
-        public static Coordinate operator -(Coordinate a, Coordinate b) => new(a.X - b.X, a.Z - b.Z);
-        public static Coordinate operator *(Coordinate a, int i) => new(a.X * i, a.Z * i);
-        public static Coordinate operator -(Coordinate c) => new(-c.X, -c.Z);
+        public static Coordinate operator +(Coordinate a, Coordinate b) => new (a.X + b.X, a.Z + b.Z);
+        public static Coordinate operator -(Coordinate a, Coordinate b) => new (a.X - b.X, a.Z - b.Z);
+        public static Coordinate operator *(Coordinate a, int i) => new (a.X * i, a.Z * i);
+        public static Coordinate operator -(Coordinate c) => new (-c.X, -c.Z);
 
         [PublicAPI]
         public void Deconstruct(out int outX, out int outZ)
@@ -153,6 +171,6 @@ namespace NonebNi.Core.Coordinates
             outZ = z;
         }
 
-        public static implicit operator Coordinate((int x, int z) tuple) => new(tuple.x, tuple.z);
+        public static implicit operator Coordinate((int x, int z) tuple) => new (tuple.x, tuple.z);
     }
 }

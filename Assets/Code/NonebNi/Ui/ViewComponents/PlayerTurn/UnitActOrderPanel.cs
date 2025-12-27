@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.Element;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -22,17 +23,19 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
             var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             var tasks = new List<UniTask>();
-            foreach (var unit in orderedUnits)
+            var unitsArray = orderedUnits.ToArray();
+            for (var i = 0; i < unitsArray.Length; i++)
             {
+                var unit = unitsArray[i];
                 var (isSuccess, widget) = await NonebElement.CreateElementFromPrefab(widgetPrefab, panel.transform);
                 if (!isSuccess)
                 {
-                    Log.Error("Failed element creation");
+                    Log.Error("UI", "Failed element creation");
                     continue;
                 }
 
                 widget!.Clicked += OnWidgetClicked;
-                tasks.Add(widget.Show(unit, linkedCts.Token));
+                tasks.Add(widget.Show(i, unit, linkedCts.Token));
             }
 
             await UniTask.WhenAll(tasks);

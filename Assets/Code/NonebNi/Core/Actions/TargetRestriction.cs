@@ -17,6 +17,7 @@ namespace NonebNi.Core.Actions
         TargetCoordPlusDirectionToTargetIsEmpty = 1 << 8,
         Occupied = 1 << 9,
         IsCoordinate = 1 << 10,
-        NotSelf = 1 << 11
+        NotSelf = 1 << 11,
+        HasPath = 1 << 12
     }
 }

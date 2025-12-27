@@ -1,9 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Noneb.UI.InputSystems;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.DataIds;
+using NonebNi.Core.Decisions;
+using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
 using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Units;
@@ -11,6 +17,7 @@ using NonebNi.Terrain;
 using NonebNi.Ui.Grids;
 using NonebNi.Ui.ViewComponents.PlayerTurn;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityUtils;
 
 namespace NonebNi.Develop
@@ -22,7 +29,9 @@ namespace NonebNi.Develop
         [SerializeField] private HexHighlightConfig highlightConfig = null!;
         [SerializeField] private GameObject fakeUnitObj = null!;
         [SerializeField] private GameObject fakeEnemyObj = null!;
-        private readonly Plane _plane = new(Vector3.up, Vector3.zero);
+        [SerializeField] private InputActionAsset inputActionAsset = null!;
+
+        private readonly Plane _plane = new (Vector3.up, Vector3.zero);
 
 
         private CircularBuffer<NonebAction> _actionBuffer = null!;
@@ -40,13 +49,15 @@ namespace NonebNi.Develop
         private void Awake()
         {
             _isInitialised = true;
-            var inputSystem = new NonebInputSystem();
-            _coordService = new CoordinateAndPositionService(terrainConfig);
-            _map = new Map(20, 20);
-            _highlighter = new HexHighlighter(_coordService, highlightConfig, terrainConfig);
-            _actionBuffer = new CircularBuffer<NonebAction>(ActionDatas.Lure, ActionDatas.Shoot, ActionDatas.Bash);
-            var targetFinder = new TargetFinder(_map);
-            var pathFindingService = new PathfindingService(_map);
+            var inputSystem = new NonebInputSystem(inputActionAsset);
+            _coordService = new (terrainConfig);
+            _map = new (20, 20);
+            _highlighter = new (_coordService, highlightConfig, terrainConfig);
+            _actionBuffer = new (ActionDatas.Lure, ActionDatas.Shoot, ActionDatas.Bash);
+            var fakeFactionService = new FakeFactionService();
+            var pathFindingService = new PathfindingService(_map, fakeFactionService);
+            var targetFinder = new TargetFinder(_map, fakeFactionService, pathFindingService);
+            var fakeValidator = new FakeDecisionValidator();
 
             _unitData = TestScriptHelpers.CreateUnit("TestPlayer", "player");
             var unitCoord = _coordService.NearestCoordinateForPoint(fakeUnitObj.transform.position);
@@ -56,7 +67,7 @@ namespace NonebNi.Develop
             var enemyCoord = _coordService.NearestCoordinateForPoint(fakeEnemyObj.transform.position);
             _map.Put(enemyCoord, enemy);
 
-            _control = new PlayerTurnWorldSpaceInputControl(inputSystem, _coordService, terrainConfig, viewCamera, _map, _highlighter, targetFinder, pathFindingService);
+            _control = new (inputSystem, _coordService, terrainConfig, viewCamera, _map, _highlighter, targetFinder, pathFindingService, fakeValidator);
         }
 
         private void OnGUI()
@@ -101,7 +112,7 @@ namespace NonebNi.Develop
                 }
             }
 
-            GUI.Box(new Rect(startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
+            GUI.Box(new (startingRect.x, startingRect.y, startingRect.width, rect.y - startingRect.y), string.Empty);
         }
 
         private void OnDrawGizmos()
@@ -119,17 +130,23 @@ namespace NonebNi.Develop
 
         private void TestMovementFlow()
         {
-            _testInputs = null;
-            _control.ToMovementMode(_unitData);
+            TestActionFlow(ActionDatas.Move);
         }
 
         private void TestInputFlow()
+        {
+            TestActionFlow(_actionBuffer.Current);
+        }
+
+        private void TestActionFlow(NonebAction action)
         {
             async UniTask Do(CancellationToken ct)
             {
                 _testInputs = null;
 
-                var inputs = await _control.GetInputForAction(_unitData, _actionBuffer.Current, ct);
+                var (success, inputs) = await _control.GetInputForAction(_unitData, action, ct);
+                if (!success) return;
+
                 _testInputs = inputs.ToArray();
             }
 
@@ -147,5 +164,24 @@ namespace NonebNi.Develop
 
             Do(_cts.Token).Forget();
         }
+
+        #region fake dependencies
+
+        // haven't test, probably won't work but will compile, might be worth just nuking this whole test scripts
+        private class FakeDecisionValidator : IDecisionValidator
+        {
+            public (IDecisionValidator.Error? error, ICommand command) ValidateDecision(IDecision? decision) => default;
+
+            public (bool canBeValid, IDecisionValidator.Error? error) ValidateDecisionConstructionInput(NonebAction action, EntityData caster, IReadOnlyList<Coordinate> existingInput, Coordinate newInput) => default;
+        }
+
+        private class FakeFactionService : IFactionService
+        {
+            public bool IsAlly(DataId<Faction> a, DataId<Faction> b) => false;
+
+            public Faction FindFaction(DataId<Faction> factionId) => new (factionId, false);
+        }
+
+        #endregion
     }
 }

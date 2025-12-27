@@ -9,6 +9,7 @@ using Noneb.UI.View;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Agents;
 using NonebNi.Core.Coordinates;
+using NonebNi.Core.Decisions;
 using NonebNi.Core.Entities;
 using NonebNi.Core.FlowControl;
 using NonebNi.Core.Maps;
@@ -33,9 +34,9 @@ namespace NonebNi.Develop
         [SerializeField] private GameObject stackRoot = null!;
         [SerializeField] private TerrainConfigData terrainConfigData = null!;
 
-        private readonly Lazy<UnitData> _unitA = new(() => CreateUnit("A"));
-        private readonly Lazy<UnitData> _unitB = new(() => CreateUnit("B"));
-        private readonly Lazy<UnitData> _unitC = new(() => CreateUnit("C"));
+        private readonly Lazy<UnitData> _unitA = new (() => CreateUnit("A"));
+        private readonly Lazy<UnitData> _unitB = new (() => CreateUnit("B"));
+        private readonly Lazy<UnitData> _unitC = new (() => CreateUnit("C"));
         private MockInputControl _control = null!;
         private UIStack _stack = null!;
 
@@ -44,7 +45,7 @@ namespace NonebNi.Develop
         private async UniTaskVoid Start()
         {
             var map = new MockMap(
-                new Dictionary<Coordinate, EntityData>
+                new()
                 {
                     [(3, 4)] = _unitA.Value,
                     [(1, 0)] = _unitB.Value,
@@ -54,13 +55,12 @@ namespace NonebNi.Develop
                 10
             );
             var orderer = new FakeUniTurnOrderer(_unitA.Value, _unitB.Value, _unitC.Value);
-            var playerAgent = new PlayerAgent(TestScriptHelpers.CreateFaction("fake-player"));
-            var presenter = new PlayerTurnPresenter(menu, orderer, new CoordinateAndPositionService(terrainConfigData), map, playerAgent);
-            _control = new MockInputControl();
+            var playerAgent = new WaitForExternalInputAgent(TestScriptHelpers.CreateFaction("fake-player"));
+            _control = new ();
             var cameraController = new MockCameraController();
-            menu.Init(presenter, _control, cameraController);
+            menu.Init(new (_control, cameraController, new (playerAgent), orderer));
 
-            _stack = new UIStack(stackRoot);
+            _stack = new (stackRoot);
             await _stack.Push(view);
         }
 
@@ -73,7 +73,7 @@ namespace NonebNi.Develop
         }
 
         private static UnitData CreateUnit(string unitName) =>
-            new(
+            new (
                 Guid.NewGuid(),
                 new[] { ActionDatas.Bash, ActionDatas.Lure, ActionDatas.Shoot },
                 AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd"),
@@ -88,7 +88,9 @@ namespace NonebNi.Develop
                 10,
                 3,
                 10,
-                50
+                50,
+                15,
+                1
             );
 
         private async UniTask ShowPattern(params UnitData[] units)
@@ -102,37 +104,22 @@ namespace NonebNi.Develop
 
             public FakeUniTurnOrderer(params UnitData[] unitsInOrder)
             {
-                _buffer = new CircularBuffer<UnitData>(unitsInOrder);
+                _buffer = new (unitsInOrder);
             }
-
-            public UnitData CurrentUnit => _buffer.Current;
 
             public IEnumerable<UnitData> UnitsInOrder => _buffer;
+
+            public UnitData CurrentUnit => _buffer.Current;
             public UnitData ToNextUnit() => _buffer.MoveNext();
+            public IEnumerable<UnitData> GetActOrderForTurns(int turn) => _buffer;
         }
 
-        private class MockInputControl : IPlayerTurnWorldSpaceInputControl
+        private class MockInputControl : IDecisionFlowControl
         {
             public string mode;
-            public Coordinate? FindHoveredCoordinate() => null;
+            public UniTask<IDecision> WaitForUserInput(CancellationToken ct = default) => throw new NotImplementedException();
 
-            public void ToMovementMode(UnitData mover)
-            {
-                mode = "movement";
-            }
-
-            public UniTask<IEnumerable<Coordinate>> GetInputForAction(UnitData caster, NonebAction action, CancellationToken token = default)
-            {
-                mode = "target-selection";
-                return new UniTask<IEnumerable<Coordinate>>(Enumerable.Empty<Coordinate>());
-            }
-
-            public void ToTileInspectionMode()
-            {
-                mode = "tile-inspection";
-            }
-
-            public void UpdateTargetSelection() { }
+            public UniTask<bool> UpdateDecisionContext(UnitData? unit, NonebAction? action, bool isActiveUnit) => throw new NotImplementedException();
         }
 
         private class MockCameraController : ICameraController
@@ -140,6 +127,8 @@ namespace NonebNi.Develop
             public void LookAt(Vector3 position) { }
 
             public void UpdateCamera() { }
+
+            public void LookAt(EntityData entity) { }
         }
 
         private class MockMap : IReadOnlyMap
@@ -154,7 +143,7 @@ namespace NonebNi.Develop
                 _fakeMap = fakeMap;
                 _height = height;
                 _width = width;
-                _fakeReversedMap = new Dictionary<EntityData, Coordinate>();
+                _fakeReversedMap = new ();
                 foreach (var (key, value) in fakeMap) _fakeReversedMap[value] = key;
             }
 

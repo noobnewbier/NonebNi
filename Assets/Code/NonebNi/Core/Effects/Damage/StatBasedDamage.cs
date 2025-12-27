@@ -1,47 +1,43 @@
 ﻿using System;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Entities;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Core.Effects
 {
+    [Serializable]
     public class StatBasedDamage : Damage
     {
-        public enum StatType
-        {
-            Strength,
-            Focus
-        }
+        [SerializeField] private float ratio;
+        [SerializeField] private string statId;
 
-        private readonly float _ratio;
-        private readonly StatType _statType;
-
-        public StatBasedDamage(float ratio, StatType statType)
+        public StatBasedDamage(float ratio, string statId)
         {
-            _ratio = ratio;
-            _statType = statType;
+            this.ratio = ratio;
+            this.statId = statId;
         }
 
         public override int CalculateDamage(EntityData actionCaster, EntityData target)
         {
             if (actionCaster is not UnitData unitData)
             {
-                Log.Error("Only unit has stats! Damage is always 0.");
+                Log.Error("Level", "Only unit has stats! Damage is always 0.");
                 return 0;
             }
 
-            var stat = _statType switch
+            var (success, stat) = unitData.Stats.GetValue(statId);
+            if (!success)
             {
-                StatType.Focus => unitData.Focus,
-                StatType.Strength => unitData.Strength,
-                _ => throw new ArgumentOutOfRangeException()
-            };
+                return 0;
+            }
 
-            var rawDamage = stat * _ratio;
+            var rawDamage = stat * ratio;
             if (target is not UnitData targetUnit)
             {
-                Log.Error(
+                Log.Error
+                (
+                    "Level",
                     $"Currently we aren't taking stuffs that isn't an unit but also have health into account! We probably need to restructure {nameof(UnitData)} and {nameof(EntityData)} for that to happen"
                 );
                 return Mathf.RoundToInt(rawDamage);

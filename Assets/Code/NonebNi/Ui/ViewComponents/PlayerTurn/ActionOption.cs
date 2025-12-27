@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Noneb.Logs.Runtime;
 using Noneb.UI.Animation;
 using Noneb.UI.Element;
 using NonebNi.Core.Actions;
+using NonebNi.Ui.Tooltips;
 using TMPro;
-using Unity.Logging;
 using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
@@ -14,9 +15,10 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
     {
         [SerializeField] private TextMeshProUGUI actionName = null!;
         [SerializeField] private NonebButton button = null!;
+        [SerializeField] private TooltipDetector tooltipDetector = null!;
 
-        [SerializeField] private AnimationData highlightOnAnim = new();
-        [SerializeField] private AnimationData highlightOffAnim = new();
+        [SerializeField] private AnimationData highlightOnAnim = new ();
+        [SerializeField] private AnimationData highlightOffAnim = new ();
 
         public NonebAction? Action { get; private set; }
 
@@ -30,6 +32,7 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
 
         public async UniTask Show(NonebAction action, CancellationToken ct = default)
         {
+            tooltipDetector.SetRequest(new TooltipRequest.Text(action.Tooltip));
             Action = action;
             actionName.text = action.Name.GetLocalized();
         }
@@ -38,19 +41,21 @@ namespace NonebNi.Ui.ViewComponents.PlayerTurn
         {
             if (Action == null)
             {
-                Log.Error("Clicked before showing anything -> probably unintended sequence");
+                Log.Error("UI", "Clicked before showing anything -> probably unintended sequence");
                 return;
             }
 
             Clicked?.Invoke(Action);
         }
 
-        public async UniTask SetHighlight(bool isHighlighted)
+        public async UniTask SetHighlight(bool isHighlighted, CancellationToken ct = default)
         {
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, destroyCancellationToken);
+
             var anim = isHighlighted ?
                 highlightOnAnim :
                 highlightOffAnim;
-            await button.animator.PlayAnimation(anim, destroyCancellationToken);
+            await button.animator.PlayAnimation(anim, linkedCts.Token);
         }
     }
 }

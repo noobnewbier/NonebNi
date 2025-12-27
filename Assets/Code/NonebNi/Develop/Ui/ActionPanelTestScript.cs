@@ -20,7 +20,7 @@ namespace NonebNi.Develop
         {
             var element = panel.FindOwner();
             var view = element!.OwnerView;
-            _stack = new UIStack(stackRoot);
+            _stack = new (stackRoot);
 
             await _stack.Push(view!);
 
@@ -41,12 +41,7 @@ namespace NonebNi.Develop
 
         private void OnPanelOnActionSelected(NonebAction? action)
         {
-            async UniTaskVoid Do()
-            {
-                await panel.Highlight(action);
-            }
-
-            Do().Forget();
+            panel.Select(action);
         }
 
         private async UniTask ShowAndCancel()

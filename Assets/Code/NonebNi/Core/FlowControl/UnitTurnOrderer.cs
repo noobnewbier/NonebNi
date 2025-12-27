@@ -9,13 +9,13 @@ namespace NonebNi.Core.FlowControl
     public interface IUnitTurnOrderer
     {
         UnitData CurrentUnit { get; }
-        IEnumerable<UnitData> UnitsInOrder { get; }
         UnitData ToNextUnit();
+        IEnumerable<UnitData> GetActOrderForTurns(int turn);
     }
 
     //TODO: the current initiative implementation isn't actually what GDD says but this might not be a bad thing, let's think about that later.
     /// <summary>
-    ///     Initiative base, all units must have took one turn before others can go again
+    ///     Initiative base, all units must have taken one turn before others can go again
     /// </summary>
     public class UnitTurnOrderer : IUnitTurnOrderer
     {
@@ -32,13 +32,32 @@ namespace NonebNi.Core.FlowControl
             );
 
             //Initializing the queue
-            CurrentUnit = null!; //Assigned by calling ToNextUnit
-            ToNextUnit();
+            CurrentUnit = ToNextUnit();
         }
 
         public UnitData CurrentUnit { get; private set; }
 
-        public IEnumerable<UnitData> UnitsInOrder => _unitInOrder;
+        public IEnumerable<UnitData> GetActOrderForTurns(int turn)
+        {
+            return InfiniteUnitOrders().Take(turn);
+
+            IEnumerable<UnitData> InfiniteUnitOrders()
+            {
+                // what we have right now
+                yield return CurrentUnit;
+
+                // what we have right now the back
+                for (var i = 0; i < _unitInOrder.Count; i++) yield return _unitInOrder.ElementAt(i);
+
+                // all future orders.
+                var orderedUnits = _map.GetAllUnits().OrderByDescending(u => u.Initiative).ToArray();
+                while (true)
+                    foreach (var unit in orderedUnits)
+                        yield return unit;
+
+                // ReSharper disable once IteratorNeverReturns - intentional
+            }
+        }
 
         public UnitData ToNextUnit()
         {

@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8045598353599930386}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8244254988177703001
 MonoBehaviour:
@@ -45,8 +45,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hud: {fileID: 0}
-  grid: {fileID: 0}
-  unitDetailStat: {fileID: 0}
+  terrain: {fileID: 0}
+  playerTurnMenu: {fileID: 0}
+  hexHighlightConfig:
+    idAndHighlights:
+      validKvPairs: []
+      invalidKvPairs: []
+  tooltipCanvas: {fileID: 0}
+  canvasRoot: {fileID: 0}
+  inputActionAsset: {fileID: -944628639613478452, guid: bc7d5f9d0eb0a5b4d9b6e0b0050c7965, type: 3}
   levelDataSource: {fileID: 0}
   terrainConfig: {fileID: 0}
   cameraControl: {fileID: 0}

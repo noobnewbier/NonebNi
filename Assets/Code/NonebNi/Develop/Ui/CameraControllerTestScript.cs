@@ -1,7 +1,12 @@
-﻿using NonebNi.Ui.Cameras;
+﻿using Moq;
+using Noneb.UI.InputSystems;
+using NonebNi.Core.Maps;
+using NonebNi.Terrain;
+using NonebNi.Ui.Cameras;
 using Unity.Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityUtils.Editor;
 
@@ -13,6 +18,8 @@ namespace NonebNi.Develop
         [FormerlySerializedAs("config"), SerializeField] private CameraControlSetting setting = null!;
         [SerializeField] private CinemachineCamera controlledCamera = null!;
         [SerializeField] private CinemachinePositionComposer composer = null!;
+        [SerializeField] private InputActionAsset inputActionAsset = null!;
+
 
         [SerializeField] private GameObject lookAtObj1 = null!;
         [SerializeField] private GameObject lookAtObj2 = null!;
@@ -23,7 +30,8 @@ namespace NonebNi.Develop
         {
             var (upBound, downBound, rightBound, leftBound) = GetCameraParameters();
             var config = new CameraConfig(setting, downBound, leftBound, rightBound, upBound);
-            _cameraController = new CameraController(config, controlledCamera, composer);
+            var inputSystem = new NonebInputSystem(inputActionAsset);
+            _cameraController = new (config, controlledCamera, composer, Mock.Of<ICoordinateAndPositionService>(), Mock.Of<IReadOnlyMap>(), inputSystem);
         }
 
         private void Update()
@@ -44,7 +52,7 @@ namespace NonebNi.Develop
         private void OnDrawGizmos()
         {
             //Too lazy to do this properly but if we need to change this more than 3 times we will refactor: current count=0
-            using (new NonebEditorUtils.HandlesColorScope(Color.red))
+            using (new NonebEditorGUI.HandlesColorScope(Color.red))
             {
                 // with our approach the y-size doesn't mean much does it...?
                 var size = mapRadius * 2 - setting.BufferToClampingEdge * 2;

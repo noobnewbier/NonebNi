@@ -1,0 +1,22 @@
+{
+    "name": "NonebNi.DebugConsole",
+    "rootNamespace": "",
+    "references": [
+        "GUID:acf43146c4364d2419bdbdeac67deb96",
+        "GUID:8c9f0f875c743b643bbea480a5e687c3",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:0bb59190ac26341428311711f2ce1fd3",
+        "GUID:893a62e173c68f6478bfef27032343b1"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using UnityEngine;
 
 namespace NonebNi.Core.Stats
 {
@@ -10,9 +12,13 @@ namespace NonebNi.Core.Stats
     /// Does not support negative
     /// </summary>
     [Serializable]
+    [DebuggerDisplay("{ID}: {currentValue} [{MinValue} to {MaxValue}]")]
     public class Stat
     {
-        private int _currentValue;
+        [field: SerializeField] public string ID { get; private set; }
+        [SerializeField] private int currentValue;
+        [field: SerializeField] public int MinValue { get; set; } = -1;
+        [field: SerializeField] public int MaxValue { get; set; } = -1;
 
         public Stat(string id)
         {
@@ -29,41 +35,42 @@ namespace NonebNi.Core.Stats
 
         public static Stat Invalid { get; } = new("invalid-stat", -1, -1);
 
-        public string ID { get; }
-        public int MinValue { get; } = -1;
-        public int MaxValue { get; set; } = -1;
 
         public int CurrentValue
         {
-            get => _currentValue;
+            get => currentValue;
             set
             {
-                _currentValue = value;
+                var oldValue = currentValue;
+                currentValue = value;
                 ClampWithMinValue();
                 ClampWithMaxValue();
+
+                if (currentValue != oldValue) ValueChanged?.Invoke(this);
             }
         }
 
-        public bool HasMaxLimit => MaxValue == -1;
+        public bool HasMaxLimit => MaxValue != -1;
 
-        private bool HasMinLimit => MinValue == -1;
+        private bool HasMinLimit => MinValue != -1;
+        public event Action<Stat>? ValueChanged;
 
         private void ClampWithMaxValue()
         {
-            if (HasMaxLimit) return;
+            if (!HasMaxLimit) return;
 
-            if (_currentValue <= MaxValue) return;
+            if (currentValue <= MaxValue) return;
 
-            _currentValue = MaxValue;
+            currentValue = MaxValue;
         }
 
         private void ClampWithMinValue()
         {
-            if (HasMinLimit) return;
+            if (!HasMinLimit) return;
 
-            if (_currentValue >= MinValue) return;
+            if (currentValue >= MinValue) return;
 
-            _currentValue = MinValue;
+            currentValue = MinValue;
         }
     }
 }

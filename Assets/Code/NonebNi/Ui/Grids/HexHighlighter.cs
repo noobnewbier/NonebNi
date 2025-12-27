@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Coordinates;
 using NonebNi.Terrain;
 using Priority_Queue;
-using Unity.Logging;
 using UnityEngine;
 using UnityUtils.Pooling;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace NonebNi.Ui.Grids
 {
@@ -26,7 +29,6 @@ namespace NonebNi.Ui.Grids
         void RemoveRequest(IEnumerable<Coordinate> coords, string? requestId = null);
 
         void RemoveRequest(params string[] requestIds);
-        void RemoveRequest(string requestId);
         void RequestHighlight(Coordinate coord, string requestId, HighlightVariation variation);
         void RemoveRequest(Coordinate coord, string? requestId = null);
         void ClearAll();
@@ -35,7 +37,7 @@ namespace NonebNi.Ui.Grids
     //TODO: use some vfx so visually stuffs looks appealing
     public class HexHighlighter : IHexHighlighter
     {
-        private static readonly Dictionary<string, int> RequestPriority = new()
+        private static readonly Dictionary<string, int> RequestPriority = new ()
         {
             [HighlightRequestId.TargetSelection] = 0,
             [HighlightRequestId.TileInspection] = 1,
@@ -51,9 +53,9 @@ namespace NonebNi.Ui.Grids
         /// 1. duplicated highlight on the same hex when there's multiple req with different id
         /// 2. inefficient iteration although it's probably not that bad
         /// </summary>
-        private readonly Dictionary<Coordinate, ResponseRequest> _highlightMappings = new();
+        private readonly Dictionary<Coordinate, ResponseRequest> _highlightMappings = new ();
 
-        private readonly Dictionary<HighlightVariation, BehaviourPool<HexHighlight>> _highlightPools = new();
+        private readonly Dictionary<HighlightVariation, BehaviourPool<HexHighlight>> _highlightPools = new ();
         private readonly TerrainConfigData _terrainConfig;
 
         public HexHighlighter(ICoordinateAndPositionService coordinateAndPositionService, HexHighlightConfig highlightConfig, TerrainConfigData terrainConfig)
@@ -77,13 +79,9 @@ namespace NonebNi.Ui.Grids
 
         public void RemoveRequest(params string[] requestIds)
         {
-            foreach (var id in requestIds) RemoveRequest(id);
-        }
-
-        public void RemoveRequest(string requestId)
-        {
             var coordWithHighlights = _highlightMappings.Keys;
-            RemoveRequest(coordWithHighlights, requestId);
+
+            foreach (var id in requestIds) RemoveRequest(coordWithHighlights, id);
         }
 
         public void ClearAll()
@@ -139,6 +137,19 @@ namespace NonebNi.Ui.Grids
 
         private void ServeRequest(Coordinate coordinate)
         {
+            /*
+             * We have an issue where UniTask runs one frame after exit playmode. As a result code calling this can happens when we break playmode and back to edit mode, result in asset lingering.
+             * Either change UniTask's PlayerLoopHelper.InsertRunner and get rid of the "run one frame afterward" behaviour or suck it up and deal with it.
+             *
+             * If I got annoyed enough, I will do something about it, but for now it's a problem for another day.
+             *
+             * https://github.com/Cysharp/UniTask/issues/543
+             * https://github.com/Cysharp/UniTask/blob/8042b29ff87dd5506d7aad72bd6d8d7405985f27/src/UniTask/Assets/Plugins/UniTask/Runtime/PlayerLoopHelper.cs#L204
+             */
+#if UNITY_EDITOR
+            if (!EditorApplication.isPlaying) return;
+#endif
+
             if (!_highlightMappings.TryGetValue(coordinate, out var responseRequests)) return;
 
             var currentReq = responseRequests.Requests.FirstOrDefault();
@@ -186,7 +197,7 @@ namespace NonebNi.Ui.Grids
                 var prefab = _highlightConfig.FindHighlightPrefab(variation);
                 if (prefab == null)
                 {
-                    Log.Error($"Cannot find {variation}, your config messed up");
+                    Log.Error("UI", $"Cannot find {variation}, your config messed up");
                     prefab = new GameObject("Error_HexHighlight").AddComponent<HexHighlight>();
                     // setting to inactive - this way at least we can hide the "prefab" from the active scene and the game looks a bit less jarring
                     prefab.gameObject.SetActive(false);
@@ -201,7 +212,7 @@ namespace NonebNi.Ui.Grids
         private record ResponseRequest
         {
             public HighlightResponse? Response { get; set; }
-            public SimplePriorityQueue<HighlightRequest> Requests { get; } = new();
+            public SimplePriorityQueue<HighlightRequest> Requests { get; } = new ();
         }
 
         private class HighlightRequest

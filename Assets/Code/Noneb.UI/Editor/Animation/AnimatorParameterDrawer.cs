@@ -58,6 +58,7 @@ namespace Noneb.UI.Editor.Animation
             GUIContent label,
             RuntimeAnimatorController controller)
         {
+            //got a feeling that this *could be* bugged - property drawer draws different property with the same instance...
             _parameterPicker ??= new AnyTypeAnimatorParameterPicker(controller, label);
             _parameterPicker.Draw(position, property);
         }
@@ -71,7 +72,8 @@ namespace Noneb.UI.Editor.Animation
         {
             var paramTable = AnimatorInfoCache.GetParamTable(animatorController);
             var parameters = paramTable.GetParameters(parameterType);
-            NonebEditorGUI.ShowStringPopup(
+            NonebEditorGUI.ShowStringPopup
+            (
                 position,
                 property,
                 $"{label.text} ({parameterType})",

@@ -3,20 +3,26 @@ using UnityEngine;
 
 namespace Noneb.UI.View
 {
-    public class UIActivityHandler : MonoBehaviour, IViewComponent
+    public class UIActivityHandler : MonoBehaviour, IViewComponent<NullViewData>
     {
         [SerializeField] private CanvasGroup canvasGroup = null!;
 
         private bool _canBlockRaycast;
 
-        public UniTask OnViewInit()
+        public UniTask OnViewAwake()
         {
             _canBlockRaycast = canvasGroup.blocksRaycasts;
             return UniTask.CompletedTask;
         }
 
+        public UniTask OnViewInit()
+        {
+            gameObject.SetActive(true);
+            return UniTask.CompletedTask;
+        }
+
         //TODO: probs need overlay check...
-        public UniTask OnViewActivate()
+        public UniTask OnViewActivate(NullViewData? _)
         {
             canvasGroup.interactable = true;
             canvasGroup.blocksRaycasts = _canBlockRaycast;
@@ -29,6 +35,12 @@ namespace Noneb.UI.View
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
 
+            return UniTask.CompletedTask;
+        }
+
+        public UniTask OnViewTearDown()
+        {
+            gameObject.SetActive(false);
             return UniTask.CompletedTask;
         }
     }

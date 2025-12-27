@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Actions;
 using NonebNi.Core.Units;
-using Unity.Logging;
 using UnityEngine;
 using UnityUtils.Constants;
 
@@ -23,6 +23,8 @@ namespace NonebNi.EditorComponent.Entities.Unit
         [SerializeField] private int weaponRange;
         [SerializeField] private int fatigue;
         [SerializeField] private int maxFatigue;
+        [SerializeField] private int fatigueRecovery;
+        [SerializeField] private int maxActionPoint;
 
 
         public override EditorEntityData<UnitData> CreateData(Guid guid, string factionId)
@@ -32,16 +34,18 @@ namespace NonebNi.EditorComponent.Entities.Unit
             {
                 if (a == null)
                 {
-                    Log.Error($"Failed to find action with id: {a}");
+                    Log.Error("Editor", $"Failed to find action with id: {a}");
                     continue;
                 }
 
                 actions.Add(a);
             }
 
-            return new EditorEntityData<UnitData>(
+            return new EditorEntityData<UnitData>
+            (
                 guid,
-                new UnitData(
+                new UnitData
+                (
                     guid,
                     actions,
                     icon,
@@ -56,13 +60,11 @@ namespace NonebNi.EditorComponent.Entities.Unit
                     armor,
                     weaponRange,
                     fatigue,
-                    maxFatigue
+                    maxFatigue,
+                    fatigueRecovery,
+                    maxActionPoint
                 )
             );
         }
-
-#if UNITY_EDITOR
-
-#endif
     }
 }

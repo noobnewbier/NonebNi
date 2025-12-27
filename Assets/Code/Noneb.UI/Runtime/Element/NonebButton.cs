@@ -1,5 +1,5 @@
 ﻿using System;
-using Unity.Logging;
+using Noneb.Logs.Runtime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,7 +15,7 @@ namespace Noneb.UI.Element
         {
             base.Awake();
 
-            if (this.FindOwner() == null) Log.Error($"Cannot find owner of NonebButton in {gameObject.name} - likely unintended");
+            if (this.FindOwner() == null) Log.Error("UI", $"Cannot find owner of NonebButton in {gameObject.name} - likely unintended");
         }
 
         public virtual void OnPointerClick(PointerEventData eventData)
@@ -51,7 +51,7 @@ namespace Noneb.UI.Element
 
             if (transition is Transition.ColorTint or Transition.SpriteSwap)
             {
-                Log.Error("I don't want to support that it's rarely useful");
+                Log.Error("UI", "I don't want to support that it's rarely useful");
                 return;
             }
 

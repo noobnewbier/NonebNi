@@ -124,8 +124,7 @@ namespace NonebNi.EditorComponent.Entities
                 }
                 else
                 {
-                    if (_cacheEntityData == null && entityDataSource != null)
-                        _cacheEntityData = entityDataSource.CreateData(Guid, factionId);
+                    if (_cacheEntityData == null && entityDataSource != null) _cacheEntityData = entityDataSource.CreateData(Guid, factionId);
                 }
 
                 return _cacheEntityData;

@@ -1,16 +1,19 @@
-﻿using NonebNi.Core.Entities;
+﻿using System;
+using NonebNi.Core.Entities;
+using UnityEngine;
 
 namespace NonebNi.Core.Actions
 {
+    [Serializable]
     public class ConstantRange : Range
     {
-        private readonly int _range;
+        [SerializeField] private int range;
 
         public ConstantRange(int range)
         {
-            _range = range;
+            this.range = range;
         }
 
-        public override int CalculateRange(EntityData _) => _range;
+        public override int CalculateRange(EntityData _) => range;
     }
 }

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using Noneb.Localization.Runtime;
 using NonebNi.Core.Actions;
+using NonebNi.Core.Stats;
 using NonebNi.Core.Tiles;
+using NonebNi.Core.Units;
 using UnityEngine;
 using UnityUtils.Serialization;
 
@@ -22,12 +26,12 @@ namespace NonebNi.Core.Entities
     [Serializable]
     public abstract class EntityData : IActionTarget
     {
-        [SerializeField] private string name;
+        [SerializeField] private NonebLocString name;
         [SerializeField] private SerializableGuid serializableGuid;
 
         [field: SerializeField] public string FactionId { get; private set; }
 
-        protected EntityData(string name, Guid serializableGuid, string factionId)
+        protected EntityData(NonebLocString name, Guid serializableGuid, string factionId)
         {
             this.name = name;
             this.serializableGuid = new SerializableGuid(serializableGuid);
@@ -37,10 +41,25 @@ namespace NonebNi.Core.Entities
         public abstract bool IsTileOccupier { get; }
 
         public SerializableGuid Guid => serializableGuid;
-        public string Name => name;
+        public NonebLocString Name => name;
 
         public bool IsSystem => this == SystemEntity.Instance;
 
-        public override string ToString() => Name;
+        public override string ToString() => Name.GetLocalized();
+
+        public bool CanPayCosts(IEnumerable<StatCost> costs)
+        {
+            if (this is not UnitData unit)
+                //atm only unit can pay, in the future this might change
+                return false;
+
+            foreach (var cost in costs)
+            {
+                var error = unit.Stats.CheckCanPayCost(cost);
+                if (error != null) return false;
+            }
+
+            return true;
+        }
     }
 }

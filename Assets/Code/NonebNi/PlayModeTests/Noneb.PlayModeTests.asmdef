@@ -6,7 +6,8 @@
     "UnityEditor.TestRunner",
     "NonebNi.Ui",
     "NonebNi.Core",
-    "UnityUtils"
+    "UnityUtils",
+    "Noneb.Localization"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

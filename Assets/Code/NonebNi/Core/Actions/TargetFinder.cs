@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Noneb.Logs.Runtime;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Entities;
+using NonebNi.Core.Factions;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Tiles;
 using NonebNi.Core.Units;
-using Unity.Logging;
+using UnityEngine.Pool;
 using UnityUtils;
 
 namespace NonebNi.Core.Actions
@@ -20,19 +23,29 @@ namespace NonebNi.Core.Actions
             TargetRestriction restrictionFlags);
 
         IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request);
+
+        IEnumerable<(bool isDangerous, Coordinate coordinate)> GetTargetedCoordinates(
+            EntityData actor,
+            Coordinate targetCoord,
+            TargetRequest targetRequest);
     }
 
     public class TargetFinder : ITargetFinder
     {
+        private readonly IFactionService _factionService;
         private readonly IReadOnlyMap _map;
+        private readonly IPathfindingService _pathfindingService;
 
-        public TargetFinder(IReadOnlyMap map)
+        public TargetFinder(IReadOnlyMap map, IFactionService factionService, IPathfindingService pathfindingService)
         {
             _map = map;
+            _factionService = factionService;
+            _pathfindingService = pathfindingService;
         }
 
         public IEnumerable<(RangeStatus status, Coordinate coord)> FindRange(EntityData caster, TargetRequest request)
         {
+            //todo: sometimes caster coord is null -> why?
             if (!_map.TryFind(caster, out Coordinate casterCoord)) yield break;
 
             var range = request.Range.CalculateRange(caster);
@@ -102,7 +115,8 @@ namespace NonebNi.Core.Actions
                 Coordinate targetAsCoord => targetAsCoord,
                 EntityData entityData when _map.TryFind(entityData, out Coordinate coordinate) => coordinate,
 
-                _ => throw new ArgumentOutOfRangeException(
+                _ => throw new ArgumentOutOfRangeException
+                (
                     nameof(target),
                     target,
                     "Unexpected Target! Is target even on the board, or did you implement new type but didn't add it here?"
@@ -126,14 +140,14 @@ namespace NonebNi.Core.Actions
                     return (true, null);
                 case TargetRestriction.Friendly:
                 {
-                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.TargetTypeNotMatched());
                     if (caster.FactionId != targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotFriendly());
 
                     return (true, null);
                 }
                 case TargetRestriction.Enemy:
                 {
-                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.UnmatchTargetType());
+                    if (targetEntity is not UnitData targetUnit) return (false, new RestrictionCheckFailedReason.TargetTypeNotMatched());
                     if (caster.FactionId == targetUnit.FactionId) return (false, new RestrictionCheckFailedReason.NotEnemy());
                     return (true, null);
                 }
@@ -143,9 +157,16 @@ namespace NonebNi.Core.Actions
 
                     return (true, null);
                 }
+                case TargetRestriction.HasPath:
+                {
+                    var (isPathExist, _) = _pathfindingService.FindPath(caster, targetCoord);
+                    if (!isPathExist) return (false, new RestrictionCheckFailedReason.NoPath());
+
+                    return (true, null);
+                }
                 case TargetRestriction.ClearPath:
                 {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+                    if (!casterCoord.IsOnSameAxisWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
                     if (casterCoord.GetCoordinatesBetween(targetCoord).Any(_map.IsOccupied)) return (false, new RestrictionCheckFailedReason.NotClearPath());
 
                     return (true, null);
@@ -166,10 +187,12 @@ namespace NonebNi.Core.Actions
                 }
                 case TargetRestriction.FirstTileToTargetDirectionIsEmpty:
                 {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+                    if (!casterCoord.IsOnSameAxisWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
 
                     var direction = (targetCoord - casterCoord).Normalized();
                     var firstTileToTargetDirection = casterCoord + direction;
+
+                    if (!_map.IsCoordinateWithinMap(firstTileToTargetDirection)) return (false, new RestrictionCheckFailedReason.NotInMap());
 
                     if (_map.IsOccupied(firstTileToTargetDirection)) return (false, new RestrictionCheckFailedReason.NotClearPath());
 
@@ -177,10 +200,12 @@ namespace NonebNi.Core.Actions
                 }
                 case TargetRestriction.TargetCoordPlusDirectionToTargetIsEmpty:
                 {
-                    if (!casterCoord.IsOnSameLineWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
+                    if (!casterCoord.IsOnSameAxisWith(targetCoord)) return (false, new RestrictionCheckFailedReason.OutOfRange());
 
                     var direction = (targetCoord - casterCoord).Normalized();
                     var targetCoordPlusDirection = targetCoord + direction;
+
+                    if (!_map.IsCoordinateWithinMap(targetCoordPlusDirection)) return (false, new RestrictionCheckFailedReason.NotInMap());
 
                     if (_map.IsOccupied(targetCoordPlusDirection)) return (false, new RestrictionCheckFailedReason.NotClearPath());
 
@@ -199,7 +224,7 @@ namespace NonebNi.Core.Actions
                 }
                 case TargetRestriction.NotSelf:
                 {
-                    if (ReferenceEquals(target, caster)) return (false, new RestrictionCheckFailedReason.NotOthers());
+                    if (ReferenceEquals(targetEntity, caster)) return (false, new RestrictionCheckFailedReason.NotOthers());
 
                     return (true, null);
                 }
@@ -209,9 +234,10 @@ namespace NonebNi.Core.Actions
             }
         }
 
+        //todo: maybe not nested.
         public abstract record RestrictionCheckFailedReason
         {
-            public record UnmatchTargetType : RestrictionCheckFailedReason;
+            public record TargetTypeNotMatched : RestrictionCheckFailedReason;
 
             public record NotFriendly : RestrictionCheckFailedReason;
 
@@ -238,10 +264,16 @@ namespace NonebNi.Core.Actions
             public record CasterNotOnMap : RestrictionCheckFailedReason;
 
             public record TargetNotOnMap : RestrictionCheckFailedReason;
+
+            public record NotInMap : RestrictionCheckFailedReason;
+
+            public record NoPath : RestrictionCheckFailedReason;
         }
 
 
         #region Target finding
+
+        //todo: need to change find targets so it can deal with friendly damage while still warning player it's generally a bad idea?
 
         public IEnumerable<IActionTarget> FindTargets(
             EntityData actor,
@@ -249,9 +281,50 @@ namespace NonebNi.Core.Actions
             TargetArea targetArea,
             TargetRestriction restrictionFlags)
         {
+            /*
+             * Bug:
+             * Consider a fan area with "clear path" restriction, here we will be checking if there's a clear path, to everything targeted by a fan area.
+             * This is likely unintended by us. That said, it's not causing any issue either so we can deal with it later.
+             */
             foreach (var coord in GetTargetedCoordinates(actor, targetCoord, targetArea))
             foreach (var target in GetValidTargetsInCoordinate(actor, coord, restrictionFlags))
                 yield return target;
+        }
+
+        public IEnumerable<(bool isDangerous, Coordinate coordinate)> GetTargetedCoordinates(
+            EntityData actor,
+            Coordinate targetCoord,
+            TargetRequest targetRequest)
+        {
+            if (!targetRequest.IsDangerousToAlly)
+            {
+                foreach (var coordinate in GetTargetedCoordinates(actor, targetCoord, targetRequest.TargetArea)) yield return (false, coordinate);
+
+                yield break;
+            }
+
+
+            foreach (var coordinate in GetTargetedCoordinates(actor, targetCoord, targetRequest.TargetArea))
+                // This is called per frame, making a new list per frame is gross even in my standard.
+                using (ListPool<IActionTarget>.Get(out var targets))
+                {
+                    targets.AddRange(GetValidTargetsInCoordinate(actor, coordinate, targetRequest.TargetRestrictionFlags));
+                    if (!targets.Any())
+                        // so we have at least one coordinate
+                        targets.Add(coordinate);
+
+                    foreach (var target in targets)
+                    {
+                        if (target is not EntityData entity)
+                        {
+                            yield return (false, coordinate);
+                            continue;
+                        }
+
+                        var isAlly = _factionService.IsAlly(actor.FactionId, entity.FactionId);
+                        yield return (isAlly, coordinate);
+                    }
+                }
         }
 
         private IEnumerable<Coordinate> GetTargetedCoordinates(
@@ -259,38 +332,49 @@ namespace NonebNi.Core.Actions
             Coordinate targetCoord,
             TargetArea targetArea)
         {
-            switch (targetArea)
+            foreach (var coordinate in FindUnfilteredCoordinates())
+                if (_map.IsCoordinateWithinMap(coordinate))
+                    yield return coordinate;
+
+            yield break;
+
+            IEnumerable<Coordinate> FindUnfilteredCoordinates()
             {
-                case TargetArea.Single:
-                    yield return targetCoord;
-                    break;
-                case TargetArea.Fan:
-                    if (actor.IsSystem)
-                    {
-                        Log.Error($"{TargetArea.Fan} is not supported for System Entity");
-                        yield break;
-                    }
+                switch (targetArea)
+                {
+                    case TargetArea.Single:
+                        yield return targetCoord;
+                        break;
+                    case TargetArea.Fan:
+                        if (actor.IsSystem)
+                        {
+                            Log.Error("Action", $"{TargetArea.Fan} is not supported for System Entity");
+                            yield break;
+                        }
 
-                    if (_map.TryFind(actor, out Coordinate actorCoord))
-                    {
-                        Log.Error("Actor is not found on the map. We can't figure out the direction of the fan!");
-                        yield break;
-                    }
+                        if (!_map.TryFind(actor, out Coordinate actorCoord))
+                        {
+                            Log.Error("Action", $"{actor} is not found on the map. We can't figure out the direction of the fan!");
+                            yield break;
+                        }
 
-                    var relativeCoord = targetCoord - actorCoord;
-                    yield return targetCoord;
-                    yield return relativeCoord.RotateLeft();
-                    yield return relativeCoord.RotateRight();
+                        if (actorCoord.DistanceTo(targetCoord) > 1) Log.Error("Action", $"{TargetArea.Fan} cannot deal with anything that's not right next to the actor! This might change later but for now it's unecessarily complicated");
 
-                    break;
-                case TargetArea.Circle:
-                    foreach (var neighbour in targetCoord.Neighbours)
-                        if (_map.IsCoordinateWithinMap(neighbour))
-                            yield return neighbour;
+                        var relativeCoord = (targetCoord - actorCoord).Normalized();
+                        yield return targetCoord;
+                        yield return actorCoord + relativeCoord.RotateLeft();
+                        yield return actorCoord + relativeCoord.RotateRight();
 
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(targetArea), targetArea, null);
+                        break;
+                    case TargetArea.Circle:
+                        foreach (var neighbour in targetCoord.Neighbours)
+                            if (_map.IsCoordinateWithinMap(neighbour))
+                                yield return neighbour;
+
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(targetArea), targetArea, null);
+                }
             }
         }
 

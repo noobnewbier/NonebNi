@@ -14,7 +14,8 @@ namespace NonebNi.Ui.Animation
         IPlayAnimation<TeleportAnimSequence>,
         IPlayAnimation<MoveAnimSequence>,
         IPlayAnimation<KnockBackAnimSequence>,
-        IPlayAnimation<ReceivedDamageAnimSequence>
+        IPlayAnimation<ReceivedDamageAnimSequence>,
+        IPlayAnimation<ApplyDamageAnimSequence>
     {
         [SerializeField] private Animator animator = null!;
 
@@ -23,6 +24,34 @@ namespace NonebNi.Ui.Animation
         [AnimatorState(nameof(animator), nameof(finishAnimLayerIndex)), SerializeField] private string finishAnimState = null!;
 
         [AnimatorLayer(nameof(animator)), SerializeField] private int finishAnimLayerIndex;
+
+        public UniTask Play(ApplyDamageAnimSequence sequence, CancellationToken ct = default)
+        {
+            IEnumerator Coroutine()
+            {
+                //just a quick jump for now, we can improve this later:
+                var originalPos = transform.position;
+                var peakPos = originalPos + Vector3.up;
+
+                while (transform.position.y < peakPos.y)
+                {
+                    var newPos = Vector3.MoveTowards(transform.position, peakPos, 2f * Time.deltaTime);
+                    transform.position = newPos;
+
+                    yield return null;
+                }
+
+                while (transform.position.y > originalPos.y)
+                {
+                    var newPos = Vector3.MoveTowards(transform.position, originalPos, 2f * Time.deltaTime);
+                    transform.position = newPos;
+
+                    yield return null;
+                }
+            }
+
+            return Coroutine().ToUniTask(this);
+        }
 
         public UniTask Play(DieAnimSequence sequence, CancellationToken ct = default)
         {
