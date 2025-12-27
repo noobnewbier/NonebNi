@@ -17,9 +17,8 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   actionIds:
-  - bash
-  - shoot
-  - lure
+  - strike
+  - move
   initiative: 0
   speed: 5
   focus: 5

@@ -16,6 +16,8 @@ MonoBehaviour:
   - id: Player
     isPlayerControlled: 1
     allies: []
+    <FactionColor>k__BackingField: {r: 0, g: 0.22996926, b: 1, a: 1}
   - id: EnemyNpc
     isPlayerControlled: 0
     allies: []
+    <FactionColor>k__BackingField: {r: 1, g: 0, b: 0, a: 1}
