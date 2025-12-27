@@ -5,6 +5,7 @@ using NonebNi.Core.Actions;
 using NonebNi.Core.Commands;
 using NonebNi.Core.Coordinates;
 using NonebNi.Core.Decisions;
+using NonebNi.Core.Diagnostics;
 using NonebNi.Core.Effects;
 using NonebNi.Core.Factions;
 using NonebNi.Core.GameContexts;
@@ -18,7 +19,6 @@ using Action = Unity.Behavior.Action;
 
 namespace NonebNi.Core.AI
 {
-    //todo: we have the basics now - enemy should come and try attack me. turns out this is not happening yay
     //todo: debug flag to fake damage.
     //todo: debug command to force certain action...? can we create tree in runtime to facilitate this?
     //todo: wbn: if we have a way to visualize the utility based on positioning/distance. So yes, yet another curve.
@@ -58,21 +58,35 @@ namespace NonebNi.Core.AI
             var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, currentCoord, enemyCoords, actions, deps);
             if (!commandDistances.Any()) yield break;
 
-            var minDistDiff = commandDistances.Values.Min();
-            var maxDistDiff = commandDistances.Values.Max();
-            foreach (var (command, distDiff) in commandDistances)
+            var minDistDiff = commandDistances.Values.Min(t => t.distToTarget);
+            var maxDistDiff = commandDistances.Values.Max(t => t.distToTarget);
+            foreach (var (command, result) in commandDistances)
             {
                 var targetCoord = command.TargetCoords.First();
+
+                // distance is the most important metric
                 var distFromSelf = currentCoord.DistanceTo(targetCoord);
                 var distancePenalty = distFromSelf * 0.001f; //minor penalty to prioritize closest tile
-                var score = 1 - Mathf.InverseLerp(minDistDiff, maxDistDiff, distDiff) - distancePenalty;
+                var distScore = 1 - Mathf.InverseLerp(minDistDiff, maxDistDiff, result.distToTarget) - distancePenalty;
+
+                // prefer coords that is on the direct line to the target, helps to avoid units running into a separate "lane"
+                var outOfLinePenalty = 0f;
+                if (!currentCoord.GetCoordinatesBetween(result.enemyCoordTarget).Contains(result.enemyCoordTarget)) outOfLinePenalty = 0.001f;
+
+                // prefer line that is more zigzaggy, as it implies there's less lane crossing
+                var zigzagness = currentCoord.ZigZagnessWithinRange(targetCoord);
+                var crossLanePenalty = (1 - zigzagness) * 0.001f;
+
+                var score = distScore - outOfLinePenalty - crossLanePenalty;
                 yield return (command, (UtilityTag.DistanceEngagement, score));
+
+                Diagnostic.Write(new DRequest.EngageUtility(targetCoord, distScore, outOfLinePenalty, crossLanePenalty));
             }
         }
 
-        private Dictionary<ActionCommand, int> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, Coordinate unitCoord, Coordinate[] enemyCoords, NonebAction[] actions, Dependencies deps)
+        private Dictionary<ActionCommand, (Coordinate enemyCoordTarget, int distToTarget)> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, Coordinate unitCoord, Coordinate[] enemyCoords, NonebAction[] actions, Dependencies deps)
         {
-            var actionDistanceDiff = new Dictionary<ActionCommand, int>();
+            var actionDistanceDiff = new Dictionary<ActionCommand, (Coordinate enemyCoordTarget, int distToTarget)>();
 
             // prioritize going to the closest bunch.
             enemyCoords = enemyCoords.GroupBy(unitCoord.DistanceTo).MinBy(g => g.Key).ToArray();
@@ -88,8 +102,9 @@ namespace NonebNi.Core.AI
                 {
                     //This doesn't care about obstacles atm, feels off... We will add the complexity when we need to.
                     var targetCoord = command.TargetCoords.First(); // can't work without this, if we don't have one something else is buggered.
-                    var distToTarget = enemyCoords.Select(c => targetCoord.DistanceTo(c)).Min();
-                    actionDistanceDiff[command] = Mathf.Abs(preferredDistance.Value - distToTarget);
+                    var (enemyCoordTarget, distToTarget) = enemyCoords.Select(c => (enemyCoordTarget: c, distToTarget: targetCoord.DistanceTo(c))).MinBy(t => t.distToTarget);
+                    var diffToPreferredDist = Mathf.Abs(preferredDistance.Value - distToTarget);
+                    actionDistanceDiff[command] = (enemyCoordTarget, diffToPreferredDist);
                 }
             }
 
