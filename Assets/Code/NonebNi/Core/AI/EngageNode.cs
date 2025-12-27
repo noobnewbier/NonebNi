@@ -10,6 +10,7 @@ using NonebNi.Core.Effects;
 using NonebNi.Core.Factions;
 using NonebNi.Core.GameContexts;
 using NonebNi.Core.Maps;
+using NonebNi.Core.Pathfinding;
 using NonebNi.Core.Units;
 using Unity.Behavior;
 using Unity.Properties;
@@ -55,7 +56,7 @@ namespace NonebNi.Core.AI
             var currentDistToEnemies = enemyCoords.Select(c => currentCoord.DistanceTo(c)).Min();
             if (currentDistToEnemies == preferredDistance.Value) yield break;
 
-            var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, currentCoord, enemyCoords, actions, deps);
+            var commandDistances = FindCommandAndDiffWithTargetDistance(controlledUnit, enemyCoords, actions, deps);
             if (!commandDistances.Any()) yield break;
 
             var minDistDiff = commandDistances.Values.Min(t => t.distToTarget);
@@ -64,9 +65,9 @@ namespace NonebNi.Core.AI
             {
                 var targetCoord = command.TargetCoords.First();
 
-                // distance is the most important metric
-                var distFromSelf = currentCoord.DistanceTo(targetCoord);
-                var distancePenalty = distFromSelf * 0.001f; //minor penalty to prioritize closest tile
+                // minor penalty to far away tiles to prioritize closest tile
+                var (_, distFromSelf) = deps.PathfindingService.FindDistance(currentCoord, targetCoord, controlledUnit.FactionId);
+                var distancePenalty = distFromSelf * 0.001f;
                 var distScore = 1 - Mathf.InverseLerp(minDistDiff, maxDistDiff, result.distToTarget) - distancePenalty;
 
                 // prefer coords that is on the direct line to the target, helps to avoid units running into a separate "lane"
@@ -84,12 +85,21 @@ namespace NonebNi.Core.AI
             }
         }
 
-        private Dictionary<ActionCommand, (Coordinate enemyCoordTarget, int distToTarget)> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, Coordinate unitCoord, Coordinate[] enemyCoords, NonebAction[] actions, Dependencies deps)
+
+        /*
+         * TODO:
+         * Atm this only really works with preferred distance of 1, as we aren't really taking diff between "coord distance" and "path distance" into account.
+         * And that's okay(for now), as we are only have melee enemies with no pikes in the horizon anyway.
+         *
+         * That said, you will need to jiggle this, the easiest way I think is to find all tiles at the preferred distance and goes from there.
+         * Future me sorry I am kicking this can to you, I am gonna go work on some artsy stuffs now.
+         */
+        private Dictionary<ActionCommand, (Coordinate enemyCoordTarget, int distToTarget)> FindCommandAndDiffWithTargetDistance(UnitData controlledUnit, Coordinate[] enemyCoords, NonebAction[] actions, Dependencies deps)
         {
             var actionDistanceDiff = new Dictionary<ActionCommand, (Coordinate enemyCoordTarget, int distToTarget)>();
 
             // prioritize going to the closest bunch.
-            enemyCoords = enemyCoords.GroupBy(unitCoord.DistanceTo).MinBy(g => g.Key).ToArray();
+            enemyCoords = enemyCoords.GroupBy(c => deps.PathfindingService.FindDistance(controlledUnit, c).distance).MinBy(g => g.Key).ToArray();
 
             foreach (var action in actions)
             {
@@ -111,6 +121,6 @@ namespace NonebNi.Core.AI
             return actionDistanceDiff;
         }
 
-        public record Dependencies(IReadOnlyMap Map, IActionOptionFinder OptionFinder, IFactionService FactionService);
+        public record Dependencies(IReadOnlyMap Map, IActionOptionFinder OptionFinder, IFactionService FactionService, IPathfindingService PathfindingService);
     }
 }
