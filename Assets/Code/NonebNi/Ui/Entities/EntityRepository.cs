@@ -13,6 +13,7 @@ namespace NonebNi.Ui.Entities
     {
         public Entity? GetEntity(Guid guid)
         {
+            // todo: for the love of god, how did this get in.
             var allEntities = Object.FindObjectsOfType<Entity>();
 
             return allEntities.FirstOrDefault(e => e.guid == guid);

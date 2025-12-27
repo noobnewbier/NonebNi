@@ -45,6 +45,8 @@ namespace NonebNi.Terrain
     ///
     ///     TODO: if everything here can be derived from what we have in TerrainConfigData, then it really doesn't have to be a new class.
     ///     We can squash the two together to save myself some headache...?
+    ///
+    ///     Note: consider getting rid of this, I am not sure it's worth keeping this around, everytime I need to get a position(which is very often) I need to summon this when 
     /// </summary>
     public class CoordinateAndPositionService : ICoordinateAndPositionService
     {
@@ -84,7 +86,8 @@ namespace NonebNi.Terrain
 
             var sideOffset = FindSideOffsetForZ(coordinate.Z);
 
-            return new Vector3(
+            return new Vector3
+                   (
                        coordinate.X * SideDistanceOfHex + sideOffset,
                        _terrainConfig.MapStartingPosition.y,
                        coordinate.Z * UpDistanceOfHex
