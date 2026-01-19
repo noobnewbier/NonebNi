@@ -75,7 +75,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.26",
+      "version": "1.8.27",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -137,6 +137,17 @@
       "depth": 1,
       "source": "builtin",
       "dependencies": {}
+    },
+    "com.unity.film-internal-utilities": {
+      "version": "0.20.0-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.timeline": "1.2.18",
+        "com.unity.modules.uielements": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
       "version": "3.0.38",
@@ -311,7 +322,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.8.9",
+      "version": "1.8.10",
       "depth": 0,
       "source": "registry",
       "dependencies": {
