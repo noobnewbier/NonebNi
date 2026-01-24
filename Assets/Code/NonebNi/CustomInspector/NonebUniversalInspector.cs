@@ -11,6 +11,7 @@ using UnityUtils;
 namespace NonebNi.CustomInspector
 {
     [CustomEditor(typeof(Object), true, isFallback = true)]
+    [CanEditMultipleObjects]
     public class NonebUniversalInspector : Editor
     {
         private IEnumerable<(MethodInfo method, CallOnEditorEnabledAttribute attribute)> _calledOnEnabledMethod = Enumerable.Empty<(MethodInfo method, CallOnEditorEnabledAttribute attribute)>();
