@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using NonebNi.Core.Attributes;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -6,6 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace NonebNi.Art
 {
+    [NonebUniversalEditor]
     [ExecuteAlways]
     public class GrassInstancer : MonoBehaviour
     {
@@ -14,9 +16,11 @@ namespace NonebNi.Art
         [SerializeField] private MeshRenderer meshRenderer = null!;
         [SerializeField] private Material material = null!;
         [SerializeField] private Mesh toRender = null!;
-        [SerializeField] private float minDistBetweenInstance;
+        [Min(0.01f)] [SerializeField] private float minDistBetweenInstance;
         [SerializeField] private Color color;
-        [SerializeField] private Vector3 scale = Vector3.one;
+        [SerializeField] private Vector3 minScale = Vector3.one;
+        [SerializeField] private Vector3 maxScale = Vector3.one;
+        [SerializeField] private float yOffset;
         [Range(0f, 360f)] [SerializeField] private float rotationRange;
 
 
@@ -126,8 +130,14 @@ namespace NonebNi.Art
                 var pt = points[i];
                 var rotInDegree = Random.Range(0, rotationRange);
 
-                var translation = new Vector3(pt.x, pt.y, pt.z);
+                var translation = new Vector3(pt.x, pt.y + yOffset, pt.z);
                 var rot = Quaternion.AngleAxis(rotInDegree, Vector3.up);
+                var scale = new Vector3
+                (
+                    Random.Range(minScale.x, maxScale.x),
+                    Random.Range(minScale.y, maxScale.y),
+                    Random.Range(minScale.z, maxScale.z)
+                );
                 datas[i] = new ()
                 {
                     TRSMatrix = Matrix4x4.TRS(translation, rot, scale)
