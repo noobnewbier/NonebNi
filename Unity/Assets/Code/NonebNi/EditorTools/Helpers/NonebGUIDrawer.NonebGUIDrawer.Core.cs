@@ -1,4 +1,4 @@
-﻿namespace NonebNi.CustomInspector
+﻿namespace NonebNi.EditorTools
 {
     public partial class NonebGUIDrawer
     {

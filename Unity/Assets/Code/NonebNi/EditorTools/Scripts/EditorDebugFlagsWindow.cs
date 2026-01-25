@@ -1,10 +1,9 @@
 ﻿using NonebNi.Core.Debug;
-using NonebNi.CustomInspector;
 using NonebNi.Main;
 using UnityEditor;
 using UnityEngine;
 
-namespace NonebNi.EditorScripting
+namespace NonebNi.EditorTools
 {
     public class EditorDebugFlagsWindow : EditorWindow
     {

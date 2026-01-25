@@ -5,7 +5,7 @@ using UnityEditorInternal;
 using UnityUtils;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector
+namespace NonebNi.EditorTools
 {
     public partial class NonebGUIDrawer
     {

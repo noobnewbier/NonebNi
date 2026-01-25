@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using NonebNi.Core.Attributes;
-using NonebNi.CustomInspector.AbstractClass;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.AttributeDrawers.AbstractClass
+namespace NonebNi.EditorTools.AttributeDrawers.AbstractClass
 {
     [CustomPropertyDrawer(typeof(TypePickerAttribute))]
     public class TypePickerDrawer : PropertyDrawer

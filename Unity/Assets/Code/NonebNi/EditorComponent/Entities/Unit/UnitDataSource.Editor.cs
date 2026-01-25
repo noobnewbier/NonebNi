@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using NonebNi.Core.Actions;
-using NonebNi.CustomInspector;
+using NonebNi.EditorTools;
 using UnityEditor;
 using UnityEngine;
 

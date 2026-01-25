@@ -2,7 +2,7 @@
 using Unity.Behavior.GraphFramework;
 using UnityEditor;
 
-namespace NonebNi.EditorScripting
+namespace NonebNi.EditorTools
 {
     internal static class PrintSerializableGuid
     {

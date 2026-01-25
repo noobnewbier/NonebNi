@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace NonebNi.EditorScripting
+namespace NonebNi.EditorTools
 {
     /// <summary>
     /// Copy pasted from https://github.com/mob-sakai/SubAssetEditor/blob/main/Editor/SubAssetEditor.cs

@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils;
 
-namespace NonebNi.CustomInspector
+namespace NonebNi.EditorTools.CustomDrawers
 {
     [CustomEditor(typeof(Object), true, isFallback = true)]
     [CanEditMultipleObjects]

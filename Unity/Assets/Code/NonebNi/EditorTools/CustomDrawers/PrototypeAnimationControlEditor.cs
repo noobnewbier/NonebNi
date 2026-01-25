@@ -4,7 +4,7 @@ using NonebNi.Ui.Animation.Sequence;
 using UnityEditor;
 using UnityEngine;
 
-namespace NonebNi.CustomInspector.CustomDrawers
+namespace NonebNi.EditorTools.CustomDrawers
 {
     [CustomEditor(typeof(PrototypeAnimationControl))]
     public class PrototypeAnimationControlEditor : Editor

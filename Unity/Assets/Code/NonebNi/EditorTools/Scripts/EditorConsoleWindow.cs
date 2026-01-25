@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.EditorScripting
+namespace NonebNi.EditorTools
 {
     public class EditorConsoleWindow : EditorWindow
     {

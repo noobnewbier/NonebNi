@@ -1,5 +1,5 @@
 ﻿using Noneb.UI.View;
-using NonebNi.CustomInspector;
+using NonebNi.EditorTools;
 using UnityEditor;
 
 namespace Noneb.UI.Editor.UIBehaviours

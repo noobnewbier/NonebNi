@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.AttributeDrawers
+namespace NonebNi.EditorTools.AttributeDrawers
 {
     [CustomPropertyDrawer(typeof(AutoCompleteFieldAttribute))]
     public class AutoCompleteFieldDrawer : PropertyDrawer

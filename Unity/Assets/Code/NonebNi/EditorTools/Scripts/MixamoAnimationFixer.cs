@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.EditorScripting
+namespace NonebNi.EditorTools
 {
     /// <summary>
     /// Animation from Mixamo have some quirks. Such as names of animation always being mixamo.com.

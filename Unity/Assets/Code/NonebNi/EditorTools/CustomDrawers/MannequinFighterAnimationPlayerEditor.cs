@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.CustomDrawers
+namespace NonebNi.EditorTools.CustomDrawers
 {
     [CustomEditor(typeof(MannequinFighterAnimationPlayer))]
     public class MannequinFighterAnimationPlayerEditor : Editor

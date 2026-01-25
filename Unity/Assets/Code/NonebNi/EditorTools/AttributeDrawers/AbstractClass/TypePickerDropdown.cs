@@ -5,7 +5,7 @@ using Noneb.Logs.Runtime;
 using UnityEditor.IMGUI.Controls;
 using UnityUtils;
 
-namespace NonebNi.CustomInspector.AbstractClass
+namespace NonebNi.EditorTools.AttributeDrawers.AbstractClass
 {
     /// <summary>
     /// Generic is not supported atm. We can do it when we need it.

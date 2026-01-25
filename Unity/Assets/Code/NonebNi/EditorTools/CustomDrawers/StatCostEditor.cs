@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
 
-namespace NonebNi.CustomInspector.CustomDrawers
+namespace NonebNi.EditorTools.CustomDrawers
 {
     [CustomPropertyDrawer(typeof(StatCost))]
     public class StatCostEditor : PropertyDrawer

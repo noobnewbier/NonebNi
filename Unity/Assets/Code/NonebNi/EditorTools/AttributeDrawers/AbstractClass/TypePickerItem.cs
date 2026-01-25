@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEditor.IMGUI.Controls;
 
-namespace NonebNi.CustomInspector.AbstractClass
+namespace NonebNi.EditorTools.AttributeDrawers.AbstractClass
 {
     public class TypePickerItem : AdvancedDropdownItem
     {
