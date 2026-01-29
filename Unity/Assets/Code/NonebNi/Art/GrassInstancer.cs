@@ -16,12 +16,14 @@ namespace NonebNi.Art
         [SerializeField] private MeshRenderer meshRenderer = null!;
         [SerializeField] private Material material = null!;
         [SerializeField] private Mesh toRender = null!;
-        [Min(0.01f)] [SerializeField] private float minDistBetweenInstance;
-        [SerializeField] private Color color;
-        [SerializeField] private Vector3 minScale = Vector3.one;
-        [SerializeField] private Vector3 maxScale = Vector3.one;
-        [SerializeField] private float yOffset;
-        [Range(0f, 360f)] [SerializeField] private float rotationRange;
+        [SerializeField] private Texture2D gradientTexture = null!;
+
+        [Delayed] [Min(0.01f)] [SerializeField] private float minDistBetweenInstance;
+        [Delayed] [SerializeField] private Color color;
+        [Delayed] [SerializeField] private Vector3 minScale = Vector3.one;
+        [Delayed] [SerializeField] private Vector3 maxScale = Vector3.one;
+        [Delayed] [SerializeField] private float yOffset;
+        [Delayed] [Range(0f, 360f)] [SerializeField] private float rotationRange;
 
 
         private ComputeBuffer? _buffer;
@@ -43,49 +45,6 @@ namespace NonebNi.Art
         private void OnDisable()
         {
             Discard();
-        }
-
-        private void OnDrawGizmos()
-        {
-            var cache = Gizmos.color;
-            Gizmos.color = UnityEngine.Color.red;
-            var b = meshRenderer.bounds;
-
-            // bottom
-            var p1 = new Vector3(b.min.x, b.min.y, b.min.z);
-            var p2 = new Vector3(b.max.x, b.min.y, b.min.z);
-            var p3 = new Vector3(b.max.x, b.min.y, b.max.z);
-            var p4 = new Vector3(b.min.x, b.min.y, b.max.z);
-
-            Gizmos.DrawLine(p1, p2);
-            Gizmos.DrawLine(p2, p3);
-            Gizmos.DrawLine(p3, p4);
-            Gizmos.DrawLine(p4, p1);
-
-            // top
-            var p5 = new Vector3(b.min.x, b.max.y, b.min.z);
-            var p6 = new Vector3(b.max.x, b.max.y, b.min.z);
-            var p7 = new Vector3(b.max.x, b.max.y, b.max.z);
-            var p8 = new Vector3(b.min.x, b.max.y, b.max.z);
-
-            Gizmos.DrawLine(p5, p6);
-            Gizmos.DrawLine(p6, p7);
-            Gizmos.DrawLine(p7, p8);
-            Gizmos.DrawLine(p8, p5);
-
-            // sides
-            Gizmos.DrawLine(p1, p5);
-            Gizmos.DrawLine(p2, p6);
-            Gizmos.DrawLine(p3, p7);
-            Gizmos.DrawLine(p4, p8);
-
-            Gizmos.color = cache;
-        }
-
-
-        private void OnValidate()
-        {
-            _dirty = true;
         }
 
         private void InitRenderPrams()
@@ -152,6 +111,47 @@ namespace NonebNi.Art
             _dirty = false;
         }
 
+        private void OnValidate()
+        {
+            _dirty = true;
+        }
+
+        private void OnDrawGizmos()
+        {
+            var cache = Gizmos.color;
+            Gizmos.color = UnityEngine.Color.red;
+            var b = meshRenderer.bounds;
+
+            // bottom
+            var p1 = new Vector3(b.min.x, b.min.y, b.min.z);
+            var p2 = new Vector3(b.max.x, b.min.y, b.min.z);
+            var p3 = new Vector3(b.max.x, b.min.y, b.max.z);
+            var p4 = new Vector3(b.min.x, b.min.y, b.max.z);
+
+            Gizmos.DrawLine(p1, p2);
+            Gizmos.DrawLine(p2, p3);
+            Gizmos.DrawLine(p3, p4);
+            Gizmos.DrawLine(p4, p1);
+
+            // top
+            var p5 = new Vector3(b.min.x, b.max.y, b.min.z);
+            var p6 = new Vector3(b.max.x, b.max.y, b.min.z);
+            var p7 = new Vector3(b.max.x, b.max.y, b.max.z);
+            var p8 = new Vector3(b.min.x, b.max.y, b.max.z);
+
+            Gizmos.DrawLine(p5, p6);
+            Gizmos.DrawLine(p6, p7);
+            Gizmos.DrawLine(p7, p8);
+            Gizmos.DrawLine(p8, p5);
+
+            // sides
+            Gizmos.DrawLine(p1, p5);
+            Gizmos.DrawLine(p2, p6);
+            Gizmos.DrawLine(p3, p7);
+            Gizmos.DrawLine(p4, p8);
+
+            Gizmos.color = cache;
+        }
 
         [SuppressMessage("ReSharper", "NotAccessedField.Local", Justification = "We use this in our shader code.")]
         private struct InstanceData
