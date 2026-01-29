@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
-using NonebNi.CustomInspector;
+using NonebNi.EditorTools;
 using NonebNi.Ui.Animation.Common;
 using NonebNi.Ui.Animation.MannequinFighter;
 using NonebNi.Ui.Animation.Sequence;
@@ -79,7 +79,7 @@ namespace NonebNi.Develop
 
             private void OnEnable()
             {
-                _drawer = new (new (EditorData.instance));
+                _drawer = new (EditorData.instance);
                 _self = (MannequinAnimationTester)target;
             }
 

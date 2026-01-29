@@ -14,6 +14,11 @@ namespace NonebNi.EditorTools
             _serializedObject = serializedObject;
         }
 
+        public NonebGUIDrawer(Object obj)
+        {
+            _serializedObject = new (obj);
+        }
+
 
         //todo: maybe? https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.callerargumentexpressionattribute?view=net-6.0
 

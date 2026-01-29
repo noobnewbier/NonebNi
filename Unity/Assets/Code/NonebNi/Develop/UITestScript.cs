@@ -1,6 +1,6 @@
 ﻿using System;
 using Noneb.UI.View;
-using NonebNi.CustomInspector;
+using NonebNi.EditorTools;
 using UnityEditor;
 using UnityEngine;
 
