@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Reflection;
 using Cysharp.Threading.Tasks;
@@ -7,6 +7,7 @@ using NonebNi.Core.Attributes;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils;
+using Object = UnityEngine.Object;
 
 namespace NonebNi.EditorTools.CustomDrawers
 {
@@ -14,7 +15,8 @@ namespace NonebNi.EditorTools.CustomDrawers
     [CanEditMultipleObjects]
     public class NonebUniversalInspector : Editor
     {
-        private IEnumerable<(MethodInfo method, CallOnEditorEnabledAttribute attribute)> _calledOnEnabledMethod = Enumerable.Empty<(MethodInfo method, CallOnEditorEnabledAttribute attribute)>();
+        private (MethodInfo method, CallOnEditorEnabledAttribute attribute)[] _calledOnEnabledMethod = Array.Empty<(MethodInfo method, CallOnEditorEnabledAttribute attribute)>();
+        private MethodInfo[] _buttonMethod = Array.Empty<MethodInfo>();
         private NonebGUIDrawer _editorDataDrawer = null!;
         private NonebGUIDrawer _mainDrawer = null!;
         private Object _self = null!;
@@ -22,9 +24,10 @@ namespace NonebNi.EditorTools.CustomDrawers
         private void OnEnable()
         {
             _mainDrawer = new (serializedObject);
-            _editorDataDrawer = new (new (EditorData.instance));
+            _editorDataDrawer = new (EditorData.instance);
             _self = target;
 
+            _buttonMethod = ReflectionUtils.GetMethodsByAttribute<ButtonAttribute>(target.GetType()).Select(t => t.method).ToArray();
             CallOnEditorEnabled();
         }
 
@@ -32,7 +35,7 @@ namespace NonebNi.EditorTools.CustomDrawers
         {
             if (Application.isPlaying) return;
 
-            _calledOnEnabledMethod = ReflectionUtils.GetMethodsByAttribute<CallOnEditorEnabledAttribute>(target.GetType());
+            _calledOnEnabledMethod = ReflectionUtils.GetMethodsByAttribute<CallOnEditorEnabledAttribute>(target.GetType()).ToArray();
             foreach (var (method, attribute) in _calledOnEnabledMethod) method.Invoke(_self, attribute.Parameters);
         }
 
@@ -49,6 +52,7 @@ namespace NonebNi.EditorTools.CustomDrawers
             _mainDrawer.Apply();
 
             _editorDataDrawer.Update();
+            DrawButtonsMethod();
             DrawUIStacks();
             DrawCalledOnEnableInitMethod();
             _editorDataDrawer.Apply();
@@ -56,18 +60,36 @@ namespace NonebNi.EditorTools.CustomDrawers
             Repaint();
         }
 
+        private void DrawButtonsMethod()
+        {
+            if (!_buttonMethod.Any()) return;
+
+            using (_editorDataDrawer.BoxScope())
+            using (_editorDataDrawer.FlowLayoutScope())
+            {
+                foreach (var method in _buttonMethod)
+                {
+                    if (_editorDataDrawer.DrawButton(method.Name))
+                    {
+                        method.Invoke(_self, Array.Empty<object>());
+                    }
+                }
+            }
+        }
+
         private void DrawCalledOnEnableInitMethod()
         {
-            if (_calledOnEnabledMethod.Any())
-                using (_editorDataDrawer.BoxScope())
-                {
-                    if (_editorDataDrawer.Foldout("Auto Called Init Method"))
-                        foreach (var (method, attribute) in _calledOnEnabledMethod)
-                        {
-                            var paramLists = string.Join(",", attribute.Parameters.Select(p => p.ToString()));
-                            _editorDataDrawer.DrawLabel($"{method.Name}({paramLists})");
-                        }
-                }
+            if (!_calledOnEnabledMethod.Any()) return;
+
+            using (_editorDataDrawer.BoxScope())
+            {
+                if (_editorDataDrawer.Foldout("Auto Called Init Method"))
+                    foreach (var (method, attribute) in _calledOnEnabledMethod)
+                    {
+                        var paramLists = string.Join(",", attribute.Parameters.Select(p => p.ToString()));
+                        _editorDataDrawer.DrawLabel($"{method.Name}({paramLists})");
+                    }
+            }
         }
 
         private void DrawUIStacks()
