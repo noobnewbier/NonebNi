@@ -16,7 +16,7 @@ namespace NonebNi.Core.AI
     /// formula similar to the math dark art GDC talk.
     /// In the ideal world I would write my own graph toolkit. But for now, this is good enough.
     /// </summary>
-    [NonebUniversalEditor]
+    [NonebUniversalInspector]
     [CreateAssetMenu(fileName = nameof(UtilityFormula), menuName = MenuName.Data + nameof(UtilityFormula))]
     public class UtilityFormula : ScriptableObject
     {

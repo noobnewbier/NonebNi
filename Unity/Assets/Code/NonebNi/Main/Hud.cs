@@ -17,7 +17,7 @@ using UnityEngine;
 
 namespace NonebNi.Main
 {
-    [NonebUniversalEditor]
+    [NonebUniversalInspector]
     public class Hud : MonoBehaviour
     {
         //todo: perhaps these should be injected from level UI, or would the UI be too hard to debug from engine?

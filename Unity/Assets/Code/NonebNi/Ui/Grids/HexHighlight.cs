@@ -7,7 +7,7 @@ namespace NonebNi.Ui.Grids
     /// <summary>
     /// Uses line renderer to draw some lines, but in the future it will be more beautiful(hopefully)
     /// </summary>
-    [NonebUniversalEditor]
+    [NonebUniversalInspector]
     public class HexHighlight : MonoBehaviour
     {
         [SerializeField] private LineRenderer lineRenderer = null!;

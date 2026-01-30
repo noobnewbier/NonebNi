@@ -41,7 +41,7 @@ namespace NonebNi.EditorTools.CustomDrawers
 
         public override void OnInspectorGUI()
         {
-            if (_self.GetType().GetAttribute<NonebUniversalEditorAttribute>(false) == null)
+            if (_self.GetType().GetAttribute<NonebUniversalInspectorAttribute>(false) == null)
             {
                 base.OnInspectorGUI();
                 return;

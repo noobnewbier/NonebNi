@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace NonebNi.Ui.ViewComponents.PlayerTurn
 {
-    [NonebUniversalEditor]
+    [NonebUniversalInspector]
     public class StatWidget : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI valueText = null!;

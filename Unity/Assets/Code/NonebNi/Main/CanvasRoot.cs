@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace NonebNi.Main
 {
-    [NonebUniversalEditor]
+    [NonebUniversalInspector]
     public class CanvasRoot : MonoBehaviour
     {
         private UIStack? _stack;
