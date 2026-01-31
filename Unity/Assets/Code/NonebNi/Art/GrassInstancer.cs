@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace NonebNi.Art
 {
-    [NonebUniversalEditor]
+    [NonebUniversalInspector]
     [ExecuteAlways]
     public class GrassInstancer : MonoBehaviour
     {
@@ -19,7 +19,7 @@ namespace NonebNi.Art
         [SerializeField] private Texture2D gradientTexture = null!;
 
         [Delayed] [Min(0.01f)] [SerializeField] private float minDistBetweenInstance;
-        [Delayed] [SerializeField] private Color color;
+        [SerializeField] private Color color;
         [Delayed] [SerializeField] private Vector3 minScale = Vector3.one;
         [Delayed] [SerializeField] private Vector3 maxScale = Vector3.one;
         [Delayed] [SerializeField] private float yOffset;
