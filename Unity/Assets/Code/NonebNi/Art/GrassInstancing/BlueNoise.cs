@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace NonebNi.Art
+namespace NonebNi.Art.GrassInstancing
 {
     // The algorithm is from the "Fast Poisson Disk Sampling in Arbitrary Dimensions" paper by Robert Bridson.
     // https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf

@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
-namespace NonebNi.Art
+namespace NonebNi.Art.GrassInstancing
 {
     [NonebUniversalInspector]
     [ExecuteAlways]
-    public class GrassInstancer : MonoBehaviour
+    public class GrassInstancerRunner : MonoBehaviour
     {
         private static readonly int PerInstanceData = Shader.PropertyToID("_PerInstanceData");
         [SerializeField] private MeshRenderer meshRenderer = null!;
