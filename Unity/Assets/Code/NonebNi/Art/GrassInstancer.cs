@@ -12,19 +12,15 @@ namespace NonebNi.Art
     public class GrassInstancer : MonoBehaviour
     {
         private static readonly int PerInstanceData = Shader.PropertyToID("_PerInstanceData");
-        private static readonly int Color = Shader.PropertyToID("_Color");
         [SerializeField] private MeshRenderer meshRenderer = null!;
         [SerializeField] private Material material = null!;
         [SerializeField] private Mesh toRender = null!;
-        [SerializeField] private Texture2D gradientTexture = null!;
 
         [Delayed] [Min(0.01f)] [SerializeField] private float minDistBetweenInstance;
-        [SerializeField] private Color color;
         [Delayed] [SerializeField] private Vector3 minScale = Vector3.one;
         [Delayed] [SerializeField] private Vector3 maxScale = Vector3.one;
         [Delayed] [SerializeField] private float yOffset;
         [Delayed] [Range(0f, 360f)] [SerializeField] private float rotationRange;
-
 
         private ComputeBuffer? _buffer;
         private bool _dirty = true;
@@ -33,7 +29,6 @@ namespace NonebNi.Art
         private void Update()
         {
             InitRenderPrams();
-            //todo: fish
             if (toRender == null || minDistBetweenInstance <= 0) return;
 
             SetupDrawData();
@@ -107,7 +102,6 @@ namespace NonebNi.Art
             _buffer = new (points.Count, size);
             _buffer.SetData(datas);
             _renderParams.matProps.SetBuffer(PerInstanceData, _buffer);
-            _renderParams.matProps.SetColor(Color, color);
             _dirty = false;
         }
 
