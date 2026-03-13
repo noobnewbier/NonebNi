@@ -3,7 +3,6 @@ using NonebNi.Core.Attributes;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Random = UnityEngine.Random;
 
 namespace NonebNi.Art.GrassInstancing
 {
@@ -15,12 +14,7 @@ namespace NonebNi.Art.GrassInstancing
         [SerializeField] private MeshRenderer meshRenderer = null!;
         [SerializeField] private Material material = null!;
         [SerializeField] private Mesh toRender = null!;
-
-        [Delayed] [Min(0.01f)] [SerializeField] private float minDistBetweenInstance;
-        [Delayed] [SerializeField] private Vector3 minScale = Vector3.one;
-        [Delayed] [SerializeField] private Vector3 maxScale = Vector3.one;
-        [Delayed] [SerializeField] private float yOffset;
-        [Delayed] [Range(0f, 360f)] [SerializeField] private float rotationRange;
+        [SerializeField] private GrassInstancer grassInstancer = new ();
 
         private ComputeBuffer? _buffer;
         private bool _dirty = true;
@@ -29,7 +23,7 @@ namespace NonebNi.Art.GrassInstancing
         private void Update()
         {
             InitRenderPrams();
-            if (toRender == null || minDistBetweenInstance <= 0) return;
+            if (toRender == null) return;
 
             SetupDrawData();
             if (_buffer == null) return;
@@ -72,35 +66,10 @@ namespace NonebNi.Art.GrassInstancing
         private void SetupDrawData()
         {
             if (!_dirty) return;
-            if (minDistBetweenInstance <= 0) minDistBetweenInstance = 0.5f;
+            Discard();
 
-            var bound = new Bounds(Vector3.zero, meshRenderer.bounds.size);
-
-            var points = BlueNoise.Sampling(bound.min, bound.max, minDistBetweenInstance);
-            var datas = new InstanceData[points.Count];
-
-            for (var i = 0; i < datas.Length; i++)
-            {
-                var pt = points[i];
-                var rotInDegree = Random.Range(0, rotationRange);
-
-                var translation = new Vector3(pt.x, pt.y + yOffset, pt.z);
-                var rot = Quaternion.AngleAxis(rotInDegree, Vector3.up);
-                var scale = new Vector3
-                (
-                    Random.Range(minScale.x, maxScale.x),
-                    Random.Range(minScale.y, maxScale.y),
-                    Random.Range(minScale.z, maxScale.z)
-                );
-                datas[i] = new ()
-                {
-                    TRSMatrix = Matrix4x4.TRS(translation, rot, scale)
-                };
-            }
-
-            var size = UnsafeUtility.SizeOf<InstanceData>();
-            _buffer = new (points.Count, size);
-            _buffer.SetData(datas);
+            var bound = meshRenderer.bounds;
+            _buffer = grassInstancer.CreatePlacementBuffer(bound);
             _renderParams.matProps.SetBuffer(PerInstanceData, _buffer);
             _dirty = false;
         }
