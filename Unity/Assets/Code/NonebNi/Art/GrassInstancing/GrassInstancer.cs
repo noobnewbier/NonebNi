@@ -22,14 +22,14 @@ namespace NonebNi.Art.GrassInstancing
 
             var points = BlueNoise.Sampling(bounds.min, bounds.max, minDistBetweenInstance);
             var datas = new InstanceData[points.Count];
-
-            // Note: position is relative
+            
             for (var i = 0; i < datas.Length; i++)
             {
                 var pt = points[i];
                 var rotInDegree = Random.Range(0, rotationRange);
 
-                var translation = new Vector3(pt.x, pt.y + yOffset, pt.z);
+                // Note: position is relative
+                var translation = new Vector3(pt.x, pt.y + yOffset, pt.z) - bounds.center;
                 var rot = Quaternion.AngleAxis(rotInDegree, Vector3.up);
                 var scale = new Vector3
                 (
