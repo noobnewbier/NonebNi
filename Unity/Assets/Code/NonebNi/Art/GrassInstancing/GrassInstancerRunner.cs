@@ -14,7 +14,7 @@ namespace NonebNi.Art.GrassInstancing
         [SerializeField] private MeshRenderer meshRenderer = null!;
         [SerializeField] private Material material = null!;
         [SerializeField] private Mesh toRender = null!;
-        [SerializeField] private GrassInstancer grassInstancer = new ();
+        [SerializeReference, TypePicker] private GrassInstancer grassInstancer = new BlueNoiseInstancer();
 
         private ComputeBuffer? _buffer;
         private bool _dirty = true;
