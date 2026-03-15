@@ -12,9 +12,9 @@ namespace NonebNi.Art.GrassInstancing
         public const int DefaultIterationPerPoint = 30;
 
 
-        public static List<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance) => Sampling(bottomLeft, topRight, minimumDistance, DefaultIterationPerPoint);
+        public static IEnumerable<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance) => Sampling(bottomLeft, topRight, minimumDistance, DefaultIterationPerPoint);
 
-        public static List<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance, int iterationPerPoint)
+        public static IEnumerable<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance, int iterationPerPoint)
         {
             var settings = GetSettings
             (
@@ -29,11 +29,10 @@ namespace NonebNi.Art.GrassInstancing
             var bags = new Bags
             {
                 Grid = new Vector3?[settings.GridWidth + 1, settings.GridHeight + 1, settings.GridDepth + 1],
-                SamplePoints = new (),
                 ActivePoints = new ()
             };
 
-            GetFirstPoint(settings, bags);
+            yield return GetFirstPoint(settings, bags);
 
             do
             {
@@ -41,13 +40,19 @@ namespace NonebNi.Art.GrassInstancing
 
                 var point = bags.ActivePoints[index];
 
-                var found = false;
-                for (var k = 0; k < settings.IterationPerPoint; k++) found |= GetNextPoint(point, settings, bags);
+                bool anyFound = false;
+                for (var k = 0; k < settings.IterationPerPoint; k++)
+                {
+                    var samplePoint = GetNextPoint(point, settings, bags);
+                    anyFound |= samplePoint.HasValue;
+                    if (samplePoint.HasValue)
+                    {
+                        yield return samplePoint.Value;
+                    }
+                }
 
-                if (!found) bags.ActivePoints.RemoveAt(index);
+                if (!anyFound) bags.ActivePoints.RemoveAt(index);
             } while (bags.ActivePoints.Count > 0);
-
-            return bags.SamplePoints;
         }
 
         #region "Structures"
@@ -71,21 +76,19 @@ namespace NonebNi.Art.GrassInstancing
         {
             public List<Vector3> ActivePoints = new ();
             public Vector3?[,,] Grid;
-            public List<Vector3> SamplePoints = new ();
         }
 
         #endregion
 
         #region "Algorithm Calculations"
 
-        private static bool GetNextPoint(Vector3 point, Settings set, Bags bags)
+        private static Vector3? GetNextPoint(Vector3 point, Settings set, Bags bags)
         {
-            var found = false;
             var ptInSphere = Random.onUnitSphere * Random.Range(set.MinimumDistance, 2f * set.MinimumDistance);
 
             var p = new Vector3(ptInSphere.x, 0, ptInSphere.z) + point;
 
-            if (!set.Dimension.Contains(p)) return false;
+            if (!set.Dimension.Contains(p)) return null;
 
             var minimum = set.MinimumDistance * set.MinimumDistance;
             var index = GetGridIndex(p, set);
@@ -105,25 +108,23 @@ namespace NonebNi.Art.GrassInstancing
 
             if (!drop)
             {
-                found = true;
-
-                bags.SamplePoints.Add(p);
                 bags.ActivePoints.Add(p);
                 bags.Grid[index.x, index.y, index.z] = p;
+                return p;
             }
 
-            return found;
+            return null;
         }
 
-        private static void GetFirstPoint(Settings set, Bags bags)
+        private static Vector3 GetFirstPoint(Settings set, Bags bags)
         {
             var first = new Vector3(Random.Range(set.BottomLeft.x, set.TopRight.x), Random.Range(set.BottomLeft.y, set.TopRight.y), Random.Range(set.BottomLeft.z, set.TopRight.z));
 
             var index = GetGridIndex(first, set);
 
             bags.Grid[index.x, index.y, index.z] = first;
-            bags.SamplePoints.Add(first);
             bags.ActivePoints.Add(first);
+            return first;
         }
 
         #endregion

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -18,8 +19,8 @@ namespace NonebNi.Art.GrassInstancing
         {
             if (minDistBetweenInstance <= 0) minDistBetweenInstance = 0.5f;
 
-            var points = BlueNoise.Sampling(bounds.min, bounds.max, minDistBetweenInstance);
-            var datas = new InstanceData[points.Count];
+            var points = BlueNoise.Sampling(bounds.min, bounds.max, minDistBetweenInstance).ToArray();
+            var datas = new InstanceData[points.Length];
 
             for (var i = 0; i < datas.Length; i++)
             {
@@ -42,7 +43,7 @@ namespace NonebNi.Art.GrassInstancing
             }
 
             var size = UnsafeUtility.SizeOf<InstanceData>();
-            var buffer = new ComputeBuffer(points.Count, size);
+            var buffer = new ComputeBuffer(points.Length, size);
             buffer.SetData(datas);
 
             return buffer;
