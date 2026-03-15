@@ -32,6 +32,10 @@ namespace NonebNi.EditorTools.AttributeDrawers
                 case SerializedPropertyType.Vector3:
                     NonebEditorGUI.DelayedVector3Field(position, property, label);
                     break;
+                
+                case SerializedPropertyType.Vector2:
+                    NonebEditorGUI.DelayedVector2Field(position, property, label);
+                    break;
 
                 default:
                     EditorGUI.LabelField(position, label.text, InvalidTypeMessage);
