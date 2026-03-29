@@ -36,22 +36,34 @@ namespace NonebNi.EditorHacks
             else
             {
                 m_Lines = 0;
-                var num = 0.0f;
+                var pulledOffset = 0.0f; // How far we need to pull each item back.
 
                 #region Logic Changed Regions
 
                 var firstEntryX = 0f;
                 var leftPaddingForIndent = 0f;
+                var moreThanOneEntryHack = entries.Count > 1;
                 for (var i = 0; i < entries.Count; i++)
                 {
                     var entry = entries[i];
-                    if (entry.rect.xMax - (double)num > x + (double)width)
+                    /*
+                     * Note:
+                     * Not sure why, but when NonebUniversalInspector is trying to draw buttons,
+                     * and when there's only one buttons(i.e one entries), the following condition can become true,
+                     * meaning there will be more than one lines.
+                     *
+                     * Which makes no sense as we only have one entry, so this is an attempt to make this work in that case.
+                     */
+                    if (moreThanOneEntryHack)
                     {
-                        num = entry.rect.x - entry.marginLeft;
-                        ++m_Lines;
+                        if (entry.rect.xMax - (double)pulledOffset > x + (double)width)
+                        {
+                            pulledOffset = entry.rect.x - entry.marginLeft;
+                            ++m_Lines;
+                        }
                     }
 
-                    var childX = entry.rect.x - num;
+                    var childX = entry.rect.x - pulledOffset;
                     switch (i)
                     {
                         case > 0:
@@ -81,69 +93,73 @@ namespace NonebNi.EditorHacks
         {
             if (entries.Count == 0)
             {
-                maxHeight = minHeight = 0.0f;
+                maxHeight = minHeight = 0;
+                return;
+            }
+
+            m_ChildMinHeight = m_ChildMaxHeight = 0;
+            int topMarginMin = 0, bottomMarginMin = 0;
+            m_StretchableCountY = 0;
+            if (isVertical) { }
+            else
+            {
+                m_LineInfo = new LineInfo[m_Lines];
+                for (int i = 0; i < m_Lines; i++)
+                {
+                    m_LineInfo[i].topBorder = 10000;
+                    m_LineInfo[i].bottomBorder = 10000;
+                }
+
+                // Figure out border values for each line
+                foreach (GUILayoutEntry i in entries)
+                {
+                    i.CalcHeight();
+                    int j = (int)i.rect.y;
+                    m_LineInfo[j].minSize = Mathf.Max(i.minHeight, m_LineInfo[j].minSize);
+                    m_LineInfo[j].maxSize = Mathf.Max(i.maxHeight, m_LineInfo[j].maxSize);
+                    m_LineInfo[j].topBorder = Mathf.Min(i.marginTop, m_LineInfo[j].topBorder);
+                    m_LineInfo[j].bottomBorder = Mathf.Min(i.marginBottom, m_LineInfo[j].bottomBorder);
+                }
+
+                for (int i = 0; i < m_Lines; i++)
+                {
+                    m_ChildMinHeight += m_LineInfo[i].minSize;
+                    m_ChildMaxHeight += m_LineInfo[i].maxSize;
+                }
+
+                // Add in the the extra lines
+                for (int i = 1; i < m_Lines; i++)
+                {
+                    float space = Mathf.Max(m_LineInfo[i - 1].bottomBorder, m_LineInfo[i].topBorder);
+                    m_ChildMinHeight += space;
+                    m_ChildMaxHeight += space;
+                }
+
+                topMarginMin = m_LineInfo[0].topBorder;
+                bottomMarginMin = m_LineInfo[m_LineInfo.Length - 1].bottomBorder;
+            }
+
+            // Do the dance between children & parent for haggling over how many empty pixels to have
+
+            m_MarginTop = topMarginMin;
+            m_MarginBottom = bottomMarginMin;
+            var lastPadding = 0f;
+            var firstPadding = lastPadding;
+
+            minHeight = Mathf.Max(minHeight, m_ChildMinHeight + firstPadding + lastPadding);
+            if (maxHeight == 0)
+            {
+                stretchHeight += m_StretchableCountY + (style.stretchHeight ?
+                    1 :
+                    0);
+                maxHeight = m_ChildMaxHeight + firstPadding + lastPadding;
             }
             else
             {
-                m_ChildMinHeight = m_ChildMaxHeight = 0.0f;
-                var num1 = 0;
-                var num2 = 0;
-                m_StretchableCountY = 0;
-                if (!isVertical)
-                {
-                    m_LineInfo = new LineInfo[m_Lines];
-                    for (var index = 0; index < m_Lines; ++index)
-                    {
-                        m_LineInfo[index].topBorder = 10000;
-                        m_LineInfo[index].bottomBorder = 10000;
-                    }
-
-                    foreach (var entry in entries)
-                    {
-                        entry.CalcHeight();
-                        var y = (int)entry.rect.y;
-                        m_LineInfo[y].minSize = Mathf.Max(entry.minHeight, m_LineInfo[y].minSize);
-                        m_LineInfo[y].maxSize = Mathf.Max(entry.maxHeight, m_LineInfo[y].maxSize);
-                        m_LineInfo[y].topBorder = Mathf.Min(entry.marginTop, m_LineInfo[y].topBorder);
-                        m_LineInfo[y].bottomBorder = Mathf.Min(entry.marginBottom, m_LineInfo[y].bottomBorder);
-                    }
-
-                    for (var index = 0; index < m_Lines; ++index)
-                    {
-                        m_ChildMinHeight += m_LineInfo[index].minSize;
-                        m_ChildMaxHeight += m_LineInfo[index].maxSize;
-                    }
-
-                    for (var index = 1; index < m_Lines; ++index)
-                    {
-                        float num3 = Mathf.Max(m_LineInfo[index - 1].bottomBorder, m_LineInfo[index].topBorder);
-                        m_ChildMinHeight += num3;
-                        m_ChildMaxHeight += num3;
-                    }
-
-                    num1 = m_LineInfo[0].topBorder;
-                    num2 = m_LineInfo[m_LineInfo.Length - 1].bottomBorder;
-                }
-
-                m_MarginTop = num1;
-                m_MarginBottom = num2;
-                float num4;
-                var num5 = num4 = 0.0f;
-                minHeight = Mathf.Max(minHeight, m_ChildMinHeight + num5 + num4);
-                if (maxHeight == 0.0)
-                {
-                    stretchHeight += m_StretchableCountY + (style.stretchHeight ?
-                        1 :
-                        0);
-                    maxHeight = m_ChildMaxHeight + num5 + num4;
-                }
-                else
-                {
-                    stretchHeight = 0;
-                }
-
-                maxHeight = Mathf.Max(maxHeight, minHeight);
+                stretchHeight = 0;
             }
+
+            maxHeight = Mathf.Max(maxHeight, minHeight);
         }
 
         public override void SetVertical(float y, float height)
@@ -181,7 +197,8 @@ namespace NonebNi.EditorHacks
                     if (entry.stretchHeight != 0)
                         entry.SetVertical(lineInfo.start + entry.marginTop, lineInfo.size - entry.marginVertical);
                     else
-                        entry.SetVertical(
+                        entry.SetVertical
+                        (
                             lineInfo.start + entry.marginTop,
                             Mathf.Clamp(lineInfo.size - entry.marginVertical, entry.minHeight, entry.maxHeight)
                         );
