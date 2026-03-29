@@ -74,6 +74,12 @@ namespace NonebNi.Art.GrassInstancing
             _dirty = false;
         }
 
+        [Button(true)]
+        private void Redraw()
+        {
+            _dirty = true;
+        }
+
         private void OnValidate()
         {
             _dirty = true;
