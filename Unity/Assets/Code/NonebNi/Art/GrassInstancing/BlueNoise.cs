@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace NonebNi.Art.GrassInstancing
 {
@@ -12,9 +14,9 @@ namespace NonebNi.Art.GrassInstancing
         public const int DefaultIterationPerPoint = 30;
 
 
-        public static IEnumerable<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance) => Sampling(bottomLeft, topRight, minimumDistance, DefaultIterationPerPoint);
+        public static IEnumerable<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance, Func<Vector3>? startPointFunc = null, Func<Vector3, bool>? sdfFunc = null) => Sampling(bottomLeft, topRight, minimumDistance, DefaultIterationPerPoint, startPointFunc, sdfFunc);
 
-        public static IEnumerable<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance, int iterationPerPoint)
+        public static IEnumerable<Vector3> Sampling(Vector3 bottomLeft, Vector3 topRight, float minimumDistance, int iterationPerPoint, Func<Vector3>? startPointFunc, Func<Vector3, bool>? sdfFunc)
         {
             var settings = GetSettings
             (
@@ -23,7 +25,8 @@ namespace NonebNi.Art.GrassInstancing
                 minimumDistance,
                 iterationPerPoint <= 0 ?
                     DefaultIterationPerPoint :
-                    iterationPerPoint
+                    iterationPerPoint,
+                sdfFunc
             );
 
             var bags = new Bags
@@ -32,7 +35,7 @@ namespace NonebNi.Art.GrassInstancing
                 ActivePoints = new ()
             };
 
-            yield return GetFirstPoint(settings, bags);
+            yield return GetFirstPoint(settings, bags, startPointFunc);
 
             do
             {
@@ -70,6 +73,7 @@ namespace NonebNi.Art.GrassInstancing
 
             public float MinimumDistance;
             public Vector3 TopRight;
+            public Func<Vector3, bool>? SdfFunc;
         }
 
         private class Bags
@@ -87,8 +91,15 @@ namespace NonebNi.Art.GrassInstancing
             var ptInSphere = Random.onUnitSphere * Random.Range(set.MinimumDistance, 2f * set.MinimumDistance);
 
             var p = new Vector3(ptInSphere.x, 0, ptInSphere.z) + point;
-
             if (!set.Dimension.Contains(p)) return null;
+            if (set.SdfFunc != null)
+            {
+                var inside = set.SdfFunc(p);
+                if (!inside)
+                {
+                    return null;
+                }
+            }
 
             var minimum = set.MinimumDistance * set.MinimumDistance;
             var index = GetGridIndex(p, set);
@@ -116,9 +127,11 @@ namespace NonebNi.Art.GrassInstancing
             return null;
         }
 
-        private static Vector3 GetFirstPoint(Settings set, Bags bags)
+        private static Vector3 GetFirstPoint(Settings set, Bags bags, Func<Vector3>? startPointFunc)
         {
-            var first = new Vector3(Random.Range(set.BottomLeft.x, set.TopRight.x), Random.Range(set.BottomLeft.y, set.TopRight.y), Random.Range(set.BottomLeft.z, set.TopRight.z));
+            var first =
+                startPointFunc?.Invoke() ??
+                new Vector3(Random.Range(set.BottomLeft.x, set.TopRight.x), Random.Range(set.BottomLeft.y, set.TopRight.y), Random.Range(set.BottomLeft.z, set.TopRight.z));
 
             var index = GetGridIndex(first, set);
 
@@ -133,7 +146,7 @@ namespace NonebNi.Art.GrassInstancing
 
         private static Vector3Int GetGridIndex(Vector3 point, Settings set) => new (Mathf.FloorToInt((point.x - set.BottomLeft.x) / set.CellSize), Mathf.FloorToInt((point.y - set.BottomLeft.y) / set.CellSize), Mathf.FloorToInt((point.z - set.BottomLeft.z) / set.CellSize));
 
-        private static Settings GetSettings(Vector3 bl, Vector3 tr, float min, int iteration)
+        private static Settings GetSettings(Vector3 bl, Vector3 tr, float min, int iteration, Func<Vector3, bool>? sdfFunc)
         {
             var dimension = tr - bl;
             var cell = min * InvertRootTwo;
@@ -150,6 +163,7 @@ namespace NonebNi.Art.GrassInstancing
 
                 MinimumDistance = min,
                 IterationPerPoint = iteration,
+                SdfFunc = sdfFunc,
 
                 CellSize = cell,
                 GridWidth = Mathf.CeilToInt(dimension.x / cell),
