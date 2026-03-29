@@ -16,7 +16,7 @@ namespace NonebNi.EditorTools.CustomDrawers
     public class NonebUniversalInspector : Editor
     {
         private (MethodInfo method, CallOnEditorEnabledAttribute attribute)[] _calledOnEnabledMethod = Array.Empty<(MethodInfo method, CallOnEditorEnabledAttribute attribute)>();
-        private MethodInfo[] _buttonMethod = Array.Empty<MethodInfo>();
+        private (MethodInfo method, ButtonAttribute attribute)[] _buttonMethods = Array.Empty<(MethodInfo method, ButtonAttribute attribute)>();
         private NonebGUIDrawer _editorDataDrawer = null!;
         private NonebGUIDrawer _mainDrawer = null!;
         private Object _self = null!;
@@ -27,7 +27,7 @@ namespace NonebNi.EditorTools.CustomDrawers
             _editorDataDrawer = new (EditorData.instance);
             _self = target;
 
-            _buttonMethod = ReflectionUtils.GetMethodsByAttribute<ButtonAttribute>(target.GetType()).Select(t => t.method).ToArray();
+            _buttonMethods = ReflectionUtils.GetMethodsByAttribute<ButtonAttribute>(target.GetType()).ToArray();
             CallOnEditorEnabled();
         }
 
@@ -62,16 +62,20 @@ namespace NonebNi.EditorTools.CustomDrawers
 
         private void DrawButtonsMethod()
         {
-            if (!_buttonMethod.Any()) return;
+            if (!_buttonMethods.Any()) return;
 
             using (_editorDataDrawer.BoxScope())
             using (_editorDataDrawer.FlowLayoutScope())
             {
-                foreach (var method in _buttonMethod)
+                foreach (var (method, attribute) in _buttonMethods)
                 {
                     if (_editorDataDrawer.DrawButton(method.Name))
                     {
                         method.Invoke(_self, Array.Empty<object>());
+                        if (attribute.RepaintScene)
+                        {
+                            SceneView.RepaintAll();
+                        }
                     }
                 }
             }
