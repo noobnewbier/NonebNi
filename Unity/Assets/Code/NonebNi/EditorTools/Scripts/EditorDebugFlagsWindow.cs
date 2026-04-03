@@ -2,6 +2,7 @@
 using NonebNi.Main;
 using UnityEditor;
 using UnityEngine;
+using UnityUtils.Editor;
 
 namespace NonebNi.EditorTools
 {
@@ -31,14 +32,20 @@ namespace NonebNi.EditorTools
         private void OnEnable()
         {
             var serializedObject = new SerializedObject(this);
-            _drawer = new NonebGUIDrawer(serializedObject);
+            _drawer = new (serializedObject);
         }
 
         private void OnGUI()
         {
             EditorGUILayout.Space(10);
 
-            if (_debugFlagRepository == null || _drawer == null)
+            if (_drawer == null)
+            {
+                GUILayout.Label("Initializing...");
+                return;
+            }
+
+            if (_debugFlagRepository == null)
             {
                 GUILayout.Label("Debug Flags is only active during play mode and when the active scene is a level");
                 return;
