@@ -17,6 +17,7 @@ namespace NonebNi.Art.GrassInstancing
         public ComputeBuffer CreatePlacementBuffer(Bounds bounds)
         {
             GizmosDrawer.Dismiss(this);
+            using (GizmosDrawer.Category("GrassInstancing"))
             using (GizmosDrawer.ForeverTillDismiss(this))
             {
                 var points = placer.CreatePointsData(bounds, bounds.center).ToArray();

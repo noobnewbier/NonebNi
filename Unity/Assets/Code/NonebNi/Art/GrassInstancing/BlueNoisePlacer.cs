@@ -61,6 +61,7 @@ namespace NonebNi.Art.GrassInstancing
                 {
                     var pt = points[i];
                     var rotInDegree = Random.Range(0, rotationRange);
+                    GizmosDrawer.DrawSphere(pt);
 
                     // Note: position is relative
                     var scale = new Vector3
@@ -70,7 +71,7 @@ namespace NonebNi.Art.GrassInstancing
                         Random.Range(minScale.z, maxScale.z)
                     );
                     var translation = new Vector3(pt.x, pt.y + yOffsetRatio * scale.y, pt.z) - center;
-                    var rot = Quaternion.AngleAxis(rotInDegree, Vector3.up);
+                    var rot = Quaternion.AngleAxis(rotInDegree, Vector3.forward);
                     datas[i] = new ()
                     {
                         TRSMatrix = Matrix4x4.TRS(translation, rot, scale)
