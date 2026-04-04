@@ -3,6 +3,7 @@ using NonebNi.Main;
 using UnityEditor;
 using UnityEngine;
 using UnityUtils.Editor;
+using UnityUtils.GizmosDrawers.Editor;
 
 namespace NonebNi.EditorTools
 {
@@ -45,22 +46,38 @@ namespace NonebNi.EditorTools
                 return;
             }
 
-            if (_debugFlagRepository == null)
-            {
-                GUILayout.Label("Debug Flags is only active during play mode and when the active scene is a level");
-                return;
-            }
+            _drawer.DrawToolbar
+            (
+                (
+                    "Debug Flags",
+                    () =>
+                    {
+                        if (_debugFlagRepository == null)
+                        {
+                            GUILayout.Label("Debug Flags is only active during play mode and when the active scene is a level");
+                            return;
+                        }
 
-            using (_drawer.FlowLayoutScope())
-            {
-                foreach (var (flag, value) in _debugFlagRepository.GetAll())
-                {
-                    var newValue = _drawer.DrawToggle(flag, value);
-                    if (newValue == value) continue;
+                        using (_drawer.FlowLayoutScope())
+                        {
+                            foreach (var (flag, value) in _debugFlagRepository.GetAll())
+                            {
+                                var newValue = _drawer.DrawToggle(flag, value);
+                                if (newValue == value) continue;
 
-                    _debugFlagRepository.Set(flag, newValue);
-                }
-            }
+                                _debugFlagRepository.Set(flag, newValue);
+                            }
+                        }
+                    }
+                ),
+                (
+                    "Gizmos",
+                    () =>
+                    {
+                        _drawer.DrawGizmosDrawerSettings();
+                    }
+                )
+            );
         }
 
         [MenuItem("NonebNi/DebugPreference")]
