@@ -4,6 +4,7 @@
 struct InstanceData
 {
     float4x4 trsMatrix; // we expect this to be relative to the object position.
+    float rotateInCameraAxis; // in radians
 };
 
 StructuredBuffer<InstanceData> _PerInstanceData;

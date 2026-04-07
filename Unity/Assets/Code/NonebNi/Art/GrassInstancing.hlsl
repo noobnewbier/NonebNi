@@ -38,12 +38,13 @@ float inverseLerp(float from, float to, float value)
     return interpolate;
 }
 
-void Instancing_float(float3 pos, float instanceId, out float3 outPos, out float3 outNormal, out float3 outInstanceRootPos)
+void Instancing_float(float3 pos, float instanceId, out float3 outPos, out float outRotationInCameraAxis, out float3 outNormal, out float3 outInstanceRootPos)
 {
     InstanceData data = _PerInstanceData[instanceId];
     VertInstancingSetup(data);
 
     outPos = pos;
+    outRotationInCameraAxis = data.rotateInCameraAxis;
     //todo: normal feels wrong
     outNormal = mul(data.trsMatrix, float4(0., 1., 0., 0.)).xyz;
     outInstanceRootPos = data.trsMatrix._14_24_34;
@@ -82,10 +83,10 @@ void ShadowColor_float(float3 baseColor,
     float isShaded = step(firstShadeStep, shadowStrength);
 
     float3 diffuse = lerp(baseColor, shadeColor, isShaded);
-    
+
     float nDotL = saturate(dot(normalWs, lightDirection));
     float halfLambert = pow(nDotL * 0.5 + 0.5, 2.);
-    float3 halfLambertDiffuse =  diffuse * (lightColor * halfLambert);
+    float3 halfLambertDiffuse = diffuse * (lightColor * halfLambert);
 
     finalColor = halfLambertDiffuse;
 }

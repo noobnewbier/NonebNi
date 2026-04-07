@@ -38,6 +38,7 @@ namespace NonebNi.Art.GrassInstancing
             public struct InstanceData
             {
                 public Matrix4x4 TRSMatrix;
+                public float RotateInCameraAxis;
             }
         }
     }
