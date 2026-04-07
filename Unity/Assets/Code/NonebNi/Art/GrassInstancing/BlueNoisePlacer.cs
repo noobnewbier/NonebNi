@@ -60,10 +60,10 @@ namespace NonebNi.Art.GrassInstancing
                 for (var i = 0; i < datas.Length; i++)
                 {
                     var pt = points[i];
-                    GizmosDrawer.DrawSphere(pt);
                     var range = rotationRange / 2f;
                     var rotInDegree = Random.Range(-range, range);
                     var rotInRadians = rotInDegree * Mathf.Deg2Rad;
+                    GizmosDrawer.DrawSphere(pt, label: $"{rotInDegree}");
 
                     // Note: position is relative
                     var scale = new Vector3
