@@ -563,8 +563,8 @@
     "m_ObjectId": "2925233ae90446319b261978d8b7e040",
     "m_Title": "Rotate to give more variation without more sprites",
     "m_Position": {
-        "x": -1254.0,
-        "y": -547.3333129882813
+        "x": -1254.0001220703125,
+        "y": -547.3333740234375
     }
 }
 
@@ -591,7 +591,7 @@
     "m_Title": "Cancelling the view matrix which would be done by Unity's ShaderGraph  by default",
     "m_Position": {
         "x": -577.3333740234375,
-        "y": -558.0
+        "y": -558.0001220703125
     }
 }
 
@@ -707,7 +707,7 @@
     "m_Title": "Applying the translation in the TRS for billboard effect",
     "m_Position": {
         "x": 993.333251953125,
-        "y": -540.6666259765625
+        "y": -540.666748046875
     }
 }
 
@@ -1156,8 +1156,8 @@
     "m_ObjectId": "733f80d8026a4b86a30c9ded086442e0",
     "m_Title": "Adding the object position offset",
     "m_Position": {
-        "x": 463.333251953125,
-        "y": -543.3333129882813
+        "x": 463.33349609375,
+        "y": -543.3333740234375
     }
 }
 
@@ -1167,8 +1167,8 @@
     "m_ObjectId": "75dbc042771f42a088b448a4955bb214",
     "m_Title": "Taking object scale into account",
     "m_Position": {
-        "x": -1857.3333740234375,
-        "y": -558.0
+        "x": -1857.33349609375,
+        "y": -558.0001220703125
     }
 }
 

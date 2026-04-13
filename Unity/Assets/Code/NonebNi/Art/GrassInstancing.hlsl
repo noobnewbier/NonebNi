@@ -38,7 +38,7 @@ float inverseLerp(float from, float to, float value)
     return interpolate;
 }
 
-void Instancing_float(float3 pos, float instanceId, out float3 outPos, out float outRotationInCameraAxis, out float3 outNormal, out float3 outInstanceRootPos)
+void Instancing_float(float3 pos, float instanceId, out float3 outPos, out float outRotationInCameraAxis, out float3 outNormal)
 {
     InstanceData data = _PerInstanceData[instanceId];
     VertInstancingSetup(data);
@@ -47,7 +47,6 @@ void Instancing_float(float3 pos, float instanceId, out float3 outPos, out float
     outRotationInCameraAxis = data.rotateInCameraAxis;
     //todo: normal feels wrong
     outNormal = mul(data.trsMatrix, float4(0., 1., 0., 0.)).xyz;
-    outInstanceRootPos = data.trsMatrix._14_24_34;
 }
 
 
