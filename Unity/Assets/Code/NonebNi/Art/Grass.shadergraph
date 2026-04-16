@@ -64,9 +64,6 @@
             "m_Id": "cc6941182553465fa11a51766d8fd4ad"
         },
         {
-            "m_Id": "0d6a4bc1cc0c45caba480c9386c905ab"
-        },
-        {
             "m_Id": "0d5917e437ca44f19409fae2f8def450"
         },
         {
@@ -156,20 +153,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "6cbd187c7ead4fbeb700fe87c7573115"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "3e9382916b344d14bc2269bf9b8f9b8f"
-                },
-                "m_SlotId": 1
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "0d6a4bc1cc0c45caba480c9386c905ab"
                 },
                 "m_SlotId": 0
             }
@@ -582,55 +565,6 @@
 }
 
 {
-    "m_SGVersion": 2,
-    "m_Type": "UnityEditor.ShaderGraph.TransformNode",
-    "m_ObjectId": "0d6a4bc1cc0c45caba480c9386c905ab",
-    "m_Group": {
-        "m_Id": "31bbad483d564d0fa2e208796d3d66ca"
-    },
-    "m_Name": "Transform",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -558.6666870117188,
-            "y": -481.33331298828127,
-            "width": 216.00003051757813,
-            "height": 158.66665649414063
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "308f652fbff14563aa8985779738d06c"
-        },
-        {
-            "m_Id": "334c9ebcf05046d7878b0381dcc65a47"
-        }
-    ],
-    "synonyms": [
-        "world",
-        "tangent",
-        "object",
-        "view",
-        "screen",
-        "convert"
-    ],
-    "m_Precision": 0,
-    "m_PreviewExpanded": false,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_Conversion": {
-        "from": 0,
-        "to": 2
-    },
-    "m_ConversionType": 0,
-    "m_Normalize": true
-}
-
-{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.RedirectNodeData",
     "m_ObjectId": "12335ae6966c4b0285e8b987132d50a5",
@@ -1032,59 +966,13 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "308f652fbff14563aa8985779738d06c",
-    "m_Id": 0,
-    "m_DisplayName": "In",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "In",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "31bbad483d564d0fa2e208796d3d66ca",
     "m_Title": "Setup for Instancing",
     "m_Position": {
         "x": -1603.3333740234375,
-        "y": -628.6666259765625
+        "y": -628.666748046875
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "334c9ebcf05046d7878b0381dcc65a47",
-    "m_Id": 1,
-    "m_DisplayName": "Out",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Out",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
 }
 
 {
@@ -2442,8 +2330,8 @@
     "m_ObjectId": "ed9e8117a248431586f2d6325f8a83d7",
     "m_Title": "Sampling texture to make grass balde",
     "m_Position": {
-        "x": -351.9999084472656,
-        "y": 363.33331298828127
+        "x": -351.9998779296875,
+        "y": 363.333251953125
     }
 }
 
