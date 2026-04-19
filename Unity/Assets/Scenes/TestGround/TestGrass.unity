@@ -119,73 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &6185922
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6185923}
-  - component: {fileID: 6185924}
-  m_Layer: 0
-  m_Name: t.5
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &6185923
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6185922}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 342066229}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6185924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6185922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21193e1dbe9b4dd3b17c44b03255eafa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: NonebNi.Art::NonebNi.Art.GrassInstancer
-  meshRenderer: {fileID: 900209026}
-  material: {fileID: 2100000, guid: e2b02ea60c437ba42a33235ceb391ad1, type: 2}
-  toRender: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  grassInstancer:
-    rid: 407804037965545559
-  references:
-    version: 2
-    RefIds:
-    - rid: 407804037965545559
-      type: {class: GrassInstancer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
-      data:
-        placer:
-          rid: 407804037965545560
-    - rid: 407804037965545560
-      type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
-      data:
-        minDistBetweenInstance: 0.5
-        minScale: {x: 1, y: 1, z: 1}
-        maxScale: {x: 1, y: 1, z: 1}
-        yOffsetRatio: 0.5
-        rotationRange: 0
-        patchScaleFactor: {x: 0, y: 0, z: 0}
-        sdfType: 0
 --- !u!1 &21999121
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,12 +130,12 @@ GameObject:
   - component: {fileID: 21999122}
   - component: {fileID: 21999123}
   m_Layer: 0
-  m_Name: Grass7
+  m_Name: Grass8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &21999122
 Transform:
   m_ObjectHideFlags: 0
@@ -231,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: NonebNi.Art::NonebNi.Art.GrassInstancer
   meshRenderer: {fileID: 900209026}
-  material: {fileID: 2100000, guid: e2b02ea60c437ba42a33235ceb391ad1, type: 2}
+  material: {fileID: 2100000, guid: 525155efda8ab9544964fd1cd85c4fa0, type: 2}
   toRender: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   grassInstancer:
     rid: 3358123094645932123
@@ -242,17 +175,26 @@ MonoBehaviour:
       type: {class: GrassInstancer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
       data:
         placer:
-          rid: 3358123094645932124
-    - rid: 3358123094645932124
+          rid: 3358123297868873728
+    - rid: 3358123297868873728
+      type: {class: GrassInstancer/PatchPlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
+      data:
+        instancer:
+          rid: 3358123297868873729
+        patchCount: 50
+        minPatchDistance: 18.4
+        basePatchSize: {x: 5, y: 5}
+        randomPatchSizeOffset: {x: 1, y: 1}
+    - rid: 3358123297868873729
       type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
       data:
-        minDistBetweenInstance: 3
-        minScale: {x: 1.5, y: 1.5, z: 1.5}
-        maxScale: {x: 1.5, y: 1.5, z: 1.5}
-        yOffsetRatio: 0.75
-        rotationRange: 40
+        minDistBetweenInstance: 2.87
+        minScale: {x: 1, y: 1, z: 1}
+        maxScale: {x: 2, y: 2, z: 2}
+        yOffsetRatio: 0.5
+        rotationRange: 80
         patchScaleFactor: {x: 0, y: 0, z: 0}
-        sdfType: 0
+        sdfType: 1
 --- !u!1 &67803325
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,73 +253,6 @@ MonoBehaviour:
         placer:
           rid: 3358123297379975255
     - rid: 3358123297379975255
-      type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
-      data:
-        minDistBetweenInstance: 0.5
-        minScale: {x: 1, y: 1, z: 1}
-        maxScale: {x: 1, y: 1, z: 1}
-        yOffsetRatio: 0.5
-        rotationRange: 0
-        patchScaleFactor: {x: 0, y: 0, z: 0}
-        sdfType: 0
---- !u!1 &123534879
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 123534880}
-  - component: {fileID: 123534881}
-  m_Layer: 0
-  m_Name: t.6
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &123534880
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123534879}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 342066229}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &123534881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123534879}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21193e1dbe9b4dd3b17c44b03255eafa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: NonebNi.Art::NonebNi.Art.GrassInstancer
-  meshRenderer: {fileID: 900209026}
-  material: {fileID: 2100000, guid: e2b02ea60c437ba42a33235ceb391ad1, type: 2}
-  toRender: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  grassInstancer:
-    rid: 407804037965545557
-  references:
-    version: 2
-    RefIds:
-    - rid: 407804037965545557
-      type: {class: GrassInstancer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
-      data:
-        placer:
-          rid: 407804037965545558
-    - rid: 407804037965545558
       type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
       data:
         minDistBetweenInstance: 0.5
@@ -556,9 +431,6 @@ Transform:
   - {fileID: 1160647647}
   - {fileID: 900209024}
   - {fileID: 617118356}
-  - {fileID: 801743831}
-  - {fileID: 6185923}
-  - {fileID: 123534880}
   - {fileID: 1888560690}
   - {fileID: 854048077}
   m_Father: {fileID: 2095462213}
@@ -1010,73 +882,6 @@ MonoBehaviour:
         rotationRange: 0
         patchScaleFactor: {x: 1, y: 1, z: 1}
         sdfType: 0
---- !u!1 &801743830
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 801743831}
-  - component: {fileID: 801743832}
-  m_Layer: 0
-  m_Name: t.4
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &801743831
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801743830}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 342066229}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &801743832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 801743830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21193e1dbe9b4dd3b17c44b03255eafa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: NonebNi.Art::NonebNi.Art.GrassInstancer
-  meshRenderer: {fileID: 900209026}
-  material: {fileID: 2100000, guid: e2b02ea60c437ba42a33235ceb391ad1, type: 2}
-  toRender: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  grassInstancer:
-    rid: 407804037965545561
-  references:
-    version: 2
-    RefIds:
-    - rid: 407804037965545561
-      type: {class: GrassInstancer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
-      data:
-        placer:
-          rid: 407804037965545562
-    - rid: 407804037965545562
-      type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
-      data:
-        minDistBetweenInstance: 0.5
-        minScale: {x: 1, y: 1, z: 1}
-        maxScale: {x: 1, y: 1, z: 1}
-        yOffsetRatio: 0.5
-        rotationRange: 0
-        patchScaleFactor: {x: 0, y: 0, z: 0}
-        sdfType: 0
 --- !u!1 &854048076
 GameObject:
   m_ObjectHideFlags: 0
@@ -1499,7 +1304,7 @@ Transform:
   m_GameObject: {fileID: 1078603963}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.8999977, y: 0, z: 39.629997}
+  m_LocalPosition: {x: 1.5, y: 0, z: -12.5}
   m_LocalScale: {x: 11.01, y: 11.01, z: 11.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1612,13 +1417,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126384934}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.064924896, y: -0, z: -0, w: 0.9978902}
-  m_LocalPosition: {x: -22.52, y: 2.1599998, z: 0.4299984}
+  m_LocalRotation: {x: 0.14490066, y: -0, z: -0, w: 0.9894462}
+  m_LocalPosition: {x: -3.2, y: 2.1599998, z: 0.5}
   m_LocalScale: {x: 3.68, y: 8.160003, z: 3.68}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1248884285}
-  m_LocalEulerAnglesHint: {x: -7.445, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 16.663, y: 0, z: 0}
 --- !u!1 &1160647646
 GameObject:
   m_ObjectHideFlags: 0
@@ -1777,7 +1582,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1248884285
 Transform:
   m_ObjectHideFlags: 0
@@ -1903,13 +1708,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415070429}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0064397175, y: 0.7023178, z: 0.60895115, w: 0.36862832}
-  m_LocalPosition: {x: 28.93, y: 4.9, z: -32.93}
+  m_LocalRotation: {x: 0.19810537, y: 0.7565461, z: 0.60998815, w: 0.12769818}
+  m_LocalPosition: {x: 15, y: 4.9, z: -19.5}
   m_LocalScale: {x: 4, y: 12.570755, z: 17.617956}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1248884285}
-  m_LocalEulerAnglesHint: {x: -58.278, y: 88.538, z: 60.581}
+  m_LocalEulerAnglesHint: {x: -60.736, y: 117.169, z: 68.73}
 --- !u!1 &1577034261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2026,7 +1831,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 13.18
+  orthographic size: 24.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2051,7 +1856,7 @@ Transform:
   m_GameObject: {fileID: 1763550702}
   serializedVersion: 2
   m_LocalRotation: {x: 0.23911765, y: 0.3696438, z: -0.09904577, w: 0.89239913}
-  m_LocalPosition: {x: -18, y: 15, z: -18}
+  m_LocalPosition: {x: -25.5, y: 23, z: -35.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2074,7 +1879,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras: []
-  m_RendererIndex: -1
+  m_RendererIndex: 1
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -2207,7 +2012,7 @@ Transform:
   m_GameObject: {fileID: 1827946646}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.5, y: 0, z: -2.1100006}
+  m_LocalPosition: {x: 12.7, y: 0, z: 2.5}
   m_LocalScale: {x: 4, y: 9.22, z: 4.6764}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2614,7 +2419,7 @@ Transform:
   m_GameObject: {fileID: 2034835554}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.44605127, z: -0, w: 0.89500743}
-  m_LocalPosition: {x: -33.37, y: 0, z: -32.93}
+  m_LocalPosition: {x: -11.1, y: 0, z: -15.8}
   m_LocalScale: {x: 4, y: 7.016977, z: 4.6764}
   m_ConstrainProportionsScale: 0
   m_Children: []
