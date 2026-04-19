@@ -970,8 +970,8 @@
     "m_ObjectId": "31bbad483d564d0fa2e208796d3d66ca",
     "m_Title": "Setup for Instancing",
     "m_Position": {
-        "x": -1603.3333740234375,
-        "y": -628.666748046875
+        "x": -1603.33349609375,
+        "y": -628.6666870117188
     }
 }
 
@@ -2330,8 +2330,8 @@
     "m_ObjectId": "ed9e8117a248431586f2d6325f8a83d7",
     "m_Title": "Sampling texture to make grass balde",
     "m_Position": {
-        "x": -351.9998779296875,
-        "y": 363.333251953125
+        "x": -352.0,
+        "y": 363.3333740234375
     }
 }
 

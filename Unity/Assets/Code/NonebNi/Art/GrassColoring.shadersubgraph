@@ -1207,8 +1207,8 @@
     "m_ObjectId": "4eb6828f4d194264848c4cd51d17f9cd",
     "m_Title": "Shade Banding",
     "m_Position": {
-        "x": -235.33319091796876,
-        "y": -265.99993896484377
+        "x": -235.333251953125,
+        "y": -266.0000305175781
     }
 }
 
@@ -1521,8 +1521,8 @@
     "m_ObjectId": "686a7a5acdb049aeb1da780fe71da0b7",
     "m_Title": "Sample gradient texture for the color",
     "m_Position": {
-        "x": -1342.6666259765625,
-        "y": -452.0
+        "x": -1342.66650390625,
+        "y": -452.00006103515627
     }
 }
 
@@ -1533,7 +1533,7 @@
     "m_Title": "Random input + Rescaling input to control color banding",
     "m_Position": {
         "x": -2899.999755859375,
-        "y": -459.9999694824219
+        "y": -460.0000305175781
     }
 }
 
