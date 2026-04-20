@@ -106,9 +106,6 @@
             "m_Id": "d25b28d5b0f042c383734a343804f602"
         },
         {
-            "m_Id": "396536597a3040d7a118c87df311ad9d"
-        },
-        {
             "m_Id": "169e29cf765040e18556392ff8964bfd"
         },
         {
@@ -162,7 +159,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "396536597a3040d7a118c87df311ad9d"
+                    "m_Id": "e291c10eaf624c0fbedfaea8fe4fdfbf"
                 },
                 "m_SlotId": 0
             }
@@ -191,20 +188,6 @@
             "m_InputSlot": {
                 "m_Node": {
                     "m_Id": "6cbd187c7ead4fbeb700fe87c7573115"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "396536597a3040d7a118c87df311ad9d"
-                },
-                "m_SlotId": 1
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "e291c10eaf624c0fbedfaea8fe4fdfbf"
                 },
                 "m_SlotId": 0
             }
@@ -1267,8 +1250,8 @@
     "m_ObjectId": "31bbad483d564d0fa2e208796d3d66ca",
     "m_Title": "Setup for Instancing",
     "m_Position": {
-        "x": -2284.666748046875,
-        "y": -803.333251953125
+        "x": -2284.66650390625,
+        "y": -803.3333129882813
     }
 }
 
@@ -1366,42 +1349,6 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "VertexDescription.Tangent"
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.RedirectNodeData",
-    "m_ObjectId": "396536597a3040d7a118c87df311ad9d",
-    "m_Group": {
-        "m_Id": "31bbad483d564d0fa2e208796d3d66ca"
-    },
-    "m_Name": "Redirect Node",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -1054.6668701171875,
-            "y": -228.6666717529297,
-            "width": 56.00006103515625,
-            "height": 23.999984741210939
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "52687f0f4c6a43fc9f2452d820c533ea"
-        },
-        {
-            "m_Id": "c76b652756484c8a89fe61be62e00e1b"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    }
 }
 
 {
@@ -1675,31 +1622,6 @@
     "m_ShaderOutputName": "Sampler",
     "m_StageCapability": 3,
     "m_BareResource": false
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
-    "m_ObjectId": "52687f0f4c6a43fc9f2452d820c533ea",
-    "m_Id": 0,
-    "m_DisplayName": "",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_LiteralMode": false
 }
 
 {
@@ -2469,31 +2391,6 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
-    "m_ObjectId": "c76b652756484c8a89fe61be62e00e1b",
-    "m_Id": 1,
-    "m_DisplayName": "",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_LiteralMode": true
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "cb0a26c46da44f63857725d2c7571b49",
     "m_Id": 1,
     "m_DisplayName": "",
@@ -3143,8 +3040,8 @@
     "m_ObjectId": "ed9e8117a248431586f2d6325f8a83d7",
     "m_Title": "Sampling texture to make grass balde",
     "m_Position": {
-        "x": -351.9999084472656,
-        "y": 363.333251953125
+        "x": -352.0,
+        "y": 363.3332214355469
     }
 }
 
