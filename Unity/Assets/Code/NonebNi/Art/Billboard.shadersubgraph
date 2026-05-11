@@ -716,8 +716,8 @@
     "m_ObjectId": "2925233ae90446319b261978d8b7e040",
     "m_Title": "Rotate to give more variation without more sprites",
     "m_Position": {
-        "x": -1253.9998779296875,
-        "y": -598.6666259765625
+        "x": -1254.000244140625,
+        "y": -598.666748046875
     }
 }
 
@@ -743,8 +743,8 @@
     "m_ObjectId": "2b010f22ab064f5fbabd3b40c52ae0ba",
     "m_Title": "Cancelling the view matrix which would be done by Unity's ShaderGraph  by default",
     "m_Position": {
-        "x": -577.3333740234375,
-        "y": -547.333251953125
+        "x": -577.33349609375,
+        "y": -547.3333740234375
     }
 }
 
@@ -859,8 +859,8 @@
     "m_ObjectId": "348b6d912fd142f690533419f6692856",
     "m_Title": "Applying the translation in the TRS for billboard effect",
     "m_Position": {
-        "x": 993.3333129882813,
-        "y": -540.6666259765625
+        "x": 993.3335571289063,
+        "y": -540.666748046875
     }
 }
 
@@ -1124,7 +1124,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "_Radians",
     "m_StageCapability": 3,
-    "m_Value": 0.0,
+    "m_Value": 2.0,
     "m_DefaultValue": 0.0,
     "m_Labels": [],
     "m_LiteralMode": false
@@ -1513,8 +1513,8 @@
     "m_ObjectId": "66eb6f499bde44c7a78476cea67343d7",
     "m_Title": "Calculating the pivot",
     "m_Position": {
-        "x": -2632.66650390625,
-        "y": -241.99993896484376
+        "x": -2632.6669921875,
+        "y": -241.99996948242188
     }
 }
 
@@ -1621,8 +1621,8 @@
     "m_ObjectId": "733f80d8026a4b86a30c9ded086442e0",
     "m_Title": "Adding the object position offset",
     "m_Position": {
-        "x": 463.3334045410156,
-        "y": -543.333251953125
+        "x": 463.3335266113281,
+        "y": -543.3333740234375
     }
 }
 
@@ -1671,8 +1671,8 @@
     "m_ObjectId": "75dbc042771f42a088b448a4955bb214",
     "m_Title": "Taking object scale into account",
     "m_Position": {
-        "x": -1864.666748046875,
-        "y": -599.3333129882813
+        "x": -1864.6668701171875,
+        "y": -599.3333740234375
     }
 }
 

@@ -110,6 +110,9 @@
         },
         {
             "m_Id": "fee1a75d6f1743c1a7c30e389a5a8a57"
+        },
+        {
+            "m_Id": "7cf96d19a346438f8b3bb5a86dc403dd"
         }
     ],
     "m_GroupDatas": [
@@ -524,6 +527,9 @@
             },
             {
                 "m_Id": "183e7f4702f8432cbf59d507e19829f6"
+            },
+            {
+                "m_Id": "7cf96d19a346438f8b3bb5a86dc403dd"
             }
         ]
     },
@@ -624,6 +630,22 @@
         "m_Guid": ""
     },
     "m_DefaultType": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "0a4960f134004b4b85e7fc402ffae91a",
+    "m_Id": 0,
+    "m_DisplayName": "Linear01 Depth",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "FullscreenLinear01Depth",
+    "m_StageCapability": 2,
+    "m_Value": 1.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1250,8 +1272,8 @@
     "m_ObjectId": "31bbad483d564d0fa2e208796d3d66ca",
     "m_Title": "Setup for Instancing",
     "m_Position": {
-        "x": -2284.66650390625,
-        "y": -803.3333129882813
+        "x": -2284.6669921875,
+        "y": -803.3333740234375
     }
 }
 
@@ -1388,10 +1410,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -857.3331909179688,
-            "y": -569.3333129882813,
+            "x": -857.333251953125,
+            "y": -569.3333740234375,
             "width": 276.66656494140627,
-            "height": 121.33331298828125
+            "height": 121.33334350585938
         }
     },
     "m_Slots": [
@@ -1702,7 +1724,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "_RotateStrength",
     "m_StageCapability": 3,
-    "m_Value": 0.15000000596046449,
+    "m_Value": 0.25,
     "m_DefaultValue": 0.0,
     "m_Labels": [],
     "m_LiteralMode": false
@@ -1773,7 +1795,7 @@
         "HLSL"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -1894,6 +1916,22 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "6d9a17fabe49454891e629096a003ed9",
+    "m_Id": -415259093,
+    "m_DisplayName": "MovementPerSec",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "_MovementPerSec",
+    "m_StageCapability": 3,
+    "m_Value": 0.10000000149011612,
+    "m_DefaultValue": 0.0,
+    "m_Labels": [],
+    "m_LiteralMode": false
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "71da400b4b6246c089d7d6f289f0c4ee",
     "m_Id": 3,
@@ -1996,6 +2034,40 @@
         "w": 0.0
     },
     "m_LiteralMode": false
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
+    "m_ObjectId": "7cf96d19a346438f8b3bb5a86dc403dd",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "SurfaceDescription.FullscreenLinear01Depth",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": 478.66668701171877,
+            "y": 291.3333435058594,
+            "width": 200.00006103515626,
+            "height": 42.66668701171875
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "0a4960f134004b4b85e7fc402ffae91a"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SerializedDescriptor": "SurfaceDescription.FullscreenLinear01Depth"
 }
 
 {
@@ -2106,15 +2178,18 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1431.3333740234375,
-            "y": -582.0,
-            "width": 262.0,
-            "height": 97.33331298828125
+            "x": -1431.33349609375,
+            "y": -579.3333129882813,
+            "width": 274.666748046875,
+            "height": 121.33331298828125
         }
     },
     "m_Slots": [
         {
             "m_Id": "5f3523d231d1425c885130449249cec9"
+        },
+        {
+            "m_Id": "6d9a17fabe49454891e629096a003ed9"
         },
         {
             "m_Id": "cb549fe7d6de49fe976188231ebfda3a"
@@ -2131,11 +2206,13 @@
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"7654316f3e1e7484bb5d9c7f585a537b\",\n        \"type\": 3\n    }\n}",
     "m_PropertyGuids": [
         "e95189b8-5646-4bb0-8ab8-ac13b9e833b0",
-        "c1860ea8-6842-4f6f-8f07-f9a72edcf588"
+        "c1860ea8-6842-4f6f-8f07-f9a72edcf588",
+        "1d80d3d5-f7d6-4038-b865-a7f190e7204b"
     ],
     "m_PropertyIds": [
         25071565,
-        -1578779317
+        -1578779317,
+        -415259093
     ],
     "m_Dropdowns": [],
     "m_DropdownSelectedEntries": []
@@ -3040,8 +3117,8 @@
     "m_ObjectId": "ed9e8117a248431586f2d6325f8a83d7",
     "m_Title": "Sampling texture to make grass balde",
     "m_Position": {
-        "x": -352.0,
-        "y": 363.3332214355469
+        "x": -352.0001220703125,
+        "y": 363.3333740234375
     }
 }
 
