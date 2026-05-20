@@ -13,6 +13,9 @@ namespace NonebNi.Art.Pixelation
     public class DownSampleRenderFeature : ScriptableRendererFeature
     {
         [SerializeField] private Settings settings = new ();
+ 
+        public Vector2Int RenderSize => settings.RenderSize;
+
         private RenderPass _downsamplePass = null!;
 
         public override void Create()
@@ -31,8 +34,24 @@ namespace NonebNi.Art.Pixelation
         [Serializable]
         private class Settings
         {
-            public int width = 640;
-            public int height = 360;
+            [Min(1)] public int downScaleStrength = 3;
+
+            public Vector2Int RenderSize
+            {
+                get
+                {
+                    /*
+                     * TODO:
+                     * If the result here is not an integer, we will get weird artefacts.
+                     * I am unsure how to resolve it. But at the same time, this is not our priority.
+                     * We need to get this pretty first, and if it *is* a problem, we can deal with it later.
+                     * (most likely by changing camera size according to the resolution/ratio somehow?)
+                     */
+                    var ratioFrom1920 = (float)Screen.width / 1920;
+                    var strength = downScaleStrength * ratioFrom1920;
+                    return new ((int)(Screen.width / strength), (int)(Screen.height / strength));
+                }
+            }
         }
 
         private class RenderPass : ScriptableRenderPass
@@ -56,8 +75,8 @@ namespace NonebNi.Art.Pixelation
 
                 var cameraData = frameData.Get<UniversalCameraData>();
 
-                // Low resolution scene color using Bilinear filtering to ensure Sharp Upscale works correctly.
-                var lowResDesc = new TextureDesc(_settings.width, _settings.height)
+                // Low resolution scene color using Bilinear filtering to ensure Sharp Upscale works correctly. TODO: WHY? why bilinear filtering?
+                var lowResDesc = new TextureDesc(_settings.RenderSize.x, _settings.RenderSize.y)
                 {
                     colorFormat = cameraData.cameraTargetDescriptor.graphicsFormat,
                     depthBufferBits = DepthBits.None,
@@ -78,7 +97,6 @@ namespace NonebNi.Art.Pixelation
 
                     builder.SetRenderFunc(static (PassData data, RasterGraphContext context) => ExecutePass(data, context));
 
-                    //TODO: just pass data here
                     var textureData = frameData.GetOrCreate<TextureData>();
                     textureData.Handle = passData.Destination;
                 }
