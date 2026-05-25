@@ -6,13 +6,17 @@ Tech Reference:
 https://jorenjoestar.github.io/post/pixel_art_filtering/
 https://www.youtube.com/watch?v=d6tp43wZqps
 https://colececil.dev/blog/2017/scaling-pixel-art-without-destroying-it/
+https://www.davidhol.land/articles/3d-pixel-art-rendering/
 */
 
 Shader "NonebNi/SharpUpscale"
 {
     SubShader
     {
-        Tags { "RenderPipeline" = "UniversalPipeline" }
+        Tags
+        {
+            "RenderPipeline" = "UniversalPipeline"
+        }
         Cull Off ZWrite Off ZTest Always
 
         Pass
@@ -29,20 +33,16 @@ Shader "NonebNi/SharpUpscale"
 
             half4 frag(Varyings input) : SV_Target
             {
-                float2 uv = input.texcoord;
-                
                 // Apply snap error compensation during texture sampling.
-                uv += _PixelPanOffset.xy;
-                
-                float2 px = _BlitTexture_TexelSize.xy;
-                
-                float2 fw = clamp(fwidth(uv) / px, 1e-5, 1.0);
-                float2 grid = uv / px - 0.5 * fw;
+                float2 uv = input.texcoord + _PixelPanOffset.xy;
+
+                float2 fw = clamp(fwidth(uv) / _BlitTexture_TexelSize.xy, 1e-5, 1.0);
+                float2 grid = uv / _BlitTexture_TexelSize.xy - 0.5 * fw;
                 float2 blend = smoothstep(1.0 - fw, float2(1.0, 1.0), frac(grid));
-                float2 finalUV = (floor(grid) + 0.5 + blend) * px;
-                
+                float2 finalUV = (floor(grid) + 0.5 + blend) * _BlitTexture_TexelSize.xy;
+
                 half4 color = SAMPLE_TEXTURE2D_LOD(_BlitTexture, sampler_LinearClamp, finalUV, 0);
-                
+
                 return color;
             }
             ENDHLSL
