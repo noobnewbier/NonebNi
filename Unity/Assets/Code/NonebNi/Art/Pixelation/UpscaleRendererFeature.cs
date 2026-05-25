@@ -52,11 +52,10 @@ namespace NonebNi.Art.Pixelation
                 using (var builder = renderGraph.AddRasterRenderPass<PassData>("Upsample", out var passData))
                 {
                     passData.Source = source;
-                    passData.Destination = cameraTarget;
                     passData.Material = _material;
 
                     builder.UseTexture(passData.Source);
-                    builder.SetRenderAttachment(passData.Destination, 0);
+                    builder.SetRenderAttachment(cameraTarget, 0);
 
                     builder.SetRenderFunc(static (PassData data, RasterGraphContext context) => ExecutePass(data, context));
                 }
@@ -64,15 +63,11 @@ namespace NonebNi.Art.Pixelation
 
             private static void ExecutePass(PassData data, RasterGraphContext context)
             {
-                if (data.Material != null)
-                    Blitter.BlitTexture(context.cmd, data.Source, new (1, 1, 0, 0), data.Material, 0);
-                else
-                    Blitter.BlitTexture(context.cmd, data.Source, new (1, 1, 0, 0), 0, false);
+                Blitter.BlitTexture(context.cmd, data.Source, new (1, 1, 0, 0), data.Material, 0);
             }
 
             private class PassData
             {
-                public TextureHandle Destination;
                 public TextureHandle Source;
                 public Material? Material;
             }
