@@ -30,19 +30,21 @@ Shader "NonebNi/SharpUpscale"
 
             // Receive the sub-texel offset calculated by the isometric camera.
             float4 _PixelPanOffset;
+            float4 _MaxUVValueFromOriginalSampling;
 
-            half4 frag(Varyings input) : SV_Target
+            float4 frag(Varyings input) : SV_Target
             {
-                // Apply snap error compensation during texture sampling.
-                float2 uv = input.texcoord + _PixelPanOffset.xy;
+                float2 uv = float2( //todo: here
+                    lerp(0, _MaxUVValueFromOriginalSampling.x, input.texcoord.x),
+                    lerp(0, _MaxUVValueFromOriginalSampling.y, input.texcoord.y)
+                );
+                uv += _PixelPanOffset.xy;
+                float2 boxSize = clamp(fwidth(uv) * _BlitTexture_TexelSize.zw, 1e-5, 1); // todo: immediate thought box size mismatch...?
+                float2 tx = uv * _BlitTexture_TexelSize.zw - .5 * boxSize;
+                float2 txOffset = smoothstep(1 - boxSize, 1, frac(tx));
+                float2 finalUV = (floor(tx) + .5 + txOffset) * _BlitTexture_TexelSize.xy;
 
-                float2 fw = clamp(fwidth(uv) / _BlitTexture_TexelSize.xy, 1e-5, 1.0);
-                float2 grid = uv / _BlitTexture_TexelSize.xy - 0.5 * fw;
-                float2 blend = smoothstep(1.0 - fw, float2(1.0, 1.0), frac(grid));
-                float2 finalUV = (floor(grid) + 0.5 + blend) * _BlitTexture_TexelSize.xy;
-
-                half4 color = SAMPLE_TEXTURE2D_LOD(_BlitTexture, sampler_LinearClamp, finalUV, 0);
-
+                half4 color = SAMPLE_TEXTURE2D(_BlitTexture, sampler_PointClamp, finalUV);
                 return color;
             }
             ENDHLSL

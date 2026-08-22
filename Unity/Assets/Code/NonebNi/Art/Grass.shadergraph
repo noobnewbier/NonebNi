@@ -1272,8 +1272,8 @@
     "m_ObjectId": "31bbad483d564d0fa2e208796d3d66ca",
     "m_Title": "Setup for Instancing",
     "m_Position": {
-        "x": -2284.6669921875,
-        "y": -803.3333740234375
+        "x": -2284.66650390625,
+        "y": -803.3334350585938
     }
 }
 
@@ -1724,7 +1724,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "_RotateStrength",
     "m_StageCapability": 3,
-    "m_Value": 0.25,
+    "m_Value": 0.15000000596046449,
     "m_DefaultValue": 0.0,
     "m_Labels": [],
     "m_LiteralMode": false
@@ -1924,7 +1924,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "_MovementPerSec",
     "m_StageCapability": 3,
-    "m_Value": 0.10000000149011612,
+    "m_Value": 0.30000001192092898,
     "m_DefaultValue": 0.0,
     "m_Labels": [],
     "m_LiteralMode": false
@@ -3117,8 +3117,8 @@
     "m_ObjectId": "ed9e8117a248431586f2d6325f8a83d7",
     "m_Title": "Sampling texture to make grass balde",
     "m_Position": {
-        "x": -352.0001220703125,
-        "y": 363.3333740234375
+        "x": -351.9998779296875,
+        "y": 363.33331298828127
     }
 }
 
