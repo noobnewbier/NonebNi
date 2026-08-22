@@ -32,7 +32,7 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504421
+        - rid: 6640599587789471827
       - tileData:
           weight: 1
           name: 
@@ -108,318 +108,13 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504422
+        - rid: 6640599587789471828
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504422
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 9157298594709504423
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 9157298594709504424
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 9157298594709504425
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 9157298594709504426
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas:
-        - rid: 9157298594709504427
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
-      - tileData:
-          weight: 1
-          name: 
-          <IsWall>k__BackingField: 0
-        entityDatas: []
+        - rid: 6640599587789471828
       - tileData:
           weight: 1
           name: 
@@ -450,31 +145,336 @@ MonoBehaviour:
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504428
+        - rid: 6640599587789471829
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504429
+        - rid: 6640599587789471830
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504430
+        - rid: 6640599587789471831
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504431
+        - rid: 6640599587789471832
       - tileData:
           weight: 1
           name: 
           <IsWall>k__BackingField: 0
         entityDatas:
-        - rid: 9157298594709504432
+        - rid: 6640599587789471833
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas: []
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 6640599587789471834
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 6640599587789471835
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 6640599587789471836
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 6640599587789471837
+      - tileData:
+          weight: 1
+          name: 
+          <IsWall>k__BackingField: 0
+        entityDatas:
+        - rid: 6640599587789471838
       - tileData:
           weight: 1
           name: 
@@ -543,253 +543,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 9157298594709504319
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504320
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504321
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 1
-    - rid: 9157298594709504322
-      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        distance: 1
-    - rid: 9157298594709504323
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504324
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504325
-      type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data: 
-    - rid: 9157298594709504326
-      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        _animId: shoot
-        _damages:
-        - rid: 9157298594709504364
-    - rid: 9157298594709504327
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504328
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504329
-      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: focus
-    - rid: 9157298594709504330
-      type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9157298594709504331
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504332
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504333
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 2
-    - rid: 9157298594709504334
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 1
-    - rid: 9157298594709504335
-      type: {class: MoveEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9157298594709504336
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504337
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504338
-      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: focus
-    - rid: 9157298594709504339
-      type: {class: MoveEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9157298594709504340
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504341
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504342
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 1
-    - rid: 9157298594709504343
-      type: {class: SwapPositionEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9157298594709504344
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504345
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504346
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 1
-    - rid: 9157298594709504347
-      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        _animId: swing
-        _damages:
-        - rid: 9157298594709504365
-    - rid: 9157298594709504348
-      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        distance: 1
-    - rid: 9157298594709504349
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504350
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504351
-      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        _animId: power-shot
-        _damages:
-        - rid: 9157298594709504366
-    - rid: 9157298594709504352
-      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        distance: 1
-    - rid: 9157298594709504353
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504354
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504355
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 1
-    - rid: 9157298594709504356
-      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        _animId: strike
-        _damages:
-        - rid: 9157298594709504367
-    - rid: 9157298594709504357
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: fatigue
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504358
-      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        cost:
-          <StatId>k__BackingField: action-point
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504359
-      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        range: 1
-    - rid: 9157298594709504360
-      type: {class: MoveOverEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9157298594709504361
-      type: {class: PathDistanceBasedStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        costPerHex:
-          <StatId>k__BackingField: speed
-          <Cost>k__BackingField: 1
-    - rid: 9157298594709504362
-      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: speed
-    - rid: 9157298594709504363
-      type: {class: MoveEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data: 
-    - rid: 9157298594709504364
-      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: focus
-    - rid: 9157298594709504365
-      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: strength
-    - rid: 9157298594709504366
-      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: focus
-    - rid: 9157298594709504367
-      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
-      data:
-        ratio: 1
-        statId: strength
-    - rid: 9157298594709504421
+    - rid: 6640599587789471827
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name:
@@ -802,7 +556,7 @@ MonoBehaviour:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 9157298594709504422
+    - rid: 6640599587789471828
       type: {class: TileModifierData, ns: NonebNi.Core.Tiles, asm: NonebNi.Core}
       data:
         name:
@@ -815,7 +569,7 @@ MonoBehaviour:
           weight: 9999
           name: Wall
           <IsWall>k__BackingField: 0
-    - rid: 9157298594709504423
+    - rid: 6640599587789471829
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -833,16 +587,16 @@ MonoBehaviour:
               damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504319
-          - rid: 9157298594709504320
+          - rid: 6640599587789471839
+          - rid: 6640599587789471840
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504321
+              rid: 6640599587789471841
           <Effects>k__BackingField:
-          - rid: 9157298594709504322
+          - rid: 6640599587789471842
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
@@ -851,16 +605,16 @@ MonoBehaviour:
             debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504323
-          - rid: 9157298594709504324
+          - rid: 6640599587789471843
+          - rid: 6640599587789471844
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504326
+          - rid: 6640599587789471846
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
@@ -869,16 +623,16 @@ MonoBehaviour:
             debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504327
-          - rid: 9157298594709504328
+          - rid: 6640599587789471847
+          - rid: 6640599587789471848
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504329
+              rid: 6640599587789471849
           <Effects>k__BackingField:
-          - rid: 9157298594709504330
+          - rid: 6640599587789471850
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: grapple
           <Name>k__BackingField:
@@ -887,21 +641,21 @@ MonoBehaviour:
             debugString: Grabbing an enemy to a near by position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504331
-          - rid: 9157298594709504332
+          - rid: 6640599587789471851
+          - rid: 6640599587789471852
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504333
+              rid: 6640599587789471853
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504334
+              rid: 6640599587789471854
           <Effects>k__BackingField:
-          - rid: 9157298594709504335
+          - rid: 6640599587789471855
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: tactical-advance
           <Name>k__BackingField:
@@ -910,21 +664,21 @@ MonoBehaviour:
             debugString: Commanding another friendly unit to move to another position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504336
-          - rid: 9157298594709504337
+          - rid: 6640599587789471856
+          - rid: 6640599587789471857
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           <Effects>k__BackingField:
-          - rid: 9157298594709504339
+          - rid: 6640599587789471859
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: rotate
           <Name>k__BackingField:
@@ -933,16 +687,16 @@ MonoBehaviour:
             debugString: Using your footwork to swap position with an ally
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504340
-          - rid: 9157298594709504341
+          - rid: 6640599587789471860
+          - rid: 6640599587789471861
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2049
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504342
+              rid: 6640599587789471862
           <Effects>k__BackingField:
-          - rid: 9157298594709504343
+          - rid: 6640599587789471863
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -952,17 +706,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: power-shot
           <Name>k__BackingField:
@@ -972,17 +726,17 @@ MonoBehaviour:
               so powerful it knockbacks the target by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504349
-          - rid: 9157298594709504350
+          - rid: 6640599587789471869
+          - rid: 6640599587789471870
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 10
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504351
-          - rid: 9157298594709504352
+          - rid: 6640599587789471871
+          - rid: 6640599587789471872
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: strike
           <Name>k__BackingField:
@@ -991,16 +745,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -1010,17 +764,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: vault
           <Name>k__BackingField:
@@ -1029,16 +783,16 @@ MonoBehaviour:
             debugString: Jumping over an obstacle and land in front of it
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504357
-          - rid: 9157298594709504358
+          - rid: 6640599587789471877
+          - rid: 6640599587789471878
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1792
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504359
+              rid: 6640599587789471879
           <Effects>k__BackingField:
-          - rid: 9157298594709504360
+          - rid: 6640599587789471880
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -1082,7 +836,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504424
+    - rid: 6640599587789471830
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -1100,16 +854,16 @@ MonoBehaviour:
               damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504319
-          - rid: 9157298594709504320
+          - rid: 6640599587789471839
+          - rid: 6640599587789471840
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504321
+              rid: 6640599587789471841
           <Effects>k__BackingField:
-          - rid: 9157298594709504322
+          - rid: 6640599587789471842
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
@@ -1118,16 +872,16 @@ MonoBehaviour:
             debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504323
-          - rid: 9157298594709504324
+          - rid: 6640599587789471843
+          - rid: 6640599587789471844
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504326
+          - rid: 6640599587789471846
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
@@ -1136,16 +890,16 @@ MonoBehaviour:
             debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504327
-          - rid: 9157298594709504328
+          - rid: 6640599587789471847
+          - rid: 6640599587789471848
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504329
+              rid: 6640599587789471849
           <Effects>k__BackingField:
-          - rid: 9157298594709504330
+          - rid: 6640599587789471850
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: grapple
           <Name>k__BackingField:
@@ -1154,21 +908,21 @@ MonoBehaviour:
             debugString: Grabbing an enemy to a near by position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504331
-          - rid: 9157298594709504332
+          - rid: 6640599587789471851
+          - rid: 6640599587789471852
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504333
+              rid: 6640599587789471853
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504334
+              rid: 6640599587789471854
           <Effects>k__BackingField:
-          - rid: 9157298594709504335
+          - rid: 6640599587789471855
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: tactical-advance
           <Name>k__BackingField:
@@ -1177,21 +931,21 @@ MonoBehaviour:
             debugString: Commanding another friendly unit to move to another position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504336
-          - rid: 9157298594709504337
+          - rid: 6640599587789471856
+          - rid: 6640599587789471857
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           <Effects>k__BackingField:
-          - rid: 9157298594709504339
+          - rid: 6640599587789471859
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: rotate
           <Name>k__BackingField:
@@ -1200,16 +954,16 @@ MonoBehaviour:
             debugString: Using your footwork to swap position with an ally
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504340
-          - rid: 9157298594709504341
+          - rid: 6640599587789471860
+          - rid: 6640599587789471861
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2049
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504342
+              rid: 6640599587789471862
           <Effects>k__BackingField:
-          - rid: 9157298594709504343
+          - rid: 6640599587789471863
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -1219,17 +973,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: power-shot
           <Name>k__BackingField:
@@ -1239,17 +993,17 @@ MonoBehaviour:
               so powerful it knockbacks the target by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504349
-          - rid: 9157298594709504350
+          - rid: 6640599587789471869
+          - rid: 6640599587789471870
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 10
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504351
-          - rid: 9157298594709504352
+          - rid: 6640599587789471871
+          - rid: 6640599587789471872
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: strike
           <Name>k__BackingField:
@@ -1258,16 +1012,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -1277,17 +1031,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: vault
           <Name>k__BackingField:
@@ -1296,16 +1050,16 @@ MonoBehaviour:
             debugString: Jumping over an obstacle and land in front of it
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504357
-          - rid: 9157298594709504358
+          - rid: 6640599587789471877
+          - rid: 6640599587789471878
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1792
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504359
+              rid: 6640599587789471879
           <Effects>k__BackingField:
-          - rid: 9157298594709504360
+          - rid: 6640599587789471880
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -1349,7 +1103,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504425
+    - rid: 6640599587789471831
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -1367,16 +1121,16 @@ MonoBehaviour:
               damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504319
-          - rid: 9157298594709504320
+          - rid: 6640599587789471839
+          - rid: 6640599587789471840
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504321
+              rid: 6640599587789471841
           <Effects>k__BackingField:
-          - rid: 9157298594709504322
+          - rid: 6640599587789471842
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
@@ -1385,16 +1139,16 @@ MonoBehaviour:
             debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504323
-          - rid: 9157298594709504324
+          - rid: 6640599587789471843
+          - rid: 6640599587789471844
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504326
+          - rid: 6640599587789471846
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
@@ -1403,16 +1157,16 @@ MonoBehaviour:
             debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504327
-          - rid: 9157298594709504328
+          - rid: 6640599587789471847
+          - rid: 6640599587789471848
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504329
+              rid: 6640599587789471849
           <Effects>k__BackingField:
-          - rid: 9157298594709504330
+          - rid: 6640599587789471850
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: grapple
           <Name>k__BackingField:
@@ -1421,21 +1175,21 @@ MonoBehaviour:
             debugString: Grabbing an enemy to a near by position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504331
-          - rid: 9157298594709504332
+          - rid: 6640599587789471851
+          - rid: 6640599587789471852
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504333
+              rid: 6640599587789471853
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504334
+              rid: 6640599587789471854
           <Effects>k__BackingField:
-          - rid: 9157298594709504335
+          - rid: 6640599587789471855
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: tactical-advance
           <Name>k__BackingField:
@@ -1444,21 +1198,21 @@ MonoBehaviour:
             debugString: Commanding another friendly unit to move to another position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504336
-          - rid: 9157298594709504337
+          - rid: 6640599587789471856
+          - rid: 6640599587789471857
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           <Effects>k__BackingField:
-          - rid: 9157298594709504339
+          - rid: 6640599587789471859
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: rotate
           <Name>k__BackingField:
@@ -1467,16 +1221,16 @@ MonoBehaviour:
             debugString: Using your footwork to swap position with an ally
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504340
-          - rid: 9157298594709504341
+          - rid: 6640599587789471860
+          - rid: 6640599587789471861
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2049
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504342
+              rid: 6640599587789471862
           <Effects>k__BackingField:
-          - rid: 9157298594709504343
+          - rid: 6640599587789471863
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -1486,17 +1240,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: power-shot
           <Name>k__BackingField:
@@ -1506,17 +1260,17 @@ MonoBehaviour:
               so powerful it knockbacks the target by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504349
-          - rid: 9157298594709504350
+          - rid: 6640599587789471869
+          - rid: 6640599587789471870
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 10
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504351
-          - rid: 9157298594709504352
+          - rid: 6640599587789471871
+          - rid: 6640599587789471872
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: strike
           <Name>k__BackingField:
@@ -1525,16 +1279,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -1544,17 +1298,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: vault
           <Name>k__BackingField:
@@ -1563,16 +1317,16 @@ MonoBehaviour:
             debugString: Jumping over an obstacle and land in front of it
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504357
-          - rid: 9157298594709504358
+          - rid: 6640599587789471877
+          - rid: 6640599587789471878
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1792
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504359
+              rid: 6640599587789471879
           <Effects>k__BackingField:
-          - rid: 9157298594709504360
+          - rid: 6640599587789471880
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -1616,7 +1370,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504426
+    - rid: 6640599587789471832
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -1634,16 +1388,16 @@ MonoBehaviour:
               damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504319
-          - rid: 9157298594709504320
+          - rid: 6640599587789471839
+          - rid: 6640599587789471840
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504321
+              rid: 6640599587789471841
           <Effects>k__BackingField:
-          - rid: 9157298594709504322
+          - rid: 6640599587789471842
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
@@ -1652,16 +1406,16 @@ MonoBehaviour:
             debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504323
-          - rid: 9157298594709504324
+          - rid: 6640599587789471843
+          - rid: 6640599587789471844
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504326
+          - rid: 6640599587789471846
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
@@ -1670,16 +1424,16 @@ MonoBehaviour:
             debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504327
-          - rid: 9157298594709504328
+          - rid: 6640599587789471847
+          - rid: 6640599587789471848
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504329
+              rid: 6640599587789471849
           <Effects>k__BackingField:
-          - rid: 9157298594709504330
+          - rid: 6640599587789471850
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: grapple
           <Name>k__BackingField:
@@ -1688,21 +1442,21 @@ MonoBehaviour:
             debugString: Grabbing an enemy to a near by position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504331
-          - rid: 9157298594709504332
+          - rid: 6640599587789471851
+          - rid: 6640599587789471852
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504333
+              rid: 6640599587789471853
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504334
+              rid: 6640599587789471854
           <Effects>k__BackingField:
-          - rid: 9157298594709504335
+          - rid: 6640599587789471855
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: tactical-advance
           <Name>k__BackingField:
@@ -1711,21 +1465,21 @@ MonoBehaviour:
             debugString: Commanding another friendly unit to move to another position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504336
-          - rid: 9157298594709504337
+          - rid: 6640599587789471856
+          - rid: 6640599587789471857
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           <Effects>k__BackingField:
-          - rid: 9157298594709504339
+          - rid: 6640599587789471859
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: rotate
           <Name>k__BackingField:
@@ -1734,16 +1488,16 @@ MonoBehaviour:
             debugString: Using your footwork to swap position with an ally
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504340
-          - rid: 9157298594709504341
+          - rid: 6640599587789471860
+          - rid: 6640599587789471861
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2049
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504342
+              rid: 6640599587789471862
           <Effects>k__BackingField:
-          - rid: 9157298594709504343
+          - rid: 6640599587789471863
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -1753,17 +1507,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: power-shot
           <Name>k__BackingField:
@@ -1773,17 +1527,17 @@ MonoBehaviour:
               so powerful it knockbacks the target by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504349
-          - rid: 9157298594709504350
+          - rid: 6640599587789471869
+          - rid: 6640599587789471870
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 10
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504351
-          - rid: 9157298594709504352
+          - rid: 6640599587789471871
+          - rid: 6640599587789471872
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: strike
           <Name>k__BackingField:
@@ -1792,16 +1546,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -1811,17 +1565,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: vault
           <Name>k__BackingField:
@@ -1830,16 +1584,16 @@ MonoBehaviour:
             debugString: Jumping over an obstacle and land in front of it
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504357
-          - rid: 9157298594709504358
+          - rid: 6640599587789471877
+          - rid: 6640599587789471878
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1792
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504359
+              rid: 6640599587789471879
           <Effects>k__BackingField:
-          - rid: 9157298594709504360
+          - rid: 6640599587789471880
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -1883,7 +1637,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504427
+    - rid: 6640599587789471833
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -1901,16 +1655,16 @@ MonoBehaviour:
               damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504319
-          - rid: 9157298594709504320
+          - rid: 6640599587789471839
+          - rid: 6640599587789471840
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504321
+              rid: 6640599587789471841
           <Effects>k__BackingField:
-          - rid: 9157298594709504322
+          - rid: 6640599587789471842
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: shoot
           <Name>k__BackingField:
@@ -1919,16 +1673,16 @@ MonoBehaviour:
             debugString: Shoot an enemy at range, does good damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504323
-          - rid: 9157298594709504324
+          - rid: 6640599587789471843
+          - rid: 6640599587789471844
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504326
+          - rid: 6640599587789471846
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: lure
           <Name>k__BackingField:
@@ -1937,16 +1691,16 @@ MonoBehaviour:
             debugString: Faking an opening and draw enemy towards you
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504327
-          - rid: 9157298594709504328
+          - rid: 6640599587789471847
+          - rid: 6640599587789471848
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 138
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504329
+              rid: 6640599587789471849
           <Effects>k__BackingField:
-          - rid: 9157298594709504330
+          - rid: 6640599587789471850
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: grapple
           <Name>k__BackingField:
@@ -1955,21 +1709,21 @@ MonoBehaviour:
             debugString: Grabbing an enemy to a near by position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504331
-          - rid: 9157298594709504332
+          - rid: 6640599587789471851
+          - rid: 6640599587789471852
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504333
+              rid: 6640599587789471853
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504334
+              rid: 6640599587789471854
           <Effects>k__BackingField:
-          - rid: 9157298594709504335
+          - rid: 6640599587789471855
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: tactical-advance
           <Name>k__BackingField:
@@ -1978,21 +1732,21 @@ MonoBehaviour:
             debugString: Commanding another friendly unit to move to another position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504336
-          - rid: 9157298594709504337
+          - rid: 6640599587789471856
+          - rid: 6640599587789471857
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           - <TargetRestrictionFlags>k__BackingField: 4
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504338
+              rid: 6640599587789471858
           <Effects>k__BackingField:
-          - rid: 9157298594709504339
+          - rid: 6640599587789471859
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: rotate
           <Name>k__BackingField:
@@ -2001,16 +1755,16 @@ MonoBehaviour:
             debugString: Using your footwork to swap position with an ally
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504340
-          - rid: 9157298594709504341
+          - rid: 6640599587789471860
+          - rid: 6640599587789471861
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2049
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504342
+              rid: 6640599587789471862
           <Effects>k__BackingField:
-          - rid: 9157298594709504343
+          - rid: 6640599587789471863
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -2020,17 +1774,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: power-shot
           <Name>k__BackingField:
@@ -2040,17 +1794,17 @@ MonoBehaviour:
               so powerful it knockbacks the target by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504349
-          - rid: 9157298594709504350
+          - rid: 6640599587789471869
+          - rid: 6640599587789471870
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 10
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504325
+              rid: 6640599587789471845
           <Effects>k__BackingField:
-          - rid: 9157298594709504351
-          - rid: 9157298594709504352
+          - rid: 6640599587789471871
+          - rid: 6640599587789471872
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: strike
           <Name>k__BackingField:
@@ -2059,16 +1813,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: swing
           <Name>k__BackingField:
@@ -2078,17 +1832,17 @@ MonoBehaviour:
               okay damage and knock back nearby enemies by one tile
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504344
-          - rid: 9157298594709504345
+          - rid: 6640599587789471864
+          - rid: 6640599587789471865
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 512
             <TargetArea>k__BackingField: 1
             <IsDangerousToAlly>k__BackingField: 1
             <Range>k__BackingField:
-              rid: 9157298594709504346
+              rid: 6640599587789471866
           <Effects>k__BackingField:
-          - rid: 9157298594709504347
-          - rid: 9157298594709504348
+          - rid: 6640599587789471867
+          - rid: 6640599587789471868
           <IsComboStarter>k__BackingField: 1
         - <Id>k__BackingField: vault
           <Name>k__BackingField:
@@ -2097,16 +1851,16 @@ MonoBehaviour:
             debugString: Jumping over an obstacle and land in front of it
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504357
-          - rid: 9157298594709504358
+          - rid: 6640599587789471877
+          - rid: 6640599587789471878
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 1792
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504359
+              rid: 6640599587789471879
           <Effects>k__BackingField:
-          - rid: 9157298594709504360
+          - rid: 6640599587789471880
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -2150,7 +1904,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504428
+    - rid: 6640599587789471834
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -2167,16 +1921,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: move
           <Name>k__BackingField:
@@ -2185,15 +1939,15 @@ MonoBehaviour:
             debugString: Moving to target position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504361
+          - rid: 6640599587789471881
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 4100
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504362
+              rid: 6640599587789471882
           <Effects>k__BackingField:
-          - rid: 9157298594709504363
+          - rid: 6640599587789471883
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -2237,7 +1991,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504429
+    - rid: 6640599587789471835
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -2254,16 +2008,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: move
           <Name>k__BackingField:
@@ -2272,15 +2026,15 @@ MonoBehaviour:
             debugString: Moving to target position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504361
+          - rid: 6640599587789471881
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 4100
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504362
+              rid: 6640599587789471882
           <Effects>k__BackingField:
-          - rid: 9157298594709504363
+          - rid: 6640599587789471883
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -2324,7 +2078,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504430
+    - rid: 6640599587789471836
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -2341,16 +2095,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: move
           <Name>k__BackingField:
@@ -2359,15 +2113,15 @@ MonoBehaviour:
             debugString: Moving to target position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504361
+          - rid: 6640599587789471881
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 4100
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504362
+              rid: 6640599587789471882
           <Effects>k__BackingField:
-          - rid: 9157298594709504363
+          - rid: 6640599587789471883
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -2411,7 +2165,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504431
+    - rid: 6640599587789471837
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -2428,16 +2182,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: move
           <Name>k__BackingField:
@@ -2446,15 +2200,15 @@ MonoBehaviour:
             debugString: Moving to target position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504361
+          - rid: 6640599587789471881
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 4100
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504362
+              rid: 6640599587789471882
           <Effects>k__BackingField:
-          - rid: 9157298594709504363
+          - rid: 6640599587789471883
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -2498,7 +2252,7 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
-    - rid: 9157298594709504432
+    - rid: 6640599587789471838
       type: {class: UnitData, ns: NonebNi.Core.Units, asm: NonebNi.Core}
       data:
         name:
@@ -2515,16 +2269,16 @@ MonoBehaviour:
             debugString: An overhead strike that does ok damage
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504353
-          - rid: 9157298594709504354
+          - rid: 6640599587789471873
+          - rid: 6640599587789471874
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 2
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504355
+              rid: 6640599587789471875
           <Effects>k__BackingField:
-          - rid: 9157298594709504356
+          - rid: 6640599587789471876
           <IsComboStarter>k__BackingField: 0
         - <Id>k__BackingField: move
           <Name>k__BackingField:
@@ -2533,15 +2287,15 @@ MonoBehaviour:
             debugString: Moving to target position
           <Icon>k__BackingField: {fileID: 0}
           <StatRequirements>k__BackingField:
-          - rid: 9157298594709504361
+          - rid: 6640599587789471881
           <TargetRequests>k__BackingField:
           - <TargetRestrictionFlags>k__BackingField: 4100
             <TargetArea>k__BackingField: 0
             <IsDangerousToAlly>k__BackingField: 0
             <Range>k__BackingField:
-              rid: 9157298594709504362
+              rid: 6640599587789471882
           <Effects>k__BackingField:
-          - rid: 9157298594709504363
+          - rid: 6640599587789471883
           <IsComboStarter>k__BackingField: 0
         <Stats>k__BackingField:
           stats:
@@ -2585,3 +2339,249 @@ MonoBehaviour:
             currentValue: 0
             <MinValue>k__BackingField: -1
             <MaxValue>k__BackingField: -1
+    - rid: 6640599587789471839
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471840
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471841
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 6640599587789471842
+      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        distance: 1
+    - rid: 6640599587789471843
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471844
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471845
+      type: {class: WeaponBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data: 
+    - rid: 6640599587789471846
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: shoot
+        _damages:
+        - rid: 6640599587789471884
+    - rid: 6640599587789471847
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471848
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471849
+      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 6640599587789471850
+      type: {class: PullEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 6640599587789471851
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471852
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471853
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 2
+    - rid: 6640599587789471854
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 6640599587789471855
+      type: {class: MoveEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 6640599587789471856
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471857
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471858
+      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 6640599587789471859
+      type: {class: MoveEntityEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 6640599587789471860
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471861
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471862
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 6640599587789471863
+      type: {class: SwapPositionEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 6640599587789471864
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471865
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471866
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 6640599587789471867
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: swing
+        _damages:
+        - rid: 6640599587789471885
+    - rid: 6640599587789471868
+      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        distance: 1
+    - rid: 6640599587789471869
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471870
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471871
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: power-shot
+        _damages:
+        - rid: 6640599587789471886
+    - rid: 6640599587789471872
+      type: {class: KnockBackEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        distance: 1
+    - rid: 6640599587789471873
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471874
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471875
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 6640599587789471876
+      type: {class: DamageEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        _animId: strike
+        _damages:
+        - rid: 6640599587789471887
+    - rid: 6640599587789471877
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: fatigue
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471878
+      type: {class: ConstantStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        cost:
+          <StatId>k__BackingField: action-point
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471879
+      type: {class: ConstantRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        range: 1
+    - rid: 6640599587789471880
+      type: {class: MoveOverEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 6640599587789471881
+      type: {class: PathDistanceBasedStatRequirement, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        costPerHex:
+          <StatId>k__BackingField: speed
+          <Cost>k__BackingField: 1
+    - rid: 6640599587789471882
+      type: {class: StatBasedRange, ns: NonebNi.Core.Actions, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: speed
+    - rid: 6640599587789471883
+      type: {class: MoveEffect, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data: 
+    - rid: 6640599587789471884
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 6640599587789471885
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: strength
+    - rid: 6640599587789471886
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: focus
+    - rid: 6640599587789471887
+      type: {class: StatBasedDamage, ns: NonebNi.Core.Effects, asm: NonebNi.Core}
+      data:
+        ratio: 1
+        statId: strength

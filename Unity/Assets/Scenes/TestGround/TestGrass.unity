@@ -188,10 +188,10 @@ MonoBehaviour:
     - rid: 3358123297868873729
       type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
       data:
-        minDistBetweenInstance: 2.87
+        minDistBetweenInstance: 5.72
         minScale: {x: 1, y: 1, z: 1}
         maxScale: {x: 2, y: 2, z: 2}
-        yOffsetRatio: 0.5
+        yOffsetRatio: 1.78
         rotationRange: 80
         patchScaleFactor: {x: 0, y: 0, z: 0}
         sdfType: 1
@@ -220,12 +220,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67803325}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &67803327
 MonoBehaviour:
@@ -418,17 +418,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1911003646}
-  - {fileID: 427183095}
-  - {fileID: 1231682839}
-  - {fileID: 1952333080}
-  - {fileID: 645517342}
-  - {fileID: 67803326}
-  - {fileID: 1835276675}
-  - {fileID: 877329318}
-  - {fileID: 703128858}
-  - {fileID: 755303143}
-  - {fileID: 1160647647}
   - {fileID: 900209024}
   - {fileID: 617118356}
   - {fileID: 1888560690}
@@ -460,12 +449,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427183094}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &427183096
 MonoBehaviour:
@@ -550,12 +539,25 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 48a2d45939028b840bd60ac42509fc20, type: 2}
   toRender: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   grassInstancer:
-    rid: -2
+    rid: 5327874008315854850
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 5327874008315854850
+      type: {class: GrassInstancer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
+      data:
+        placer:
+          rid: 5327874008315854851
+    - rid: 5327874008315854851
+      type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
+      data:
+        minDistBetweenInstance: 0.5
+        minScale: {x: 1, y: 1, z: 1}
+        maxScale: {x: 1, y: 1, z: 1}
+        yOffsetRatio: 0.5
+        rotationRange: 0
+        patchScaleFactor: {x: 0, y: 0, z: 0}
+        sdfType: 0
 --- !u!1 &617118355
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,12 +617,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645517341}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &645517343
 MonoBehaviour:
@@ -682,12 +684,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 703128857}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &703128859
 MonoBehaviour:
@@ -749,12 +751,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755303142}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &755303144
 MonoBehaviour:
@@ -975,12 +977,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 877329317}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &877329319
 MonoBehaviour:
@@ -1217,7 +1219,7 @@ Transform:
   m_LocalScale: {x: 11.01, y: 11.01, z: 11.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1248884285}
+  m_Father: {fileID: 1287544982}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1126384934
 GameObject:
@@ -1358,12 +1360,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1160647646}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1160647648
 MonoBehaviour:
@@ -1434,12 +1436,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231682838}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1231682840
 MonoBehaviour:
@@ -1508,9 +1510,41 @@ Transform:
   - {fileID: 1827946650}
   - {fileID: 2034835558}
   - {fileID: 1415070433}
-  - {fileID: 1078603967}
+  - {fileID: 1287544982}
   - {fileID: 1126384938}
   m_Father: {fileID: 2095462213}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1287544981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1287544982}
+  m_Layer: 0
+  m_Name: g
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1287544982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287544981}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1078603967}
+  m_Father: {fileID: 1248884285}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1415070429
 GameObject:
@@ -1672,12 +1706,25 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 48a2d45939028b840bd60ac42509fc20, type: 2}
   toRender: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   grassInstancer:
-    rid: -2
+    rid: 5327874008315854848
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 5327874008315854848
+      type: {class: GrassInstancer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
+      data:
+        placer:
+          rid: 5327874008315854849
+    - rid: 5327874008315854849
+      type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
+      data:
+        minDistBetweenInstance: 0.5
+        minScale: {x: 1, y: 1, z: 1}
+        maxScale: {x: 1, y: 1, z: 1}
+        yOffsetRatio: 0.5
+        rotationRange: 0
+        patchScaleFactor: {x: 0, y: 0, z: 0}
+        sdfType: 0
 --- !u!1 &1763550702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1957,7 +2004,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1835276676
 MonoBehaviour:
@@ -2022,7 +2069,18 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1911003646}
+  - {fileID: 427183095}
+  - {fileID: 1231682839}
+  - {fileID: 1952333080}
+  - {fileID: 645517342}
+  - {fileID: 67803326}
+  - {fileID: 1835276675}
+  - {fileID: 877329318}
+  - {fileID: 703128858}
+  - {fileID: 755303143}
+  - {fileID: 1160647647}
   m_Father: {fileID: 342066229}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1911003645
@@ -2050,12 +2108,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1911003645}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1911003647
 MonoBehaviour:
@@ -2117,12 +2175,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1952333079}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 342066229}
+  m_Father: {fileID: 1888560690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1952333081
 MonoBehaviour:
@@ -2157,7 +2215,7 @@ GameObject:
   - component: {fileID: 2021660453}
   - component: {fileID: 2021660454}
   m_Layer: 0
-  m_Name: t.1
+  m_Name: Sparse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2190,38 +2248,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21193e1dbe9b4dd3b17c44b03255eafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NonebNi.Art::NonebNi.Art.GrassInstancer
-  meshRenderer: {fileID: 0}
+  meshRenderer: {fileID: 900209026}
   material: {fileID: 2100000, guid: 48a2d45939028b840bd60ac42509fc20, type: 2}
   toRender: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   grassInstancer:
-    rid: 407803705658703972
+    rid: 3358123094645932123
   references:
     version: 2
     RefIds:
-    - rid: 407803705658703972
+    - rid: 3358123094645932123
       type: {class: GrassInstancer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
       data:
         placer:
-          rid: 407803705658703993
-    - rid: 407803705658703993
+          rid: 3358123297868873728
+    - rid: 3358123297868873728
       type: {class: GrassInstancer/PatchPlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
       data:
         instancer:
-          rid: 407803705658703994
-        patchCount: 90
-        minPatchDistance: 7
-        basePatchSize: {x: 10, y: 10}
-        randomPatchSizeOffset: {x: 3, y: 3}
-    - rid: 407803705658703994
+          rid: 3358123297868873729
+        patchCount: 50
+        minPatchDistance: 18.4
+        basePatchSize: {x: 5, y: 5}
+        randomPatchSizeOffset: {x: 1, y: 1}
+    - rid: 3358123297868873729
       type: {class: GrassInstancer/BlueNoisePlacer, ns: NonebNi.Art.GrassInstancing, asm: NonebNi.Art}
       data:
-        minDistBetweenInstance: 3
-        minScale: {x: 1, y: 1, z: 1}
-        maxScale: {x: 1, y: 1, z: 1}
-        yOffsetRatio: 0.5
-        rotationRange: 40
-        patchScaleFactor: {x: 1, y: 1, z: 1}
-        sdfType: 0
+        minDistBetweenInstance: 5.72
+        minScale: {x: 1.5, y: 1.5, z: 1.5}
+        maxScale: {x: 1.5, y: 1.5, z: 1.5}
+        yOffsetRatio: 1.78
+        rotationRange: 80
+        patchScaleFactor: {x: 0, y: 0, z: 0}
+        sdfType: 1
 --- !u!1 &2034835554
 GameObject:
   m_ObjectHideFlags: 0
