@@ -30,10 +30,10 @@ namespace Noneb.UI.Editor.Animation
             var bools = CreateParameterTypeItems(AnimatorControllerParameterType.Bool);
             var triggers = CreateParameterTypeItems(AnimatorControllerParameterType.Trigger);
 
-            if (floats.children.Any()) root.AddChild(floats);
-            if (ints.children.Any()) root.AddChild(ints);
-            if (bools.children.Any()) root.AddChild(bools);
-            if (triggers.children.Any()) root.AddChild(triggers);
+            if (floats.childList.Any()) root.AddChild(floats);
+            if (ints.childList.Any()) root.AddChild(ints);
+            if (bools.childList.Any()) root.AddChild(bools);
+            if (triggers.childList.Any()) root.AddChild(triggers);
 
             root.AddChild(new AdvancedDropdownItem("Remove Selection"));
 

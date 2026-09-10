@@ -78,7 +78,7 @@ namespace Noneb.Tags.Editor.TagPickers
 
             // return the root item
             var rootItems = itemAndUncommitedChildren.Keys.Where(tagItem => tagItem.Tag.HierarchyLevel == 0).ToArray();
-            var rootItemsWithChild = rootItems.Where(i => i.children.Any()).ToArray();
+            var rootItemsWithChild = rootItems.Where(i => i.childList.Any()).ToArray();
             var rootItemsWithNoChild = rootItems.Except(rootItemsWithChild).Where(i => !rootItemsWithChild.Any(n => i != n && i.Tag == n.Tag)).ToArray();
 
             foreach (var item in rootItemsWithChild) yield return item;

@@ -8,7 +8,7 @@ namespace Noneb.UI.Editor.Animation
 {
     internal class AnimatorInfoCache
     {
-        private static readonly Dictionary<int, AnimatorInfoCache> Cache = new();
+        private static readonly Dictionary<EntityId, AnimatorInfoCache> Cache = new();
         private readonly string[][] _layeredStates;
         private readonly string[] _layerNames;
         private readonly Dictionary<AnimatorControllerParameterType, string[]> _parameters;
@@ -67,7 +67,7 @@ namespace Noneb.UI.Editor.Animation
 
         internal static AnimatorInfoCache GetParamTable(RuntimeAnimatorController animatorController)
         {
-            var id = animatorController.GetInstanceID();
+            var id = animatorController.GetEntityId();
             if (!Cache.TryGetValue(id, out var result))
             {
                 result = new AnimatorInfoCache(animatorController);
