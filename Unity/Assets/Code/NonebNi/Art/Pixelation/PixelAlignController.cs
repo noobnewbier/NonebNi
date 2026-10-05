@@ -191,14 +191,16 @@ namespace NonebNi.Art.Pixelation
         {
             //todo: even if this works we need to make sure we dynamically resize the quad/camera size, it's not gonna be easy
             var cameraHeight = sceneCamera.orthographicSize * 2f;
-            const int uvMaxY = 1;
-            var uvSpacePerCameraSpace = uvMaxY / cameraHeight;
+            var cameraWidth = cameraHeight * sceneCamera.aspect;
+            const int uvMax = 1;
+            var uvSpacePerCameraYSpace = uvMax / cameraHeight;
+            var uvSpacePerCameraXSpace = uvMax / cameraWidth;
 
             var trs = TRSForGridSpace();
             var localPos = trs.MultiplyPoint(worldSpace);
 
             // Dropping the z-axis, there's no z-axis in the canvas. 
-            var quadSpace = new Vector2(localPos.x * uvSpacePerCameraSpace, localPos.y * uvSpacePerCameraSpace);
+            var quadSpace = new Vector2(localPos.x * uvSpacePerCameraXSpace, localPos.y * uvSpacePerCameraYSpace);
             return quadSpace;
         }
     }
