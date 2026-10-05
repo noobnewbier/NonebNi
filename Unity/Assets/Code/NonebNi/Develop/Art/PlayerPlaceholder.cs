@@ -11,66 +11,16 @@ public class PlayerPlaceholder : MonoBehaviour
     [SerializeField] private bool forceVert;
     [SerializeField] private bool forceReversed;
     
-    
-    public float jumpForce = 5f;
-    public LayerMask groundLayer;
-
-    [Header("Ground Check")]
-    [SerializeField] private float _groundCheckRadius = 0.3f;
-    [SerializeField] private float _groundCheckDistance = 0.2f;
-
-    private Rigidbody _rb;
     private bool _isGrounded;
-
-    private void Awake()
-    {
-        _rb = GetComponent<Rigidbody>();
-        if (_rb == null)
-        {
-            Debug.LogError("[Player] Rigidbody not found!");
-            return;
-        }
-
-        // Apply ideal physics settings for the player.
-        _rb.freezeRotation = true;
-        _rb.interpolation = RigidbodyInterpolation.Interpolate;
-        _rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-        Debug.Log("[Player] Placeholder initialized successfully.");
-    }
-
-    private void Update()
-    {
-        CheckGrounded();
-
-        // Check jump input in Update for better responsiveness.
-        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
-        {
-            Jump();
-        }
-    }
-
     private void FixedUpdate()
     {
         Move();
     }
 
-    private void CheckGrounded()
-    {
-        // Spherecast downwards to detect ground.
-        _isGrounded = Physics.SphereCast(
-            transform.position,
-            _groundCheckRadius,
-            Vector3.down,
-            out RaycastHit hit,
-            _groundCheckDistance,
-            groundLayer
-        );
-    }
 
     private void Move()
     {
-        float h = Input.GetAxis("Horizontal");
+        var h = Input.GetAxis("Horizontal");
         h = Math.Sign(h);
         if (forceHoriz)
         {
@@ -80,7 +30,7 @@ public class PlayerPlaceholder : MonoBehaviour
                 h = -1;
             }
         }
-        float v = Input.GetAxis("Vertical");
+        var v = Input.GetAxis("Vertical");
         if (forceVert)
         {
             v = 1;
@@ -92,24 +42,19 @@ public class PlayerPlaceholder : MonoBehaviour
         
         // Project camera vectors onto the XZ plane.
         var camTrans = Camera.main.transform;
-        Vector3 camForward = camTrans.forward.ProjectOntoPlane(transform.up).normalized;
+        var camForward = camTrans.forward.ProjectOntoPlane(transform.up).normalized;
         camForward.y = 0f;
         camForward.Normalize();
 
-        Vector3 camRight = camTrans.right.ProjectOntoPlane(transform.up).normalized;
+        var camRight = camTrans.right.ProjectOntoPlane(transform.up).normalized;
         camRight.y = 0f;
         camRight.Normalize();
 
 
         // Calculate direction based on camera perspective.
-        Vector3 moveDir = (camForward * v + camRight * h).normalized;
+        var moveDir = (camForward * v + camRight * h).normalized;
 
         // Use linearVelocity for Unity 6 compatibility.
-        _rb.position = (_rb.position+ moveDir* moveSpeed  * Time.deltaTime);
-    }
-
-    private void Jump()
-    {
-        _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        transform.position = (transform.position+ moveDir* moveSpeed  * Time.fixedDeltaTime);
     }
 }
