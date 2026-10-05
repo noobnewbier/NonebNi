@@ -106,6 +106,13 @@ namespace NonebNi.Art.Pixelation
             var rtCameraTexture = new RenderTexture(overRenderSize.x, overRenderSize.y, 32, RenderTextureFormat.ARGB32);
             sceneCamera.targetTexture = rtCameraTexture;
             SetTexture(rtCameraTexture);
+
+            {
+                var targetSizeToResolutionRatio = (float)pixelRenderFeature.GetDownsampleTargetSize().y / pixelRenderFeature.GetDownsampledResolution().y;
+                var targetOrthoHeightForSceneCam = sceneCamera.orthographicSize * targetSizeToResolutionRatio;
+                sceneCamera.orthographicSize = targetOrthoHeightForSceneCam;
+            }
+            
         }
 
         private void BeginCameraRendering(ScriptableRenderContext ctx, Camera renderCamera)
