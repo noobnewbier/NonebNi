@@ -180,7 +180,7 @@ namespace NonebNi.Art.Pixelation
         /// </summary>
         private float GetTexelSize()
         {
-            var pixelRenderHeight = pixelRenderFeature.GetDownsampledResolution().y;
+            var pixelRenderHeight = pixelRenderFeature.GetDownsampleTargetSize().y;
             var cameraHeight = sceneCamera.orthographicSize * 2f;
             var texelSize = cameraHeight / pixelRenderHeight;
             return texelSize;
