@@ -133,8 +133,8 @@ namespace NonebNi.Art.Pixelation
             rtQuad.material.mainTexture = renderTexture;
 
             var targetResolution = pixelRenderFeature.GetTargetResolution();
-            var pixelToWorldSpaceMultiplier = rtQuad.transform.lossyScale.x / targetResolution.x;
-            var targetCameraHeightWs = targetResolution.y * pixelToWorldSpaceMultiplier;
+            var quadScaleUnitPerResolutionUnit = rtQuad.transform.lossyScale.x / targetResolution.x; //still relies on setup...
+            var targetCameraHeightWs = targetResolution.y * quadScaleUnitPerResolutionUnit;
             var orthoSize = targetCameraHeightWs / 2f;
             cameraForRenderTexture.orthographicSize = orthoSize;
         }
@@ -161,13 +161,12 @@ namespace NonebNi.Art.Pixelation
             // Snap XY to texel grid. Ignore z-axis for now that's - we probably don't need to handle it as zooming in orthographic camera works differently
             var snappedX = Mathf.Round(localPos.x / texelSize) * texelSize;
             var snappedY = Mathf.Round(localPos.y / texelSize) * texelSize;
-            var snappedZ = Mathf.Round(localPos.z / texelSize) * texelSize;
 
-            // Calculate rounding error - dropping z axis as we don't care about that in the quad space... todo: or do we?
+            // Calculate rounding error - dropping z axis as we don't care about that in the quad space...
             var snapError = new Vector2(localPos.x - snappedX, localPos.y - snappedY);
 
             // Apply snapped position to pivot.
-            var snappedPos = new Vector3(snappedX, snappedY, localPos.z /*snappedZ*/);
+            var snappedPos = new Vector3(snappedX, snappedY, localPos.z);
             var texelPos = trsForGridSpace.inverse.MultiplyPoint(snappedPos); //todo:3x4 much faster - but no projection, is it really the thing that's wrong?
             var snapErrorWs = trsForGridSpace.inverse.MultiplyPoint(snapError);
 
