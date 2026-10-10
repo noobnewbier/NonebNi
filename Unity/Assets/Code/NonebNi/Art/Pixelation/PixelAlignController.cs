@@ -1,9 +1,24 @@
+using System;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityUtils;
 
 namespace NonebNi.Art.Pixelation
 {
+    /*
+     * TODO OUTLINE:
+     * few options
+     *
+     * ### Outline in screenspace, color offset by pixels
+     * - Feels too "restricted" -> want color control on outline on individual obj.
+     * - Might be useful for dramatic effect but not now...?
+     *
+     * ### Outline in Shader, in high res first.
+     * - will need reference on downscaled color/depth/normals first...?
+     */
+    
+    
     //todo: zoom
 
     /*
@@ -29,15 +44,20 @@ namespace NonebNi.Art.Pixelation
     //todo: run in edit mode? todo: figure out render pipeline(start resolution and end resolution.
     public class PixelAlignController : MonoBehaviour
     {
-        private static readonly int PixelPanOffset = Shader.PropertyToID("_PixelPanOffset");
-        private static readonly int MaxUVValueFromOriginalSampling = Shader.PropertyToID("_MaxUVValueFromOriginalSampling");
+        private static readonly int OverRenderSize = Shader.PropertyToID("_OverRenderSize");
+        private static readonly int PixelToMove = Shader.PropertyToID("_PixelToMove");
+        private static readonly int TargetResolution = Shader.PropertyToID("_TargetResolution");
         // Might need to be injected by game/level at some point.
         [SerializeField] private PixelRendererFeature pixelRenderFeature = null!;
         [SerializeField] private Camera sceneCamera = null!;
         [SerializeField] private MeshRenderer rtQuad = null!;
         [SerializeField] private Camera cameraForRenderTexture = null!;
+        [SerializeField] private bool isCamSmoothing;
 
-        private Vector3 _cachedPosition;
+        private Vector3 _cachedCameraPosition;
+
+        public Action SnapRequested;
+        public Action UnsnapRequested;
 
         private void Update()
         {
@@ -56,9 +76,9 @@ namespace NonebNi.Art.Pixelation
 
                 // Edge cases when on edge this is not drawn properly - I can't be asked to debug this but this will do.
                 GizmosDrawer.DrawLine(curr.texelPos, center, Color.green);
-                GizmosDrawer.DrawSphere(curr.texelPos, Color.yellow, texelSize / 8f);
+                GizmosDrawer.DrawSphere(curr.texelPos, texelSize / 8f, Color.yellow);
 
-                GizmosDrawer.DrawSphere(sceneCamera.transform.position, Color.green, texelSize / 8f);
+                GizmosDrawer.DrawSphere(sceneCamera.transform.position, texelSize / 8f, Color.green);
                 for (var z = -drawDimension; z < drawDimension; z++)
                 for (var y = 0; y < 1; y++)
                 for (var x = -drawDimension; x < drawDimension; x++)
@@ -73,7 +93,7 @@ namespace NonebNi.Art.Pixelation
                     if (texelPos == curr.texelPos) { }
                     else
                     {
-                        GizmosDrawer.DrawSphere(texelPos, Color.purple, texelSize / 8f);
+                        GizmosDrawer.DrawSphere(texelPos, texelSize / 8f, Color.magenta);
                     }
                 }
             }
@@ -95,24 +115,33 @@ namespace NonebNi.Art.Pixelation
 
         private void OnPipelineCreated()
         {
-            var overRenderSize = pixelRenderFeature.GetRenderSizeForSmoothPixelCamera();
-
+            //todo: clean this up before I go super sayan.
+            
             // We are rendering the screen by one texel larger - the upscaling shader need to know this ratio so it can actually do the sampling correctly.
+            var overRenderSize = pixelRenderFeature.GetRenderSizeForSmoothPixelCamera();
             var targetRes = pixelRenderFeature.GetTargetResolution();
-            var maxUVValue = new Vector2(targetRes.x / (float)overRenderSize.x, targetRes.y / (float)overRenderSize.y);
-            Shader.SetGlobalVector(MaxUVValueFromOriginalSampling, maxUVValue);
+            var baseRes = pixelRenderFeature.GetBaseResolution();
 
             //Adapt quad size to screen size - actually need to do it as we resize the screen as well if even just for debugging?
-            var rtCameraTexture = new RenderTexture(overRenderSize.x, overRenderSize.y, 32, RenderTextureFormat.ARGB32);
+            var rtCameraTexture = new RenderTexture(overRenderSize.x, overRenderSize.y, 32, RenderTextureFormat.ARGB32)
+            {
+                filterMode = FilterMode.Point //todo: update point mode.
+            };
             sceneCamera.targetTexture = rtCameraTexture;
             SetTexture(rtCameraTexture);
 
             {
-                var targetSizeToResolutionRatio = (float)pixelRenderFeature.GetDownsampleTargetSize().y / pixelRenderFeature.GetDownsampledResolution().y;
-                var targetOrthoHeightForSceneCam = sceneCamera.orthographicSize * targetSizeToResolutionRatio;
-                sceneCamera.orthographicSize = targetOrthoHeightForSceneCam;
+                //todo: wat - change this noneb
+
+                var ratioFromBaseToTargetRes = (double)targetRes.y / baseRes.y;
+                var pixelPerOrthoSizeForRTCam = (double)cameraForRenderTexture.orthographicSize / targetRes.y;
+                var sceneCamRequiredOrthoSizeForOverRender = pixelPerOrthoSizeForRTCam * overRenderSize.y;
+                sceneCamRequiredOrthoSizeForOverRender *= ratioFromBaseToTargetRes;
+                sceneCamera.orthographicSize = (float)sceneCamRequiredOrthoSizeForOverRender;
             }
-            
+
+            Shader.SetGlobalVector(OverRenderSize, new Vector4(overRenderSize.x, overRenderSize.y, 0, 0));
+            Shader.SetGlobalVector(TargetResolution, new Vector4(targetRes.x, targetRes.y, 0, 0));
         }
 
         private void BeginCameraRendering(ScriptableRenderContext ctx, Camera renderCamera)
@@ -124,8 +153,18 @@ namespace NonebNi.Art.Pixelation
             var (texelPos, snapErr) = FindClosestTexelPos(sceneCamera.transform.position);
             sceneCamera.transform.position = texelPos; //todo: best if we can just change camera offset
 
-            var snapErrInQuad = ConvertWorldSpaceUnitToQuadSpaceUV(snapErr);
-            Shader.SetGlobalVector(PixelPanOffset, new (snapErrInQuad.x, snapErrInQuad.y, 0, 0));
+            var snapErrInPixels = ConvertWorldSpaceUnitToOverRenderPixels(snapErr);
+
+            if (isCamSmoothing)
+            {
+                Shader.SetGlobalVector(PixelToMove, new Vector4((float)snapErrInPixels.x, (float)snapErrInPixels.y, 0, 0));
+            }
+            else
+            {
+                Shader.SetGlobalVector(PixelToMove, Vector4.zero);
+            }
+            
+            SnapRequested?.Invoke();
         }
 
         private void EndCameraRendering(ScriptableRenderContext ctx, Camera renderCamera)
@@ -133,6 +172,8 @@ namespace NonebNi.Art.Pixelation
             if (renderCamera != sceneCamera) return;
 
             RestoreTransformAfterRendering();
+            
+            UnsnapRequested?.Invoke();
         }
 
         private void SetTexture(RenderTexture renderTexture)
@@ -140,7 +181,7 @@ namespace NonebNi.Art.Pixelation
             rtQuad.material.mainTexture = renderTexture;
 
             var targetResolution = pixelRenderFeature.GetTargetResolution();
-            var quadScaleUnitPerResolutionUnit = rtQuad.transform.lossyScale.x / targetResolution.x; //still relies on setup...
+            var quadScaleUnitPerResolutionUnit = rtQuad.transform.lossyScale.y / targetResolution.y; //still relies on setup...
             var targetCameraHeightWs = targetResolution.y * quadScaleUnitPerResolutionUnit;
             var orthoSize = targetCameraHeightWs / 2f;
             cameraForRenderTexture.orthographicSize = orthoSize;
@@ -148,15 +189,15 @@ namespace NonebNi.Art.Pixelation
 
         private void CacheTransformBeforeRendering()
         {
-            _cachedPosition = sceneCamera.transform.position;
+            _cachedCameraPosition = sceneCamera.transform.position;
         }
 
         private void RestoreTransformAfterRendering()
         {
-            sceneCamera.transform.position = _cachedPosition;
+            sceneCamera.transform.position = _cachedCameraPosition;
         }
 
-        private (Vector3 texelPos, Vector3 snapErr) FindClosestTexelPos(Vector3 position)
+        public (Vector3 texelPos, Vector3 snapErr) FindClosestTexelPos(Vector3 position)
         {
             var texelSize = GetTexelSize();
             //Note: if creating a bunch of them every frame is a problem we can cache this?
@@ -193,22 +234,47 @@ namespace NonebNi.Art.Pixelation
             return texelSize;
         }
 
-
-        private Vector2 ConvertWorldSpaceUnitToQuadSpaceUV(Vector3 worldSpace)
+        private double2 ConvertWorldSpaceUnitToOverRenderPixels(Vector3 worldSpace)
         {
             //todo: even if this works we need to make sure we dynamically resize the quad/camera size, it's not gonna be easy
-            var cameraHeight = sceneCamera.orthographicSize * 2f;
+            var cameraHeight = sceneCamera.orthographicSize * 2.0;
             var cameraWidth = cameraHeight * sceneCamera.aspect;
-            const int uvMax = 1;
-            var uvSpacePerCameraYSpace = uvMax / cameraHeight;
-            var uvSpacePerCameraXSpace = uvMax / cameraWidth;
+            var overRender = pixelRenderFeature.GetRenderSizeForSmoothPixelCamera();
+            var pixelPerCameraXSpace = overRender.x / cameraWidth;
+            var pixelPerCameraYSpace = overRender.y / cameraHeight;
 
             var trs = TRSForGridSpace();
             var localPos = trs.MultiplyPoint(worldSpace);
 
             // Dropping the z-axis, there's no z-axis in the canvas. 
-            var quadSpace = new Vector2(localPos.x * uvSpacePerCameraXSpace, localPos.y * uvSpacePerCameraYSpace);
+            var quadSpace = new double2(localPos.x * pixelPerCameraXSpace, localPos.y * pixelPerCameraYSpace);
             return quadSpace;
+        }
+
+        /// <summary>
+        /// Another way to think about this -> it's how many UV space in the RT is representing one pixel in the scene camera over render.
+        /// </summary>
+        /// <param name="sceneCameraUV"></param>
+        /// <returns></returns>
+        private double2 ConvertOverRenderUVToTargetResUV(double2 sceneCameraUV)
+        {
+            /*
+             * This assume the RT is using a "remapped" UV so the "center" of what sceneCam is rendering is shown in the screen as a base.
+             * Instead of trying to cram everything into the now undersized quad.
+             */
+            var overRenderSize = pixelRenderFeature.GetRenderSizeForSmoothPixelCamera();
+            var pixelsInSceneCam = new double2(
+                math.lerp(0, overRenderSize.x, sceneCameraUV.x),
+                math.lerp(0, overRenderSize.y, sceneCameraUV.y)
+            );
+
+            var targetRes = pixelRenderFeature.GetTargetResolution();
+            var rtCamUvToPixels = new double2(1.0 / overRenderSize.x, 1.0 / overRenderSize.y);
+
+
+            // scaling *down* the UV
+            var rtCameraUv = pixelsInSceneCam * rtCamUvToPixels;
+            return rtCameraUv;
         }
     }
 }
