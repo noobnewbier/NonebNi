@@ -19,7 +19,7 @@ namespace NonebNi.Art.Pixelation
             _settings = settings;
             requiresIntermediateTexture = true;
 
-            ConfigureInput(ScriptableRenderPassInput.Color);
+            ConfigureInput(ScriptableRenderPassInput.None);
         }
 
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
@@ -37,12 +37,30 @@ namespace NonebNi.Art.Pixelation
                 colorFormat = cameraData.cameraTargetDescriptor.graphicsFormat,
                 depthBufferBits = DepthBits.None,
                 useMipMap = false,
-                filterMode = FilterMode.Bilinear,
-                name = "_LowResColor"
+                filterMode = FilterMode.Point,
+                name = "_LowResColor",
             };
             var lowResColor = renderGraph.CreateTexture(lowResDesc);
 
-            // Downsample color to internal resolution.
+            // // Create a BlitMaterialParameters object with the blit material, source texture, destination texture, and shader pass to use.
+            // var blitParams = new RenderGraphUtils.BlitMaterialParameters(cameraTarget, lowResColor, null, 0);
+            // renderGraph.AddBlitPass(blitParams, "Downsample Blit");
+            //
+            // var textureData = frameData.GetOrCreate<TextureData>();
+            // textureData.Handle = lowResColor;
+
+            // Downsample color to internal resolution. //todo: might be funky creating texture.
+            // var downscaleMat = _settings.DownsampleMat;
+            // if (downscaleMat == null)
+            // {
+            //     downscaleMat = Blitter.GetBlitMaterial(TextureDimension.Tex2D);
+            // }
+            // var blitParams = new RenderGraphUtils.BlitMaterialParameters(cameraTarget, lowResColor, downscaleMat, 0);
+            // renderGraph.AddBlitPass(blitParams);
+            //     var textureData = frameData.GetOrCreate<TextureData>();
+            //     textureData.Handle = lowResColor;
+
+
             using (var builder = renderGraph.AddRasterRenderPass<PassData>("Downsample_Color", out var passData))
             {
                 passData.Source = cameraTarget;
@@ -52,9 +70,12 @@ namespace NonebNi.Art.Pixelation
                 builder.SetRenderAttachment(passData.Destination, 0);
 
                 builder.SetRenderFunc(static (PassData data, RasterGraphContext context) => ExecutePass(data, context));
-
                 var textureData = frameData.GetOrCreate<TextureData>();
-                textureData.Handle = passData.Destination;
+                textureData.Handle = lowResColor;
+
+                builder.SetGlobalTextureAfterPass(lowResColor, Shader.PropertyToID("_LowResColor"));
+                
+                builder.AllowPassCulling(false);
             }
         }
 
@@ -72,11 +93,13 @@ namespace NonebNi.Art.Pixelation
         [Serializable]
         public class Settings
         {
-            [field: SerializeField] public Vector2Int RenderSize { get; private set; }
+            public Vector2Int RenderSize { get; private set; }
+            public Material DownsampleMat { get; private set; }
 
-            public Settings(Vector2Int renderRenderSize)
+            public Settings(Vector2Int renderRenderSize, Material downsampleMat)
             {
                 RenderSize = renderRenderSize;
+                DownsampleMat = downsampleMat;
             }
         }
     }

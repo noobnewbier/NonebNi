@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
+using UnityEngine.Rendering.RenderGraphModule.Util;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
@@ -25,8 +26,8 @@ namespace NonebNi.Art.Pixelation
             _settings = settings;
             requiresIntermediateTexture = true;
 
-            // Requires color, depth, and normal buffers for 3D reconstruction during the Outline pass.
-            ConfigureInput(ScriptableRenderPassInput.Color);
+            // Requires color, depth, and normal buffers for 3D reconstruction during the Outline pass. PTO?
+            ConfigureInput(ScriptableRenderPassInput.None);
         }
 
         public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer frameData)
@@ -35,16 +36,18 @@ namespace NonebNi.Art.Pixelation
             var cameraTarget = resourceData.activeColorTexture; //todo: psure it's up scaling to wrong res
             var source = ScriptableRenderPassUtils.GetSourceTexture(frameData);
 
-            using (var builder = renderGraph.AddRasterRenderPass<PassData>("Upsample", out var passData))
-            {
-                passData.Source = source;
-                passData.Material = _settings.upscaleMaterial;
-
-                builder.UseTexture(passData.Source);
-                builder.SetRenderAttachment(cameraTarget, 0);
-
-                builder.SetRenderFunc(static (PassData data, RasterGraphContext context) => ExecutePass(data, context));
-            }
+            var blitParams = new RenderGraphUtils.BlitMaterialParameters(source, cameraTarget, _settings.upscaleMaterial, 0);
+            renderGraph.AddBlitPass(blitParams);
+            // using (var builder = renderGraph.AddRasterRenderPass<PassData>("Upsample", out var passData))
+            // {
+            //     passData.Source = source;
+            //     passData.Material = _settings.upscaleMaterial;
+            //
+            //     builder.UseTexture(passData.Source);
+            //     builder.SetRenderAttachment(cameraTarget, 0);
+            //
+            //     builder.SetRenderFunc(static (PassData data, RasterGraphContext context) => ExecutePass(data, context));
+            // }
         }
 
         private static void ExecutePass(PassData data, RasterGraphContext context)
@@ -61,7 +64,8 @@ namespace NonebNi.Art.Pixelation
         [Serializable]
         public class Settings
         {
-            public Material upscaleMaterial = null!;
+            public Material upscaleMaterial = null!;        
+            public Vector2Int baseResolution = new Vector2Int(1920, 1080);
         }
     }
 }

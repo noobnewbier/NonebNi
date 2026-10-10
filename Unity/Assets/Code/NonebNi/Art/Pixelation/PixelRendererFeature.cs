@@ -12,7 +12,7 @@ namespace NonebNi.Art.Pixelation
         /// How many pixels on both x/y dimension are downscaled to one pixel.
         /// </summary>
         [field: SerializeField, Min(1)] public int DownscaleStrength { get; private set; }
-
+        [SerializeField] private Material downscaleMaterial;
         [SerializeField] private UpscaleRenderPass.Settings upscaleSettings = null!;
 
         private DownSampleRenderPass _downsamplePass = null!;
@@ -20,14 +20,14 @@ namespace NonebNi.Art.Pixelation
 
         public override void Create()
         {
-            var downsampleSetting = new DownSampleRenderPass.Settings(GetDownsampleTargetSize());
+            var downsampleSetting = new DownSampleRenderPass.Settings(GetDownsampleTargetSize(), downscaleMaterial);
             _downsamplePass = new (downsampleSetting)
             {
-                renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing
+                renderPassEvent = RenderPassEvent.AfterRenderingOpaques,
             };
             _upscalePass = new (upscaleSettings)
             {
-                renderPassEvent = RenderPassEvent.AfterRenderingPostProcessing
+                renderPassEvent = RenderPassEvent.AfterRenderingOpaques
             };
         }
 
@@ -37,7 +37,7 @@ namespace NonebNi.Art.Pixelation
             if (renderingData.cameraData.cameraType is CameraType.Game or CameraType.SceneView) renderer.EnqueuePass(_upscalePass);
         }
 
-        private Vector2Int GetDownsampleTargetSize()
+        public Vector2Int GetDownsampleTargetSize()
         {
             var finalRenderSize = GetRenderSizeForSmoothPixelCamera();
             return new (finalRenderSize.x / DownscaleStrength, finalRenderSize.y / DownscaleStrength);
@@ -49,14 +49,15 @@ namespace NonebNi.Art.Pixelation
 
             // create RT for our final target
             var maxShiftInPixelSpace = DownscaleStrength; // It's also how many pixels per axis, per texels.
-            var finalRenderTextureSize = new Vector2Int(Screen.width + maxShiftInPixelSpace, Screen.height + maxShiftInPixelSpace);
+            Vector2Int targetResolution = GetTargetResolution();
+            var finalRenderTextureSize = new Vector2Int(targetResolution.x + maxShiftInPixelSpace, targetResolution.y + maxShiftInPixelSpace);
 
             return finalRenderTextureSize;
         }
+        
+        public Vector2Int GetBaseResolution() => new (upscaleSettings.baseResolution.x, upscaleSettings.baseResolution.y);
 
         //todo: maintain consistency across different screen size.
         public Vector2Int GetTargetResolution() => new (Screen.width, Screen.height);
-
-        public Vector2Int GetDownsampledResolution() => GetTargetResolution() / DownscaleStrength;
     }
 }
