@@ -6,7 +6,9 @@ Tech Reference:
 https://jorenjoestar.github.io/post/pixel_art_filtering/
 https://www.youtube.com/watch?v=d6tp43wZqps
 https://colececil.dev/blog/2017/scaling-pixel-art-without-destroying-it/
-https://www.davidhol.land/articles/3d-pixel-art-rendering/
+https://www.davidhol.land/articles/3d-pixel-art-rendering/#
+
+TODO: eliminate color blending between pixels, if at all possible.
 */
 
 Shader "NonebNi/SharpUpscale"

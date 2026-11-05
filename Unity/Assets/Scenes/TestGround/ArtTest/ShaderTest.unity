@@ -385,6 +385,7 @@ MonoBehaviour:
   sceneCamera: {fileID: 360259161}
   rtQuad: {fileID: 1205152081}
   cameraForRenderTexture: {fileID: 876580519}
+  isCamSmoothing: 1
 --- !u!1 &372187995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1606,7 +1607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c7e31cbd5dfc64ea54e24c0d71e8e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPlaceholder
-  moveSpeed: 0.25
+  moveSpeed: 2
   forceHoriz: 0
   forceVert: 0
   forceReversed: 0

@@ -2,7 +2,6 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class PlayerPlaceholder : MonoBehaviour
 {
     [Header("Movement")]

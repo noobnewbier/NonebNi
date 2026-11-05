@@ -4,6 +4,10 @@ using UnityEngine.Rendering;
 
 namespace NonebNi.Art.GrassInstancing
 {
+    //todo: we need to allow cases where couple accent can overlap. another type of placer...maybe in general random placer is just better than blue noise.
+    //or on another thought, perhaps we should just use multiple spawner, but would that feel weird to rely on randomly overlapping as they don't have knowledge on each other.
+    //todo: time for pixelation and wind?
+    //todo: more about camera as well.
     [NonebUniversalInspector]
     [ExecuteAlways]
     public class GrassInstancerRunner : MonoBehaviour

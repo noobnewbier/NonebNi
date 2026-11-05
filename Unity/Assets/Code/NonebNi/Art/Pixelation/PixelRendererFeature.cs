@@ -3,7 +3,13 @@ using UnityEngine.Rendering.Universal;
 
 namespace NonebNi.Art.Pixelation
 {
-     /// <summary>
+    /// <summary>
+    /// There is four resolution we need to keep in mind:
+    /// 1. The target resolution - this is the user display
+    /// 2. The target resolution + the offset to allow for camera snapping - this is what's under the hood, behind the user display
+    /// 3. The lowered sample resolution - this is downsampled target resolution, for creating the pixelated effect
+    /// 4. The lowered sample resolution + 1 on both axis - this is what our render texture is at. 
+    /// 
     /// Source: https://github.com/bababuyyy/unity-isometric-pixel-pipeline/blob/5786325b7bd6359a580d8b98210443026bb7eddf/Assets/Rendering/RenderFeatures/PixelRendererFeature.cs#L233
     /// </summary>
     public class PixelRendererFeature : ScriptableRendererFeature

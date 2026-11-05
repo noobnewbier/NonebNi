@@ -62,7 +62,8 @@ MonoBehaviour:
   - rid: 3626148129836630242
   - rid: 3626148129836630253
   - rid: 6351258655809077519
-  m_VersionTimestamp: 638952065605075520
+  m_VersionTimestamp: 639242297131147828
+  m_SerializedVersion: 3
   m_DebugInfo: {fileID: -8522845216327450641}
   m_RuntimeGraph: {fileID: 2198014253236413643}
   AssetID:
@@ -75,40 +76,49 @@ MonoBehaviour:
   m_NodeModelsInfo:
   - Name: On Start
     Story: 
+    RuntimeTypeString: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 3335272451348827663
       m_Value1: 11549843281177505721
     Variables: []
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: UtilitySelector
     Story: 'Pick child according to [utilityFormula]'
+    RuntimeTypeString: NonebNi.Core.AI.UtilitySelector, NonebNi.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 10088272592483910300
       m_Value1: 10991689594959160319
     Variables:
     - Name: utilityFormula
       Type:
-        m_SerializableType: NonebNi.Core.AI.UtilityFormula, NonebNi.Core, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
+        m_SerializableType: NonebNi.Core.AI.UtilityFormula, NonebNi.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   - Name: EngageNode
     Story: 'Engage Enemy to [preferredDistance]'
+    RuntimeTypeString: NonebNi.Core.AI.EngageNode, NonebNi.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     RuntimeTypeID:
       m_Value0: 1559725457065803179
       m_Value1: 6342887854866017572
     Variables:
     - Name: preferredDistance
       Type:
-        m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
+        m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
       Tooltip: 
     NamedChildren: []
+    IsPlaceholder: 0
   m_Blackboards: []
   m_MainBlackboardAuthoringAsset: {fileID: 5022266540882145780}
   m_CommandBuffer:
     m_Commands: []
   m_SubgraphsInfo: []
+  m_BlackboardMissingManagedRef: 0
+  m_GraphMissingManagedRef: 0
+  m_HasMissingTypeInManagedRef: 0
+  m_EnumDependencyCache:
+    Entries: []
   references:
     version: 2
     RefIds:
@@ -125,8 +135,7 @@ MonoBehaviour:
         PortModels:
         - rid: 3626148129836630243
         NodeType:
-          m_SerializableType: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_SerializableType: Unity.Behavior.Start, Unity.Behavior, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         NodeTypeID:
           m_Value0: 3335272451348827663
           m_Value1: 11549843281177505721
@@ -154,8 +163,7 @@ MonoBehaviour:
         - rid: 3626148129836630254
         - rid: 3626148129836630255
         NodeType:
-          m_SerializableType: NonebNi.Core.AI.UtilitySelector, NonebNi.Core, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_SerializableType: NonebNi.Core.AI.UtilitySelector, NonebNi.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         NodeTypeID:
           m_Value0: 10088272592483910300
           m_Value1: 10991689594959160319
@@ -190,8 +198,7 @@ MonoBehaviour:
         - rid: 6351258655809077520
         - rid: 6351258655809077521
         NodeType:
-          m_SerializableType: NonebNi.Core.AI.EngageNode, NonebNi.Core, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
+          m_SerializableType: NonebNi.Core.AI.EngageNode, NonebNi.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
         NodeTypeID:
           m_Value0: 1559725457065803179
           m_Value1: 6342887854866017572
@@ -220,8 +227,7 @@ MonoBehaviour:
       data:
         FieldName: preferredDistance
         Type:
-          m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-            PublicKeyToken=b77a5c561934e089
+          m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
         LocalValue:
           rid: 9157298526005231617
         LinkedVariable:
@@ -248,9 +254,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Graphs:
   - rid: 6351258655809077522
-  RootGraph:
-    rid: 6351258655809077522
   m_DebugInfo: {fileID: -8522845216327450641}
+  m_WasCompileWithPlaceholderNode: 0
   references:
     version: 2
     RefIds:
@@ -267,21 +272,20 @@ MonoBehaviour:
           rid: 6351258655809077523
         BlackboardGroupReferences: []
         Root:
-          rid: 6351258655809077524
-        m_ActiveNodes: []
-        m_NodesToTick: []
-        m_NodesToEnd:
-          rid: 6351258655809077525
-        m_EndedNodes:
-          rid: 6351258655809077526
-        m_VersionTimestamp: 638952065605075520
+          rid: 8907239483841446089
+        m_VersionTimestamp: 639242297131147828
     - rid: 6351258655809077523
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Blackboard:
           rid: 6351258655809077527
         m_Source: {fileID: -5309512485939601883}
-    - rid: 6351258655809077524
+    - rid: 6351258655809077527
+      type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        m_Variables:
+        - rid: 8907239483841446090
+    - rid: 8907239483841446089
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -295,18 +299,7 @@ MonoBehaviour:
           rid: -2
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 6351258655809077525
-      type: {class: 'Stack`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: mscorlib}
-      data: 
-    - rid: 6351258655809077526
-      type: {class: 'HashSet`1[[Unity.Behavior.Node, Unity.Behavior]]', ns: System.Collections.Generic, asm: System.Core}
-      data: 
-    - rid: 6351258655809077527
-      type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        m_Variables:
-        - rid: 6351258655809077528
-    - rid: 6351258655809077528
+    - rid: 8907239483841446090
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
