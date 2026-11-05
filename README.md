@@ -26,6 +26,13 @@ I find command line to be the most flexible way to implement various debug featu
 
 Note: history of previous commands are yet to be implemented.
 
+## Demo - Value Tracker
+> Track value at runtime, analyze in compiler.
+
+![](./ReadMe/value-tracker-demo.gif)
+Was debugging an issue where I need to diagnose relationship and trend of multiple values in runtime. This came in handy.
+
+
 ## Demo - Custom Inspectors
 > Validating config as you set up your component
 
